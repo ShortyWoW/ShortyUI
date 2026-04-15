@@ -1,0 +1,11 @@
+## Interface: 120000
+## Title: FerrozEditModeLib
+## Notes: This library provides a standardized way to register frames with the Blizzard Edit Mode system
+## Author: FerrozArgentDawn
+## X-Curse-Project-ID: 1438586
+## Version: 1.1.18
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
+FerrozEditModeLib.lua
+FerrozConfigWindow.lua

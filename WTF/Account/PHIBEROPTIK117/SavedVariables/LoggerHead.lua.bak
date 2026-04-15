@@ -1,0 +1,205 @@
+
+LoggerHeadDB = {
+["profileKeys"] = {
+["Callmeshorty - Dalaran"] = "Default",
+["Callmeshorty - Illidan"] = "Default",
+["Shortbeef - Area 52"] = "Default",
+["Shortypal - Dalaran"] = "Default",
+["Drewishlazer - Dalaran"] = "Default",
+["Callmeshorty - Area 52"] = "Default",
+["Drewishlaser - Dalaran"] = "Default",
+["Callmeshortÿ - Moon Guard"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
+["Callmeshawte - Area 52"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+},
+["profiles"] = {
+["Default"] = {
+["log"] = {
+["party"] = {
+["Magisters' Terrace"] = {
+true,
+true,
+[23] = true,
+[8] = true,
+},
+["Azjol-Nerub"] = {
+false,
+},
+["Pit of Saron"] = {
+[23] = true,
+[8] = true,
+},
+["Scholomance"] = {
+},
+["Drak'Tharon Keep"] = {
+false,
+},
+["Lost City of the Tol'vir"] = {
+[24] = false,
+},
+["The Vortex Pinnacle"] = {
+[24] = false,
+},
+["Upper Blackrock Spire"] = {
+},
+["Darkflame Cleft"] = {
+true,
+},
+["Sunken Temple"] = {
+},
+["The Stonecore"] = {
+[24] = false,
+},
+["Voidscar Arena"] = {
+true,
+true,
+[23] = true,
+},
+["Nexus-Point Xenas"] = {
+true,
+true,
+[23] = true,
+[8] = true,
+},
+["The Nexus"] = {
+false,
+},
+["Windrunner Spire"] = {
+true,
+true,
+[23] = true,
+[8] = true,
+},
+["End Time"] = {
+[24] = true,
+},
+["Utgarde Keep"] = {
+false,
+},
+["Blackrock Caverns"] = {
+[24] = false,
+},
+["Maraudon"] = {
+},
+["Den of Nalorakk"] = {
+true,
+true,
+[23] = true,
+},
+["Seat of the Triumvirate"] = {
+[8] = true,
+[2] = true,
+[23] = true,
+},
+["Gundrak"] = {
+false,
+},
+["Stratholme"] = {
+false,
+},
+["The Blinding Vale"] = {
+true,
+true,
+[23] = true,
+},
+["Utgarde Pinnacle"] = {
+false,
+},
+["Halls of Stone"] = {
+false,
+},
+["Zul'Farrak"] = {
+false,
+},
+["Maisara Caverns"] = {
+true,
+true,
+[23] = true,
+},
+["Lower Blackrock Spire"] = {
+false,
+},
+["Blackrock Depths"] = {
+false,
+},
+["Throne of the Tides"] = {
+[24] = false,
+},
+["Murder Row"] = {
+true,
+true,
+[23] = true,
+},
+},
+["scenario"] = {
+["Sunkiller Sanctum"] = {
+[208] = true,
+},
+["The Grudge Pit"] = {
+[208] = true,
+},
+["Shadowguard Point"] = {
+[208] = false,
+},
+["Twilight Crypts"] = {
+[208] = false,
+},
+["Collegiate Calamity"] = {
+[208] = false,
+},
+["Torment's Rise"] = {
+[208] = true,
+},
+["The Darkway"] = {
+[208] = false,
+},
+["The Gulf of Memory"] = {
+[208] = true,
+},
+["The Shadow Enclave"] = {
+[208] = true,
+},
+["Atal'Aman"] = {
+[208] = false,
+},
+},
+["raid"] = {
+["Firelands"] = {
+[24] = true,
+},
+["March on Quel'Danas"] = {
+[14] = true,
+},
+["Liberation of Undermine"] = {
+[14] = true,
+[16] = true,
+},
+["Molten Core"] = {
+[9] = false,
+},
+["The Dreamrift"] = {
+[15] = true,
+[14] = true,
+},
+["Icecrown Citadel"] = {
+[3] = false,
+},
+["The Voidspire"] = {
+[14] = true,
+[17] = false,
+[15] = true,
+},
+["Manaforge Omega"] = {
+[16] = true,
+[15] = false,
+},
+},
+},
+["version"] = 3,
+["minimap"] = {
+["hide"] = true,
+},
+},
+},
+}

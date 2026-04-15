@@ -1,0 +1,84 @@
+VER 3 0100000000000003 "Charge" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Wild Charge
+END
+VER 3 0100000000000007 "Cleanse" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Nature's Cure
+END
+VER 3 0100000000000009 "Clone Focus" "INV_MISC_QUESTIONMARK"
+#show Cyclone
+/cast Nature's Swiftness
+/cast [@focus] Cyclone
+END
+VER 3 0100000000000010 "GTFO" "INV_MISC_QUESTIONMARK"
+#show Dash
+/cast Displacer Beast
+/stopcasting
+/cast Nature's Grasp
+/cast Dash
+END
+VER 3 0100000000000006 "Heal Partner" "INV_MISC_QUESTIONMARK"
+#show Healing Touch
+/cast [@Gotchaz] Healing Touch
+END
+VER 3 010000000000000D "Healing Touch" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Healing Touch
+END
+VER 3 0100000000000008 "Instant Clone" "INV_MISC_QUESTIONMARK"
+#show Cyclone
+/cast Nature's Swiftness
+/cast [@target] Cyclone
+END
+VER 3 0100000000000011 "Ironbark" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Ironbark
+END
+VER 3 010000000000000E "Lifebloom" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Lifebloom
+END
+VER 3 010000000000000C "Nourish" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Nourish
+END
+VER 3 0100000000000001 "Oh Shit" "INV_MISC_QUESTIONMARK"
+#show Might of Ursoc
+/cast [@player] Lifebloom
+/cast [@player] Rejuvenation
+/cast Might of Ursoc
+/cast Survival Instincts
+/cast Barkskin
+/cast Nature's Grasp
+END
+VER 3 010000000000000B "Regrowth" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Regrowth
+END
+VER 3 010000000000000A "Rejuv" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Rejuvenation
+END
+VER 3 010000000000000F "Swiftmend" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Swiftmend
+END
+VER 3 0100000000000012 "Touch" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Healing Touch
+END
+VER 3 0100000000000004 "Vortex" "INV_MISC_QUESTIONMARK"
+#show
+/cast !Ursol's Vortex
+END
+VER 3 0100000000000005 "Ward" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] !Cenarion Ward
+END
+VER 3 0100000000000002 "Zerk" "INV_MISC_QUESTIONMARK"
+#show Berserk
+/cast Berserk
+/cast !Force of Nature
+/cast Nature's Vigil
+END

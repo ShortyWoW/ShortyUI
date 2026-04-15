@@ -1,0 +1,36 @@
+VER 3 0100000000000005 "BH / HotR" "134400"
+#showtooltip
+/cast [known:204019] Blessed Hammer; [known:53595] Hammer of the Righteous
+END
+VER 3 0100000000000001 "Bless Spellwrd" "134400"
+#showtooltip
+/cast [@player] Blessing of Spellwarding
+END
+VER 3 0100000000000006 "BoP" "134400"
+#showtooltip
+/cast [@mouseover] Blessing of Protection
+END
+VER 3 0100000000000002 "BRez" "134400"
+#showtooltip
+/cast [@mouseover] Intercession
+END
+VER 3 0100000000000008 "FoL" "134400"
+#showtooltip
+/cast [@mouseover] Flash of Light
+END
+VER 3 0100000000000003 "Freedom" "134400"
+#showtooltip
+/cast [@mouseover] Blessing of Freedom
+END
+VER 3 0100000000000009 "LoH Mouseover" "134400"
+#showtooltip
+/cast [@mouseover, exists, harm, nodead] Lay on Hands; [@player] Lay on Hands
+END
+VER 3 0100000000000004 "Taunt" "134400"
+#showtooltip
+/cast [@mouseover, exists, harm, nodead] Hand of Reckoning; [@target] Hand of Reckoning
+END
+VER 3 010000000000000A "WoG" "134400"
+#showtooltip
+/cast [@mouseover, exists, harm, nodead] Word of Glory; [@player] Word of Glory
+END

@@ -1,0 +1,1904 @@
+local W, F, E, L = unpack((select(2, ...))) ---@type WindTools, Functions, ElvUI, LocaleTable
+local S = W.Modules.Skins ---@type Skins
+local GB = W:NewModule("GameBar", "AceEvent-3.0", "AceHook-3.0")
+local DT = E:GetModule("DataTexts")
+local async = W.Utilities.Async
+local C = W.Utilities.Color
+
+local _G = _G
+local collectgarbage = collectgarbage
+local date = date
+local floor = floor
+local format = format
+local gsub = gsub
+local ipairs = ipairs
+local max = max
+local min = min
+local mod = mod
+local pairs = pairs
+local random = random
+local select = select
+local strfind = strfind
+local tContains = tContains
+local tinsert = tinsert
+local tonumber = tonumber
+local tostring = tostring
+local type = type
+
+local BNGetNumFriends = BNGetNumFriends
+local CloseAllWindows = CloseAllWindows
+local CloseMenus = CloseMenus
+local CreateFrame = CreateFrame
+local GenerateClosure = GenerateClosure
+local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
+local GetBindLocation = GetBindLocation
+local GetGameTime = GetGameTime
+local GetNumGuildMembers = GetNumGuildMembers
+local GetTime = GetTime
+local HideUIPanel = HideUIPanel
+local InCombatLockdown = InCombatLockdown
+local IsControlKeyDown = IsControlKeyDown
+local IsInGuild = IsInGuild
+local IsModifierKeyDown = IsModifierKeyDown
+local IsShiftKeyDown = IsShiftKeyDown
+local PlaySound = PlaySound
+local PlayerHasToy = PlayerHasToy
+local RegisterStateDriver = RegisterStateDriver
+local ResetCPUUsage = ResetCPUUsage
+local Screenshot = Screenshot
+local ShowUIPanel = ShowUIPanel
+local ToggleCalendar = ToggleCalendar
+local ToggleCharacter = ToggleCharacter
+local ToggleTimeManager = ToggleTimeManager
+local UnregisterStateDriver = UnregisterStateDriver
+
+local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
+local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
+local C_CVar_GetCVar = C_CVar.GetCVar
+local C_CVar_GetCVarBool = C_CVar.GetCVarBool
+local C_CVar_SetCVar = C_CVar.SetCVar
+local C_Covenants_GetActiveCovenantID = C_Covenants.GetActiveCovenantID
+local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
+local C_Garrison_GetCompleteMissions = C_Garrison.GetCompleteMissions
+local C_Housing_GetPlayerOwnedHouses = C_Housing.GetPlayerOwnedHouses
+local C_Item_GetItemCooldown = C_Item.GetItemCooldown
+local C_Item_GetItemCount = C_Item.GetItemCount
+local C_SpellBook_IsSpellKnown = C_SpellBook.IsSpellKnown
+local C_Spell_GetSpellCooldown = C_Spell.GetSpellCooldown
+local C_Timer_NewTicker = C_Timer.NewTicker
+local C_ToyBox_IsToyUsable = C_ToyBox.IsToyUsable
+local C_UI_Reload = C_UI.Reload
+
+local Enum_CovenantType = Enum.CovenantType
+local FollowerType_8_0 = Enum.GarrisonFollowerType.FollowerType_8_0_GarrisonFollower
+local FollowerType_9_0 = Enum.GarrisonFollowerType.FollowerType_9_0_GarrisonFollower
+local RED_FONT_COLOR = RED_FONT_COLOR
+
+local NUM_PANEL_BUTTONS = 7
+local ICON_STRING = "|T%s:16:18:0:0:64:64:4:60:7:57"
+local LEFT_BUTTON_ICON = "|TInterface\\TUTORIALFRAME\\UI-TUTORIAL-FRAME:13:11:0:-1:512:512:12:66:230:307|t"
+local RIGHT_BUTTON_ICON = "|TInterface\\TUTORIALFRAME\\UI-TUTORIAL-FRAME:13:11:0:-1:512:512:12:66:333:410|t"
+local SCROLL_BUTTON_ICON = "|TInterface\\TUTORIALFRAME\\UI-TUTORIAL-FRAME:13:11:0:-1:512:512:12:66:127:204|t"
+local ASTRAL_RECALL_SPELL_ID = 556
+local ASTRAL_RECALL_KEY = "SPELL:556"
+
+local HEARTSTONE_SIDE_SETTINGS = {
+	left = {
+		primaryKey = "left",
+		fallbackKey = "leftFallback",
+		attribute = "macrotext1",
+		tooltipPrefix = LEFT_BUTTON_ICON,
+	},
+	middle = {
+		primaryKey = "middle",
+		fallbackKey = "middleFallback",
+		attribute = "macrotext3",
+		tooltipPrefix = SCROLL_BUTTON_ICON,
+	},
+	right = {
+		primaryKey = "right",
+		fallbackKey = "rightFallback",
+		attribute = "macrotext2",
+		tooltipPrefix = RIGHT_BUTTON_ICON,
+	},
+}
+
+local friendOnline = gsub(_G.ERR_FRIEND_ONLINE_SS, "\124Hplayer:%%s\124h%[%%s%]\124h", "")
+local friendOffline = gsub(_G.ERR_FRIEND_OFFLINE_S, "%%s", "")
+
+GB.AnimationManager = { frame = nil, groups = nil }
+GB.playerHouseList = nil
+
+local hearthstones = {
+	6948, -- 炉石
+	54452, -- 虚灵之门
+	64488, -- 旅店老板的女儿
+	93672, -- 黑暗之门
+	142542, -- 城镇传送之书
+	162973, -- 冬天爷爷的炉石
+	163045, -- 无头骑士的炉石
+	165669, -- 春节长者的炉石
+	165670, -- 小匹德菲特的可爱炉石
+	165802, -- 复活节的炉石
+	166746, -- 吞火者的炉石
+	166747, -- 美酒节狂欢者的炉石
+	168907, -- 全息数字化炉石
+	172179, -- 永恒旅者的炉石
+	180290, -- 法夜炉石
+	182773, -- 通灵领主炉石
+	183716, -- 温西尔罪碑
+	184353, -- 格里恩炉石
+	188952, -- 被统御的炉石
+	190196, -- 开悟者炉石
+	193588, -- 时光旅行者的炉石
+	200630, -- 欧恩伊尔轻风贤者的炉石
+	206195, -- 纳鲁之路
+	208704, -- 幽邃住民的土灵炉石
+	209035, -- 烈焰炉石
+	210455, -- 德莱尼全息宝石
+	212337, -- 炉之石
+	228940, -- 恶名丝线炉石
+	235016, -- 重部署模块
+	236687, -- 高爆炉石
+	245970, -- P.O.S.T.总管的特快炉石
+	246565, -- 星瀚炉石
+	257736, -- 圣光呼唤炉石
+	263489, -- 纳鲁的拥怀
+	263933, -- 寻猎者的炉石
+	265100, -- 核心守卫的炉石
+}
+
+local hearthstoneAndToyIDList = {
+	-- Special Hearthstones
+	6948, -- 炉石
+	-- Hearthstones Toys
+	-- https://www.wowhead.com/items?filter=107:216:17;0:1:-2324;%3CHearthstone+Location%3E:0:0
+	54452, -- 虚灵之门
+	64488, -- 旅店老板的女儿
+	93672, -- 黑暗之门
+	142542, -- 城镇传送之书
+	162973, -- 冬天爷爷的炉石
+	163045, -- 无头骑士的炉石
+	165669, -- 春节长者的炉石
+	165670, -- 小匹德菲特的可爱炉石
+	165802, -- 复活节的炉石
+	166746, -- 吞火者的炉石
+	166747, -- 美酒节狂欢者的炉石
+	168907, -- 全息数字化炉石
+	172179, -- 永恒旅者的炉石
+	180290, -- 法夜炉石
+	182773, -- 通灵领主炉石
+	183716, -- 温西尔罪碑
+	184353, -- 格里恩炉石
+	188952, -- 被统御的炉石
+	190196, -- 开悟者炉石
+	193588, -- 时光旅行者的炉石
+	200630, -- 欧恩伊尔轻风贤者的炉石
+	206195, -- 纳鲁之路
+	208704, -- 幽邃住民的土灵炉石
+	209035, -- 烈焰炉石
+	210455, -- 德莱尼全息宝石
+	212337, -- 炉之石
+	228940, -- 恶名丝线炉石
+	235016, -- 重部署模块
+	236687, -- 高爆炉石
+	245970, -- P.O.S.T.总管的特快炉石
+	246565, -- 星瀚炉石
+	257736, -- 圣光呼唤炉石
+	263489, -- 纳鲁的拥怀
+	263933, -- 寻猎者的炉石
+	265100, -- 核心守卫的炉石
+	-- Patch Items
+	110560, -- 要塞炉石
+	140192, -- 达拉然炉石
+	141605, -- 飞行管理员的哨子
+	180817, -- 位移密文
+	253629, -- 奥术秘社的私人钥匙
+	-- Engineering Wormholes
+	-- https://www.wowhead.com/items/name:Generator?filter=86:195;5:2;0:0
+	18984, -- 空间撕裂器 - 永望镇
+	18986, -- 安全传送器：加基森
+	30542, -- 空间撕裂器 - 52区
+	30544, -- 超级安全传送器：托什雷的基地
+	48933, -- 虫洞发生器：诺森德
+	87215, -- 虫洞发生器：潘达利亚
+	112059, -- 虫洞离心机
+	132517, -- 达拉然内部虫洞发生器
+	132524, -- 里弗斯模块：虫洞发生器模式
+	151652, -- 虫洞发生器：阿古斯
+	168807, -- 虫洞发生器：库尔提拉斯
+	168808, -- 虫洞发生器：赞达拉
+	172924, -- 虫洞发生器：暗影界
+	198156, -- 龙洞发生器：巨龙群岛
+	221966, -- 虫洞发生器：卡兹阿加
+	248485, -- 虫洞发生器：奎尔萨拉斯
+}
+
+local hearthstonesAndToysData
+local availableHearthstones
+
+local function copyRGB(color, target)
+	target.r = color.r
+	target.g = color.g
+	target.b = color.b
+end
+
+function GB.AnimationManager:Drop()
+	self.frame = nil
+	self.groups = nil
+end
+
+function GB.AnimationManager:DropIfMatched(frame, group)
+	if frame and self.frame == frame or self.groups and tContains(self.groups, group) then
+		self:Drop()
+	end
+end
+
+function GB.AnimationManager:SetCurrent(frame, groups)
+	if self.frame and self.frame ~= frame or self.groups and tContains(self.groups, groups[1]) then
+		E:Delay(0.01, GB.AnimationOnLeave, GB, self.frame)
+	end
+	self.frame = frame
+	self.groups = groups
+end
+
+local function animationReset(self)
+	self.StartR, self.StartG, self.StartB = GB.normalRGB.r, GB.normalRGB.g, GB.normalRGB.b
+	self.EndR, self.EndG, self.EndB = GB.mouseOverRGB.r, GB.mouseOverRGB.g, GB.mouseOverRGB.b
+	self:SetChange(self.EndR - self.StartR, self.EndG - self.StartG, self.EndB - self.StartB)
+	self:SetDuration(GB.animationDuration)
+	self:SetEasing(GB.animationInEase)
+	self:Reset()
+end
+
+local function animationSwitch(self, isEnterMode)
+	local elapsed = min(max(0, self:GetProgressByTimer()), GB.animationDuration)
+	self.Timer = isEnterMode == self.isEnterMode and elapsed or (GB.animationDuration - elapsed)
+	local startRGB = isEnterMode and GB.normalRGB or GB.mouseOverRGB
+	local endRGB = isEnterMode and GB.mouseOverRGB or GB.normalRGB
+	self.StartR, self.StartG, self.StartB = startRGB.r, startRGB.g, startRGB.b
+	self.EndR, self.EndG, self.EndB = endRGB.r, endRGB.g, endRGB.b
+	self:SetChange(endRGB.r, endRGB.g, endRGB.b)
+	self:SetEasing(isEnterMode and GB.animationInEase or GB.animationOutEase)
+	self.isEnterMode = isEnterMode
+end
+
+local function copyAnimationData(self, target)
+	target.StartR, target.StartG, target.StartB = self.StartR, self.StartG, self.StartB
+	target.EndR, target.EndG, target.EndB = self.EndR, self.EndG, self.EndB
+	target:SetChange(self:GetChange())
+	target:SetDuration(self:GetDuration())
+	target:SetEasing(self:GetEasing())
+	target.Timer = self.Timer
+	target.isEnterMode = self.isEnterMode
+end
+
+local function animationSetFinished(anim)
+	anim:SetScript("OnFinished", function(self)
+		if not self.isEnterMode then
+			GB.AnimationManager:DropIfMatched(nil, self.Group)
+		end
+	end)
+end
+
+function GB:AnimationOnEnter(button)
+	if button.mainTex then
+		local group, anim = button.mainTex.group, button.mainTex.group.anim
+		if group:IsPlaying() then
+			group:Pause()
+		end
+
+		animationSwitch(anim, true)
+		group:Play()
+
+		self.AnimationManager:SetCurrent(button, { group })
+		return
+	end
+
+	if button.hour and button.minutes then
+		local group1, anim1 = button.hour.group, button.hour.group.anim
+		local group2, anim2 = button.minutes.group, button.minutes.group.anim
+		if group1:IsPlaying() then
+			group1:Pause()
+		end
+		if group2:IsPlaying() then
+			group2:Pause()
+		end
+
+		animationSwitch(anim1, true)
+		copyAnimationData(anim1, anim2)
+		group1:Play()
+		group2:Play()
+
+		self.AnimationManager:SetCurrent(button, { group1, group2 })
+	end
+end
+function GB:AnimationOnLeave(button)
+	if button.mainTex then
+		local group, anim = button.mainTex.group, button.mainTex.group.anim
+		if group:IsPlaying() then
+			group:Pause()
+		end
+
+		animationSwitch(anim, false)
+		group:Play()
+	end
+
+	if button.hour and button.minutes then
+		local group1, anim1 = button.hour.group, button.hour.group.anim
+		local group2, anim2 = button.minutes.group, button.minutes.group.anim
+		if group1:IsPlaying() then
+			group1:Pause()
+		end
+		if group2:IsPlaying() then
+			group2:Pause()
+		end
+
+		animationSwitch(anim1, false)
+		animationSwitch(anim2, false)
+		group1:Play()
+		group2:Play()
+	end
+end
+
+function GB:GetHearthstoneSetting(side)
+	if not self.db or not self.db.hearthstone then
+		return nil, nil
+	end
+
+	local sideSettings = HEARTSTONE_SIDE_SETTINGS[side] or HEARTSTONE_SIDE_SETTINGS.left
+
+	local primary = self.db.hearthstone[sideSettings.primaryKey]
+	local fallback = self.db.hearthstone[sideSettings.fallbackKey]
+
+	return primary and tostring(primary) or nil, fallback and tostring(fallback) or nil
+end
+
+local function IsHearthstoneActionUsable(actionData)
+	if not actionData then
+		return false
+	end
+
+	if actionData.actionType == "spell" then
+		return C_SpellBook_IsSpellKnown(actionData.actionID)
+	elseif actionData.actionType == "random" then
+		return availableHearthstones and #availableHearthstones > 0
+	elseif actionData.actionType == "item" then
+		local usesCount = C_Item_GetItemCount(actionData.actionID, nil, true)
+		if usesCount and usesCount > 0 then
+			return true
+		end
+		return PlayerHasToy(actionData.actionID)
+	end
+
+	return false
+end
+
+function GB:ResolveHearthstoneAction(side)
+	if not hearthstonesAndToysData then
+		return nil
+	end
+
+	local primary, fallback = self:GetHearthstoneSetting(side)
+	local primaryData = primary and hearthstonesAndToysData[primary] or nil
+
+	if IsHearthstoneActionUsable(primaryData) then
+		return primaryData
+	end
+
+	local fallbackData = fallback and hearthstonesAndToysData[fallback] or nil
+	if IsHearthstoneActionUsable(fallbackData) then
+		return fallbackData
+	end
+
+	return nil
+end
+
+local function AddDoubleLineForItem(actionData, prefix, button, side)
+	if not actionData then
+		return
+	end
+
+	prefix = prefix and prefix .. " " or ""
+
+	-- For random hearthstones, use the icon of the actual selected hearthstone
+	local iconID = actionData.icon
+	if actionData.actionType == "random" and button and side and availableHearthstones then
+		local randomIndex = button["randomHearthstoneIndex" .. side]
+		if randomIndex then
+			local actualItemID = availableHearthstones[randomIndex]
+			if actualItemID and hearthstonesAndToysData and hearthstonesAndToysData[tostring(actualItemID)] then
+				iconID = hearthstonesAndToysData[tostring(actualItemID)].icon
+			end
+		end
+	end
+
+	local icon = format(ICON_STRING .. ":255:255:255|t", iconID)
+
+	local startTime, duration = 0, 0
+	if actionData.actionType == "spell" then
+		local cooldownInfo = C_Spell_GetSpellCooldown(actionData.actionID)
+		startTime = cooldownInfo and cooldownInfo.startTime or 0
+		duration = cooldownInfo and cooldownInfo.duration or 0
+	else
+		startTime, duration = C_Item_GetItemCooldown(actionData.actionID)
+	end
+
+	local cooldownTime = startTime + duration - GetTime()
+	local canUse = cooldownTime <= 0
+	local cooldownTimeString
+	if not canUse then
+		local m = floor(cooldownTime / 60)
+		local s = floor(mod(cooldownTime, 60))
+		cooldownTimeString = format("%02d:%02d", m, s)
+	end
+
+	local name = actionData.name
+	if actionData.actionType == "item" and actionData.actionID == 180817 then
+		local charge = C_Item_GetItemCount(actionData.actionID, nil, true)
+		name = name .. format(" (%d)", charge)
+	end
+
+	if actionData.actionType == "random" then
+		name = L["Random Hearthstone"]
+	end
+
+	if
+		GB.db
+		and GB.db.hearthstone
+		and GB.db.hearthstone.showBindLocation
+		and (
+			actionData.actionType == "item" and tContains(hearthstones, actionData.actionID)
+			or actionData.actionType == "spell" and actionData.actionID == ASTRAL_RECALL_SPELL_ID
+			or actionData.actionType == "random"
+		)
+	then
+		local bindLocation = GetBindLocation()
+		if bindLocation and bindLocation ~= "" then
+			name = name .. format(" > %s", bindLocation)
+		end
+	end
+
+	DT.tooltip:AddDoubleLine(
+		prefix .. icon .. " " .. name,
+		canUse and L["Ready"] or cooldownTimeString,
+		1,
+		1,
+		1,
+		canUse and 0 or 1,
+		canUse and 1 or 0,
+		0
+	)
+end
+
+-- Fake DataText for no errors throwed from ElvUI
+local VirtualDTEvent = {
+	Friends = nil,
+	Guild = "GUILD_ROSTER_UPDATE",
+	Time = "UPDATE_INSTANCE_INFO",
+}
+
+local VirtualDT = {
+	Friends = {
+		name = "Friends",
+		text = {
+			SetFormattedText = E.noop,
+		},
+	},
+	System = {
+		name = "System",
+	},
+	Time = {
+		name = "Time",
+		text = {
+			SetFormattedText = E.noop,
+		},
+	},
+	Guild = {
+		name = "Guild",
+		text = {
+			SetFormattedText = E.noop,
+			SetText = E.noop,
+		},
+		GetScript = function()
+			return E.noop
+		end,
+		IsMouseOver = function()
+			return false
+		end,
+	},
+}
+
+local sharedCache = {
+	friends = {},
+}
+
+local ButtonTypes = {
+	ACHIEVEMENTS = {
+		name = L["Achievements"],
+		icon = W.Media.Icons.barAchievements,
+		macro = {
+			LeftButton = _G.SLASH_ACHIEVEMENTUI1,
+		},
+		tooltips = {
+			L["Achievements"],
+		},
+	},
+	BAGS = {
+		name = L["Bags"],
+		icon = W.Media.Icons.barBags,
+		click = {
+			LeftButton = function()
+				_G.ToggleAllBags()
+			end,
+		},
+		tooltips = "Bags",
+	},
+	BLIZZARD_SHOP = {
+		name = L["Blizzard Shop"],
+		icon = W.Media.Icons.barBlizzardShop,
+		click = {
+			LeftButton = function()
+				_G.StoreMicroButton:Click()
+			end,
+		},
+		tooltips = {
+			L["Blizzard Shop"],
+		},
+	},
+	CHARACTER = {
+		name = L["Character"],
+		icon = W.Media.Icons.barCharacter,
+		click = {
+			LeftButton = function()
+				if not InCombatLockdown() then
+					ToggleCharacter("PaperDollFrame")
+				else
+					_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+				end
+			end,
+		},
+		tooltips = {
+			L["Character"],
+		},
+	},
+	COLLECTIONS = {
+		name = L["Collections"],
+		icon = W.Media.Icons.barCollections,
+		macro = {
+			LeftButton = "/click CollectionsJournalCloseButton\n/click CollectionsMicroButton\n/click CollectionsJournalTab1",
+			RightButton = "/run C_MountJournal.SummonByID(0)",
+		},
+		tooltips = {
+			L["Collections"],
+			"\n",
+			LEFT_BUTTON_ICON .. " " .. L["Show Collections"],
+			RIGHT_BUTTON_ICON .. " " .. L["Random Favorite Mount"],
+		},
+	},
+	ENCOUNTER_JOURNAL = {
+		name = L["Encounter Journal"],
+		icon = W.Media.Icons.barEncounterJournal,
+		macro = {
+			LeftButton = "/click EJMicroButton",
+			RightButton = "/run WeeklyRewards_ShowUI()",
+		},
+		tooltips = {
+			LEFT_BUTTON_ICON .. " " .. L["Encounter Journal"],
+			RIGHT_BUTTON_ICON .. " " .. L["Weekly Rewards"],
+		},
+	},
+	FRIENDS = {
+		name = L["Friend List"],
+		icon = W.Media.Icons.barFriends,
+		macro = {
+			LeftButton = "/cleartarget\n/friends",
+		},
+		additionalText = function()
+			local numBNOnline, numWoWOnline = 0, 0
+
+			for i = 1, BNGetNumFriends() do
+				local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
+				if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
+					local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
+					numBNOnline = numBNOnline + 1
+					if numGameAccounts and numGameAccounts > 0 then
+						for j = 1, numGameAccounts do
+							local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, j) --[[@as BNetGameAccountInfo]]
+							if gameAccountInfo.clientProgram and gameAccountInfo.clientProgram == "WoW" then
+								numWoWOnline = numWoWOnline + 1
+							end
+						end
+					elseif accountInfo.gameAccountInfo.clientProgram == "WoW" then
+						numWoWOnline = numWoWOnline + 1
+					end
+				end
+			end
+
+			local result
+			if GB and GB.db and GB.db.friends and GB.db.friends.showAllFriends then
+				local friendsOnline = C_FriendList_GetNumFriends() or 0
+				result = friendsOnline + numBNOnline
+			else
+				result = numWoWOnline
+			end
+
+			return result > 0 and result or ""
+		end,
+		tooltips = "Friends",
+		events = {
+			"BN_FRIEND_ACCOUNT_ONLINE",
+			"BN_FRIEND_ACCOUNT_OFFLINE",
+			"BN_FRIEND_INFO_CHANGED",
+			"FRIENDLIST_UPDATE",
+			"CHAT_MSG_SYSTEM",
+		},
+		eventHandler = function(button, event, message)
+			if event == "CHAT_MSG_SYSTEM" then
+				if
+					E:IsSecretValue(message) or not (strfind(message, friendOnline) or strfind(message, friendOffline))
+				then
+					return
+				end
+			end
+			local now = GetTime()
+			local cache = sharedCache.friends
+			if now - (cache.lastEvent or 0) > 1 then
+				cache.lastEvent = now
+				E:Delay(1, function()
+					button.additionalText:SetFormattedText(button.additionalTextFormat, button.additionalTextFunc())
+				end)
+			end
+		end,
+	},
+	GAMEMENU = {
+		name = L["Game Menu"],
+		icon = W.Media.Icons.barGameMenu,
+		click = {
+			LeftButton = function()
+				if not InCombatLockdown() then
+					-- Open game menu | From ElvUI
+					if not _G.GameMenuFrame:IsShown() then
+						CloseMenus()
+						CloseAllWindows()
+						PlaySound(850) --IG_MAINMENU_OPEN
+						ShowUIPanel(_G.GameMenuFrame)
+					else
+						PlaySound(854) --IG_MAINMENU_QUIT
+						HideUIPanel(_G.GameMenuFrame)
+					end
+				else
+					_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+				end
+			end,
+		},
+		tooltips = {
+			L["Game Menu"],
+		},
+	},
+	GROUP_FINDER = {
+		name = L["Group Finder"],
+		icon = W.Media.Icons.barGroupFinder,
+		macro = {
+			LeftButton = "/click LFDMicroButton",
+		},
+		tooltips = {
+			LEFT_BUTTON_ICON .. " " .. L["Group Finder"],
+		},
+	},
+	GUILD = {
+		name = L["Guild"],
+		icon = W.Media.Icons.barGuild,
+		macro = {
+			LeftButton = "/click GuildMicroButton",
+			RightButton = "/script if not InCombatLockdown() then ToggleGuildFrame() end",
+		},
+		additionalText = function()
+			return IsInGuild() and select(2, GetNumGuildMembers()) or ""
+		end,
+		tooltips = "Guild",
+		events = {
+			"GUILD_ROSTER_UPDATE",
+			"PLAYER_GUILD_UPDATE",
+		},
+		eventHandler = function(button, event, message)
+			button.additionalText:SetFormattedText(button.additionalTextFormat, button.additionalTextFunc())
+		end,
+		notification = true,
+	},
+	HEARTHSTONE = {
+		name = L["Hearthstone"],
+		icon = W.Media.Icons.barHearthstone,
+		item = {},
+		tooltips = function(button)
+			local function Update()
+				DT.tooltip:ClearLines()
+				DT.tooltip:SetText(L["Hearthstone"])
+				DT.tooltip:AddLine("\n")
+				for _, side in ipairs({ "left", "middle", "right" }) do
+					local sideSettings = HEARTSTONE_SIDE_SETTINGS[side]
+					AddDoubleLineForItem(GB:ResolveHearthstoneAction(side), sideSettings.tooltipPrefix, button, side)
+				end
+				DT.tooltip:Show()
+			end
+
+			button.tooltipsUpdateTimer = C_Timer_NewTicker(1, Update)
+			Update()
+		end,
+		tooltipsLeave = function(button)
+			if button.tooltipsUpdateTimer and button.tooltipsUpdateTimer.Cancel then
+				button.tooltipsUpdateTimer:Cancel()
+			end
+		end,
+	},
+	HOME = {
+		name = L["Home"],
+		icon = W.Media.Icons.barHome,
+		click = {
+			LeftButton = function()
+				_G.UIErrorsFrame:AddMessage(L["House data cannot be updated in combat."], RED_FONT_COLOR:GetRGBA())
+			end,
+			RightButton = function()
+				if not InCombatLockdown() then
+					_G.HousingFramesUtil.ToggleHousingDashboard()
+				else
+					_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+				end
+			end,
+		},
+		tooltips = {
+			L["Home"],
+			"\n",
+			LEFT_BUTTON_ICON .. " " .. L["Teleport to Home"],
+			RIGHT_BUTTON_ICON .. " " .. L["Housing Dashboard"],
+		},
+	},
+	MISSION_REPORTS = {
+		name = L["Mission Reports"],
+		icon = W.Media.Icons.barMissionReports,
+		click = {
+			LeftButton = function(button)
+				DT.RegisteredDataTexts["Missions"].onClick(button)
+			end,
+		},
+		additionalText = function()
+			local numMissions = #C_Garrison_GetCompleteMissions(FollowerType_9_0)
+				+ #C_Garrison_GetCompleteMissions(FollowerType_8_0)
+			return tostring(numMissions == 0 and "" or numMissions)
+		end,
+		tooltips = "Missions",
+	},
+	NONE = {
+		name = L["None"],
+	},
+	PET_JOURNAL = {
+		name = L["Pet Journal"],
+		icon = W.Media.Icons.barPetJournal,
+		macro = {
+			LeftButton = "/click CollectionsJournalCloseButton\n/click CollectionsMicroButton\n/click CollectionsJournalTab2",
+			RightButton = "/run C_PetJournal.SummonRandomPet(C_PetJournal.HasFavoritePets());",
+		},
+		tooltips = {
+			L["Pet Journal"],
+			"\n",
+			LEFT_BUTTON_ICON .. " " .. L["Show Pet Journal"],
+			RIGHT_BUTTON_ICON .. " " .. L["Random Favorite Pet"],
+		},
+	},
+	PROFESSION = {
+		name = L["Profession"],
+		icon = W.Media.Icons.barProfession,
+		click = {
+			LeftButton = function()
+				if not InCombatLockdown() then
+					_G.ToggleProfessionsBook()
+				else
+					_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+				end
+			end,
+		},
+		tooltips = {
+			L["Profession"],
+		},
+	},
+	SCREENSHOT = {
+		name = L["Screenshot"],
+		icon = W.Media.Icons.barScreenShot,
+		click = {
+			LeftButton = function()
+				DT.tooltip:Hide()
+				Screenshot()
+			end,
+			RightButton = function()
+				E:Delay(2, function()
+					Screenshot()
+				end)
+			end,
+		},
+		tooltips = {
+			L["Screenshot"],
+			"\n",
+			LEFT_BUTTON_ICON .. " " .. L["Screenshot immediately"],
+			RIGHT_BUTTON_ICON .. " " .. L["Screenshot after 2 secs"],
+		},
+	},
+	SPELLBOOK = {
+		name = L["Spell Book"],
+		icon = W.Media.Icons.barSpellBook,
+		click = {
+			LeftButton = function()
+				if not InCombatLockdown() then
+					_G.PlayerSpellsUtil.ToggleSpellBookFrame()
+				else
+					_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+				end
+			end,
+		},
+		tooltips = {
+			L["Spell Book"],
+		},
+	},
+	TALENTS = {
+		name = L["Talents"],
+		icon = W.Media.Icons.barTalents,
+		click = {
+			LeftButton = function()
+				if not InCombatLockdown() then
+					_G.PlayerSpellsUtil.ToggleClassTalentFrame()
+				else
+					_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+				end
+			end,
+		},
+		tooltips = {
+			L["Talents"],
+		},
+	},
+	TOY_BOX = {
+		name = L["Toy Box"],
+		icon = W.Media.Icons.barToyBox,
+		macro = {
+			LeftButton = "/click CollectionsJournalCloseButton\n/click CollectionsMicroButton\n/click CollectionsJournalTab3",
+		},
+		tooltips = {
+			L["Toy Box"],
+		},
+	},
+	VOLUME = {
+		name = L["Volume"],
+		icon = W.Media.Icons.barVolume,
+		click = {
+			LeftButton = function()
+				local vol = C_CVar_GetCVar("Sound_MasterVolume")
+				local volNum = vol and tonumber(vol) or 0
+				C_CVar_SetCVar("Sound_MasterVolume", min(volNum + 0.1, 1))
+			end,
+			MiddleButton = function()
+				local enabled = tonumber(C_CVar_GetCVar("Sound_EnableAllSound")) == 1
+				C_CVar_SetCVar("Sound_EnableAllSound", enabled and 0 or 1)
+			end,
+			RightButton = function()
+				local vol = C_CVar_GetCVar("Sound_MasterVolume")
+				local volNum = vol and tonumber(vol) or 0
+				C_CVar_SetCVar("Sound_MasterVolume", max(volNum - 0.1, 0))
+			end,
+		},
+		tooltips = function(button)
+			local vol = C_CVar_GetCVar("Sound_MasterVolume")
+			local volNum = vol and tonumber(vol) or 0
+			DT.tooltip:ClearLines()
+			DT.tooltip:SetText(L["Volume"] .. format(": %d%%", volNum * 100))
+			DT.tooltip:AddLine("\n")
+			DT.tooltip:AddLine(LEFT_BUTTON_ICON .. " " .. L["Increase the volume"] .. " (+10%)", 1, 1, 1)
+			DT.tooltip:AddLine(RIGHT_BUTTON_ICON .. " " .. L["Decrease the volume"] .. " (-10%)", 1, 1, 1)
+			DT.tooltip:AddLine(SCROLL_BUTTON_ICON .. " " .. L["Sound ON/OFF"], 1, 1, 1)
+			DT.tooltip:Show()
+
+			button.tooltipsUpdateTimer = C_Timer_NewTicker(0.3, function()
+				local _vol = C_CVar_GetCVar("Sound_MasterVolume")
+				local _volNum = _vol and tonumber(_vol) or 0
+				DT.tooltip:ClearLines()
+				DT.tooltip:SetText(L["Volume"] .. format(": %d%%", _volNum * 100))
+				DT.tooltip:AddLine("\n")
+				DT.tooltip:AddLine(LEFT_BUTTON_ICON .. " " .. L["Increase the volume"] .. " (+10%)", 1, 1, 1)
+				DT.tooltip:AddLine(RIGHT_BUTTON_ICON .. " " .. L["Decrease the volume"] .. " (-10%)", 1, 1, 1)
+				DT.tooltip:AddLine(SCROLL_BUTTON_ICON .. " " .. L["Sound ON/OFF"], 1, 1, 1)
+				DT.tooltip:Show()
+			end)
+		end,
+		tooltipsLeave = function(button)
+			if button.tooltipsUpdateTimer and button.tooltipsUpdateTimer.Cancel then
+				button.tooltipsUpdateTimer:Cancel()
+			end
+		end,
+	},
+}
+
+function GB:UpdateGroupFinderButton()
+	if not C_AddOns_IsAddOnLoaded("MeetingStone") then
+		return
+	end
+
+	if self.db.groupFinder.preferNetEaseMeetingStone then
+		ButtonTypes.GROUP_FINDER.macro.LeftButton = "/meetingstone"
+		ButtonTypes.GROUP_FINDER.macro.RightButton = "/click LFDMicroButton"
+		ButtonTypes.GROUP_FINDER.tooltips = {
+			L["Group Finder"],
+			"\n",
+			LEFT_BUTTON_ICON .. " " .. L["Meeting Stone"],
+			RIGHT_BUTTON_ICON .. " " .. L["Group Finder"],
+		}
+	else
+		ButtonTypes.GROUP_FINDER.macro.LeftButton = "/click LFDMicroButton"
+		ButtonTypes.GROUP_FINDER.macro.RightButton = "/meetingstone"
+		ButtonTypes.GROUP_FINDER.tooltips = {
+			L["Group Finder"],
+			"\n",
+			LEFT_BUTTON_ICON .. " " .. L["Group Finder"],
+			RIGHT_BUTTON_ICON .. " " .. L["Meeting Stone"],
+		}
+	end
+end
+
+function GB:OnEnter()
+	if self.db and self.db.mouseOver then
+		E:UIFrameFadeIn(self.bar, self.db.fadeTime, self.bar:GetAlpha(), 1)
+	end
+end
+
+function GB:OnLeave()
+	if self.db and self.db.mouseOver then
+		E:UIFrameFadeOut(self.bar, self.db.fadeTime, self.bar:GetAlpha(), 0)
+	end
+end
+
+function GB:ConstructBar()
+	if self.bar then
+		return
+	end
+
+	local bar = CreateFrame("Frame", "WTGameBar", E.UIParent)
+	bar:Size(800, 60)
+	bar:Point("TOP", 0, -20)
+	bar:SetFrameStrata("MEDIUM")
+
+	bar:SetScript("OnEnter", GenerateClosure(self.OnEnter, self))
+	bar:SetScript("OnLeave", GenerateClosure(self.OnLeave, self))
+
+	local middlePanel = CreateFrame("Button", "WTGameBarMiddlePanel", bar, "SecureActionButtonTemplate")
+	middlePanel:Size(81, 50)
+	middlePanel:Point("CENTER")
+	middlePanel:CreateBackdrop("Transparent")
+	middlePanel:RegisterForClicks(W.UseKeyDown and "AnyDown" or "AnyUp")
+	bar.middlePanel = middlePanel
+
+	local leftPanel = CreateFrame("Frame", "WTGameBarLeftPanel", bar)
+	leftPanel:Size(300, 40)
+	leftPanel:Point("RIGHT", middlePanel, "LEFT", -10, 0)
+	leftPanel:CreateBackdrop("Transparent")
+	bar.leftPanel = leftPanel
+
+	local rightPanel = CreateFrame("Frame", "WTGameBarRightPanel", bar)
+	rightPanel:Size(300, 40)
+	rightPanel:Point("LEFT", middlePanel, "RIGHT", 10, 0)
+	rightPanel:CreateBackdrop("Transparent")
+	bar.rightPanel = rightPanel
+
+	S:CreateShadowModule(leftPanel.backdrop)
+	S:CreateShadowModule(middlePanel.backdrop)
+	S:CreateShadowModule(rightPanel.backdrop)
+	S:MerathilisUISkin(leftPanel.backdrop)
+	S:MerathilisUISkin(middlePanel.backdrop)
+	S:MerathilisUISkin(rightPanel.backdrop)
+
+	self.bar = bar
+
+	E:CreateMover(self.bar, "WTGameBarAnchor", L["Game Bar"], nil, nil, nil, "ALL,WINDTOOLS", function()
+		return GB.db and GB.db.enable
+	end, "WindTools,misc,gameBar")
+end
+
+function GB:UpdateBar()
+	if self.db and self.db.mouseOver then
+		self.bar:SetAlpha(0)
+	else
+		self.bar:SetAlpha(1)
+	end
+
+	RegisterStateDriver(self.bar, "visibility", self.db.visibility)
+end
+
+function GB:ConstructTimeArea()
+	local colon = self.bar.middlePanel:CreateFontString(nil, "OVERLAY")
+	colon:Point("CENTER")
+	F.SetFontWithDB(colon, self.db.time.font)
+	self.bar.middlePanel.colon = colon
+
+	local hour = self.bar.middlePanel:CreateFontString(nil, "OVERLAY")
+	hour:Point("RIGHT", colon, "LEFT", 1, 0)
+	F.SetFontWithDB(hour, self.db.time.font)
+	self.bar.middlePanel.hour = hour
+
+	hour.group = _G.CreateAnimationGroup(hour)
+	hour.group.anim = hour.group:CreateAnimation("color")
+	hour.group.anim:SetColorType("text")
+	animationSetFinished(hour.group.anim)
+
+	local minutes = self.bar.middlePanel:CreateFontString(nil, "OVERLAY")
+	minutes:Point("LEFT", colon, "RIGHT", 0, 0)
+	F.SetFontWithDB(minutes, self.db.time.font)
+	self.bar.middlePanel.minutes = minutes
+
+	minutes.group = _G.CreateAnimationGroup(minutes)
+	minutes.group.anim = minutes.group:CreateAnimation("color")
+	minutes.group.anim:SetColorType("text")
+
+	local text = self.bar.middlePanel:CreateFontString(nil, "OVERLAY")
+	text:Point("TOP", self.bar, "BOTTOM", 0, -5)
+	F.SetFontWithDB(text, self.db.additionalText.font)
+	text:SetAlpha(self.db.time.alwaysSystemInfo and 1 or 0)
+	self.bar.middlePanel.text = text
+
+	self.bar.middlePanel:Size(self.db.timeAreaWidth, self.db.timeAreaHeight)
+
+	self:UpdateTime()
+	self.timeAreaUpdateTimer = C_Timer_NewTicker(self.db.time.interval, function()
+		GB:UpdateTime()
+	end)
+
+	DT.RegisteredDataTexts["Time"].eventFunc(VirtualDT["Time"], "ELVUI_FORCE_UPDATE")
+	DT.RegisteredDataTexts["System"].onUpdate(self.bar.middlePanel, 10)
+
+	if self.db.time.alwaysSystemInfo then
+		self.alwaysSystemInfoTimer = C_Timer_NewTicker(1, function()
+			DT.RegisteredDataTexts["System"].onUpdate(self.bar.middlePanel, 10)
+		end)
+	end
+
+	self:HookScript(self.bar.middlePanel, "OnEnter", function(panel)
+		self:OnEnter()
+		self:AnimationOnEnter(panel)
+
+		DT.RegisteredDataTexts["System"].onUpdate(panel, 10)
+		if not self.db.time.alwaysSystemInfo then
+			E:UIFrameFadeIn(panel.text, self.db.fadeTime, panel.text:GetAlpha(), 1)
+		end
+
+		if self.db.tooltipsAnchor == "ANCHOR_TOP" then
+			DT.tooltip:SetOwner(panel, "ANCHOR_TOP", 0, 10)
+		else
+			DT.tooltip:SetOwner(panel.text, "ANCHOR_BOTTOM", 0, -10)
+		end
+
+		if IsModifierKeyDown() then
+			DT.RegisteredDataTexts["System"].eventFunc()
+			DT.RegisteredDataTexts["System"].onEnter()
+
+			self.tooltipTimer = C_Timer_NewTicker(1, function()
+				DT.RegisteredDataTexts["System"].onUpdate(panel, 10)
+				DT.RegisteredDataTexts["System"].eventFunc()
+				DT.RegisteredDataTexts["System"].onEnter()
+			end)
+		else
+			DT.RegisteredDataTexts["Time"].eventFunc(VirtualDT["Time"], VirtualDTEvent["Time"])
+			DT.RegisteredDataTexts["Time"].onEnter()
+			DT.RegisteredDataTexts["Time"].onLeave()
+
+			self.tooltipTimer = C_Timer_NewTicker(1, function()
+				DT.RegisteredDataTexts["System"].onUpdate(panel, 10)
+			end)
+
+			DT.tooltip:AddLine("\n")
+			DT.tooltip:AddDoubleLine(format("%s %s", LEFT_BUTTON_ICON, L["Left Button"]), L["Calendar"], 1, 1, 1)
+			DT.tooltip:AddDoubleLine(format("%s %s", RIGHT_BUTTON_ICON, L["Right Button"]), L["Time Manager"], 1, 1, 1)
+			DT.tooltip:AddDoubleLine(format("%s %s", SCROLL_BUTTON_ICON, L["Middle Button"]), L["Reload UI"], 1, 1, 1)
+			DT.tooltip:AddDoubleLine(format("Shift + %s", L["Any"]), L["Collect Garbage"], 1, 1, 1)
+			DT.tooltip:AddDoubleLine(format("Ctrl + Shift + %s", L["Any"]), L["Toggle CPU Profiling"], 1, 1, 1)
+
+			DT.tooltip:Show()
+		end
+	end)
+
+	self:HookScript(self.bar.middlePanel, "OnLeave", function(panel)
+		self:OnLeave()
+		self:AnimationOnLeave(panel)
+
+		if not self.db.time.alwaysSystemInfo then
+			E:UIFrameFadeOut(panel.text, self.db.fadeTime, panel.text:GetAlpha(), 0)
+		end
+
+		DT.RegisteredDataTexts["System"].onLeave()
+		DT.tooltip:Hide()
+		self.tooltipTimer:Cancel()
+	end)
+
+	self.bar.middlePanel:SetScript("OnClick", function(_, mouseButton)
+		if IsShiftKeyDown() then
+			if IsControlKeyDown() then
+				C_CVar_SetCVar("scriptProfile", C_CVar_GetCVarBool("scriptProfile") and 0 or 1)
+				C_UI_Reload()
+			else
+				collectgarbage("collect")
+				ResetCPUUsage()
+				DT.RegisteredDataTexts["System"].eventFunc()
+				DT.RegisteredDataTexts["System"].onEnter()
+			end
+		elseif mouseButton == "LeftButton" then
+			if not InCombatLockdown() then
+				ToggleCalendar()
+			else
+				_G.UIErrorsFrame:AddMessage(_G.ERR_NOT_IN_COMBAT, RED_FONT_COLOR:GetRGBA())
+			end
+		elseif mouseButton == "RightButton" then
+			ToggleTimeManager()
+		elseif mouseButton == "MiddleButton" then
+			if not InCombatLockdown() or not self.db.time.avoidReloadInCombat then
+				C_UI_Reload()
+			end
+		end
+	end)
+end
+
+function GB:UpdateTimeTicker()
+	self.timeAreaUpdateTimer:Cancel()
+	self.timeAreaUpdateTimer = C_Timer_NewTicker(self.db.time.interval, function()
+		GB:UpdateTime()
+	end)
+end
+function GB:UpdateTime()
+	local panel = self.bar.middlePanel
+	if not panel or not self.db or not self.db.time or not self.db.additionalText then
+		return
+	end
+
+	F.SetFontWithDB(panel.hour, self.db.time.font)
+	F.SetFontWithDB(panel.minutes, self.db.time.font)
+	F.SetFontWithDB(panel.colon, self.db.time.font)
+	F.SetFontWithDB(panel.text, self.db.additionalText.font)
+
+	panel.hour.group:Stop()
+	animationReset(panel.hour.group.anim)
+	panel.hour.group.anim.isEnterMode = true
+
+	panel.minutes.group:Stop()
+	animationReset(panel.minutes.group.anim)
+	panel.minutes.group.anim.isEnterMode = true
+
+	local hour, minute
+
+	if self.db.time.localTime then
+		hour = self.db.time.twentyFour and date("%H") or date("%I")
+		minute = date("%M")
+	else
+		hour, minute = GetGameTime()
+		hour = self.db.time.twentyFour and hour or mod(hour, 12)
+		hour = format("%02d", hour)
+		minute = format("%02d", minute)
+	end
+
+	panel.colon:SetText(C.StringWithRGB(":", self.mouseOverRGB))
+	panel.hour:SetText(hour)
+	panel.minutes:SetText(minute)
+	panel.colon:ClearAllPoints()
+
+	local offset = (panel.hour:GetStringWidth() - panel.minutes:GetStringWidth()) / 2
+	panel.colon:Point("CENTER", offset, -1)
+end
+
+function GB:UpdateTimeArea()
+	local panel = self.bar.middlePanel
+
+	if self.db.time.flash then
+		E:Flash(panel.colon, 1, true)
+	else
+		E:StopFlash(panel.colon)
+	end
+
+	panel.text:ClearAllPoints()
+	if self.db.tooltipsAnchor == "ANCHOR_TOP" then
+		panel.text:Point("BOTTOM", self.bar, "TOP", 0, 5)
+	else
+		panel.text:Point("TOP", self.bar, "BOTTOM", 0, -5)
+	end
+
+	if self.db.time.alwaysSystemInfo then
+		DT.RegisteredDataTexts["System"].onUpdate(panel, 10)
+		panel.text:SetAlpha(1)
+		-- Cancel old timer if exists and running
+		if self.alwaysSystemInfoTimer and not self.alwaysSystemInfoTimer:IsCancelled() then
+			self.alwaysSystemInfoTimer:Cancel()
+		end
+		-- Always create new timer to ensure fresh state
+		self.alwaysSystemInfoTimer = C_Timer_NewTicker(1, function()
+			DT.RegisteredDataTexts["System"].onUpdate(panel, 10)
+		end)
+	else
+		panel.text:SetAlpha(0)
+		if self.alwaysSystemInfoTimer and not self.alwaysSystemInfoTimer:IsCancelled() then
+			self.alwaysSystemInfoTimer:Cancel()
+		end
+	end
+
+	self:UpdateTime()
+end
+
+function GB:ButtonOnEnter(button)
+	self:AnimationOnEnter(button)
+	self:OnEnter()
+	if button.tooltips then
+		if self.db.tooltipsAnchor == "ANCHOR_TOP" then
+			DT.tooltip:SetOwner(button, "ANCHOR_TOP", 0, 20)
+		else
+			DT.tooltip:SetOwner(button, "ANCHOR_BOTTOM", 0, -10)
+		end
+
+		if type(button.tooltips) == "table" then
+			DT.tooltip:ClearLines()
+			for index, line in ipairs(button.tooltips) do
+				if index == 1 then
+					DT.tooltip:SetText(line)
+				else
+					DT.tooltip:AddLine(line, 1, 1, 1)
+				end
+			end
+			DT.tooltip:Show()
+		elseif type(button.tooltips) == "string" then
+			local DTModule = DT.RegisteredDataTexts[button.tooltips]
+
+			if VirtualDT[button.tooltips] and DTModule.eventFunc then
+				DTModule.eventFunc(VirtualDT[button.tooltips], VirtualDTEvent[button.tooltips])
+			end
+
+			if DTModule and DTModule.onEnter then
+				DTModule.onEnter()
+			end
+
+			-- If ElvUI Datatext tooltip not shown, display a simple information (e.g. button name) to player
+			if not DT.tooltip:IsShown() then
+				DT.tooltip:ClearLines()
+				DT.tooltip:SetText(button.name)
+				DT.tooltip:Show()
+			end
+		elseif type(button.tooltips) == "function" then
+			button.tooltips(button)
+		end
+	end
+
+	if button.type == "HOME" and not InCombatLockdown() then
+		self:UpdateHouseAttributes(button)
+	end
+end
+
+function GB:ButtonOnLeave(button)
+	self:AnimationOnLeave(button)
+	self:OnLeave()
+	DT.tooltip:Hide()
+	if button.tooltipsLeave then
+		button.tooltipsLeave(button)
+	end
+end
+
+function GB:ConstructButton()
+	if not self.bar then
+		return
+	end
+
+	local button = CreateFrame("Button", nil, self.bar, "SecureActionButtonTemplate")
+	button:Size(self.db.buttonSize, self.db.buttonSize)
+	button:RegisterForClicks(W.UseKeyDown and "AnyDown" or "AnyUp")
+
+	local mainTex = button:CreateTexture(nil, "ARTWORK")
+	mainTex:Point("CENTER")
+	mainTex:Size(self.db.buttonSize, self.db.buttonSize)
+	mainTex.group = _G.CreateAnimationGroup(mainTex)
+	mainTex.group.anim = mainTex.group:CreateAnimation("color")
+	mainTex.group.anim:SetColorType("vertex")
+	animationSetFinished(mainTex.group.anim)
+	button.mainTex = mainTex
+
+	local notificationTex = button:CreateTexture(nil, "OVERLAY")
+	notificationTex:SetTexture(W.Media.Icons.barNotification)
+	notificationTex:Point("TOPRIGHT")
+	notificationTex:Size(0.38 * self.db.buttonSize)
+	button.notificationTex = notificationTex
+
+	local additionalText = button:CreateFontString(nil, "OVERLAY")
+	additionalText:Point(self.db.additionalText.anchor, self.db.additionalText.x, self.db.additionalText.y)
+	F.SetFontWithDB(additionalText, self.db.additionalText.font)
+	additionalText:SetJustifyH("CENTER")
+	additionalText:SetJustifyV("MIDDLE")
+	button.additionalText = additionalText
+
+	self:HookScript(button, "OnEnter", "ButtonOnEnter")
+	self:HookScript(button, "OnLeave", "ButtonOnLeave")
+
+	tinsert(self.buttons, button)
+end
+
+_G.WTGameBar_UpdateHearthstoneButtons = function()
+	F.TaskManager:OutOfCombat(function()
+		for _, btn in pairs(GB.HearthstoneButtons) do
+			if btn.type == "HEARTHSTONE" then
+				for _, side in ipairs({ "left", "middle", "right" }) do
+					GB:UpdateHearthstoneButtonMacro(btn, side)
+				end
+			end
+		end
+	end)
+end
+
+function GB:UpdateButton(button, buttonType)
+	if InCombatLockdown() then
+		return
+	end
+
+	local config = ButtonTypes[buttonType]
+	button:Size(self.db.buttonSize, self.db.buttonSize)
+	button.type = buttonType
+	button.name = config.name
+	button.tooltips = config.tooltips
+	button.tooltipsLeave = config.tooltipsLeave
+
+	button:ClearAttributes()
+
+	-- Click
+	if buttonType == "HEARTHSTONE" then
+		button:SetAttribute("type*", "macro")
+		for _, side in ipairs({ "left", "middle", "right" }) do
+			self:UpdateHearthstoneButtonMacro(button, side)
+		end
+		tinsert(self.HearthstoneButtons, button)
+	elseif config.macro then
+		button:SetAttribute("type*", "macro")
+		button:SetAttribute("macrotext1", config.macro.LeftButton or "")
+		button:SetAttribute("macrotext2", config.macro.RightButton or config.macro.LeftButton or "")
+		button:SetAttribute("macrotext3", "")
+	elseif config.click then
+		button.Click = function(_, mouseButton)
+			local func = mouseButton and config.click[mouseButton] or config.click.LeftButton
+			func(GB.bar.middlePanel)
+		end
+		button:SetAttribute("type*", "click")
+		button:SetAttribute("clickbutton", button)
+
+		if buttonType == "HOME" then
+			button:SetAttribute("type1", "teleporthome")
+			button:SetAttribute("type2", "click")
+		end
+	elseif config.item then
+		button:SetAttribute("type*", "item")
+		button:SetAttribute("item1", config.item.item1 or "")
+		button:SetAttribute("item2", config.item.item2 or "")
+	end
+
+	-- Normal
+	button.mainTex.group:Stop()
+	button.mainTex:SetTexture(config.icon)
+	button.mainTex:Size(self.db.buttonSize, self.db.buttonSize)
+	animationReset(button.mainTex.group.anim)
+	button.mainTex.group.anim.isEnterMode = true
+
+	-- Additional text
+	if button.registeredEvents then
+		for _, event in pairs(button.registeredEvents) do
+			button:UnregisterEvent(event)
+		end
+	end
+
+	button:SetScript("OnEvent", nil)
+	button.registeredEvents = nil
+	button.additionalTextFunc = nil
+
+	if button.additionalTextTimer and not button.additionalTextTimer:IsCancelled() then
+		button.additionalTextTimer:Cancel()
+	end
+
+	button.additionalTextFormat = C.StringWithRGB("%s", self.mouseOverRGB)
+
+	if config.additionalText and self.db.additionalText.enable then
+		button.additionalText:SetFormattedText(
+			button.additionalTextFormat,
+			config.additionalText and config.additionalText() or ""
+		)
+
+		if config.events and config.eventHandler then
+			button:SetScript("OnEvent", config.eventHandler)
+			button.additionalTextFunc = config.additionalText
+			button.registeredEvents = {}
+			for _, event in pairs(config.events) do
+				button:RegisterEvent(event)
+				tinsert(button.registeredEvents, event)
+			end
+		else
+			button.additionalTextTimer = C_Timer_NewTicker(self.db.additionalText.slowMode and 10 or 1, function()
+				button.additionalText:SetFormattedText(
+					button.additionalTextFormat,
+					config.additionalText and config.additionalText() or ""
+				)
+			end)
+		end
+
+		button.additionalText:ClearAllPoints()
+		button.additionalText:Point(self.db.additionalText.anchor, self.db.additionalText.x, self.db.additionalText.y)
+		F.SetFontWithDB(button.additionalText, self.db.additionalText.font)
+		button.additionalText:Show()
+	else
+		button.additionalText:Hide()
+	end
+
+	button.notificationTex:Hide()
+	if config.notification then
+		button.notificationTex:SetVertexColor(self.mouseOverRGB.r, self.mouseOverRGB.g, self.mouseOverRGB.b, 1)
+	end
+
+	button:Show()
+end
+
+function GB:ConstructButtons()
+	if self.buttons then
+		return
+	end
+
+	self.buttons = {}
+	for _ = 1, NUM_PANEL_BUTTONS * 2 do
+		self:ConstructButton()
+	end
+end
+
+function GB:UpdateButtons()
+	self.HearthstoneButtons = {}
+
+	for i = 1, NUM_PANEL_BUTTONS do
+		self:UpdateButton(self.buttons[i], self.db.left[i])
+		self:UpdateButton(self.buttons[i + NUM_PANEL_BUTTONS], self.db.right[i])
+	end
+
+	self:UpdateGuildButton()
+end
+
+function GB:UpdateHouseAttributes(button)
+	if not GB.playerHouseList or #GB.playerHouseList == 0 then
+		C_Housing_GetPlayerOwnedHouses()
+		return
+	end
+
+	local house = GB.playerHouseList[1]
+	if house.neighborhoodGUID and house.houseGUID and house.plotID then
+		button:SetAttribute("house-neighborhood-guid", house.neighborhoodGUID)
+		button:SetAttribute("house-guid", house.houseGUID)
+		button:SetAttribute("house-plot-id", house.plotID)
+	end
+end
+
+function GB:UpdateLayout()
+	if self.db.backdrop then
+		self.bar.leftPanel.backdrop:Show()
+		self.bar.middlePanel.backdrop:Show()
+		self.bar.rightPanel.backdrop:Show()
+	else
+		self.bar.leftPanel.backdrop:Hide()
+		self.bar.middlePanel.backdrop:Hide()
+		self.bar.rightPanel.backdrop:Hide()
+	end
+
+	local numLeftButtons, numRightButtons = 0, 0
+
+	-- Left Panel
+	local lastButton = nil
+	for i = 1, NUM_PANEL_BUTTONS do
+		local button = self.buttons[i]
+		if button.name ~= L["None"] then
+			button:Show()
+			button:ClearAllPoints()
+			if not lastButton then
+				button:Point("LEFT", self.bar.leftPanel, "LEFT", self.db.backdropSpacing, 0)
+			else
+				button:Point("LEFT", lastButton, "RIGHT", self.db.spacing, 0)
+			end
+			lastButton = button
+			numLeftButtons = numLeftButtons + 1
+		else
+			button:Hide()
+		end
+	end
+
+	if numLeftButtons == 0 then
+		self.bar.leftPanel:Hide()
+	else
+		self.bar.leftPanel:Show()
+		local panelWidth = self.db.backdropSpacing * 2
+			+ (numLeftButtons - 1) * self.db.spacing
+			+ numLeftButtons * self.db.buttonSize
+		local panelHeight = self.db.backdropSpacing * 2 + self.db.buttonSize
+		self.bar.leftPanel:Size(panelWidth, panelHeight)
+	end
+
+	-- Right Panel
+	lastButton = nil
+	for i = 1, NUM_PANEL_BUTTONS do
+		local button = self.buttons[i + NUM_PANEL_BUTTONS]
+		if button.name ~= L["None"] then
+			button:Show()
+			button:ClearAllPoints()
+			if not lastButton then
+				button:Point("LEFT", self.bar.rightPanel, "LEFT", self.db.backdropSpacing, 0)
+			else
+				button:Point("LEFT", lastButton, "RIGHT", self.db.spacing, 0)
+			end
+			lastButton = button
+			numRightButtons = numRightButtons + 1
+		else
+			button:Hide()
+		end
+	end
+
+	if numRightButtons == 0 then
+		self.bar.rightPanel:Hide()
+	else
+		self.bar.rightPanel:Show()
+		local panelWidth = self.db.backdropSpacing * 2
+			+ (numRightButtons - 1) * self.db.spacing
+			+ numRightButtons * self.db.buttonSize
+		local panelHeight = self.db.backdropSpacing * 2 + self.db.buttonSize
+		self.bar.rightPanel:Size(panelWidth, panelHeight)
+	end
+
+	-- Time Panel
+	self.bar.middlePanel:Size(self.db.timeAreaWidth, self.db.timeAreaHeight)
+
+	-- Update the size of moveable zones
+	local areaWidth = 20 + self.bar.middlePanel:GetWidth()
+	local leftWidth = self.bar.leftPanel:IsShown() and self.bar.leftPanel:GetWidth() or 0
+	local rightWidth = self.bar.rightPanel:IsShown() and self.bar.rightPanel:GetWidth() or 0
+	areaWidth = areaWidth + 2 * max(leftWidth, rightWidth)
+
+	local areaHeight = self.bar.middlePanel:GetHeight()
+	local leftHeight = self.bar.leftPanel:IsShown() and self.bar.leftPanel:GetHeight() or 0
+	local rightHeight = self.bar.rightPanel:IsShown() and self.bar.rightPanel:GetHeight() or 0
+	areaHeight = max(max(leftHeight, rightHeight), areaHeight)
+
+	self.bar:Size(areaWidth, areaHeight)
+end
+
+function GB:NEW_TOY_ADDED(_, toyID)
+	if toyID and tContains(hearthstoneAndToyIDList, toyID) then
+		self:UpdateHearthStoneTable()
+	end
+end
+
+function GB:PLAYER_REGEN_ENABLED()
+	for i = 1, 2 * NUM_PANEL_BUTTONS do
+		local button = self.buttons[i]
+		if button.type == "HOME" then
+			button:SetAttribute("type1", "teleporthome")
+		end
+	end
+end
+
+function GB:PLAYER_REGEN_DISABLED()
+	for i = 1, 2 * NUM_PANEL_BUTTONS do
+		local button = self.buttons[i]
+
+		if button.type == "HOME" then
+			if not button:GetAttribute("house-guid") then
+				button:SetAttribute("type1", "click")
+			end
+		end
+	end
+end
+
+function GB:PLAYER_ENTERING_WORLD()
+	E:Delay(1, function()
+		F.TaskManager:OutOfCombat(function()
+			self:ProfileUpdate()
+
+			-- Try update house attributes once after entering world
+			for i = 1, 2 * NUM_PANEL_BUTTONS do
+				local button = self.buttons[i]
+				if button.type == "HOME" then
+					self:UpdateHouseAttributes(button)
+				end
+			end
+		end)
+	end)
+end
+
+function GB:PLAYER_HOUSE_LIST_UPDATED(_, houseInfoList)
+	self.playerHouseList = houseInfoList
+end
+
+function GB:Initialize()
+	self.db = E.db.WT.misc.gameBar
+
+	if not self.db or not self.db.enable then
+		return
+	end
+
+	if InCombatLockdown() then
+		F.TaskManager:OutOfCombat(function()
+			self:Initialize()
+		end)
+		return
+	end
+
+	for name, vDT in pairs(VirtualDT) do
+		if DT.RegisteredDataTexts[name] and DT.RegisteredDataTexts[name].applySettings then
+			DT.RegisteredDataTexts[name].applySettings(vDT, E.media.hexvaluecolor)
+		end
+	end
+
+	self:UpdateGroupFinderButton()
+	self:UpdateMetadata()
+	self:UpdateHearthStoneTable()
+	self:ConstructBar()
+	self:ConstructTimeArea()
+	self:ConstructButtons()
+	self:UpdateTimeArea()
+	self:UpdateButtons()
+	self:UpdateLayout()
+	self:UpdateBar()
+	self:RegisterEvent("NEW_TOY_ADDED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("COVENANT_CHOSEN", "UpdateHearthStoneTable")
+	self:RegisterEvent("PLAYER_HOUSE_LIST_UPDATED")
+	C_Housing_GetPlayerOwnedHouses()
+	self:SecureHook(_G.GuildMicroButton, "UpdateNotificationIcon", "UpdateGuildButton")
+	self.initialized = true
+end
+
+function GB:UpdateMetadata()
+	self.normalRGB = self.normalRGB or { r = 1, g = 1, b = 1 }
+	if self.db.normalColor == "CUSTOM" then
+		copyRGB(self.db.customNormalColor, self.normalRGB)
+	elseif self.db.normalColor == "CLASS" then
+		copyRGB(E:ClassColor(E.myclass, true), self.normalRGB)
+	elseif self.db.normalColor == "VALUE" then
+		copyRGB(E.media.rgbvaluecolor, self.normalRGB)
+	else
+		copyRGB({ r = 1, g = 1, b = 1 }, self.normalRGB)
+	end
+
+	self.mouseOverRGB = self.mouseOverRGB or { r = 1, g = 1, b = 1 }
+	if self.db.hoverColor == "CUSTOM" then
+		copyRGB(self.db.customHoverColor, self.mouseOverRGB)
+	elseif self.db.hoverColor == "CLASS" then
+		copyRGB(E:ClassColor(E.myclass, true), self.mouseOverRGB)
+	elseif self.db.hoverColor == "VALUE" then
+		copyRGB(E.media.rgbvaluecolor, self.mouseOverRGB)
+	else
+		copyRGB({ r = 1, g = 1, b = 1 }, self.mouseOverRGB)
+	end
+
+	self.animationDuration = self.db.animation.duration
+	self.animationInEase = self.db.animation.ease == "linear" and "linear" or "in-" .. self.db.animation.ease
+	self.animationOutEase = self.db.animation.ease == "linear" and "linear" or "out-" .. self.db.animation.ease
+	if self.db.animation.easeInvert then
+		self.animationInEase, self.animationOutEase = self.animationOutEase, self.animationInEase
+	end
+end
+
+function GB:ProfileUpdate()
+	self.db = E.db.WT.misc.gameBar
+	if not self.db then
+		return
+	end
+
+	if self.db.enable then
+		self:UpdateGroupFinderButton()
+		self:UpdateMetadata()
+		if self.initialized then
+			self.bar:Show()
+			self:UpdateHearthstoneButton()
+			self:UpdateTimeArea()
+			self:UpdateTime()
+			self:UpdateButtons()
+			self:UpdateLayout()
+			self:UpdateBar()
+		else
+			F.TaskManager:OutOfCombat(function()
+				self:Initialize()
+			end)
+		end
+	else
+		if self.initialized then
+			UnregisterStateDriver(self.bar, "visibility")
+			self.bar:Hide()
+		end
+	end
+end
+
+function GB:UpdateGuildButton()
+	if not self.db or not self.db.notification then
+		return
+	end
+
+	if not _G.GuildMicroButton or not _G.GuildMicroButton.NotificationOverlay then
+		return
+	end
+
+	local isShown = _G.GuildMicroButton.NotificationOverlay:IsShown()
+
+	for i = 1, 2 * NUM_PANEL_BUTTONS do
+		if self.buttons[i].type == "GUILD" then
+			self.buttons[i].notificationTex:SetShown(isShown)
+		end
+	end
+end
+
+function GB:GetNextRandomHearthstone(currentIndex, times)
+	if not availableHearthstones or #availableHearthstones <= 1 or times and times >= 10 then
+		return 1, 6948
+	end
+
+	local randomIndex = random(1, #availableHearthstones)
+	local itemID = availableHearthstones[randomIndex]
+	local isToyNotUsable = PlayerHasToy(itemID) and not C_ToyBox_IsToyUsable(itemID)
+	if isToyNotUsable or currentIndex and randomIndex == currentIndex then
+		return self:GetNextRandomHearthstone(currentIndex, (times or 0) + 1)
+	end
+
+	return randomIndex, itemID
+end
+
+function GB:UpdateHearthstoneButtonMacro(button, mouseButton)
+	if not button or not mouseButton or not availableHearthstones then
+		return
+	end
+
+	local side = "left"
+	if mouseButton == "right" or mouseButton == "RightButton" then
+		side = "right"
+	elseif mouseButton == "middle" or mouseButton == "MiddleButton" then
+		side = "middle"
+	end
+
+	local sideSettings = HEARTSTONE_SIDE_SETTINGS[side]
+	local actionData = self:ResolveHearthstoneAction(side)
+	local attribute = sideSettings.attribute
+	local macro =
+		format('/run UIErrorsFrame:AddMessage("%s", RED_FONT_COLOR:GetRGBA())', L["Hearthstone not found or usable."])
+
+	if actionData and actionData.actionType == "random" then
+		local currentIndex = button["randomHearthstoneIndex" .. side]
+		local randomIndex, itemID = self:GetNextRandomHearthstone(currentIndex)
+		button["randomHearthstoneIndex" .. side] = randomIndex
+		macro = format("/use item:%d\n/run _G.WTGameBar_UpdateHearthstoneButtons()", itemID)
+	elseif actionData and actionData.actionType == "spell" then
+		macro = "/cast " .. actionData.name
+	elseif actionData and actionData.actionType == "item" then
+		macro = format("/use item:%d", actionData.actionID)
+	end
+
+	button:SetAttribute(attribute, macro)
+end
+
+function GB:UpdateHearthstoneButton()
+	local left = self:ResolveHearthstoneAction("left")
+	local middle = self:ResolveHearthstoneAction("middle")
+	local right = self:ResolveHearthstoneAction("right")
+
+	ButtonTypes.HEARTHSTONE.item = {
+		item1 = left and left.name,
+		item3 = middle and middle.name,
+		item2 = right and right.name,
+	}
+end
+
+function GB:UpdateHearthStoneTable()
+	hearthstonesAndToysData = {
+		["RANDOM"] = {
+			name = L["Random Hearthstone"],
+			icon = 1669494,
+			actionType = "random",
+			actionID = 6948,
+		},
+	}
+
+	async.WithSpellID(ASTRAL_RECALL_SPELL_ID, function(spell)
+		hearthstonesAndToysData[ASTRAL_RECALL_KEY] = {
+			name = spell:GetSpellName(),
+			icon = spell:GetSpellTexture(),
+			actionType = "spell",
+			actionID = ASTRAL_RECALL_SPELL_ID,
+		}
+
+		self:UpdateHearthstoneButton()
+		if self.initialized then
+			self:UpdateButtons()
+		end
+	end)
+
+	local hearthstonesTable = {}
+	for i = 1, #hearthstones do
+		local itemID = hearthstones[i]
+		hearthstonesTable[itemID] = true
+	end
+
+	local covenantHearthstones = {
+		[184353] = { covenantID = Enum_CovenantType.Kyrian, achievementCriteriaNum = 1 },
+		[183716] = { covenantID = Enum_CovenantType.Venthyr, achievementCriteriaNum = 4 },
+		[180290] = { covenantID = Enum_CovenantType.NightFae, achievementCriteriaNum = 3 },
+		[182773] = { covenantID = Enum_CovenantType.Necrolord, achievementCriteriaNum = 2 },
+	}
+
+	local activeCovenantID = C_Covenants_GetActiveCovenantID()
+
+	for toyID, config in pairs(covenantHearthstones) do
+		local criteriaCompleted = select(3, GetAchievementCriteriaInfo(15646, config.achievementCriteriaNum))
+		hearthstonesTable[toyID] = criteriaCompleted or activeCovenantID == config.covenantID
+	end
+
+	local raceHeartstones = {
+		[210455] = {
+			-- 德萊尼全像寶石
+			["Draenei"] = true,
+			["LightforgedDraenei"] = true,
+		},
+	}
+
+	for itemID, acceptableRaces in pairs(raceHeartstones) do
+		hearthstonesTable[itemID] = acceptableRaces[E.myrace] and true or false
+	end
+
+	availableHearthstones = {}
+
+	async.WithItemIDTable(hearthstoneAndToyIDList, "value", function(item)
+		local id = item:GetItemID()
+		if not id then
+			return
+		end
+
+		if hearthstonesTable[id] then
+			if C_Item_GetItemCount(id) >= 1 or PlayerHasToy(id) then
+				tinsert(availableHearthstones, id)
+			end
+		end
+
+		hearthstonesAndToysData[tostring(id)] = {
+			name = item:GetItemName(),
+			icon = item:GetItemIcon(),
+			actionType = "item",
+			actionID = id,
+		}
+	end, function()
+		self:UpdateHearthstoneButton()
+		if self.initialized then
+			self:UpdateButtons()
+		end
+	end)
+end
+
+function GB:GetHearthStoneTable(includeSpell)
+	if not hearthstonesAndToysData then
+		return {}
+	end
+
+	if includeSpell then
+		return hearthstonesAndToysData
+	end
+
+	local filteredTable = {}
+	for id, data in pairs(hearthstonesAndToysData) do
+		if data.actionType ~= "spell" then
+			filteredTable[id] = data
+		end
+	end
+
+	return filteredTable
+end
+
+function GB:GetAvailableButtons()
+	local buttons = {}
+
+	for key, data in pairs(ButtonTypes) do
+		buttons[key] = data.name
+	end
+
+	return buttons
+end
+
+W:RegisterModule(GB:GetName())

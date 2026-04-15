@@ -1,0 +1,165 @@
+
+ShortyTalentsDB = {
+["spec"] = {
+[269] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["Dungeons"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["BGs"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[66] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["Dungeons"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["BGs"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[103] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["BGs"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["Dungeons"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[250] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["Dungeons"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["BGs"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[266] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["BGs"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["Dungeons"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[62] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["Dungeons"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["BGs"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[65] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["BGs"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["Dungeons"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+[73] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["BGs"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["Dungeons"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
+},
+}

@@ -1,0 +1,15 @@
+## Interface: 120000
+## Title: |cfffafafaMidnight Raid Voice Assist |r |cff8264fa(procsxd_snowy)|r
+## Category: Snowy Addons
+## Notes: Voice alerts for Midnight Raid. Use /mva or /fls to open settings.
+## Version: 3.1.1-199
+## Author: procsxd_snowy
+## OptionalDeps: LibStub, LibSharedMedia-3.0
+## SavedVariables: BigWigs_MidnightRaid1VoiceAssistDB
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+BigWigs_MidnightRaid1VoiceAssist.lua
+BigWigs_MidnightRaid1VoiceAssistSounds.lua

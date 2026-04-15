@@ -1,0 +1,40 @@
+## Interface: 50503
+## Title: |cFF00FF00Cursor Ring|r
+## Notes: |cFFD3D3D3A |cFFFFFF00minimal, lightweight |cFF00FF00cursor ring |cFFD3D3D3that always floats around your mouse, perfect for keeping track of your mouse during hectic fights with Independent |n|cFFC41F3Bin-combat |cFFD3D3D3and |cFFC41F3Bout-of-combat |cFFD3D3D3alphas that automatically switch |n|cFF00FF00Slash Command: /cr|r
+## Author: Kagrok
+## Version: 1.7.1
+## SavedVariables: CursorRingDB, CursorRingCharDB, KagrokLauncherDB
+## OptionalDeps: KagrokLauncherCore
+## IconTexture: Interface\AddOns\CursorRing\Media\icon.tga
+## Category: User Interface
+## X-KagrokLauncherPriority: 20
+
+Locales/Locale.lua
+Locales/enUS.lua
+Locales/deDE.lua
+Locales/esES.lua
+Locales/esMX.lua
+Locales/frFR.lua
+Locales/itIT.lua
+Locales/koKR.lua
+Locales/ptBR.lua
+Locales/ruRU.lua
+Locales/zhCN.lua
+Locales/zhTW.lua
+Locales/enGB.lua
+
+Controls.lua
+Modules/Trails.lua
+Modules/Resources/Registry.lua
+Modules/Resources/SegmentModule.lua
+Modules/Resources/Palette.lua
+Modules/Resources/DeathKnight.lua
+Modules/Resources/Rogue.lua
+Modules/Resources/Druid.lua
+Modules/Resources/Paladin.lua
+Modules/Resources/Monk.lua
+Modules/Resources/Warlock.lua
+Modules/Resources/Mage.lua
+Modules/Resources/Evoker.lua
+Core.lua
+Options.lua

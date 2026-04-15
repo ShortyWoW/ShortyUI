@@ -1,0 +1,33 @@
+VER 3 0100000000000006 "Feign Death" "134400"
+#showtooltip
+/cast Feign Death
+/cast Play Dead
+/petpassive
+/use Wake Up
+END
+VER 3 0100000000000002 "Flare" "134400"
+#showtooltip
+/cast [@cursor] Flare
+END
+VER 3 0100000000000005 "Freezing Trap" "134400"
+#showtooltip
+/cast [@cursor] Freezing Trap
+END
+VER 3 010000000000000B "Multi-Shot" "134400"
+#showtooltip
+/petattack [harm]
+/cast Multi-Shot
+/cast [@pettarget]Claw
+/cast [@pettarget]Bite
+/cast [@pettarget]Smack
+END
+VER 3 0100000000000011 "Turtle" "134400"
+#showtooltip
+/stopcasting
+/stopchannel
+/cast Aspect of the Turtle
+END
+VER 3 0100000000000010 "Volley" "134400"
+#showtooltip
+/cast [@cursor] Volley
+END

@@ -1,0 +1,116 @@
+local W = unpack((select(2, ...))) ---@type WindTools
+
+W.Changelog[400] = {
+	RELEASE_DATE = "2025/10/09",
+	IMPORTANT = {
+		["zhCN"] = {
+			"支持魔兽世界 11.2.5 版本.",
+			"最低支持的 ElvUI 版本提升到 14.02.",
+			"更新韩语翻译, 感谢: Crazyyoungs",
+			"[装备观察] 完全重写了模块, 由于配置项目进行了改动, 该模块相关的配置将被重置.",
+		},
+		["zhTW"] = {
+			"支援魔獸世界 11.2.5 版本.",
+			"最低支援的 ElvUI 版本提升到 14.02.",
+			"更新韓語翻譯, 感謝: Crazyyoungs",
+			"[裝備觀察] 完全重寫了模組, 由於配置項目進行了改動, 該模組相關的配置將被重置.",
+		},
+		["enUS"] = {
+			"Support for WoW 11.2.5.",
+			"Minimum supported ElvUI version is now 14.02.",
+			"Update Korean translation, thanks to: Crazyyoungs",
+			"[Inspect] The module has been completely rewritten. Due to changes in options, the saved options related to this module will be reset.",
+		},
+		["koKR"] = {
+			"WoW 11.2.5 버전을 지원합니다.",
+			"최소 지원 ElvUI 버전이 14.02로 업데이트되었습니다.",
+			"한국어 번역이 업데이트되었습니다. 감사합니다: Crazyyoungs",
+			"[장비 살펴보기] 모듈이 완전히 재작성되었습니다. 옵션이 변경되어 이 모듈과 관련된 저장된 옵션이 재설정됩니다.",
+		},
+		["ruRU"] = {
+			"Поддержка WoW 11.2.5.",
+			"Минимальная поддерживаемая версия ElvUI теперь 14.02.",
+			"Обновлен корейский перевод, спасибо: Crazyyoungs",
+			"[Осмотр] Модуль был полностью переписан. Из-за изменений в параметрах сохраненные параметры, связанные с этим модулем, будут сброшены.",
+		},
+	},
+	NEW = {
+		["zhCN"] = {
+			"新增字体 [LINE Seed (en)].",
+			"新增字体 [Chivo Mono (en)].",
+			"[美化外观] 新增了暴雪游戏选项 (Esc键菜单) 的皮肤.",
+			"[美化外观] 新增了 Advanced Interface Options 的皮肤.",
+			"[美化外观] 新增了 Rematch 的皮肤.",
+			"[其他] 新增了 [成就追踪器] 模组. 作者: Dack",
+			"[好友列表] 现在能够显示军团Remix玩家的图标.",
+		},
+		["zhTW"] = {
+			"新增字型 [LINE Seed (en)].",
+			"新增字型 [Chivo Mono (en)].",
+			"[美化外觀] 新增了暴雪遊戲選項 (Esc鍵選單) 的皮膚.",
+			"[美化外觀] 新增了 Advanced Interface Options 的皮膚.",
+			"[美化外觀] 新增了 Rematch 的皮膚.",
+			"[其他] 新增了 [成就追蹤器] 模組. 作者: Dack",
+			"[好友列表] 現在能夠顯示軍團Remix玩家的圖示.",
+		},
+		["enUS"] = {
+			"New font [LINE Seed].",
+			"New font [Chivo Mono].",
+			"[Skins] Added skin for the Blizzard Game Menu (Esc key menu).",
+			"[Skins] Added skin for Advanced Interface Options.",
+			"[Skins] Added skin for Rematch.",
+			"[Others] Added [Achievement Tracker] module. Made by: Dack",
+			"[Friend List] Now able to display icons for Legion Remix players.",
+		},
+		["koKR"] = {
+			"새 글꼴 [LINE Seed (en)].",
+			"새 글꼴 [Chivo Mono (en)].",
+			"[스킨] 블리자드 게임 메뉴(ESC 키 메뉴)에 스킨이 추가되었습니다.",
+			"[스킨] 고급 인터페이스 옵션에 스킨이 추가되었습니다.",
+			"[스킨] Rematch에 스킨이 추가되었습니다.",
+			"[기타] [업적 추적기] 모듈이 추가되었습니다. 제작자: Dack",
+			"[친구 목록] 이제 군단 리믹스 플레이어의 아이콘을 표시할 수 있습니다.",
+		},
+		["ruRU"] = {
+			"Новый шрифт [LINE Seed].",
+			"Новый шрифт [Chivo Mono].",
+			"[Скины] Добавлен скин для игрового меню Blizzard (меню клавиши Esc).",
+			"[Скины] Добавлен скин для Advanced Interface Options.",
+			"[Скины] Добавлен скин для Rematch.",
+			"[Прочее] Добавлен модуль [Отслеживание достижений]. Автор: Dack",
+			"[Список друзей] Теперь можно отображать значки для игроков Legion Remix.",
+		},
+	},
+	IMPROVEMENT = {
+		["zhCN"] = {
+			"[鼠标提示] 修复了非亚洲语言环境下, 有时图标无法显示的问题.",
+			"[美化外观] 优化了组件皮肤的性能.",
+			"[额外物品条] 新增了一些军团Remix的可开启物品.",
+			"[好友列表] 现在正式服的魔兽好友不再会被错误的显示Remix图标.",
+		},
+		["zhTW"] = {
+			"[浮動提示] 修復了非亞洲語言環境下, 有時圖示無法顯示的問題.",
+			"[美化外觀] 優化了組件皮膚外觀的性能.",
+			"[額外物品條] 新增了一些軍團Remix的可開啟物品.",
+			"[好友列表] 現在正式服的魔獸好友不再會被錯誤的顯示Remix圖示.",
+		},
+		["enUS"] = {
+			"[Tooltip] Fix the problem that the icon could not be displayed in some non-Asian languages.",
+			"[Skins] Optimize the performance of the module skins.",
+			"[Extra Items Bar] Added some openable items for Legion Remix.",
+			"[Friend List] WoW retail friends will no longer be incorrectly shown with the Remix icon.",
+		},
+		["koKR"] = {
+			"[툴팁] 일부 비아시아 언어에서 아이콘이 표시되지 않는 문제를 수정했습니다.",
+			"[스킨] 모듈 스킨의 성능을 최적화했습니다.",
+			"[추가 아이템 바] Legion Remix용으로 열 수 있는 일부 아이템이 추가되었습니다.",
+			"[친구 목록] WoW 정식 서버 친구가 더 이상 Remix 아이콘으로 잘못 표시되지 않습니다.",
+		},
+		["ruRU"] = {
+			"[Подсказки] Исправлена проблема, из-за которой значок не отображался в некоторых неазиатских языках.",
+			"[Скины] Оптимизирована производительность скинов модулей.",
+			"[Дополнительная панель предметов] Добавлены некоторые открываемые предметы для Legion Remix.",
+			"[Список друзей] Друзья WoW на официальном сервере больше не будут неправильно отображаться с иконкой Remix.",
+		},
+	},
+}

@@ -1,0 +1,7 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='CombatAlert.lua'/>
+	<Script file='DestroyTotem.lua'/>
+	<Script file='QuickKeystone.lua'/>
+	<Script file='RaidMarkers.lua'/>
+	<Script file='DamageMeterLayout.lua'/>
+</Ui>

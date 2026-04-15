@@ -1,0 +1,11 @@
+## Interface: 120000, 120001
+## Title: ShortyTalents
+## Notes: Helps players ensure they are in the correct talent specs for various content types.
+## Author: ShortyWoW
+## Version: 0.1.0
+## SavedVariables: ShortyTalentsDB
+## IconTexture: Interface\AddOns\ShortyTalents\ShortyTalents.blp
+
+ShortyTalents.lua
+warning.lua
+options.lua

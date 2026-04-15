@@ -1,0 +1,92 @@
+## Interface: 120001
+## Title: |cff9d5db8KeystoneLoot|r
+## Notes: Shows the items from the mythic plus instances in a compact overview
+## Notes-ruRU: Компактный аддон, который показывает уровни предметов из подземелий М+
+## Author: Selina Ruesch
+## X-Email: selina.ruesch@gmail.com
+## Version: 2.2.1
+## IconTexture: Interface\Icons\INV_Relics_Hourglass_02
+## Category-enUS: Dungeons & Raids
+## Category-deDE: Dungeons & Schlachtzüge
+## Category-esES: Mazmorras y bandas
+## Category-esMX: Calabozos y bandas
+## Category-frFR: Donjons et raids
+## Category-itIT: Spedizioni e incursioni
+## Category-koKR: 던전 및 공격대
+## Category-ptBR: Masmorras e Raides
+## Category-ruRU: Подземелья и рейды
+## Category-zhCN: 地下城和团队副本
+## Category-zhTW: 地城與團隊
+## OptionalDeps: LibStub
+## SavedVariables: KeystoneLootDB
+## SavedVariablesPerCharacter: KeystoneLootCharDB
+
+# Initialization
+config.lua
+app.lua
+
+# Locales
+locales/locale.lua
+locales/enUS.lua
+locales/deDE.lua
+locales/esES.lua
+locales/frFR.lua
+locales/itIT.lua
+locales/koKR.lua
+locales/ptBR.lua
+locales/ruRU.lua
+locales/zhCN.lua
+locales/zhTW.lua
+
+# Data (generated)
+data/items.lua
+data/dungeons.lua
+data/raids.lua
+data/catalyst.lua
+data/upgrade_tracks.lua
+data/keystone_mapping.lua
+
+# Core Modules
+modules/db.lua
+modules/character.lua
+modules/query.lua
+modules/favorites.lua
+modules/upgrade.lua
+modules/keystone.lua
+
+# UI
+ui/keystone_tooltip.lua
+ui/item_tooltip.lua
+
+ui/templates/mixins/icon_button.lua
+ui/templates/mixins/entry_frame.lua
+ui/templates/mixins/teleport_button.lua
+ui/templates/templates.xml
+
+ui/dungeons_frame/mixins/dungeons_frame.lua
+ui/dungeons_frame/dungeons_frame.xml
+
+ui/raids_frame/mixins/block_frame.lua
+ui/raids_frame/mixins/raids_frame.lua
+ui/raids_frame/mixins/raid_dropdown.lua
+ui/raids_frame/raids_frame.xml
+
+ui/loot_reminder_frame/mixins/loot_reminder_frame.lua
+ui/loot_reminder_frame/mixins/icon_button.lua
+ui/loot_reminder_frame/mixins/spec_card.lua
+ui/loot_reminder_frame/loot_reminder_frame.xml
+
+ui/catalyst_frame/mixins/catalyst_frame.lua
+ui/catalyst_frame/mixins/catalyst_icon.lua
+ui/catalyst_frame/catalyst_frame.xml
+
+ui/minimap_button/mixins/minimap_button.lua
+ui/minimap_button/minimap_button.xml
+
+ui/keystoneloot_frame/mixins/class_dropdown.lua
+ui/keystoneloot_frame/mixins/slot_dropdown.lua
+ui/keystoneloot_frame/mixins/itemlevel_dropdown.lua
+ui/keystoneloot_frame/mixins/character_dropdown.lua
+ui/keystoneloot_frame/mixins/settings_dropdown.lua
+ui/keystoneloot_frame/mixins/keystoneloot_frame.lua
+ui/keystoneloot_frame/keystoneloot_frame.xml

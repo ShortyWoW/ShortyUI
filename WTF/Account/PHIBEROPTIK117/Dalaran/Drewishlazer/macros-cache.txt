@@ -1,0 +1,31 @@
+VER 3 0100000000000009 "Charge" "134400"
+#showtooltip
+/cast [@mouseover] Felblade
+/dismount
+END
+VER 3 0100000000000008 "Glaive" "134400"
+#showtooltip
+/cast [@mouseover] Throw Glaive
+/dismount
+END
+VER 3 0100000000000002 "Leap" "134400"
+#showtooltip
+/dismount
+/cast [@cursor] Infernal Strike
+END
+VER 3 010000000000000A "Prison" "134400"
+#showtooltip
+/cast [@mouseover] Imprison
+END
+VER 3 0100000000000003 "Sigil of Flame" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Flame
+END
+VER 3 0100000000000005 "Sigil of Misery" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Misery
+END
+VER 3 0100000000000004 "Sigil of Spite" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Spite
+END

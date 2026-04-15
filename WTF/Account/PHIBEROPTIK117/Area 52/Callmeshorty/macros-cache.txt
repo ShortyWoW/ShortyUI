@@ -1,0 +1,28 @@
+VER 3 0100000000000001 "Buffs" "134400"
+#show
+/castsequence reset=10 Prismatic Barrier, Arcane Intellect
+END
+VER 3 0100000000000003 "CS" "134400"
+#showtooltip
+/cast [@mouseover] Counterspell
+END
+VER 3 0100000000000004 "CS Focus" "134400"
+#showtooltip
+/cast [@focus] Counterspell
+END
+VER 3 0100000000000007 "Int" "134400"
+#showtooltip
+/cast [@player] Arcane Intellect
+END
+VER 3 0100000000000006 "Opener" "134400"
+#show
+/castsequence reset=10 Prismatic Barrier, Mirror Image, Evocation
+END
+VER 3 0100000000000002 "Sheep" "134400"
+#showtooltip
+/cast [@mouseover] Polymorph(Sheep)
+END
+VER 3 0100000000000005 "Sheep Focus" "134400"
+#showtooltip
+/cast [@focus] Polymorph(Sheep)
+END

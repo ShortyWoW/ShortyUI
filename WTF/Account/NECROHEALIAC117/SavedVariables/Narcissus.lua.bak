@@ -1,0 +1,317 @@
+
+NarcissusDB = {
+["DragonridingTourWorldMapPin"] = true,
+["SearchSuggestDirection"] = 1,
+["LetterboxRatio"] = 2,
+["NamePlateLanguage"] = "enUS",
+["ItemNameWidth"] = 180,
+["WardrobeCollectionSetsCheckbox"] = true,
+["QuestCardTheme"] = 1,
+["LoopAnimation"] = false,
+["AutoFilterGem"] = false,
+["SearchRelativesHotkey"] = "TAB",
+["AutoFilterMail"] = false,
+["SoloQueueLFRDetails"] = true,
+["DressingRoomAutoRemoveNonSetItem"] = false,
+["IsSortedByCategory"] = true,
+["AutoFilterAuction"] = false,
+["CameraTransition"] = true,
+["PaperDollWidget"] = true,
+["ShowModulePanelOnMouseOver"] = true,
+["CameraSafeMode"] = true,
+["TransmogFrame"] = true,
+["WeatherEffect"] = true,
+["OutfitSortMethod"] = "name",
+["OldMinimapButtonClickBehavior"] = 1,
+["SearchRelatives"] = false,
+["DressingRoomIncludeItemID"] = false,
+["PaperDollWidget_Remix"] = true,
+["FadeButton"] = false,
+["ShowMinimapButton"] = true,
+["ItemTooltipStyle"] = 1,
+["MinimapButton"] = {
+["Position"] = 2.617993877991494,
+},
+["DetailedIlvlInfo"] = true,
+["MissingEnchantAlert"] = false,
+["VignetteStrength"] = 0.5,
+["TruncateText"] = false,
+["ShrinkArea"] = 0,
+["LetterboxEffect"] = false,
+["ShowItemID"] = false,
+["CameraAutoZoomIn"] = true,
+["BaseLineOffset"] = 0,
+["TalentTreeBiggerUI"] = false,
+["DressingRoomShowIconSelect"] = false,
+["UseAddonCompartment"] = true,
+["DressingRoom"] = true,
+["UseBustShot"] = true,
+["DressingRoomItemSetListHideDupes"] = true,
+["TranslateName"] = false,
+["TalentTreeUseClassBackground"] = false,
+["DressingRoomShowSlot"] = true,
+["RealmNames"] = {
+[66] = "Dalaran",
+[77] = "Azgalor",
+[73] = "Bleeding Hollow",
+[1566] = "Area 52",
+[60] = "Stormrage",
+},
+["FontHeightItemName"] = 10,
+["TooltipLanguages"] = {
+},
+["installTime"] = 1771248221,
+["Version"] = 10000,
+["EnableDoubleTap"] = false,
+["AutoPlayAnimation"] = false,
+["AFKScreen"] = false,
+["Tutorials"] = {
+["ExitConfirmation"] = true,
+["Movement"] = true,
+["SpellVisualBrowser"] = true,
+["NPCBrowserEntance"] = true,
+["WeaponBrowser"] = true,
+["NPCBrowser"] = true,
+},
+["AKFScreenDelay"] = false,
+["Favorites"] = {
+["FavoriteAnimationIDs"] = {
+},
+},
+["GlobalScale"] = 0.8,
+["SpeedyScreenshotAlert"] = true,
+["IndependentMinimapButton"] = false,
+["TalentTreeForEquipmentManager"] = true,
+["PaperDollWidget_ClassSet"] = true,
+["PerksProgramDB"] = {
+["MonthNames"] = {
+},
+["VendorItems"] = {
+},
+["CurrentMonthData"] = {
+},
+},
+["NamePlateNameOffset"] = 0,
+["AnchorToMinimap"] = true,
+["AutoDisplayQuestItem"] = false,
+["GemManager"] = true,
+["ModelPanelScale"] = 1,
+["TooltipTheme"] = "Bright",
+["OnlyShowOwnedUpgradeItem"] = true,
+["HideTextsWithUI"] = false,
+["TalentTreeForInspection"] = true,
+["UseEscapeButton"] = true,
+["TalentTreeForPaperDoll"] = false,
+["TalentTreeAnchor"] = 1,
+["NameTranslationPosition"] = 1,
+["CameraOrbit"] = true,
+["TradingPostChangePost"] = true,
+["UseEntranceVisual"] = true,
+["SearchSuggestEnable"] = false,
+["ConduitTooltip"] = false,
+["DressingRoomUseTargetModel"] = true,
+}
+NarciAchievementOptions = {
+["UseAsDefault"] = false,
+["IncompleteFirst"] = true,
+["Scale"] = 1,
+["ReplaceToast"] = true,
+["Theme"] = 1,
+["ShowRedMark"] = false,
+}
+NarciStatisticsDB = {
+["InstalledDate"] = 1771248240,
+["QuestItems"] = {
+},
+["AddOnActionForbidden"] = {
+["timeLastError"] = 1771376346,
+["addons"] = {
+["ElvUI_Libraries"] = {
+["errorTime"] = {
+1771296222,
+1771296224,
+1771375860,
+1771376313,
+1771376346,
+},
+["count"] = 5,
+["timeLastError"] = 1771376346,
+},
+},
+},
+}
+NarciTurntableOptions = nil
+NarciCharacterProfiles = {
+["07DF386D"] = {
+["race"] = 6,
+["name"] = "Fibear",
+["birth"] = 1771281512,
+["serverID"] = 3676,
+["lastVisit"] = 1771281512,
+["outfits"] = {
+},
+["class"] = 11,
+},
+["0E17CEEA"] = {
+["race"] = 1,
+["name"] = "Shortyaddons",
+["birth"] = 1771248371,
+["serverID"] = 3683,
+["lastVisit"] = 1771810067,
+["outfits"] = {
+},
+["class"] = 1,
+},
+["06E85C31"] = {
+["race"] = 6,
+["name"] = "Fiberoptic",
+["birth"] = 1771281597,
+["serverID"] = 3676,
+["lastVisit"] = 1771281597,
+["outfits"] = {
+{
+["s"] = "14058,14069:-1,0,14062,0,0,15962,14056,15996,14066,16041,41793:-1:4441,14943",
+["n"] = "Custom Set",
+},
+},
+["class"] = 2,
+},
+["098CF831"] = {
+["race"] = 2,
+["name"] = "Phiberoptik",
+["birth"] = 1771377510,
+["serverID"] = 73,
+["lastVisit"] = 1771377510,
+["outfits"] = {
+{
+["s"] = "0,14052:-1,0,66532,0,0,0,0,66534,0,0,0,0",
+["n"] = "Custom Set",
+},
+},
+["class"] = 1,
+},
+["09C7C4C1"] = {
+["race"] = 7,
+["name"] = "Absolusion",
+["birth"] = 1771281947,
+["serverID"] = 60,
+["lastVisit"] = 1771281947,
+["outfits"] = {
+{
+["s"] = "0,0,0,0,0,0,0,0,0,0,0,0:-1:5384,0",
+["n"] = "Custom Set",
+},
+},
+["class"] = 8,
+},
+["06E842E5"] = {
+["race"] = 26,
+["name"] = "Réfreshing",
+["birth"] = 1771248240,
+["serverID"] = 3676,
+["lastVisit"] = 1771248240,
+["outfits"] = {
+{
+["s"] = "55056,0,0,0,0,0,0,0,0,0,0,0:-1:4444,0",
+["n"] = "Custom Set",
+},
+},
+["class"] = 10,
+},
+["06EF61A2"] = {
+["race"] = 4,
+["name"] = "Fiberoptic",
+["birth"] = 1771377565,
+["serverID"] = 73,
+["lastVisit"] = 1771377565,
+["outfits"] = {
+},
+["class"] = 11,
+},
+["07DCD4E8"] = {
+["race"] = 9,
+["name"] = "Azurê",
+["birth"] = 1771281534,
+["serverID"] = 3676,
+["lastVisit"] = 1771281534,
+["outfits"] = {
+{
+["s"] = "0,0,0,0,0,0,0,0,0,0,0,0:-1:5334,0",
+["n"] = "Custom Set",
+},
+},
+["class"] = 7,
+},
+["06E93CC2"] = {
+["race"] = 2,
+["name"] = "Phiber",
+["birth"] = 1771281750,
+["serverID"] = 3676,
+["lastVisit"] = 1771281750,
+["outfits"] = {
+},
+["class"] = 6,
+},
+["09D23DCF"] = {
+["race"] = 10,
+["name"] = "Phiberoptik",
+["birth"] = 1771281859,
+["serverID"] = 77,
+["lastVisit"] = 1771281859,
+["outfits"] = {
+{
+["s"] = "14059,14067:-1,14904,14063,0,0,15961,14900,15995,14065,16040,0:-1:5335,13982",
+["n"] = "Custom Set",
+},
+},
+["class"] = 2,
+},
+["06E86506"] = {
+["race"] = 9,
+["name"] = "Fiber",
+["birth"] = 1771281490,
+["serverID"] = 3676,
+["lastVisit"] = 1771281490,
+["outfits"] = {
+},
+["class"] = 4,
+},
+["06E86D36"] = {
+["race"] = 2,
+["name"] = "Catfive",
+["birth"] = 1771281253,
+["serverID"] = 3676,
+["lastVisit"] = 1771281253,
+["outfits"] = {
+},
+["class"] = 3,
+},
+["06E85BD4"] = {
+["race"] = 5,
+["name"] = "Locknlol",
+["birth"] = 1771281659,
+["serverID"] = 3676,
+["lastVisit"] = 1771281659,
+["outfits"] = {
+{
+["s"] = "14119,14122:-1,0,14120,0,0,0,0,0,14121,0,0,0",
+["n"] = "Custom Set",
+},
+},
+["class"] = 9,
+},
+["09C152F0"] = {
+["race"] = 4,
+["name"] = "Absoloot",
+["birth"] = 1771248540,
+["serverID"] = 60,
+["lastVisit"] = 1771248563,
+["outfits"] = {
+},
+["class"] = 11,
+},
+}
+NarciPhotoModeDB = {
+}
+NarciDevToolOutput = nil
+NarciTransmogUIDB = nil

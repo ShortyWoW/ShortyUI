@@ -1,0 +1,53 @@
+VER 3 0000000000000060 "Abandon Quests" "134400"
+/run for i=1,C_QuestLog.GetNumQuestLogEntries() do C_QuestLog.SetSelectedQuest(C_QuestLog.GetInfo(i).questID); C_QuestLog.SetAbandonQuest(); C_QuestLog.AbandonQuest() end;
+END
+VER 3 0000000000000074 "Addon Test" "132276"
+/sct start 15 2
+END
+VER 3 0000000000000064 "AFK Level" "134400"
+#showtooltip
+/target Volatile Spore
+/cast Drain Life
+/run local f=CreateFrame("Frame")f:RegisterEvent("PLAYER_CAMPING")f:SetScript("OnEvent", function() local p=StaticPopup_Visible("CAMP")_G[p.."Button1"]:Click()end)
+END
+VER 3 000000000000006D "Cloak" "134331"
+/run GenericTraitUI_LoadUI()GenericTraitFrame:SetSystemID(29)GenericTraitFrame:SetTreeID(1115)ToggleFrame(GenericTraitFrame)
+END
+VER 3 000000000000006F "Hide Objectives" "132156"
+/run local t=ObjectiveTrackerFrame if t:IsShown()then t:Hide()else t:Show()end
+END
+VER 3 000000000000005D "Lust" "134400"
+#showtooltip
+/cast [known:32182] Heroism; [known:290583] Bloodlust; [known:80353] Time Warp; [known:390386] Fury of the Aspects; [known:264667] Primal Rage; [known:2825] Bloodlust; [known:466904] Harrier's Cry
+END
+VER 3 0000000000000063 "Mail" "443375"
+/use Katy's Stampwhistle
+END
+VER 3 0000000000000037 "Mount" "134400"
+#show
+/stopmacro [flying]
+/cast [known:783] Travel Form
+/cast G-99 Breakneck
+/cast Renewed Proto-Drake
+/cast [flyable] Invincible; Grand Expedition Yak
+/dismount
+END
+VER 3 0000000000000071 "Reset Instances" "4548871"
+/script ResetInstances();
+END
+VER 3 0000000000000065 "Swap Blaster" "134400"
+#showtooltip
+/cast [@mouseover] Swapblaster
+END
+VER 3 000000000000004D "Trinket 1" "134400"
+#showtooltip
+/use 13
+END
+VER 3 000000000000004E "Trinket 2" "134400"
+#showtooltip
+/use 14
+END
+VER 3 0000000000000056 "Weapon" "134400"
+#showtooltip
+/use 16
+END

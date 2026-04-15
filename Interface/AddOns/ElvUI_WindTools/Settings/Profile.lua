@@ -1,0 +1,1363 @@
+local P ---@class ProfileDB
+local W, F, E, L, V, G ---@type WindTools, Functions, ElvUI, LocaleTable, PrivateDB, GlobalDB
+W, F, E, L, V, P, G = unpack((select(2, ...)))
+
+---@cast W WindTools
+local C = W.Utilities.Color
+
+local format = format
+local tinsert = tinsert
+
+---@class ProfileDB.announcement
+P.announcement = {
+	enable = true,
+	emoteFormat = ": %s",
+	sameMessageInterval = 10,
+	goodbye = {
+		enable = false,
+		text = L["Thanks all!"],
+		delay = 3,
+		channel = {
+			party = "PARTY",
+			instance = "INSTANCE_CHAT",
+			raid = "RAID",
+		},
+	},
+	quest = {
+		enable = false,
+		paused = true,
+		includeDetails = false,
+		hideLevelOnMaxLevel = true,
+		hideLevelIfSameAsPlayer = true,
+		channel = {
+			party = "PARTY",
+			instance = "INSTANCE_CHAT",
+			raid = "RAID",
+		},
+		template = "{{level}}{{link}} {{progress}}",
+	},
+	resetInstance = {
+		enable = true,
+		difficultyChange = true,
+		channel = {
+			party = "PARTY",
+			instance = "INSTANCE_CHAT",
+			raid = "RAID",
+		},
+	},
+	utility = {
+		enable = true,
+		channel = {
+			solo = "NONE",
+			party = "PARTY",
+			instance = "INSTANCE_CHAT",
+			raid = "RAID",
+		},
+		general = {
+			feast = {
+				enable = true,
+				raidWarning = true,
+				text = L["%spell% is up! Come get some while it's hot!"],
+			},
+			toy = {
+				enable = true,
+				raidWarning = false,
+				text = L["I put out my %spell%!"],
+			},
+			bot = {
+				enable = true,
+				raidWarning = false,
+				text = L["I have summoned %spell%!"],
+			},
+			portal = {
+				enable = true,
+				raidWarning = false,
+				text = L["%spell% is open!"],
+			},
+			spell = {
+				enable = true,
+				raidWarning = false,
+				text = L["I used %spell%!"],
+			},
+		},
+		custom = {
+			["698"] = {
+				-- 召唤仪式
+				enable = true,
+				raidWarning = true,
+				text = L["I am casting %spell%, please assist!"],
+			},
+			["29893"] = {
+				-- 制造灵魂之井
+				enable = true,
+				raidWarning = false,
+				text = L["Healthstones here! Get them before we pull!"],
+			},
+			["190336"] = {
+				-- 造餐术
+				enable = true,
+				raidWarning = false,
+				text = L["Table is up! Grab your food and water!"],
+			},
+		},
+	},
+	keystone = {
+		enable = true,
+		text = L["My new keystone is %keystone%."],
+		channel = {
+			party = "PARTY",
+		},
+		command = true,
+	},
+}
+
+---@class ProfileDB.combat
+P.combat = {
+	combatAlert = {
+		enable = true,
+		speed = 1,
+		animation = true,
+		animationSize = 1,
+		text = true,
+		enterText = L["Enter Combat"],
+		leaveText = L["Leave Combat"],
+		enterColor = {
+			left = W.AsianLocale and C.GetRGBFromTemplate("rose-500") or C.GetRGBFromTemplate("rose-300"),
+			right = C.GetRGBFromTemplate("rose-500"),
+		},
+		leaveColor = {
+			left = W.AsianLocale and C.GetRGBFromTemplate("emerald-500") or C.GetRGBFromTemplate("emerald-300"),
+			right = C.GetRGBFromTemplate("emerald-500"),
+		},
+		font = {
+			name = E.db.general.font,
+			size = 25,
+			style = "OUTLINE",
+		},
+		enterSound = {
+			enable = false,
+			sound = "None",
+			channel = "Master",
+		},
+		leaveSound = {
+			enable = false,
+			sound = "None",
+			channel = "Master",
+		},
+	},
+	raidMarkers = {
+		enable = true,
+		mouseOver = false,
+		tooltip = true,
+		visibility = "DEFAULT",
+		backdrop = true,
+		backdropSpacing = 3,
+		buttonSize = 30,
+		buttonBackdrop = true,
+		buttonAnimation = true,
+		buttonAnimationDuration = 0.2,
+		buttonAnimationScale = 1.33,
+		spacing = 4,
+		orientation = "HORIZONTAL",
+		modifier = "shift",
+		readyCheck = true,
+		countDown = true,
+		countDownTime = 5,
+		inverse = false,
+	},
+	quickKeystone = {
+		enable = true,
+	},
+	damageMeterLayout = {
+		enable = false,
+		width = 400,
+		height = 300,
+		backdrop = true,
+		shadow = true,
+		animation = {
+			enable = true,
+			duration = 0.37,
+		},
+		layouts = {
+			{
+				name = format(L["Layout %d"], 1),
+				direction = "VERTICAL",
+				outerPadding = 0,
+				innerPadding = 2,
+				meters = {
+					{ windowIndex = 1, weight = 7, hidden = false },
+					{ windowIndex = 2, weight = 10, hidden = false },
+				},
+			},
+			{
+				name = format(L["Layout %d"], 2),
+				direction = "VERTICAL",
+				outerPadding = 0,
+				innerPadding = 2,
+				meters = {
+					{ windowIndex = 1, weight = 1, hidden = true },
+					{ windowIndex = 2, weight = 1, hidden = false },
+				},
+			},
+		},
+		activeLayout = 1,
+		autoSwitch = {
+			enable = false,
+			rules = { combat = 1, outOfCombat = 2, mythicPlus = 1, raid = 1, delve = 2 },
+		},
+	},
+}
+
+---@class ProfileDB.item
+P.item = {
+	contacts = {
+		enable = true,
+		defaultPage = "ALTS",
+	},
+	delete = {
+		enable = true,
+		delKey = true,
+		fillIn = "CLICK",
+	},
+	alreadyKnown = {
+		enable = true,
+		mode = "COLOR",
+		color = { r = 0, g = 1, b = 0 },
+	},
+	fastLoot = {
+		enable = true,
+		limit = 0.3,
+	},
+	trade = {
+		enable = true,
+		thanksButton = true,
+		thanksText = L["Thank you!"],
+	},
+	extraItemsBar = {
+		enable = true,
+		noQuantumItems = false,
+		customList = {},
+		blackList = {
+			[183040] = true, -- 恆冬符咒
+			[193757] = true, -- 晶紅幼龍之殼
+			[200563] = true, -- 洪荒儀式龜殼
+			[219381] = true, -- 命運編織者
+			[237494] = true, -- 神聖典籍
+			[237495] = true, -- 怨毒摘錄
+			[242664] = true, -- 耐用的情報收集器
+			[245964] = true, -- 耐用的情報收集器
+			[245965] = true, -- 耐用的情報收集器
+			[245966] = true, -- 耐用的情報收集器
+		},
+		bar1 = {
+			enable = true,
+			mouseOver = false,
+			globalFade = false,
+			visibility = "[petbattle]hide;show",
+			fadeTime = 0.3,
+			alphaMin = 0,
+			alphaMax = 1,
+			numButtons = 12,
+			backdrop = true,
+			backdropSpacing = 3,
+			buttonWidth = 35,
+			buttonHeight = 30,
+			buttonsPerRow = 12,
+			anchor = "TOPLEFT",
+			spacing = 3,
+			tooltip = true,
+			qualityTier = {
+				size = 16,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			countFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			bindFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			include = "QUEST,BANNER,EQUIP,PROFMN,HOLIDAY,OPENABLE,DELVE",
+		},
+		bar2 = {
+			enable = true,
+			mouseOver = false,
+			globalFade = false,
+			visibility = "[petbattle]hide;show",
+			fadeTime = 0.3,
+			alphaMin = 0,
+			alphaMax = 1,
+			numButtons = 12,
+			backdrop = true,
+			backdropSpacing = 3,
+			buttonWidth = 35,
+			buttonHeight = 30,
+			buttonsPerRow = 12,
+			anchor = "TOPLEFT",
+			spacing = 3,
+			tooltip = true,
+			qualityTier = {
+				size = 16,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			countFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			bindFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			include = "POTIONGN,POTIONMN,FLASKMN,VANTUSMN,POTIONTWW,FLASKTWW,VANTUSTWW,UTILITY",
+		},
+		bar3 = {
+			enable = true,
+			mouseOver = false,
+			globalFade = false,
+			visibility = "[petbattle]hide;show",
+			fadeTime = 0.3,
+			alphaMin = 0,
+			alphaMax = 1,
+			numButtons = 12,
+			backdrop = true,
+			backdropSpacing = 3,
+			buttonWidth = 35,
+			buttonHeight = 30,
+			buttonsPerRow = 12,
+			anchor = "TOPLEFT",
+			spacing = 3,
+			tooltip = true,
+			qualityTier = {
+				size = 16,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			countFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			bindFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			include = "MAGEFOOD,FOODVENDOR,FOODMN,FOODTWW,RUNEMN,RUNETWW,CUSTOM",
+		},
+		bar4 = {
+			enable = false,
+			mouseOver = false,
+			globalFade = false,
+			visibility = "[petbattle]hide;show",
+			fadeTime = 0.3,
+			alphaMin = 0,
+			alphaMax = 1,
+			numButtons = 12,
+			backdrop = true,
+			backdropSpacing = 3,
+			buttonWidth = 35,
+			buttonHeight = 30,
+			buttonsPerRow = 12,
+			anchor = "TOPLEFT",
+			spacing = 3,
+			tooltip = true,
+			qualityTier = {
+				size = 16,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			countFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			bindFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			include = "CUSTOM",
+		},
+		bar5 = {
+			enable = false,
+			mouseOver = false,
+			globalFade = false,
+			visibility = "[petbattle]hide;show",
+			fadeTime = 0.3,
+			alphaMin = 0,
+			alphaMax = 1,
+			numButtons = 12,
+			backdrop = true,
+			backdropSpacing = 3,
+			buttonWidth = 35,
+			buttonHeight = 30,
+			buttonsPerRow = 12,
+			anchor = "TOPLEFT",
+			spacing = 3,
+			tooltip = true,
+			qualityTier = {
+				size = 16,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			countFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			bindFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = {
+					r = 1,
+					g = 1,
+					b = 1,
+				},
+			},
+			include = "CUSTOM",
+		},
+	},
+	inspect = {
+		enable = true,
+		player = true,
+		inspect = true,
+		playerOnInspect = true,
+		itemIcon = {
+			enable = true,
+			qualityBorder = true,
+			indicator = true,
+			width = 20,
+			height = 16,
+		},
+		gemIcon = {
+			enable = true,
+			size = 17,
+			showAddableSockets = true,
+			craftingTier = {
+				minTierToShow = 1,
+				maxTierToShow = 5,
+				name = F.GetCompatibleFont("Chivo Mono"),
+				size = 11,
+				style = "OUTLINE",
+				xOffset = 5,
+				yOffset = 1,
+			},
+		},
+		enchantIcon = {
+			enable = true,
+			size = 17,
+			craftingTier = {
+				minTierToShow = 1,
+				maxTierToShow = 5,
+				name = F.GetCompatibleFont("Chivo Mono"),
+				size = 11,
+				style = "OUTLINE",
+				xOffset = 5,
+				yOffset = 1,
+			},
+		},
+		slotText = {
+			name = E.db.general.font,
+			size = W.CompatibleFont and 12 or 10,
+			style = "OUTLINE",
+		},
+		levelText = {
+			name = F.GetCompatibleFont("Chivo Mono"),
+			size = 14,
+			style = "OUTLINE",
+		},
+		itemNameText = {
+			name = E.db.general.font,
+			size = 14,
+			style = "OUTLINE",
+		},
+		statistics = {
+			enable = true,
+			text = {
+				name = E.db.general.font,
+				size = 13,
+				style = "OUTLINE",
+			},
+			comparison = {
+				enable = true,
+				hideIfBothZero = true,
+				higherColor = C.GetRGBFromTemplate("green-400"),
+				lowerColor = C.GetRGBFromTemplate("rose-400"),
+			},
+		},
+	},
+	---@class ProfileDB.item.itemLevel
+	itemLevel = {
+		enable = true,
+		---@class ProfileDB.item.itemLevel.flyout
+		flyout = {
+			enable = true,
+			useBagsFontSetting = false,
+			qualityColor = true,
+			font = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 11,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = { r = 1, g = 1, b = 1 },
+			},
+		},
+		---@class ProfileDB.item.itemLevel.scrappingMachine
+		scrappingMachine = {
+			enable = true,
+			useBagsFontSetting = false,
+			qualityColor = true,
+			font = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 13,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				color = { r = 1, g = 1, b = 1 },
+			},
+		},
+	},
+}
+
+---@class ProfileDB.maps
+P.maps = {
+	---@class ProfileDB.maps.eventTracker
+	eventTracker = {
+		enable = true,
+		style = {
+			backdrop = true,
+			backdropYOffset = 3,
+			backdropSpacing = 6,
+			trackerWidth = 240,
+			trackerHeight = 30,
+			trackerHorizontalSpacing = 10,
+			trackerVerticalSpacing = 2,
+		},
+		font = {
+			name = E.db.general.font,
+			scale = 1,
+			outline = "OUTLINE",
+		},
+		weeklyMN = {
+			enable = true,
+			desaturate = true,
+		},
+		professionsWeeklyMN = {
+			enable = true,
+			desaturate = true,
+		},
+		stormarionAssault = {
+			enable = true,
+			desaturate = true,
+			alert = true,
+			sound = true,
+			soundFile = "OnePlus Surprise",
+			second = 300,
+			stopAlertIfCompleted = true,
+			stopAlertIfPlayerNotEnteredMidnight = true,
+		},
+		weeklyTWW = {
+			enable = false,
+			desaturate = true,
+		},
+		ecologicalSuccession = {
+			enable = false,
+			desaturate = true,
+		},
+		nightFall = {
+			enable = false,
+			desaturate = true,
+			alert = true,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+		},
+		theaterTroupe = {
+			enable = false,
+			desaturate = true,
+			alert = true,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+		},
+		ringingDeeps = {
+			enable = false,
+			desaturate = true,
+		},
+		spreadingTheLight = {
+			enable = false,
+			desaturate = true,
+		},
+		underworldOperative = {
+			enable = false,
+			desaturate = true,
+		},
+		radiantEchoes = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+		communityFeast = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+		siegeOnDragonbaneKeep = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+		researchersUnderFire = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+		timeRiftThaldraszus = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = false,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+		superBloom = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = true,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+		bigDig = {
+			enable = false,
+			desaturate = false,
+			alert = false,
+			sound = false,
+			soundFile = "OnePlus Surprise",
+			second = 600,
+			stopAlertIfCompleted = false,
+			stopAlertIfPlayerNotEnteredDragonlands = true,
+		},
+	},
+	rectangleMinimap = {
+		enable = false,
+		heightPercentage = 0.8,
+		fixHereBeDragons = true,
+		pinHidingTolerance = 10,
+	},
+}
+
+---@class ProfileDB.skins
+P.skins = {
+	---@class ProfileDB.skins.vignetting
+	vignetting = {
+		enable = true,
+		level = 30,
+	},
+}
+
+---@class ProfileDB.social
+P.social = {
+	---@class ProfileDB.social.chatBar
+	chatBar = {
+		enable = true,
+		style = "BLOCK",
+		blockShadow = true,
+		autoHide = false,
+		mouseOver = false,
+		backdrop = false,
+		backdropSpacing = 3,
+		buttonWidth = 40,
+		buttonHeight = 5,
+		spacing = 5,
+		orientation = "HORIZONTAL",
+		tex = "WindTools Glow",
+		font = {
+			name = E.db.general.font,
+			size = 12,
+			style = "OUTLINE",
+		},
+		color = true,
+		channels = {
+			["SAY"] = {
+				enable = true,
+				cmd = "s",
+				color = { r = 1, g = 1, b = 1, a = 1 },
+				abbr = L["[ABBR] Say"],
+			},
+			["YELL"] = {
+				enable = true,
+				cmd = "y",
+				color = { r = 1, g = 0.25, b = 0.25, a = 1 },
+				abbr = L["[ABBR] Yell"],
+			},
+			["EMOTE"] = {
+				enable = false,
+				cmd = "e",
+				color = { r = 1, g = 0.5, b = 0.25, a = 1 },
+				abbr = L["[ABBR] Emote"],
+			},
+			["PARTY"] = {
+				enable = true,
+				cmd = "p",
+				color = { r = 0.67, g = 0.67, b = 1, a = 1 },
+				abbr = L["[ABBR] Party"],
+			},
+			["INSTANCE"] = {
+				enable = true,
+				cmd = "i",
+				color = { r = 1, g = 0.73, b = 0.2, a = 1 },
+				abbr = L["[ABBR] Instance"],
+			},
+			["RAID"] = {
+				enable = true,
+				cmd = "raid",
+				color = { r = 1, g = 0.5, b = 0, a = 1 },
+				abbr = L["[ABBR] Raid"],
+			},
+			["RAID_WARNING"] = {
+				enable = false,
+				cmd = "rw",
+				color = { r = 1, g = 0.28, b = 0, a = 1 },
+				abbr = L["[ABBR] Raid Warning"],
+			},
+			["GUILD"] = {
+				enable = true,
+				cmd = "g",
+				color = { r = 0.25, g = 1, b = 0.25, a = 1 },
+				abbr = L["[ABBR] Guild"],
+			},
+			["OFFICER"] = {
+				enable = false,
+				cmd = "o",
+				color = { r = 0.25, g = 0.75, b = 0.25, a = 1 },
+				abbr = L["[ABBR] Officer"],
+			},
+			world = {
+				enable = false,
+				config = {},
+				color = { r = 0.2, g = 0.6, b = 0.86, a = 1 },
+				abbr = L["[ABBR] World"],
+			},
+			community = {
+				enable = false,
+				name = "",
+				color = { r = 0.72, g = 0.27, b = 0.86, a = 1 },
+				abbr = L["[ABBR] Community"],
+			},
+			emote = {
+				enable = true,
+				icon = true,
+				color = { r = 1, g = 0.33, b = 0.52, a = 1 },
+				abbr = L["[ABBR] Wind Emote"],
+			},
+			roll = {
+				enable = true,
+				icon = true,
+				color = { r = 0.56, g = 0.56, b = 0.56, a = 1 },
+				abbr = L["[ABBR] Roll"],
+			},
+		},
+	},
+	chatLink = {
+		enable = true,
+		numericalQualityTier = false,
+		translateItem = true,
+		level = true,
+		icon = true,
+		iconWidth = 18,
+		iconHeight = 16,
+		armorCategory = true,
+		weaponCategory = true,
+		keepRatio = true,
+	},
+	chatText = {
+		enable = true,
+		abbreviation = "SHORT",
+		removeBrackets = true,
+		trimEditBoxHeader = false,
+		roleIconSize = 16,
+		roleIconStyle = "SUNUI",
+		removeRealm = true,
+		customAbbreviation = {},
+		classIcon = true,
+		classIconStyle = "flatborder2",
+		guildMemberStatus = true,
+		guildMemberStatusInviteLink = true,
+		mergeAchievement = true,
+		bnetFriendOnline = true,
+		bnetFriendOffline = false,
+		factionIcon = true,
+	},
+	emote = {
+		enable = true,
+		size = 16,
+		panel = true,
+		chatBubbles = true,
+	},
+	friendList = {
+		enable = true,
+		level = true,
+		hideMaxLevel = true,
+		useClientColor = true,
+		useClassColor = true,
+		useNoteAsName = false,
+		hideRealm = false,
+		textures = {
+			status = "square",
+			gameIcon = "PATCH",
+		},
+		areaColor = {
+			r = 1,
+			g = 1,
+			b = 1,
+		},
+		nameFont = {
+			name = E.db.general.font,
+			size = 13,
+			style = "OUTLINE",
+		},
+		infoFont = {
+			name = E.db.general.font,
+			size = 11,
+			style = "OUTLINE",
+		},
+	},
+	contextMenu = {
+		enable = true,
+		sectionTitle = true,
+		armory = true,
+		armoryOverride = {},
+		guildInvite = true,
+		who = true,
+		reportStats = false,
+	},
+	smartTab = {
+		enable = true,
+		whisperCycle = false,
+		yell = false,
+		battleground = false,
+		raidWarning = false,
+		officer = false,
+		world = false,
+		historyLimit = 10,
+	},
+}
+
+if W.ChineseLocale then
+	P.social.chatText.customAbbreviation[L["BigfootWorldChannel"]] = "世"
+	P.social.chatText.customAbbreviation["尋求組隊"] = "世"
+	P.social.chatText.customAbbreviation["組隊頻道"] = "世"
+
+	tinsert(P.social.chatBar.channels.world.config, {
+		region = "TW",
+		faction = "Alliance",
+		realmID = "ALL",
+		name = "組隊頻道",
+		autoJoin = true,
+	})
+
+	tinsert(P.social.chatBar.channels.world.config, {
+		region = "TW",
+		faction = "Horde",
+		realmID = "ALL",
+		name = "尋求組隊",
+		autoJoin = true,
+	})
+
+	tinsert(P.social.chatBar.channels.world.config, {
+		region = "TW",
+		faction = "ALL",
+		realmID = "ALL",
+		name = L["BigfootWorldChannel"],
+		autoJoin = true,
+	})
+
+	tinsert(P.social.chatBar.channels.world.config, {
+		region = "CN",
+		faction = "ALL",
+		realmID = "ALL",
+		name = L["BigfootWorldChannel"],
+		autoJoin = true,
+	})
+end
+
+---@class ProfileDB.quest
+P.quest = {
+	autoCollapse = {
+		enable = false,
+		ignoreManualToggle = false,
+		combat = "none",
+		vehicle = "collapse",
+		resting = "none",
+		outOfInstance = "none",
+		battleground = "collapse",
+		arena = "collapse",
+		dungeon = "none",
+		raid = "none",
+		scenario = "expand",
+		neighborhood = "expand",
+		interior = "expand",
+		default = "expand",
+	},
+	---@class ProfileDB.quest.progress
+	progress = {
+		enable = true,
+		scenario = false,
+		disableIfRequiredOver = 75,
+		disableInMythicPlus = true,
+		displayTemplate = "{{level}} {{suggestedGroup}} {{tag}} {{daily}}{{weekly}} {{title}} - {{progress}} {{icon}}",
+		soundEffects = {
+			enable = false,
+			accept = {
+				enable = false,
+				sound = "WT Accept",
+			},
+			objectiveProgress = {
+				enable = false,
+				sound = "WT Simple",
+			},
+			partialComplete = {
+				enable = false,
+				sound = "WT Clear",
+			},
+			fullyComplete = {
+				enable = true,
+				sound = "WT Complete",
+			},
+		},
+		tag = {
+			template = "[%s]",
+			color = {
+				left = C.GetRGBFromTemplate("sky-500"),
+				right = C.GetRGBFromTemplate("sky-300"),
+			},
+		},
+		suggestedGroup = {
+			template = "[%d]",
+			color = {
+				left = C.GetRGBFromTemplate("rose-400"),
+				right = C.GetRGBFromTemplate("rose-300"),
+			},
+		},
+		level = {
+			template = "[%d]",
+			hideOnCharacterLevel = true,
+			color = {
+				left = C.GetRGBFromTemplate("fuchsia-500"),
+				right = C.GetRGBFromTemplate("pink-400"),
+			},
+		},
+		daily = {
+			template = format("[%s]", L["Daily"]),
+			color = {
+				left = C.GetRGBFromTemplate("cyan-400"),
+				right = C.GetRGBFromTemplate("cyan-200"),
+			},
+		},
+		weekly = {
+			template = format("[%s]", L["Weekly"]),
+			color = {
+				left = C.GetRGBFromTemplate("teal-400"),
+				right = C.GetRGBFromTemplate("teal-200"),
+			},
+		},
+		title = {
+			template = "%s",
+			color = {
+				left = C.GetRGBFromTemplate("amber-400"),
+				right = C.GetRGBFromTemplate("amber-200"),
+			},
+		},
+		progress = {
+			objective = {
+				detailTemplate = "%d/%d",
+				completeText = format("(%s)", L["Complete"]),
+				color = {
+					left = C.GetRGBFromTemplate("neutral-100"),
+					right = C.GetRGBFromTemplate("neutral-50"),
+				},
+			},
+			complete = {
+				text = L["Quest Complete"],
+				color = {
+					left = C.GetRGBFromTemplate("green-400"),
+					right = C.GetRGBFromTemplate("emerald-300"),
+				},
+			},
+			accepted = {
+				text = L["Quest Accepted"],
+				color = {
+					left = C.GetRGBFromTemplate("blue-400"),
+					right = C.GetRGBFromTemplate("sky-300"),
+				},
+			},
+		},
+	},
+	switchButtons = {
+		enable = true,
+		tooltip = true,
+		backdrop = false,
+		font = {
+			name = E.db.general.font,
+			size = 12,
+			style = "OUTLINE",
+			color = { r = 1, g = 0.82, b = 0 },
+		},
+		announcement = true,
+		turnIn = true,
+	},
+	turnIn = {
+		enable = true,
+		mode = "ALL",
+		enableCondition = {
+			accountCompleted = true,
+			repeatable = true,
+			other = false,
+		},
+		smartChat = true,
+		selectReward = true,
+		getBestReward = false,
+		darkmoon = true,
+		followerAssignees = true,
+		pauseModifier = "SHIFT",
+		customIgnoreNPCs = {},
+	},
+	preyHunt = {
+		enable = true,
+		progressWidget = {
+			hide = false,
+			stageText = {
+				enable = true,
+				name = E.db.general.font,
+				size = 14,
+				style = "OUTLINE",
+				color = { r = 1, g = 1, b = 1 },
+				label = true,
+				template = "%d/4",
+				xOffset = 0,
+				yOffset = 0,
+			},
+			vignetteText = {
+				enable = true,
+				name = E.db.general.font,
+				size = 12,
+				style = "OUTLINE",
+				xOffset = 0,
+				yOffset = 0,
+				ids = {
+					[7667] = true,
+					[7443] = true,
+				},
+			},
+		},
+		autoTrack = {
+			enable = true,
+			worldQuest = true,
+			stageQuest = true,
+			notify = true,
+		},
+	},
+	achievementScreenshot = {
+		enable = false,
+		hideCombatAlert = true,
+		ignoreEarnedBefore = false,
+		forceShowUI = true,
+		chatMessage = true,
+	},
+	achievementTracker = {
+		enable = true,
+		show = true,
+		width = 500,
+		height = 500,
+		threshold = 75,
+		tooltip = true,
+		scan = {
+			batchSize = 20,
+			batchInterval = 0.01,
+			automation = {
+				enable = true,
+				onShow = true,
+				onLogin = false,
+			},
+		},
+	},
+}
+
+---@class ProfileDB.tooltips
+P.tooltips = {
+	---@class ProfileDB.tooltips.elvUITweaks
+	elvUITweaks = {
+		forceItemLevel = false,
+		healthBar = {
+			barYOffset = 0,
+			textYOffset = 0,
+		},
+		raceIcon = {
+			enable = true,
+			width = 16,
+			height = 16,
+		},
+		specIcon = {
+			enable = true,
+			width = 16,
+			height = 14,
+		},
+		betterMythicPlusInfo = {
+			enable = true,
+			icon = {
+				enable = true,
+				width = 16,
+				height = 14,
+			},
+		},
+	},
+	keystone = {
+		enable = true,
+		useAbbreviation = true,
+		icon = {
+			enable = true,
+			width = 16,
+			height = 14,
+		},
+	},
+	groupInfo = {
+		enable = true,
+		excludeDungeon = false,
+		hideBlizzard = true,
+		title = false,
+		mode = "NORMAL",
+		classIconStyle = "flat",
+		template = "{{classIcon:18}} {{specIcon:14,18}} {{classColorStart}}{{className}} ({{specName}}){{classColorEnd}}{{amountStart}} x {{amount}}{{amountEnd}}",
+	},
+}
+
+---@class ProfileDB.unitFrames
+P.unitFrames = {
+	---@class ProfileDB.unitFrames.absorb
+	absorb = {
+		enable = false,
+		texture = {
+			enable = true,
+			custom = E.db.unitframe.statusbar,
+			blizzardStyle = true,
+		},
+		blizzardOverAbsorbGlow = true,
+		blizzardAbsorbOverlay = true,
+	},
+}
+
+---@class ProfileDB.misc
+P.misc = {
+	disableTalkingHead = false,
+	hideCrafter = false,
+	noLootPanel = false,
+	---@class ProfileDB.misc.spellActivationAlert
+	spellActivationAlert = {
+		enable = false,
+		scale = 1,
+	},
+	---@class ProfileDB.misc.gameBar
+	gameBar = {
+		enable = true,
+		mouseOver = false,
+		backdrop = true,
+		backdropSpacing = 5,
+		timeAreaWidth = 110,
+		timeAreaHeight = 50,
+		buttonSize = 24,
+		spacing = 4,
+		fadeTime = 0.618,
+		normalColor = "DEFAULT",
+		hoverColor = "CLASS",
+		animation = {
+			duration = 0.2,
+			ease = "quadratic",
+			easeInvert = false,
+		},
+		customNormalColor = { r = 1, g = 1, b = 1 },
+		customHoverColor = { r = 0, g = 0.659, b = 1 },
+		notification = true,
+		visibility = "[petbattle] hide; show",
+		tooltipsAnchor = "ANCHOR_BOTTOM",
+		groupFinder = {
+			preferNetEaseMeetingStone = false,
+		},
+		friends = {
+			showAllFriends = false,
+			countSubAccounts = true,
+		},
+		time = {
+			localTime = true,
+			twentyFour = true,
+			flash = true,
+			interval = 10,
+			alwaysSystemInfo = false,
+			avoidReloadInCombat = true,
+			font = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 25,
+				style = "OUTLINE",
+			},
+		},
+		hearthstone = {
+			left = "6948",
+			leftFallback = "6948",
+			middle = "253629",
+			middleFallback = "253629",
+			right = "140192",
+			rightFallback = "140192",
+			showBindLocation = true,
+		},
+		additionalText = {
+			enable = true,
+			slowMode = true,
+			anchor = "BOTTOMRIGHT",
+			x = 3,
+			y = -3,
+			font = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
+				style = "OUTLINE",
+			},
+		},
+		left = {
+			[1] = "CHARACTER",
+			[2] = "SPELLBOOK",
+			[3] = "TALENTS",
+			[4] = "FRIENDS",
+			[5] = "GUILD",
+			[6] = "GROUP_FINDER",
+			[7] = "SCREENSHOT",
+		},
+		right = {
+			[1] = "HEARTHSTONE",
+			[2] = "HOME",
+			[3] = "ACHIEVEMENTS",
+			[4] = "ENCOUNTER_JOURNAL",
+			[5] = "TOY_BOX",
+			[6] = "PET_JOURNAL",
+			[7] = "BAGS",
+		},
+	},
+	---@class ProfileDB.misc.automation
+	automation = {
+		enable = false,
+		hideBagAfterEnteringCombat = false,
+		hideWorldMapAfterEnteringCombat = false,
+		acceptResurrect = false,
+		acceptCombatResurrect = false,
+		confirmSummon = false,
+	},
+	---@class ProfileDB.misc.keybindAlias
+	keybindAlias = {
+		enable = false,
+		list = {},
+	},
+	---@class ProfileDB.misc.exitPhaseDiving
+	exitPhaseDiving = {
+		enable = false,
+		width = 81,
+		height = 50,
+	},
+}

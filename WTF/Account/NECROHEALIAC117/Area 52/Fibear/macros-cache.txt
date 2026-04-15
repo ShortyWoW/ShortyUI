@@ -1,0 +1,47 @@
+VER 3 010000000000000B "Cleanse" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Nature's Cure
+END
+VER 3 010000000000000C "Clone" "INV_MISC_QUESTIONMARK"
+#show
+/cancelaura Cat Form
+/cancelaura Bear Form
+/cancelaura Travel Form
+/cast !Cyclone
+END
+VER 3 0100000000000005 "Healing Touch" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Healing Touch
+END
+VER 3 0100000000000008 "Ironbark" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Ironbark
+END
+VER 3 0100000000000003 "Lifebloom" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Lifebloom
+END
+VER 3 0100000000000009 "Rebirth" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Rebirth
+END
+VER 3 0100000000000004 "Regrowth" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Regrowth
+END
+VER 3 0100000000000002 "Rejuv" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Rejuvenation
+END
+VER 3 010000000000000A "Revive" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Revive
+END
+VER 3 0100000000000007 "Swiftmend" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Swiftmend
+END
+VER 3 0100000000000006 "Wild Growth" "INV_MISC_QUESTIONMARK"
+#show
+/use [@mouseover,help,nodead][help,nodead][@player] Wild Growth
+END

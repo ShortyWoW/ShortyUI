@@ -1,0 +1,32 @@
+
+ShortyRCDDB = {
+["locked"] = true,
+["debug"] = false,
+["interruptTrackerEnabled"] = false,
+["ui"] = {
+["spellNames"] = "none",
+["barTheme"] = "classic",
+["grouping"] = "minimal",
+},
+["frame"] = {
+["point"] = {
+"LEFT",
+"UIParent",
+"LEFT",
+610.833251953125,
+15.83340549468994,
+},
+},
+["tracking"] = {
+},
+["interrupt"] = {
+["point"] = {
+"CENTER",
+"UIParent",
+"CENTER",
+420,
+0,
+},
+["grouping"] = "minimal",
+},
+}

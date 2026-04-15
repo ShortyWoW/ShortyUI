@@ -1,0 +1,73 @@
+VER 3 0100000000000008 "Ascendance" "134400"
+#showtooltip
+/cast Ascendance
+/use Tempered Potion
+END
+VER 3 0100000000000004 "Cap" "134400"
+#showtooltip
+/cast [@cursor] Capacitor Totem
+END
+VER 3 0100000000000012 "Chain Heal" "134400"
+#showtooltip
+/cast [@mouseover] Chain Heal
+END
+VER 3 0100000000000009 "Decurse" "134400"
+#showtooltip
+/cast [@mosueover] Cleanse Spirit
+END
+VER 3 0100000000000001 "Ele Buffs" "134400"
+#showtooltip
+/castsequence [@player]reset=combat/10 Lightning Shield, Earth Shield, Skyfury
+END
+VER 3 0100000000000006 "Enh Buffs" "133042"
+#showtooltip
+/castsequence [@player]reset=combat/10 Windfury Weapon(Weapon Imbue), Flametongue Weapon(Weapon Imbue), Lightning Shield
+END
+VER 3 0100000000000002 "EQ" "134400"
+#showtooltip
+/cast [known:462620,@target] Earthquake; [known:61882,@cursor] Earthquake
+END
+VER 3 0100000000000007 "ES" "134400"
+#showtooltip
+/cast [@mouseover] Earth Shield
+END
+VER 3 0100000000000017 "ES ME" "134400"
+#showtooltip
+/cast [@player] Earth Shield
+END
+VER 3 010000000000000A "Frog" "134400"
+#showtooltip
+/cast [@mouseover] Hex
+END
+VER 3 010000000000000D "Healing Rain" "134400"
+#showtooltip
+/cast [@cursor] Healing Rain
+END
+VER 3 010000000000000F "Healing Wave" "134400"
+#showtooltip
+/cast [@mouseover] Healing Wave
+END
+VER 3 0100000000000016 "Purify Spirit" "134400"
+#showtooltip
+/cast [@mouseover] Purify Spirit
+END
+VER 3 010000000000000C "Resto Buffs" "134400"
+#showtooltip
+/castsequence [@player]reset=combat/10 Skyfury, Earthliving Weapon, Water Shield, Earth Shield
+END
+VER 3 010000000000000E "Riptide" "134400"
+#showtooltip
+/cast [@mouseover] Riptide
+END
+VER 3 0100000000000015 "Splink" "134400"
+#showtooltip
+/cast [@cursor] Spirit Link Totem
+END
+VER 3 0100000000000018 "Unleash Life" "134400"
+#showtooltip
+/cast [@mouseover] Unleash Life
+END
+VER 3 0100000000000005 "Wind Rush" "134400"
+#showtooltip
+/cast [@cursor] Wind Rush Totem
+END

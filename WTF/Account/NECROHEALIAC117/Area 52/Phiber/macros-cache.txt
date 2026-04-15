@@ -1,0 +1,28 @@
+VER 3 0100000000000003 "Blessed Loa" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/target Blessed Loa Spirit
+/cast Chains of Ice
+/targetlasttarget
+END
+VER 3 0100000000000002 "Mind Freeze" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@focus,exists][@target] Mind Freeze
+END
+VER 3 0100000000000004 "SHEET" "INV_MISC_QUESTIONMARK"
+#showtooltip Death Pact
+/cast Raise Dead
+/cast Death Pact
+END
+VER 3 0100000000000005 "Stream" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@Syzzler] Plague Stream
+END
+VER 3 0100000000000001 "VB" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Vampiric Blood
+/use Healthstone
+END
+VER 3 0100000000000008 "ZGVMacro1" "0"
+/target Ameri Windblade
+/run ZGV:MRM()
+END

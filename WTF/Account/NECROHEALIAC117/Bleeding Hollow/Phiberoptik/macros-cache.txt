@@ -1,0 +1,89 @@
+VER 3 01000000000000E1 "Big Dick" "INV_MISC_QUESTIONMARK"
+#show
+/use 13
+/use 14
+/cast Blood Fury
+/cast Berserker Rage
+/cast Recklessness
+/cast Bloodbath
+/cast Charge
+/cast Sweeping Strikes
+/cast !Ravager
+END
+VER 3 01000000000000E5 "Bloodbath" "INV_MISC_QUESTIONMARK"
+#show
+/cast Bloodbath
+/use 13
+/use 14
+END
+VER 3 01000000000000E8 "BOP" "INV_MISC_QUESTIONMARK"
+/cancelaura Hand of Protection
+/cancelaura Blessing of Protection
+END
+VER 3 0100000000000057 "Charge" "INV_MISC_QUESTIONMARK"
+#show Charge
+/stopcasting
+/stopattack
+/cancelaura Bladestorm
+/cast [@mouseover] Heroic Throw
+/cast [@mouseover] Charge
+/cast [@mouseover] Devastate
+/cast [@mouseover] Shield Slam
+END
+VER 3 01000000000000E4 "Cry" "INV_MISC_QUESTIONMARK"
+#show Rallying Cry
+/stopcasting
+/stopattack
+/cancelaura Bladestorm
+/cast !Rallying Cry
+END
+VER 3 01000000000000DC "Focus Interrupt" "INV_MISC_QUESTIONMARK"
+#show Pummel
+/stopcasting
+/stopattack
+/cancelaura Bladestorm
+/cast [@focus] Pummel
+END
+VER 3 010000000000005B "Interrupt" "INV_MISC_QUESTIONMARK"
+#show Pummel
+/stopcasting
+/stopattack
+/cancelaura Bladestorm
+/cast Pummel
+END
+VER 3 010000000000005E "Jump" "INV_MISC_QUESTIONMARK"
+#show Heroic Leap
+/stopcasting
+/stopattack
+/cancelaura Bladestorm
+/cast !Heroic Leap
+END
+VER 3 01000000000000E6 "Last Stand" "INV_MISC_QUESTIONMARK"
+#show Last Stand
+/use 13
+/cast Last Stand
+END
+VER 3 010000000000005C "Taunt" "INV_MISC_QUESTIONMARK"
+#show
+/stopcasting
+/stopattack
+/cancelaura Bladestorm
+/cast [@mouseover] Taunt
+/cast [@mouseover] Heroic Throw
+/cast Taunt
+END
+VER 3 0100000000000056 "Throw" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Heroic Throw
+END
+VER 3 01000000000000E7 "Wall" "INV_MISC_QUESTIONMARK"
+#show Shield Wall
+/use 14
+/cast Shield Wall
+END
+VER 3 01000000000000E3 "WW + ST" "INV_MISC_QUESTIONMARK"
+#show
+/cast Whirlwind
+/cast Sweeping Strikes
+/cast Dragon Roar
+END

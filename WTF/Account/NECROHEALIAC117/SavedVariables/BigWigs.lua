@@ -1,0 +1,183 @@
+
+BigWigs3DB = {
+["profileKeys"] = {
+["Fibear - Area 52"] = "Default",
+["Fiberoptic - Area 52"] = "Default",
+["Absoloot - Stormrage"] = "Default",
+["Fiberoptic - Bleeding Hollow"] = "Default",
+["Catfive - Area 52"] = "Default",
+["Réfreshing - Area 52"] = "Default",
+["Phiber - Area 52"] = "Default",
+["Shortyaddons - Dalaran"] = "Luckyone Main",
+["Fiber - Area 52"] = "Default",
+["Phiberoptik - Azgalor"] = "Default",
+["Azurê - Area 52"] = "Default",
+["Phiberoptik - Bleeding Hollow"] = "Default",
+["Addontestur - Stormrage"] = "Default",
+["Locknlol - Area 52"] = "Default",
+["Absolusion - Stormrage"] = "Default",
+},
+["namespaces"] = {
+["BigWigs_Plugins_PrivateAuras"] = {
+["global"] = {
+["showHelpTip"] = false,
+},
+},
+["BigWigs_Plugins_BattleRes"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["disabled"] = false,
+["lock"] = true,
+["cooldownEdge"] = false,
+["fontName"] = "Expressway",
+["textXPositionDuration"] = 1,
+["textYPositionDuration"] = 1,
+["textXPositionCharges"] = 1,
+["position"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+51,
+0,
+"LeftChatPanel",
+},
+["durationAlign"] = "CENTER",
+["chargesAlign"] = "CENTER",
+},
+},
+},
+["BigWigs_Plugins_Countdown"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["outline"] = "OUTLINE",
+["fontSize"] = 50,
+["fontName"] = "Expressway",
+["position"] = {
+nil,
+nil,
+nil,
+-385,
+},
+},
+},
+},
+["BigWigs_Plugins_Colors"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["barBackground"] = {
+["BigWigs_Plugins_Colors"] = {
+["default"] = {
+0.05098039656877518,
+0.05098039656877518,
+0.05098039656877518,
+0.699999988079071,
+},
+},
+},
+},
+},
+},
+["BigWigs_Plugins_Bars"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["outline"] = "OUTLINE",
+["expWidth"] = 239,
+["fontName"] = "Expressway",
+["visibleBarLimitEmph"] = 6,
+["emphasizeMove"] = false,
+["visibleBarLimit"] = 6,
+["expHeight"] = 18,
+["spacing"] = 3,
+["emphasizeTime"] = 8,
+["barStyle"] = "ElvUI",
+["fontSizeEmph"] = 10,
+["normalWidth"] = 239,
+["emphasizeRestart"] = false,
+["texture"] = "Minimalist",
+["emphasizeMultiplier"] = 1,
+["normalPosition"] = {
+nil,
+nil,
+10,
+-36,
+"ElvUF_Player",
+},
+},
+},
+},
+["BigWigs_Plugins_BossBlock"] = {
+["global"] = {
+["tableNeedsCopied"] = false,
+},
+},
+["BigWigs_Plugins_Messages"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["outline"] = "OUTLINE",
+["fontSize"] = 16,
+["emphFontName"] = "Expressway",
+["emphFontSize"] = 20,
+["emphPosition"] = {
+"TOP",
+"TOP",
+nil,
+-465,
+},
+["fontName"] = "Expressway",
+["emphOutline"] = "OUTLINE",
+["normalPosition"] = {
+"CENTER",
+"CENTER",
+nil,
+40,
+},
+},
+},
+},
+["MythicPlus"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["instanceKeysAlign"] = "LEFT",
+["instanceKeysPosition"] = {
+"CENTER",
+"CENTER",
+-329,
+261,
+},
+["instanceKeysFontSize"] = 14,
+["instanceKeysFontName"] = "Expressway",
+},
+},
+},
+},
+["myKeystones"] = {
+["Player-3683-0E17CEEA"] = {
+["playerRating"] = 0,
+["specId"] = 73,
+["keyMap"] = 0,
+["name"] = "Shortyaddons",
+["keyLevel"] = 0,
+["realm"] = "Dalaran",
+},
+},
+["prevWeeklyReset"] = 1771340400,
+["profiles"] = {
+["Default"] = {
+},
+["Luckyone Main"] = {
+},
+},
+}
+BigWigsIconDB = {
+["hide"] = true,
+}
+BigWigsStatsDB = {
+[2769] = {
+[2639] = {
+["mythic"] = {
+["wipes"] = 1,
+},
+},
+},
+}
+BW_FEAT_SHARE = nil
+BW_FEAT_SHARE2 = true

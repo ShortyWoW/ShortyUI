@@ -1,0 +1,86 @@
+local W = unpack((select(2, ...))) ---@type WindTools
+
+W.Changelog[408] = {
+	RELEASE_DATE = "2026/01/26",
+	IMPORTANT = {
+		["zhCN"] = {
+			"新增了 [高级] - [游戏修复] - [至暗之夜API修复] 选项, 修复部分暴雪导致的Lua错误. 由于接管部分暴雪功能会导致部分暴雪界面的内存使用量会被计算为插件, 实际无影响. 默认开启. 部分修正代码来自 NDui.",
+			"修复了多个秘密值改动导致的错误. 感谢 pcjacobse@GitHub.",
+			"移除了全部 Remix 相关的代码.",
+			"移除了 Legion Remix Helper 皮肤.",
+		},
+		["zhTW"] = {
+			"新增了 [進階] - [遊戲修復] - [至暗之夜API修復] 選項, 修復部分暴雪導致的Lua錯誤. 由於接管部分暴雪功能會導致部分暴雪界面的記憶體使用量會被計算為外掛, 實際無影響. 預設開啟. 部分修正代碼來自 NDui.",
+			"修復了多個秘密值改動導致的錯誤. 感謝 pcjacobse@GitHub.",
+			"移除了全部 Remix 相關的代碼.",
+			"移除了 Legion Remix Helper 皮膚.",
+		},
+		["enUS"] = {
+			"Added [Advanced] - [Game Fixes] - [Midnight API Fix] option to fix some Blizzard caused Lua errors. Taking over some Blizzard functions may cause some Blizzard frames' memory usage to be counted as WindTools, which has no actual impact. Enabled by default. Some fix codes are from NDui.",
+			"Fixed multiple errors caused by secret value changes. Thanks to pcjacobse@GitHub.",
+			"Removed all Remix related codes.",
+			"Removed Legion Remix Helper skin.",
+		},
+		["koKR"] = {
+			"[고급] - [게임 수정] - [한밤중 API 수정] 옵션이 추가되어 일부 블리자드로 인한 Lua 오류를 수정합니다. 일부 블리자드 기능을 인수하면 일부 블리자드 프레임의 메모리 사용량이 WindTools로 계산될 수 있지만 실제로는 영향이 없습니다. 기본적으로 활성화되어 있습니다. 일부 수정 코드는 NDui에서 가져왔습니다.",
+			"비밀 값 변경으로 인해 발생한 여러 오류가 수정되었습니다. GitHub의 pcjacobse에게 감사드립니다.",
+			"모든 Remix 관련 코드가 제거되었습니다.",
+			"Legion Remix Helper 스킨이 제거되었습니다.",
+		},
+		["ruRU"] = {
+			"Добавлена опция [Дополнительно] - [Исправления игры] - [Исправление Midnight API] для исправления некоторых ошибок Lua, вызванных Blizzard. Взятие на себя некоторых функций Blizzard может привести к тому, что использование памяти некоторых фреймов Blizzard будет учитываться как WindTools, что не оказывает фактического влияния. По умолчанию включено. Некоторые исправления кода взяты из NDui.",
+			"Исправлены несколько ошибок, вызванных изменениями секретных значений. Спасибо pcjacobse@GitHub.",
+			"Удалены все связанные с Remix коды.",
+			"Удалена оболочка Legion Remix Helper.",
+		},
+	},
+	NEW = {
+		["zhCN"] = {},
+		["zhTW"] = {},
+		["enUS"] = {},
+		["koKR"] = {},
+		["ruRU"] = {},
+	},
+	IMPROVEMENT = {
+		["zhCN"] = {
+			"[团队标记] 修复了清除按钮和停止倒计时功能.",
+			"[切换按钮] 修复切换启用通告时, 任务通告模块可能无法正常开启的问题.",
+			"[装备观察] 优化了物品装等的获取方式, 现在能够正确获取一些物品的真实装等.",
+			"[快速焦点] 优化了焦点切换的逻辑, 修复了自动标记功能.",
+			"[美化皮肤] 修复了冷却管理器相关的错误.",
+			"[聊天文字] 同步 ElvUI 聊天最新改动, 修复部分错误.",
+		},
+		["zhTW"] = {
+			"[團隊標記] 修復了清除按鈕和停止倒計時功能.",
+			"[切換按鍵] 修復切換啟用通告時, 任務通告模組可能無法正常開啟的問題.",
+			"[裝備觀察] 優化了物品裝等的獲取方式, 現在能夠正確獲取一些物品的真實裝等.",
+			"[快速焦點] 優化了焦點切換的邏輯, 修復了自動標記功能.",
+			"[美化皮膚] 修復了冷卻管理器相關的錯誤.",
+			"[聊天文字] 同步 ElvUI 聊天最新改動, 修復部分錯誤.",
+		},
+		["enUS"] = {
+			"[Raid Markers] Fixed clear button and stop countdown functionality.",
+			"[Switch Button] Fixed an issue where the quest announce module might not be able to be enabled when toggling announce on.",
+			"[Inspect] Improved the method of obtaining item level, now able to correctly get the true item level of some items.",
+			"[Quick Focus] Improved the logic of focus switching, fixed the automatic marking feature.",
+			"[Skins] Fixed some issues related to Cooldown Manager.",
+			"[Chat Text] Synchronized the latest changes in ElvUI chat, fixed some errors.",
+		},
+		["koKR"] = {
+			"[공격대 징표] 지우기 버튼 및 카운트다운 중지 기능이 수정되었습니다.",
+			"[전환 버튼] 알림 켜기를 전환할 때 퀘스트 알림 모듈을 활성화할 수 없는 문제를 수정했습니다.",
+			"[장비 관찰] 아이템 레벨을 얻는 방법이 개선되어 이제 일부 아이템의 실제 아이템 레벨을 올바르게 얻을 수 있습니다.",
+			"[빠른 집중] 집중 전환 논리가 개선되어 자동 표시 기능이 수정되었습니다.",
+			"[스킨] 쿨다운 관리자와 관련된 몇 가지 문제가 수정되었습니다.",
+			"[채팅 텍스트] ElvUI 채팅의 최신 변경 사항이 동기화되어 일부 오류가 수정되었습니다.",
+		},
+		["ruRU"] = {
+			"[Метки рейда] Исправлена функция кнопки очистки и остановки обратного отсчета.",
+			"[Переключатель] Исправлена проблема, из-за которой модуль объявления заданий мог не включаться при переключении объявления.",
+			"[Осмотр] Улучшен метод получения уровня предмета, теперь можно правильно получить истинный уровень предмета некоторых предметов.",
+			"[Быстрый фокус] Улучшена логика переключения фокуса, исправлена функция автоматической маркировки.",
+			"[Скины] Исправлены некоторые проблемы, связанные с менеджером перезарядки.",
+			"[Текст чата] Синхронизированы последние изменения в чате ElvUI, исправлены некоторые ошибки.",
+		},
+	},
+}

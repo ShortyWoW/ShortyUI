@@ -1,0 +1,54 @@
+VER 3 010000000000000A "Cobra Shot" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Cobra Shot
+/cast Bite(Basic Attack)
+END
+VER 3 0100000000000007 "Counter Shot" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stopcasting
+/cast Counter Shot
+END
+VER 3 010000000000000B "Crows" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast A Murder of Crows
+/cast Rabid(Ferocity Ability)
+END
+VER 3 0100000000000009 "Horn" "INV_MISC_QUESTIONMARK"
+#showtooltip Battle Horn
+/cast [@focus] Misdirection
+/cast Battle Horn
+END
+VER 3 0100000000000006 "Misdirection" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@focus] Misdirection
+END
+VER 3 010000000000000C "Pets" "ABILITY_MOUNT_JUNGLETIGER"
+/tar Loque'nahak
+/tar Gondria
+/tar Skoll
+/tar Ghostcrawler
+/tar Karoma
+/tar Ban'thalos
+/tar Ankha
+/tar Magria
+END
+VER 3 0100000000000010 "Pull" "INV_MISC_QUESTIONMARK"
+#show
+/cast 
+/use 13
+/use 14
+/use AGI POTION
+/cast Blood Fury(Racial)
+/cast Bestial Wrath 
+/cast Dire Beast
+/cast Stampede
+END
+VER 3 010000000000000D "Trap" "INV_MISC_QUESTIONMARK"
+#show Freezing Trap
+/cast Freezing Trap
+/cleartarget
+END
+VER 3 010000000000000F "ZGVMacro1" "0"
+/target Ameri Windblade
+/run ZGV:MRM()
+END

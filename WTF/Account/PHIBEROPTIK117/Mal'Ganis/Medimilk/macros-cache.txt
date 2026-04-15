@@ -1,0 +1,157 @@
+VER 3 0100000000000007 "Barbed Shot" "2058007"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Barbed Shot
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000009 "Bestial Wrath" "132127"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Bestial Wrath
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000001 "Binding Shot" "134400"
+#showtooltip
+/cast [@cursor] Binding Shot
+END
+VER 3 0100000000000008 "Bloodshed + Pet" "134400"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Bloodshed
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 010000000000000D "Chakram + Pet" "134400"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Death Chakram
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000006 "Cobra + Pet" "134400"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Cobra Shot
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000018 "CotW" "134400"
+#showtooltip Call of the Wild
+/cast Call of the Wild
+/use 13
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000019 "Dire Beast" "134400"
+#showtooltip
+/petattack
+/petassist
+/cast [@target] Dire Beast
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000027 "Explosive Shot" "INV_Misc_QuestionMark"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Explosive Shot
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000025 "FD" "134400"
+#showtooltip
+/cast Feign Death
+END
+VER 3 0100000000000028 "Flare" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@cursor] Flare
+END
+VER 3 010000000000000B "High Explosive T" "135826"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast [@cursor] High Explosive Trap
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+END
+VER 3 010000000000000A "Kill Comm. + Pet" "134400"
+#showtooltip
+/cast Kill Command
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 010000000000000C "Kill Shot" "236174"
+#showtooltip
+/stopcasting
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/use [@mouseover,exists,harm][]Kill Shot
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 0100000000000026 "Master's Call" "134400"
+#showtooltip
+/cast [@focus] Master's Call(Command Pet Ability)
+END
+VER 3 010000000000001D "Misdirect" "134400"
+#showtooltip [known:Interlope] Interlope; #showtooltip [noknown:Interlope] Misdirection
+/cast [@focus] Misdirection
+END
+VER 3 0100000000000022 "Multi-Shot" "134400"
+#showtooltip
+/script UIErrorsFrame:Clear()
+/petattack
+/petassist
+/cast Multi-Shot
+/cast [@pettarget,harm] Claw
+/cast [@pettarget,harm] Bite
+/cast [@pettarget,harm] Smack
+/cast [@player] Spirit Mend(Exotic Ability)
+END
+VER 3 010000000000001E "Pet Control" "644389"
+#showtooltip
+/stopcasting
+/cleartarget
+/petpassive
+/petdismiss
+END
+VER 3 0100000000000011 "Turtle" "134400"
+#showtooltip
+/stopcasting
+/cast [@player] !Aspect of the Turtle
+/cast [@player] Spirit Mend(Exotic Ability)
+/cancelaura Aspect of the Turtle
+END

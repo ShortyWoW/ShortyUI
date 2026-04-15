@@ -1,0 +1,60 @@
+VER 3 0100000000000009 "Charge" "134400"
+#showtooltip
+/cast [@mouseover] Felblade
+/dismount
+END
+VER 3 010000000000000C "Consume" "134400"
+#showtooltip
+/stopmacro [channeling:Void Ray]
+/cast Consume
+END
+VER 3 0100000000000008 "Glaive" "134400"
+#showtooltip
+/cast [@mouseover] Throw Glaive
+/dismount
+END
+VER 3 0100000000000002 "Leap" "134400"
+#showtooltip
+/dismount
+/cast [@cursor] Infernal Strike
+END
+VER 3 010000000000000A "Prison" "134400"
+#showtooltip
+/cast [@mouseover] Imprison
+END
+VER 3 010000000000000E "Reap" "134400"
+#showtooltip
+/stopmacro [channeling:Void Ray]
+/cast Reap
+END
+VER 3 010000000000000B "Shift" "134400"
+#showtooltip
+/cast [@cursor] Shift
+END
+VER 3 0100000000000003 "Sigil of Flame" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Flame
+END
+VER 3 0100000000000005 "Sigil of Misery" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Misery
+END
+VER 3 0100000000000004 "Sigil of Spite" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Spite
+END
+VER 3 0100000000000010 "Void Meta" "134400"
+#showtooltip
+/stopmacro [channeling:Void Ray]
+/cast Void Metamorphosis
+END
+VER 3 010000000000000D "Void Ray" "134400"
+#showtooltip
+/stopmacro [channeling:Void Ray]
+/cast Void Ray
+END
+VER 3 010000000000000F "Voidblade" "134400"
+#showtooltip
+/stopmacro [channeling:Void Ray]
+/cast Voidblade
+END

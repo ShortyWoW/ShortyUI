@@ -1,0 +1,6 @@
+
+ShortyTicTacDB = {
+["cells"] = {
+},
+["locked"] = true,
+}

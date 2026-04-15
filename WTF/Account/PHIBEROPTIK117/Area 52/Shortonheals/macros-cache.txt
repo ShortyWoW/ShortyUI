@@ -1,0 +1,49 @@
+VER 3 0100000000000001 "Angelic Feather" "134400"
+#showtooltip
+/cast [@cursor] Angelic Feather
+END
+VER 3 0100000000000007 "Dispell" "134400"
+#showtooltip
+/cast [@mouesover] Purify
+END
+VER 3 010000000000000A "Flash Heal" "134400"
+#showtooltip
+/cast [@mouseover] Flash Heal
+END
+VER 3 010000000000000C "Leap of Faith" "134400"
+#showtooltip
+/cast [@mouseover] Leap of Faith
+END
+VER 3 0100000000000009 "Levitate" "134400"
+#showtooltip
+/cast [@mouseover] Levitate
+END
+VER 3 0100000000000004 "Pain Supp" "134400"
+#showtooltip
+/cast [@mouseover] Pain Suppression
+END
+VER 3 0100000000000005 "Penance" "134400"
+#showtooltip
+/cast [@mouseover] Penance
+END
+VER 3 0100000000000003 "Power Infusion" "134400"
+#showtooltip
+/cast [@mouseover] Power Infusion
+END
+VER 3 0100000000000006 "PW Barrier" "134400"
+#showtooltip
+/cast [@cursor] Power Word: Barrier
+END
+VER 3 0100000000000002 "PWS / Target" "134400"
+#showtooltip Power Word: Shield
+/target [nocombat,@mouseover,exists]
+/cast [combat,@mouseover,exists] Power Word: Shield
+END
+VER 3 0100000000000008 "Renew" "134400"
+#showtooltip
+/cast [@mouseover] Renew
+END
+VER 3 010000000000000B "Smite" "134400"
+#showtooltip Smite
+/cast [@mouseover,harm,nodead,nochanneling:penance,nochanneling:dark reprimand][nochanneling:penance,nochanneling:dark reprimand] Smite
+END

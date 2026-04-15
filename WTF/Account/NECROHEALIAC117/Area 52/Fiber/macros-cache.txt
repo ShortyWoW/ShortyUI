@@ -1,0 +1,28 @@
+VER 3 010000000000000A "Ambush Rockets" "INV_MISC_QUESTIONMARK"
+#show
+/cast Ambush
+/cast Rocket Barrage(Racial)
+END
+VER 3 010000000000000D "Exploit" "INV_MISC_QUESTIONMARK"
+/cast vanish
+/cast Gouge
+END
+VER 3 0100000000000008 "GTFO" "INV_MISC_QUESTIONMARK"
+#show
+/stopcasting
+/target Fiber
+/cast Vanish
+END
+VER 3 010000000000000B "Rush / Blades" "INV_MISC_QUESTIONMARK"
+#show
+/cast Adrenaline Rush
+/cast Shadow Blades
+END
+VER 3 010000000000000C "Trix" "INV_MISC_QUESTIONMARK"
+#show
+/cast [target=focus] Tricks of the Trade
+END
+VER 3 010000000000000F "ZGVMacro1" "0"
+/target Ameri Windblade
+/run ZGV:MRM()
+END

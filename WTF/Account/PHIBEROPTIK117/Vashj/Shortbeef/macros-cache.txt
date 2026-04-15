@@ -1,0 +1,24 @@
+VER 3 0100000000000007 "Exploding Keg" "134400"
+#showtooltip
+/cast [@cursor] Exploding Keg
+END
+VER 3 0100000000000005 "Paralysis" "134400"
+#showtooltip
+/cast [@mouseover] Paralysis
+END
+VER 3 0100000000000001 "RoP" "134400"
+#showtooltip
+/cast [@cursor] Ring of Peace
+END
+VER 3 0100000000000004 "Taunt" "134400"
+#showtooltip
+/cast [@mouseover] Provoke
+END
+VER 3 0100000000000003 "Tiger's Lust" "134400"
+#showtooltip
+/cast [@player] Tiger's Lust
+END
+VER 3 0100000000000006 "Vivify" "134400"
+#showtooltip
+/cast [@player] Vivify
+END

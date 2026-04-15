@@ -1,0 +1,100 @@
+
+AccountPlayedDB = {
+["Area52-Cyword"] = {
+["time"] = 14802171,
+["class"] = "PRIEST",
+},
+["Area52-Shortbeef"] = {
+["time"] = 161629,
+["class"] = "MONK",
+},
+["Dalaran-Drewishlazer"] = {
+["time"] = 911790,
+["class"] = "DEMONHUNTER",
+},
+["Area52-Shortbowjob"] = {
+["time"] = 937792,
+["class"] = "HUNTER",
+},
+["Area52-Shortbreath"] = {
+["time"] = 146766,
+["class"] = "EVOKER",
+},
+["Dalaran-Callmeshorty"] = {
+["time"] = 998644,
+["class"] = "DEMONHUNTER",
+},
+["Area52-Shortonheals"] = {
+["time"] = 57753,
+["class"] = "PRIEST",
+},
+["Stormrage-Lildotnrg"] = {
+["time"] = 679119,
+["class"] = "WARLOCK",
+},
+["Dalaran-Randysmells"] = {
+["time"] = 1,
+["class"] = "WARLOCK",
+},
+["Dalaran-Shortypal"] = {
+["time"] = 247336,
+["class"] = "PALADIN",
+},
+["Mal'Ganis-Udderstorm"] = {
+["time"] = 1443427,
+["class"] = "PALADIN",
+},
+["Area52-Callmeshorte"] = {
+["time"] = 46437,
+["class"] = "HUNTER",
+},
+["Mal'Ganis-Chugmonk"] = {
+["time"] = 1833912,
+["class"] = "MONK",
+},
+["Area52-Callmeshorty"] = {
+["time"] = 835337,
+["class"] = "MAGE",
+},
+["Dalaran-Randuhrr"] = {
+["time"] = 35,
+["class"] = "ROGUE",
+},
+["MoonGuard-Callmeshortÿ"] = {
+["time"] = 6530804,
+["class"] = "SHAMAN",
+},
+["Dalaran-Rndylikehoof"] = {
+["time"] = 29,
+["class"] = "PALADIN",
+},
+["Dalaran-Drewishlaser"] = {
+["time"] = 35203,
+["class"] = "DRUID",
+},
+["Area52-Callmeshawte"] = {
+["time"] = 16308,
+["class"] = "WARLOCK",
+},
+["Mal'Ganis-Medimilk"] = {
+["time"] = 2426340,
+["class"] = "HUNTER",
+},
+["Vashj-Shortbeef"] = {
+["time"] = 161805,
+["class"] = "MONK",
+},
+}
+AccountPlayedMinimapDB = {
+["y"] = -74.24621202458748,
+["x"] = -74.2462120245875,
+["locked"] = false,
+}
+AccountPlayedPopupDB = {
+["y"] = 0,
+["x"] = 0,
+["point"] = "CENTER",
+["height"] = 300,
+["useYears"] = false,
+["width"] = 520,
+}

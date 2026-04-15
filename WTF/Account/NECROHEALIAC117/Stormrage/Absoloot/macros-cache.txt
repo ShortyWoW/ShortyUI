@@ -1,0 +1,62 @@
+VER 3 0100000000000009 "Healing Touch" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Healing Touch
+END
+VER 3 010000000000000A "Healing Touch 2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area2] Healing Touch
+END
+VER 3 0100000000000010 "Ironbark" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Ironbark
+END
+VER 3 0100000000000011 "Ironbark 2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area2] Ironbark
+END
+VER 3 0100000000000007 "Lifebloom" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Lifebloom
+END
+VER 3 0100000000000008 "Lifebloom 2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area2] Lifebloom
+END
+VER 3 010000000000000B "Regrowth" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Regrowth
+END
+VER 3 010000000000000C "Regrowth 2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Regrowth
+END
+VER 3 0100000000000005 "Rejuv" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Rejuvenation
+END
+VER 3 0100000000000006 "Rejuv2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area2] Rejuvenation
+END
+VER 3 0100000000000015 "Roar" "INV_MISC_QUESTIONMARK"
+#show
+/cancelaura Bear Form
+/cast Stampeding Roar
+/cancelaura Bear Form
+END
+VER 3 010000000000000E "Swiftmend" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Swiftmend
+END
+VER 3 010000000000000F "Swiftmend 2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area2] Swiftmend
+END
+VER 3 0100000000000013 "Wild Growth" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area1] Wild Growth
+END
+VER 3 0100000000000014 "Wild Growth 2" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@area2] Wild Growth
+END

@@ -1,0 +1,42 @@
+VER 3 0100000000000004 "Cleanse" "134400"
+#showtooltip
+/cast [@mouseover] Naturalize(Green)
+END
+VER 3 0100000000000007 "Echo" "134400"
+#showtooltip
+/cast [@mouseover] Echo(Bronze)
+END
+VER 3 010000000000000C "Emerald Blossom" "134400"
+#showtooltip
+/cast [@mouseover] Emerald Blossom
+END
+VER 3 0100000000000001 "Living Flame" "134400"
+#showtooltip
+/cast [@mouseover] Living Flame
+END
+VER 3 0100000000000005 "Rescue" "134400"
+#showtooltip
+/cast [@player] Rescue
+/target [@mouseover,help,nodead][help,nodead][@player] Rescue
+/stopspelltarget
+END
+VER 3 0100000000000006 "Reversion" "134400"
+#showtooltip
+/cast [@mouseover] Reversion(Bronze)
+END
+VER 3 0100000000000002 "Rez" "134400"
+#showtooltip
+/cast [@mouseover] Return(Bronze)
+END
+VER 3 010000000000000D "Source of Magic" "134400"
+#showtooltip
+/cast [@mouseover] Source of Magic
+END
+VER 3 010000000000000B "Time Dilation" "134400"
+#showtooltip
+/cast [@mouseover] Time Dilation(Bronze)
+END
+VER 3 0100000000000008 "Verdent Embrace" "134400"
+#showtooltip
+/cast [@mouseover] Verdant Embrace(Green)
+END

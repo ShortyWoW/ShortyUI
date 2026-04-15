@@ -1,0 +1,43 @@
+VER 3 0100000000000007 "Boost" "INV_MISC_QUESTIONMARK"
+#showtooltip Belt of the Night Sky
+/use Belt of the Night Sky
+/cast Burning Rush
+/use Cloak of Misguided Power
+END
+VER 3 0100000000000002 "Conflagrate" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Conflagrate
+/cast Optical Blast
+END
+VER 3 0100000000000008 "Immolate" "INV_MISC_QUESTIONMARK"
+#showtooltip Immolate
+/cast Immolate
+END
+VER 3 010000000000000A "Lazy" "INV_Misc_QuestionMark"
+/click MacroToolkitSecureButton37
+END
+VER 3 0100000000000003 "Observer" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Summon Observer
+END
+VER 3 010000000000000B "Shadowfury" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast !Shadowfury
+END
+VER 3 0100000000000006 "Shatter" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stopcasting
+/cast Soulshatter
+END
+VER 3 0100000000000004 "Summon Abyssal" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast !Summon Abyssal(Guardian)
+END
+VER 3 0100000000000005 "Summon Terrorgua" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast !Summon Terrorguard(Guardian)
+END
+VER 3 010000000000000F "ZGVMacro1" "0"
+/target Ameri Windblade
+/run ZGV:MRM()
+END

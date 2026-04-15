@@ -1,0 +1,31 @@
+VER 3 0100000000000001 "Charge" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@mouseover] Felblade
+/dismount
+END
+VER 3 0100000000000002 "Glaive" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@mouseover] Throw Glaive
+/dismount
+END
+VER 3 0100000000000003 "Leap" "INV_Misc_QuestionMark"
+#showtooltip
+/dismount
+/cast [@cursor] Infernal Strike
+END
+VER 3 0100000000000004 "Prison" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@mouseover] Imprison
+END
+VER 3 0100000000000005 "Sigil of Flame" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@cursor] Sigil of Flame
+END
+VER 3 0100000000000006 "Sigil of Misery" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@cursor] Sigil of Misery
+END
+VER 3 0100000000000007 "Sigil of Spite" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@cursor] Sigil of Spite
+END

@@ -1,0 +1,2218 @@
+
+BCDMDB = {
+["namespaces"] = {
+},
+["profileKeys"] = {
+["Shortbowjob - Area 52"] = "Luckyone 4.07",
+},
+["profiles"] = {
+["Default"] = {
+["profile"] = {
+["SecondaryPowerBar"] = {
+["Enabled"] = true,
+["MatchWidthOfAnchor"] = true,
+["ForegroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["BackgroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["ColourByState"] = true,
+["Text"] = {
+["Enabled"] = false,
+["FontSize"] = 12,
+["ShowStaggerDPS"] = false,
+["Layout"] = {
+"CENTER",
+"CENTER",
+0,
+0,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["Width"] = 200,
+["ColourByClass"] = false,
+["SwapToPowerBarPosition"] = false,
+["HideTicks"] = false,
+["ColourBySpec"] = false,
+["Height"] = 13,
+["HeightWithoutPrimary"] = 13,
+["ColourByType"] = true,
+["Layout"] = {
+"BOTTOM",
+"BCDM_PowerBar",
+"TOP",
+0,
+1,
+},
+},
+["General"] = {
+["Fonts"] = {
+["Font"] = "Friz Quadrata TT",
+["FontFlag"] = "OUTLINE",
+["Shadow"] = {
+["Enabled"] = false,
+["OffsetY"] = -1,
+["OffsetX"] = 1,
+["Colour"] = {
+0,
+0,
+0,
+1,
+},
+},
+},
+["Colours"] = {
+["SecondaryPower"] = {
+["SOUL"] = {
+0.29,
+0.42,
+1,
+1,
+},
+["STAGGER"] = {
+0,
+1,
+0.59,
+1,
+},
+[7] = {
+0.58,
+0.51,
+0.79,
+1,
+},
+["ESSENCE_RECHARGE"] = {
+0.5,
+0.5,
+0.5,
+1,
+},
+["SOUL_FRAGMENTS"] = {
+0.5,
+0.25,
+1,
+1,
+},
+[4] = {
+1,
+0.96,
+0.41,
+1,
+},
+[16] = {
+0.1,
+0.1,
+0.98,
+1,
+},
+["CHARGED_COMBO_POINTS"] = {
+0.25,
+0.5,
+1,
+1,
+},
+[9] = {
+0.95,
+0.9,
+0.6,
+1,
+},
+[5] = {
+0.77,
+0.12,
+0.23,
+1,
+},
+[19] = {
+0.2,
+0.58,
+0.5,
+1,
+},
+["RUNE_RECHARGE"] = {
+0.5,
+0.5,
+0.5,
+1,
+},
+[11] = {
+0.25,
+0.5,
+0.8,
+1,
+},
+["RUNES"] = {
+["UNHOLY"] = {
+0.25,
+1,
+0.25,
+1,
+},
+["FROST"] = {
+0.25,
+1,
+1,
+1,
+},
+["BLOOD"] = {
+1,
+0.25,
+0.25,
+1,
+},
+},
+[12] = {
+0.71,
+1,
+0.92,
+1,
+},
+["STAGGER_COLOURS"] = {
+["MODERATE"] = {
+1,
+1,
+0.25,
+1,
+},
+["LIGHT"] = {
+0.25,
+1,
+0.25,
+1,
+},
+["HEAVY"] = {
+1,
+0.25,
+0.25,
+1,
+},
+},
+},
+["PrimaryPower"] = {
+{
+1,
+0,
+0,
+},
+{
+1,
+0.5,
+0.25,
+},
+{
+1,
+1,
+0,
+},
+[0] = {
+0,
+0,
+1,
+},
+[13] = {
+0.4,
+0,
+0.8,
+},
+[8] = {
+0.75,
+0.52,
+0.9,
+},
+[18] = {
+1,
+0.61,
+0,
+},
+[11] = {
+0,
+0.5,
+1,
+},
+[6] = {
+0,
+0.82,
+1,
+},
+[17] = {
+0.79,
+0.26,
+0.99,
+},
+},
+},
+["Textures"] = {
+["Foreground"] = "Better Blizzard",
+["Background"] = "Better Blizzard",
+},
+["Animation"] = {
+["SmoothBars"] = false,
+},
+},
+["CooldownManager"] = {
+["AdditionalCustom"] = {
+["KeepAspectRatio"] = true,
+["IconWidth"] = 38,
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "RIGHT",
+["Spacing"] = 1,
+["IconHeight"] = 38,
+["IconSize"] = 38,
+["Columns"] = 0,
+["Text"] = {
+["FontSize"] = 12,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["Spells"] = {
+["DEATHKNIGHT"] = {
+["BLOOD"] = {
+},
+["FROST"] = {
+},
+["UNHOLY"] = {
+},
+},
+["WARRIOR"] = {
+["FURY"] = {
+},
+["ARMS"] = {
+},
+["PROTECTION"] = {
+},
+},
+["PALADIN"] = {
+["RETRIBUTION"] = {
+},
+["HOLY"] = {
+},
+["PROTECTION"] = {
+},
+},
+["MAGE"] = {
+["FIRE"] = {
+},
+["FROST"] = {
+},
+["ARCANE"] = {
+},
+},
+["PRIEST"] = {
+["HOLY"] = {
+},
+["SHADOW"] = {
+},
+["DISCIPLINE"] = {
+},
+},
+["SHAMAN"] = {
+["RESTORATION"] = {
+},
+["ELEMENTAL"] = {
+},
+["ENHANCEMENT"] = {
+},
+},
+["MONK"] = {
+["MISTWEAVER"] = {
+},
+["BREWMASTER"] = {
+},
+["WINDWALKER"] = {
+},
+},
+["WARLOCK"] = {
+["AFFLICTION"] = {
+},
+["DESTRUCTION"] = {
+},
+["DEMONOLOGY"] = {
+},
+},
+["DEMONHUNTER"] = {
+["VENGEANCE"] = {
+},
+["HAVOC"] = {
+},
+["DEVOURER"] = {
+},
+},
+["HUNTER"] = {
+["SURVIVAL"] = {
+},
+["MARKSMANSHIP"] = {
+},
+["BEASTMASTERY"] = {
+},
+},
+["DRUID"] = {
+["RESTORATION"] = {
+},
+["FERAL"] = {
+},
+["BALANCE"] = {
+},
+["GUARDIAN"] = {
+},
+},
+["EVOKER"] = {
+["DEVASTATION"] = {
+},
+["PRESERVATION"] = {
+},
+["AUGMENTATION"] = {
+},
+},
+["ROGUE"] = {
+["OUTLAW"] = {
+},
+["ASSASSINATION"] = {
+},
+["SUBTLETY"] = {
+},
+},
+},
+},
+["General"] = {
+["BorderSize"] = 1,
+["IconZoom"] = 0.1,
+["DisableAuraOverlay"] = false,
+["Glow"] = {
+["Enabled"] = true,
+["Type"] = "Pixel",
+["Autocast"] = {
+["Frequency"] = 0.25,
+["Color"] = {
+1,
+1,
+1,
+1,
+},
+["XOffset"] = -1,
+["Scale"] = 1,
+["Particles"] = 10,
+["YOffset"] = -1,
+},
+["Proc"] = {
+["StartAnim"] = true,
+["Color"] = {
+1,
+1,
+1,
+1,
+},
+["Duration"] = 1,
+["XOffset"] = 0,
+["YOffset"] = 0,
+},
+["Pixel"] = {
+["Thickness"] = 1,
+["Lines"] = 5,
+["Frequency"] = 0.25,
+["Color"] = {
+1,
+1,
+1,
+1,
+},
+["XOffset"] = -1,
+["Length"] = 2,
+["Border"] = false,
+["YOffset"] = -1,
+},
+["Button"] = {
+["Color"] = {
+1,
+1,
+1,
+1,
+},
+["Frequency"] = 0.125,
+},
+},
+["CooldownText"] = {
+["Colour"] = {
+1,
+1,
+1,
+},
+["FontSize"] = 15,
+["Layout"] = {
+"CENTER",
+"CENTER",
+0,
+0,
+},
+["ScaleByIconSize"] = false,
+},
+},
+["Enable"] = true,
+["BuffBar"] = {
+["BackgroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["ForegroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["Width"] = 300,
+["ColourByClass"] = true,
+["GrowthDirection"] = "UP",
+["Height"] = 24,
+["Spacing"] = 1,
+["MatchWidthOfAnchor"] = true,
+["Layout"] = {
+"BOTTOM",
+"NONE",
+"TOP",
+0,
+1.1,
+},
+["Icon"] = {
+["Enabled"] = true,
+["Layout"] = "LEFT",
+},
+["Text"] = {
+["SpellName"] = {
+["Enabled"] = true,
+["FontSize"] = 12,
+["Layout"] = {
+"LEFT",
+"LEFT",
+3,
+0,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["Duration"] = {
+["Enabled"] = true,
+["FontSize"] = 12,
+["Layout"] = {
+"RIGHT",
+"RIGHT",
+-3,
+0,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+},
+["ItemSpell"] = {
+["KeepAspectRatio"] = true,
+["IconWidth"] = 38,
+["Spacing"] = 1,
+["Text"] = {
+["FontSize"] = 12,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "LEFT",
+["ItemsSpells"] = {
+},
+["Columns"] = 0,
+["OffsetByParentHeight"] = true,
+["IconHeight"] = 38,
+["IconSize"] = 38,
+["HideZeroCharges"] = false,
+["ShowItemQualityBorder"] = true,
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+},
+["Custom"] = {
+["KeepAspectRatio"] = true,
+["IconWidth"] = 38,
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "RIGHT",
+["Spacing"] = 1,
+["IconHeight"] = 38,
+["IconSize"] = 38,
+["Columns"] = 0,
+["Text"] = {
+["FontSize"] = 12,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["Spells"] = {
+["DEATHKNIGHT"] = {
+["BLOOD"] = {
+},
+["FROST"] = {
+},
+["UNHOLY"] = {
+},
+},
+["WARRIOR"] = {
+["FURY"] = {
+},
+["ARMS"] = {
+},
+["PROTECTION"] = {
+},
+},
+["PALADIN"] = {
+["RETRIBUTION"] = {
+},
+["HOLY"] = {
+},
+["PROTECTION"] = {
+},
+},
+["MAGE"] = {
+["FIRE"] = {
+},
+["FROST"] = {
+},
+["ARCANE"] = {
+},
+},
+["PRIEST"] = {
+["HOLY"] = {
+},
+["SHADOW"] = {
+},
+["DISCIPLINE"] = {
+},
+},
+["SHAMAN"] = {
+["RESTORATION"] = {
+},
+["ELEMENTAL"] = {
+},
+["ENHANCEMENT"] = {
+},
+},
+["MONK"] = {
+["MISTWEAVER"] = {
+},
+["BREWMASTER"] = {
+},
+["WINDWALKER"] = {
+},
+},
+["WARLOCK"] = {
+["AFFLICTION"] = {
+},
+["DESTRUCTION"] = {
+},
+["DEMONOLOGY"] = {
+},
+},
+["DEMONHUNTER"] = {
+["VENGEANCE"] = {
+},
+["HAVOC"] = {
+},
+["DEVOURER"] = {
+},
+},
+["HUNTER"] = {
+["SURVIVAL"] = {
+},
+["MARKSMANSHIP"] = {
+},
+["BEASTMASTERY"] = {
+},
+},
+["DRUID"] = {
+["RESTORATION"] = {
+},
+["FERAL"] = {
+},
+["BALANCE"] = {
+},
+["GUARDIAN"] = {
+},
+},
+["EVOKER"] = {
+["DEVASTATION"] = {
+},
+["PRESERVATION"] = {
+},
+["AUGMENTATION"] = {
+},
+},
+["ROGUE"] = {
+["OUTLAW"] = {
+},
+["ASSASSINATION"] = {
+},
+["SUBTLETY"] = {
+},
+},
+},
+},
+["Trinket"] = {
+["Enabled"] = true,
+["KeepAspectRatio"] = true,
+["IconWidth"] = 38,
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "LEFT",
+["IconHeight"] = 38,
+["IconSize"] = 38,
+["Spacing"] = 1,
+["OffsetByParentHeight"] = true,
+},
+["Essential"] = {
+["IconHeight"] = 42,
+["KeepAspectRatio"] = true,
+["IconWidth"] = 42,
+["IconSize"] = 42,
+["Text"] = {
+["FontSize"] = 15,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+3,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["CenterHorizontally"] = false,
+["Layout"] = {
+"CENTER",
+"CENTER",
+0,
+-275.1,
+},
+},
+["Buffs"] = {
+["IconHeight"] = 32,
+["KeepAspectRatio"] = true,
+["IconWidth"] = 32,
+["IconSize"] = 32,
+["Text"] = {
+["FontSize"] = 15,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+3,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["CenterBuffs"] = false,
+["Layout"] = {
+"BOTTOM",
+"BCDM_SecondaryPowerBar",
+"TOP",
+0,
+1.1,
+},
+},
+["Item"] = {
+["KeepAspectRatio"] = true,
+["IconWidth"] = 38,
+["Spacing"] = 1,
+["Text"] = {
+["FontSize"] = 12,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "LEFT",
+["Items"] = {
+},
+["Columns"] = 0,
+["OffsetByParentHeight"] = true,
+["IconHeight"] = 38,
+["IconSize"] = 38,
+["HideZeroCharges"] = false,
+["ShowItemQualityBorder"] = true,
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+},
+["Utility"] = {
+["IconHeight"] = 36,
+["KeepAspectRatio"] = true,
+["IconWidth"] = 36,
+["IconSize"] = 36,
+["Text"] = {
+["FontSize"] = 15,
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+3,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["CenterHorizontally"] = false,
+["Layout"] = {
+"TOP",
+"EssentialCooldownViewer",
+"BOTTOM",
+0,
+-1.1,
+},
+},
+},
+["PowerBar"] = {
+["Enabled"] = true,
+["FrequentUpdates"] = true,
+["BackgroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["ForegroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["FrameStrata"] = "LOW",
+["Width"] = 200,
+["ColourByClass"] = false,
+["HeightWithoutSecondary"] = 20,
+["Layout"] = {
+"BOTTOM",
+"EssentialCooldownViewer",
+"TOP",
+0,
+1,
+},
+["Height"] = 13,
+["MatchWidthOfAnchor"] = true,
+["ColourByType"] = true,
+["Text"] = {
+["Enabled"] = true,
+["FontSize"] = 18,
+["Layout"] = {
+"BOTTOM",
+"BOTTOM",
+0,
+1,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+["CastBar"] = {
+["Enabled"] = true,
+["BackgroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["ForegroundColour"] = {
+0.1333333333333333,
+0.1333333333333333,
+0.1333333333333333,
+1,
+},
+["FrameStrata"] = "LOW",
+["Width"] = 200,
+["ColourByClass"] = true,
+["MatchWidthOfAnchor"] = true,
+["Height"] = 24,
+["Text"] = {
+["CastTime"] = {
+["FontSize"] = 12,
+["Layout"] = {
+"RIGHT",
+"RIGHT",
+-3,
+0,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["SpellName"] = {
+["FontSize"] = 12,
+["Layout"] = {
+"LEFT",
+"LEFT",
+3,
+0,
+},
+["MaxCharacters"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+["Icon"] = {
+["Enabled"] = true,
+["Layout"] = "LEFT",
+},
+["Layout"] = {
+"TOP",
+"UtilityCooldownViewer",
+"BOTTOM",
+0,
+-1,
+},
+},
+},
+["global"] = {
+["UseGlobalProfile"] = false,
+["DisplayLoginMessage"] = true,
+["GlobalProfileName"] = "Default",
+["EditModeManager"] = {
+["SwapOnInstanceDifficulty"] = false,
+["RaidLayouts"] = {
+["Normal"] = "",
+["Heroic"] = "",
+["Mythic"] = "",
+["LFR"] = "",
+},
+},
+},
+},
+["Luckyone 4.07"] = {
+["profile"] = {
+["CastBar"] = {
+["Enabled"] = true,
+["BackgroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["FrameStrata"] = "LOW",
+["Width"] = 200,
+["ColourByClass"] = true,
+["Layout"] = {
+"TOP",
+"UtilityCooldownViewer",
+"BOTTOM",
+0,
+-1,
+},
+["MatchWidthOfAnchor"] = true,
+["Height"] = 24,
+["Icon"] = {
+["Enabled"] = true,
+["Layout"] = "LEFT",
+},
+["Text"] = {
+["CastTime"] = {
+["Layout"] = {
+"RIGHT",
+"RIGHT",
+-3,
+0,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["SpellName"] = {
+["Layout"] = {
+"LEFT",
+"LEFT",
+3,
+0,
+},
+["FontSize"] = 12,
+["MaxCharacters"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+},
+["General"] = {
+["Textures"] = {
+["Foreground"] = "Better Blizzard",
+["Background"] = "Better Blizzard",
+},
+["Colours"] = {
+["SecondaryPower"] = {
+["SOUL"] = {
+0.29,
+0.42,
+1,
+1,
+},
+["STAGGER"] = {
+0,
+1,
+0.59,
+1,
+},
+[7] = {
+0.58,
+0.51,
+0.79,
+1,
+},
+["ESSENCE_RECHARGE"] = {
+0.5,
+0.5,
+0.5,
+1,
+},
+[4] = {
+1,
+0.96,
+0.41,
+1,
+},
+[16] = {
+0.1,
+0.1,
+0.98,
+1,
+},
+["CHARGED_COMBO_POINTS"] = {
+0.25,
+0.5,
+1,
+1,
+},
+[9] = {
+0.95,
+0.9,
+0.6,
+1,
+},
+[5] = {
+0.77,
+0.12,
+0.23,
+1,
+},
+[19] = {
+0.2,
+0.58,
+0.5,
+1,
+},
+["RUNE_RECHARGE"] = {
+0.5,
+0.5,
+0.5,
+1,
+},
+[11] = {
+0.25,
+0.5,
+0.8,
+1,
+},
+["RUNES"] = {
+["UNHOLY"] = {
+0.25,
+1,
+0.25,
+1,
+},
+["FROST"] = {
+0.25,
+1,
+1,
+1,
+},
+["BLOOD"] = {
+1,
+0.25,
+0.25,
+1,
+},
+},
+[12] = {
+0.71,
+1,
+0.92,
+1,
+},
+["STAGGER_COLOURS"] = {
+["MODERATE"] = {
+1,
+1,
+0.25,
+1,
+},
+["LIGHT"] = {
+0.25,
+1,
+0.25,
+1,
+},
+["HEAVY"] = {
+1,
+0.25,
+0.25,
+1,
+},
+},
+},
+["PrimaryPower"] = {
+{
+1,
+0,
+0,
+},
+{
+1,
+0.5,
+0.25,
+},
+{
+1,
+1,
+0,
+},
+nil,
+nil,
+{
+0,
+0.82,
+1,
+},
+nil,
+{
+0.75,
+0.52,
+0.9,
+},
+[0] = {
+0,
+0,
+1,
+},
+[17] = {
+0.79,
+0.26,
+0.99,
+},
+[18] = {
+1,
+0.61,
+0,
+},
+[13] = {
+0.4,
+0,
+0.8,
+},
+[11] = {
+0,
+0.5,
+1,
+},
+},
+},
+["Fonts"] = {
+["Font"] = "Friz Quadrata TT",
+["Shadow"] = {
+["Enabled"] = false,
+["OffsetY"] = -1,
+["OffsetX"] = 1,
+["Colour"] = {
+0,
+0,
+0,
+1,
+},
+},
+["FontFlag"] = "OUTLINE",
+},
+["Animation"] = {
+["SmoothBars"] = false,
+},
+},
+["CooldownManager"] = {
+["AdditionalCustom"] = {
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["Spells"] = {
+["HUNTER"] = {
+["SURVIVAL"] = {
+},
+["MARKSMANSHIP"] = {
+},
+["BEASTMASTERY"] = {
+},
+},
+["WARRIOR"] = {
+["FURY"] = {
+},
+["ARMS"] = {
+},
+["PROTECTION"] = {
+},
+},
+["ROGUE"] = {
+["OUTLAW"] = {
+},
+["SUBTLETY"] = {
+},
+["ASSASSINATION"] = {
+},
+},
+["MAGE"] = {
+["FIRE"] = {
+},
+["FROST"] = {
+},
+["ARCANE"] = {
+},
+},
+["PRIEST"] = {
+["HOLY"] = {
+},
+["DISCIPLINE"] = {
+},
+["SHADOW"] = {
+},
+},
+["DEATHKNIGHT"] = {
+["BLOOD"] = {
+},
+["FROST"] = {
+},
+["UNHOLY"] = {
+},
+},
+["MONK"] = {
+["MISTWEAVER"] = {
+},
+["BREWMASTER"] = {
+},
+["WINDWALKER"] = {
+},
+},
+["WARLOCK"] = {
+["AFFLICTION"] = {
+},
+["DESTRUCTION"] = {
+},
+["DEMONOLOGY"] = {
+},
+},
+["DEMONHUNTER"] = {
+["VENGEANCE"] = {
+},
+["HAVOC"] = {
+},
+["DEVOURER"] = {
+},
+},
+["PALADIN"] = {
+["RETRIBUTION"] = {
+},
+["PROTECTION"] = {
+},
+["HOLY"] = {
+},
+},
+["DRUID"] = {
+["RESTORATION"] = {
+},
+["FERAL"] = {
+},
+["BALANCE"] = {
+},
+["GUARDIAN"] = {
+},
+},
+["EVOKER"] = {
+["DEVASTATION"] = {
+},
+["PRESERVATION"] = {
+},
+["AUGMENTATION"] = {
+},
+},
+["SHAMAN"] = {
+["RESTORATION"] = {
+},
+["ELEMENTAL"] = {
+},
+["ENHANCEMENT"] = {
+},
+},
+},
+["Spacing"] = 1,
+["IconSize"] = 38,
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "RIGHT",
+},
+["Essential"] = {
+["IconSize"] = 42,
+["Layout"] = {
+"CENTER",
+"CENTER",
+0,
+-275.1,
+},
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+3,
+},
+["FontSize"] = 15,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+["Enable"] = true,
+["BuffBar"] = {
+["BackgroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["GrowthDirection"] = "UP",
+["ColourByClass"] = true,
+["Layout"] = {
+"BOTTOM",
+"NONE",
+"TOP",
+0,
+1.1,
+},
+["MatchWidthOfAnchor"] = true,
+["Spacing"] = 1,
+["Height"] = 24,
+["Width"] = 300,
+["Icon"] = {
+["Enabled"] = true,
+["Layout"] = "LEFT",
+},
+["Text"] = {
+["SpellName"] = {
+["Enabled"] = true,
+["Layout"] = {
+"LEFT",
+"LEFT",
+3,
+0,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["Duration"] = {
+["Enabled"] = true,
+["Layout"] = {
+"RIGHT",
+"RIGHT",
+-3,
+0,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+},
+["ItemSpell"] = {
+["ItemsSpells"] = {
+},
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["OffsetByParentHeight"] = true,
+["Spacing"] = 1,
+["IconSize"] = 38,
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "LEFT",
+},
+["Item"] = {
+["Items"] = {
+},
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["OffsetByParentHeight"] = true,
+["Spacing"] = 1,
+["IconSize"] = 38,
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "LEFT",
+},
+["General"] = {
+["CooldownText"] = {
+["ScaleByIconSize"] = false,
+["FontSize"] = 15,
+["Layout"] = {
+"CENTER",
+"CENTER",
+0,
+0,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["Glow"] = {
+["Enabled"] = true,
+["Lines"] = 5,
+["GlowType"] = "PIXEL",
+["XOffset"] = -1,
+["YOffset"] = -1,
+["Thickness"] = 1,
+["Frequency"] = 0.25,
+["Scale"] = 1,
+["Particles"] = 10,
+["Colour"] = {
+1,
+1,
+1,
+1,
+},
+},
+["IconZoom"] = 0.1,
+["BorderSize"] = 1,
+},
+["Custom"] = {
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["Spells"] = {
+["HUNTER"] = {
+["SURVIVAL"] = {
+},
+["MARKSMANSHIP"] = {
+},
+["BEASTMASTERY"] = {
+},
+},
+["WARRIOR"] = {
+["FURY"] = {
+},
+["ARMS"] = {
+},
+["PROTECTION"] = {
+},
+},
+["ROGUE"] = {
+["OUTLAW"] = {
+},
+["SUBTLETY"] = {
+},
+["ASSASSINATION"] = {
+},
+},
+["MAGE"] = {
+["FIRE"] = {
+},
+["FROST"] = {
+},
+["ARCANE"] = {
+},
+},
+["PRIEST"] = {
+["HOLY"] = {
+},
+["DISCIPLINE"] = {
+},
+["SHADOW"] = {
+},
+},
+["DEATHKNIGHT"] = {
+["BLOOD"] = {
+},
+["FROST"] = {
+},
+["UNHOLY"] = {
+},
+},
+["MONK"] = {
+["MISTWEAVER"] = {
+},
+["BREWMASTER"] = {
+},
+["WINDWALKER"] = {
+},
+},
+["WARLOCK"] = {
+["AFFLICTION"] = {
+},
+["DESTRUCTION"] = {
+},
+["DEMONOLOGY"] = {
+},
+},
+["DEMONHUNTER"] = {
+["VENGEANCE"] = {
+},
+["HAVOC"] = {
+},
+["DEVOURER"] = {
+},
+},
+["PALADIN"] = {
+["RETRIBUTION"] = {
+},
+["PROTECTION"] = {
+},
+["HOLY"] = {
+},
+},
+["DRUID"] = {
+["RESTORATION"] = {
+},
+["FERAL"] = {
+},
+["BALANCE"] = {
+},
+["GUARDIAN"] = {
+},
+},
+["EVOKER"] = {
+["DEVASTATION"] = {
+},
+["PRESERVATION"] = {
+},
+["AUGMENTATION"] = {
+},
+},
+["SHAMAN"] = {
+["RESTORATION"] = {
+},
+["ELEMENTAL"] = {
+},
+["ENHANCEMENT"] = {
+},
+},
+},
+["Spacing"] = 1,
+["IconSize"] = 38,
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "RIGHT",
+},
+["Buffs"] = {
+["IconSize"] = 32,
+["Layout"] = {
+"BOTTOM",
+"BCDM_SecondaryPowerBar",
+"TOP",
+0,
+1.1,
+},
+["CenterBuffs"] = false,
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+3,
+},
+["FontSize"] = 15,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+["Trinket"] = {
+["Enabled"] = true,
+["OffsetByParentHeight"] = true,
+["Layout"] = {
+"CENTER",
+"NONE",
+"CENTER",
+0,
+0,
+},
+["FrameStrata"] = "LOW",
+["GrowthDirection"] = "LEFT",
+["Spacing"] = 1,
+["IconSize"] = 38,
+["Trinkets"] = {
+},
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+2,
+},
+["FontSize"] = 12,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+["Utility"] = {
+["IconSize"] = 36,
+["Layout"] = {
+"TOP",
+"EssentialCooldownViewer",
+"BOTTOM",
+0,
+-1.1,
+},
+["Text"] = {
+["Layout"] = {
+"BOTTOMRIGHT",
+"BOTTOMRIGHT",
+0,
+3,
+},
+["FontSize"] = 15,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+},
+["EditModeManager"] = {
+["SpecializationLayouts"] = {
+"",
+"",
+"",
+"",
+},
+["RaidLayouts"] = {
+["Mythic"] = "",
+["Normal"] = "",
+["Heroic"] = "",
+["LFR"] = "",
+},
+["SwapOnSpecializationChange"] = false,
+["SwapOnInstanceDifficulty"] = false,
+},
+["PowerBar"] = {
+["Enabled"] = true,
+["FrequentUpdates"] = true,
+["BackgroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["FrameStrata"] = "LOW",
+["HeightWithoutSecondary"] = 20,
+["ColourByClass"] = false,
+["Layout"] = {
+"BOTTOM",
+"EssentialCooldownViewer",
+"TOP",
+0,
+1,
+},
+["MatchWidthOfAnchor"] = true,
+["Height"] = 13,
+["Width"] = 200,
+["ColourByType"] = true,
+["Text"] = {
+["Enabled"] = true,
+["Layout"] = {
+"BOTTOM",
+"BOTTOM",
+0,
+1,
+},
+["FontSize"] = 18,
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+},
+["SecondaryPowerBar"] = {
+["Enabled"] = true,
+["Height"] = 13,
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["BackgroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+1,
+},
+["HideTicks"] = false,
+["Text"] = {
+["Enabled"] = false,
+["FontSize"] = 12,
+["ShowStaggerDPS"] = false,
+["Layout"] = {
+"CENTER",
+"CENTER",
+0,
+0,
+},
+["Colour"] = {
+1,
+1,
+1,
+},
+},
+["FrameStrata"] = "LOW",
+["Width"] = 200,
+["ColourByClass"] = false,
+["SwapToPowerBarPosition"] = false,
+["Layout"] = {
+"BOTTOM",
+"BCDM_PowerBar",
+"TOP",
+0,
+1,
+},
+["ColourBySpec"] = false,
+["MatchWidthOfAnchor"] = true,
+["HeightWithoutPrimary"] = 13,
+["ColourByType"] = true,
+["ColourByState"] = true,
+},
+},
+["General"] = {
+["Textures"] = {
+["Foreground"] = "Minimalist",
+["Background"] = "Minimalist",
+},
+["Colours"] = {
+["SecondaryPower"] = {
+[7] = {
+0.58039218187332,
+0.50980395078659,
+0.78823536634445,
+},
+[16] = {
+0,
+0.40000003576279,
+1,
+},
+[9] = {
+0.89019614458084,
+0.87843143939972,
+0.05882353335619,
+},
+[19] = {
+0.71372550725937,
+0.82352948188782,
+1,
+},
+["RUNE_RECHARGE"] = {
+0.50196081399918,
+0.50196081399918,
+0.50196081399918,
+},
+[11] = {
+0.34901961684227,
+0.14901961386204,
+1,
+},
+},
+["PrimaryPower"] = {
+{
+0.78039222955704,
+0.25098040699959,
+0.25098040699959,
+},
+{
+nil,
+0.50196081399918,
+0.25098040699959,
+},
+{
+nil,
+0.96078437566757,
+0.41176474094391,
+},
+nil,
+nil,
+{
+nil,
+0.81960791349411,
+},
+nil,
+{
+0.30196079611778,
+0.52156865596771,
+0.90196084976196,
+},
+[0] = {
+nil,
+1,
+0.96862751245499,
+},
+[17] = {
+0.78823536634445,
+0.258823543787,
+0.99215692281723,
+},
+[18] = {
+nil,
+0.61176472902298,
+},
+[13] = {
+0.40000003576279,
+[3] = 0.80000007152557,
+},
+[11] = {
+nil,
+0.50196081399918,
+},
+},
+},
+["Fonts"] = {
+["Font"] = "Expressway",
+},
+},
+["CooldownManager"] = {
+["AdditionalCustom"] = {
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+},
+["IconSize"] = 32,
+},
+["Essential"] = {
+["KeepAspectRatio"] = false,
+["IconWidth"] = 44,
+["IconSize"] = 44,
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+["FontSize"] = 14,
+},
+["IconHeight"] = 34,
+["Layout"] = {
+nil,
+nil,
+nil,
+-203,
+},
+},
+["BuffBar"] = {
+["BackgroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+},
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+},
+},
+["ItemSpell"] = {
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+},
+["IconSize"] = 32,
+},
+["Item"] = {
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+},
+["IconSize"] = 32,
+},
+["General"] = {
+["DisableAuraOverlay"] = true,
+["Glow"] = {
+["Pixel"] = {
+["Thickness"] = 2,
+["Length"] = 12,
+},
+},
+["CooldownText"] = {
+["FontSize"] = 14,
+["Layout"] = {
+[3] = 1,
+},
+["ScaleByIconSize"] = true,
+},
+},
+["Custom"] = {
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+},
+["IconSize"] = 32,
+},
+["Buffs"] = {
+["CenterBuffs"] = true,
+["Layout"] = {
+[5] = 1,
+},
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+["FontSize"] = 12,
+},
+},
+["Trinket"] = {
+["Enabled"] = false,
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+},
+["IconSize"] = 32,
+["Trinkets"] = {
+[242494] = {
+["isActive"] = true,
+["layoutIndex"] = 1,
+},
+},
+["Layout"] = {
+nil,
+"EssentialCooldownViewer",
+[5] = -120,
+},
+},
+["Utility"] = {
+["KeepAspectRatio"] = false,
+["IconWidth"] = 32,
+["IconSize"] = 32,
+["Text"] = {
+["Layout"] = {
+"TOPRIGHT",
+"TOPRIGHT",
+1,
+-1,
+},
+["FontSize"] = 12,
+},
+["IconHeight"] = 26,
+["Layout"] = {
+[5] = -1,
+},
+},
+},
+["global"] = {
+["GlobalProfileName"] = "Default",
+["UseGlobalProfile"] = false,
+},
+["SecondaryPowerBar"] = {
+["BackgroundColour"] = {
+0.050980396568775,
+0.050980396568775,
+0.050980396568775,
+0.89999997615814,
+},
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+},
+["SwapToPowerBarPosition"] = true,
+["Height"] = 15,
+["HeightWithoutPrimary"] = 15,
+["Layout"] = {
+"TOP",
+[5] = 16,
+},
+},
+["PowerBar"] = {
+["BackgroundColour"] = {
+0.050980396568775,
+0.050980396568775,
+0.050980396568775,
+0.89999997615814,
+},
+["ForegroundColour"] = {
+0.13333333333333,
+0.13333333333333,
+0.13333333333333,
+},
+["HeightWithoutSecondary"] = 15,
+["Height"] = 15,
+["Text"] = {
+["Layout"] = {
+nil,
+nil,
+1,
+2,
+},
+["FontSize"] = 12,
+},
+},
+["CastBar"] = {
+["Enabled"] = false,
+["BackgroundColour"] = {
+0.54117649793625,
+0.56078433990479,
+0.61176472902298,
+0.89999997615814,
+},
+["ForegroundColour"] = {
+0.050980396568775,
+0.050980396568775,
+0.050980396568775,
+},
+["ColourByClass"] = false,
+["Height"] = 26,
+["Text"] = {
+["CastTime"] = {
+["Layout"] = {
+[3] = -2,
+},
+["FontSize"] = 14,
+},
+["SpellName"] = {
+["Layout"] = {
+[3] = 2,
+},
+["FontSize"] = 14,
+["MaxCharacters"] = 0,
+},
+},
+["Layout"] = {
+"BOTTOM",
+[5] = -27,
+},
+},
+},
+},
+}

@@ -1,0 +1,12 @@
+VER 3 0100000000000001 "Fury" "134400"
+#showtooltip
+/cast [@cursor] Shadowfury
+END
+VER 3 0100000000000003 "Gateway" "134400"
+#showtooltip
+/cast [@cursor] Demonic Gateway
+END
+VER 3 0100000000000002 "Soulstone" "134400"
+#showtooltip
+/cast [@mouseover] Soulstone
+END

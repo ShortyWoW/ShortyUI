@@ -1,0 +1,76 @@
+VER 3 0100000000000018 "BoP" "134400"
+#showtooltip
+/cast [@mouseover] Blessing of Protection
+END
+VER 3 0100000000000013 "Brez" "134400"
+#show
+/cast [@mouseover] Intercession
+END
+VER 3 0100000000000017 "Clense" "134400"
+#showtooltip
+/cast [@mouseover] Cleanse Toxins
+END
+VER 3 010000000000000B "Divine Shield" "INV_MISC_QUESTIONMARK"
+#show
+/stopcasting
+/cast !Divine Shield
+END
+VER 3 0100000000000011 "Flash Heal" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Flash of Light
+END
+VER 3 010000000000000E "Freedom" "INV_MISC_QUESTIONMARK"
+#show
+/stopcasting
+/cast [@player] Blessing of Freedom
+END
+VER 3 010000000000001F "HoF" "134400"
+#show
+/stopcasting
+/cast [@mouseover] Blessing of Freedom
+END
+VER 3 010000000000000A "LoH Target" "135928"
+#show
+/stopcasting
+/cast [@mouseover] Lay on Hands
+END
+VER 3 0100000000000005 "Res" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Redemption
+END
+VER 3 0100000000000016 "Sac" "134400"
+#showtooltip
+/cast [@mouseover] Blessing of Sacrifice
+END
+VER 3 010000000000001B "Trink/Wake" "134400"
+#showtooltip
+/cast Wake of Ashes
+/use 13
+END
+VER 3 010000000000001E "Turn Evil" "134400"
+#showtooltip
+/cast [@mouseover] Turn Evil
+END
+VER 3 010000000000001C "Wing / Pot" "134400"
+#showtooltip
+/cast Avenging Wrath
+/use item:191383
+END
+VER 3 0100000000000019 "Wings / Reck" "135875"
+#showtooltip
+/cast Avenging Wrath
+/cast [@player] Final Reckoning
+END
+VER 3 0100000000000004 "WOG" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Word of Glory
+END
+VER 3 010000000000001D "WoG Me" "134400"
+#showtooltip
+/cast [@player] Word of Glory
+END
+VER 3 010000000000000F "Zoomer" "INV_MISC_QUESTIONMARK"
+#show
+/stopcasting
+/cast Divine Steed
+END

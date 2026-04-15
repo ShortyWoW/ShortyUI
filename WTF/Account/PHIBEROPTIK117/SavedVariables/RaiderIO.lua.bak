@@ -1,0 +1,86 @@
+
+RaiderIO_Config = {
+["replayAlpha"] = 1,
+["enableKeystoneTooltips"] = true,
+["profilePoint"] = {
+["y"] = 0,
+["x"] = -16.00000190734863,
+["point"] = "TOPLEFT",
+},
+["enableReplay"] = true,
+["enableLFGDropdown"] = true,
+["minimapIcon"] = {
+["minimapPos"] = 180,
+["showInCompartment"] = true,
+["hide"] = true,
+["lock"] = false,
+},
+["showMainsScore"] = true,
+["showRaidEncountersInProfile"] = true,
+["showAverageScore"] = false,
+["enableWhoMessages"] = true,
+["useEnglishAbbreviations"] = false,
+["replayBackground"] = {
+["a"] = 0.5,
+["b"] = 0,
+["g"] = 0,
+["r"] = 0,
+},
+["disableScoreColors"] = false,
+["showMainBestScore"] = true,
+["allowClientToControlCombatLog"] = true,
+["mplusHeadlineMode"] = 0,
+["showScoreInCombat"] = true,
+["showWarbandScore"] = true,
+["enableWhoTooltips"] = true,
+["showOtherWarbandScore"] = true,
+["showMyWarbandScore"] = false,
+["replaySelection"] = "user_best_replay",
+["enableClientEnhancements"] = true,
+["enableGuildTooltips"] = true,
+["enableLFGTooltips"] = true,
+["hidePersonalRaiderIOProfile"] = false,
+["positionProfileAuto"] = true,
+["enableLFGExportButton"] = true,
+["showRoleIcons"] = true,
+["enableFriendsTooltips"] = true,
+["showRaiderIOProfile"] = true,
+["showDropDownCopyURL"] = true,
+["enableUnitTooltips"] = true,
+["enableProfileModifier"] = true,
+["showScoreModifier"] = false,
+["inverseProfileModifier"] = false,
+["lockProfile"] = false,
+["showSimpleScoreColors"] = false,
+["enableCombatLogTracking"] = false,
+["showClientGuildBest"] = true,
+}
+RaiderIO_LastCharacter = "us-Callmeshawte-area-52"
+RaiderIO_MissingCharacters = {
+["us-Monkdickens-thrall"] = true,
+["us-Berrypossum-area-52"] = true,
+["us-Brutilda-destromath"] = true,
+["us-Jarrenweffs-thunderlord"] = true,
+["us-Kubby-malganis"] = true,
+["us-Gruetss-zuluhed"] = true,
+["us-Äntu-area-52"] = true,
+["us-Awfully-area-52"] = true,
+["us-Icons-eonar"] = true,
+["us-Tythas-stormrage"] = true,
+["us-Sortie-malganis"] = true,
+["us-Aerithstar-area-52"] = true,
+["us-Ashadoxx-area-52"] = true,
+["us-Gokka-nemesis"] = true,
+["us-Steaktartar-area-52"] = true,
+["us-Guårdiån-gnomeregan"] = true,
+["us-Hyrexqt-deathwing"] = true,
+["us-Callmeshawte-area-52"] = true,
+["us-Phakzee-illidan"] = true,
+}
+RaiderIO_MissingServers = {
+}
+RaiderIO_CachedRuns = nil
+RaiderIO_RWF = {
+}
+RaiderIO_CompletedReplays = {
+}

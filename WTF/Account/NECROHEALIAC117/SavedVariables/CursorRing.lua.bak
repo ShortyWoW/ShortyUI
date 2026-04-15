@@ -1,0 +1,38 @@
+
+CursorRingDB = {
+["visible"] = true,
+["customColor"] = {
+["r"] = 1,
+["g"] = 1,
+["b"] = 1,
+},
+["ringRadius"] = 28,
+["offsetX"] = 0,
+["useHighVis"] = false,
+["showHelpOnLogin"] = false,
+["gradientAngle"] = 0,
+["hideOnRightClick"] = true,
+["useClassColor"] = true,
+["outCombatAlpha"] = 0.3,
+["gradientColor2"] = {
+["r"] = 1,
+["g"] = 1,
+["b"] = 1,
+},
+["colorMode"] = "class",
+["helpMessageShownOnce"] = true,
+["ringThickness"] = 50,
+["offsetY"] = 0,
+["gradientColor1"] = {
+["r"] = 1,
+["g"] = 1,
+["b"] = 1,
+},
+["inCombatAlpha"] = 0.7,
+}
+CursorRingCharDB = {
+["gcdReverse"] = false,
+["gcdEnabled"] = true,
+["gcdStyle"] = "simple",
+["gcdDimMultiplier"] = 0.35,
+}

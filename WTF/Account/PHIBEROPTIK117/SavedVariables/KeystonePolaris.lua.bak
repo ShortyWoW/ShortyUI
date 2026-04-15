@@ -1,0 +1,25 @@
+
+KeystonePercentageHelperDB = nil
+KeystonePolarisDB = {
+["profileKeys"] = {
+["Callmeshorty - Dalaran"] = "Default",
+["Callmeshorty - Illidan"] = "Default",
+["Callmeshawte - Area 52"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
+},
+["profiles"] = {
+["Default"] = {
+["lastSeasonCheck"] = "2026-03-26",
+["general"] = {
+["showMinimapIcon"] = false,
+["lastVersionCheck"] = "3.7.1",
+["minimap"] = {
+["minimapPos"] = 225,
+["showInCompartment"] = true,
+["hide"] = true,
+},
+},
+},
+},
+}

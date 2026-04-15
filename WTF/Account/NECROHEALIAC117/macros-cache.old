@@ -1,0 +1,102 @@
+VER 3 0000000000000095 "AAP_MACRO" "INV_MISC_QUESTIONMARK"
+/script print('no button yet')
+END
+VER 3 0000000000000084 "ALANI MOUNT" "Ability_Mount_Drake_Twilight."
+/2 WTS |cffa335ee|Hitem:90655:0:0:0:0:0:0:0:100:0:0:0|h[Reins of the Thundering Ruby Cloud Serpent]|h|r PST Offer - My |cffa335ee|Hitem:86546:0:0:0:0:0:0:0:100:0:0:0|h[Sky Crystal]|h|r. Your gold.
+END
+VER 3 0000000000000093 "Bones" "INV_MISC_QUESTIONMARK"
+#show Hearty Soup Bone
+/script SelectGossipAvailableQuest()
+/script CompleteQuest()
+/script GetQuestReward()
+END
+VER 3 000000000000008B "Golden Girls" "INV_PET_BATTLEPETTRAINING"
+/s They told me that it wasn't possible, but with some hard work and determination, I have successfully masterbated to a Golden Girls marathon. Betty White made it challenging, but I overcame all obsticals.
+END
+VER 3 0000000000000096 "Guild" "INV_MISC_QUESTIONMARK"
+/2 210 Resto Shaman, 2/10M AOTC Heroic LF raiding guild, pst.
+END
+VER 3 0000000000000091 "Macro 3" "INV_MISC_QUESTIONMARK"
+#showtooltip Flawless Draenethyst Sphere
+/tar Kum’isha
+/use Flawless Draenethyst Sphere
+/use Imperfect Draenethyst Fragment
+/run AcceptQuest()
+/run AcceptQuest()
+END
+VER 3 0000000000000092 "Macro 4" "INV_MISC_QUESTIONMARK"
+#showtooltip Imperfect Draenethyst Fragment
+/tar Kum’isha
+/script SelectGossipAvailableQuest(1)
+/script SelectGossipActiveQuest(1)
+/script CompleteQuest()
+/script GetQuestReward(1)
+/script SelectGossipOption(1)
+/script AcceptQuest()
+END
+VER 3 000000000000007C "Mail Delete" "ACHIEVEMENT_GUILDPERK_GMAIL"
+/click MailItem1Button
+/click OpenMailAttachmentButton1
+/click OpenMailDeleteButton
+END
+VER 3 0000000000000085 "Open Treasures" "INV_MISC_QUESTIONMARK"
+#show
+/use Plundered Treasure
+END
+VER 3 0000000000000072 "PvP Trinket" "INV_MISC_QUESTIONMARK"
+#show
+/use 13
+END
+VER 3 0000000000000067 "Skull" "ABILITY_CREATURE_CURSED_05"
+/run SetRaidTarget("mouseover",8)
+END
+VER 3 0000000000000090 "Target Rare" "133712"
+/tar Clack the
+/tar Mordak
+/tar Spitefla
+/tar Deatheye
+/tar Mojo the
+/tar Ravage
+/tar Akubar
+/tar Grunter
+/tar Magronos
+/tar Cassia
+/tar Dreadscorn
+/tar Teremus
+/tar Blackleaf
+/tar Narixxus
+END
+VER 3 0000000000000094 "Test" "INV_MISC_QUESTIONMARK"
+/equip Fen-Yu, Fury of Xuen
+END
+VER 3 000000000000008F "TomTom" "INV_SCROLL_11"
+/way 46.45, 14.19
+/way 46.10, 24.77
+/way 51.99, 26.77
+/way 60.72, 29.22
+/way 61.92, 36.45
+/way 63.63, 38.68
+/way 54.05, 37.01
+/way 54.40, 52.37
+/way 73.42, 55.26
+/way 60.72, 73.74
+/way 31.90, 68.62
+/way 31.83, 44.80
+/way 37.08, 28.89
+/way 45.32, 41.02
+END
+VER 3 000000000000007D "Toys" "INV_MISC_QUESTIONMARK"
+#show
+/use Muradin's Favor
+/use Stolen Breath
+/use Winning Hand
+/use Kang's Bindstone
+/use Blazing Wings
+/use Blackflame Daggers
+/use Druid and Priest Statue Set
+/use Gamon's Braid
+/use Elixir of Giant Growth
+END
+VER 3 0000000000000082 "Vendor Greys" "ACHIEVEMENT_GUILDPERK_MOBILEBANKING"
+/run for bag=0,4,1 do for slot=1,GetContainerNumSlots(bag),1 do local name=GetContainerItemLink(bag,slot) if name and string.find(name,"ff9d9d9d") then DEFAULT_CHAT_FRAME:AddMessage("- Selling "..name) UseContainerItem(bag,slot) end end end 
+END

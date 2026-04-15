@@ -1,0 +1,52 @@
+VER 3 0100000000000011 "Cacoon" "134400"
+#showtooltip
+/cast [@mouseover] Life Cocoon
+END
+VER 3 0100000000000013 "Dispell" "134400"
+#showtooltip
+/cast [@mouseover] Detox
+END
+VER 3 0100000000000012 "Enveloping Mist" "134400"
+#showtooltip
+/cast [@mouseover] Enveloping Mist
+END
+VER 3 0100000000000017 "Para" "134400"
+#showtooltip
+/cast [@mouseover] Paralysis
+END
+VER 3 0100000000000010 "Renewing Mist" "134400"
+#showtooltip
+/cast [@mouseover] Renewing Mist
+END
+VER 3 0100000000000014 "Rez" "134400"
+#showtooltip
+/cast [@mouseover] Resuscitate
+END
+VER 3 010000000000000D "Ring of Penis" "134400"
+#showtooltip
+/cast [@cursor] Ring of Peace
+END
+VER 3 0100000000000016 "Sheilun's Gift" "134400"
+#show
+/cast [@mouseover] Sheilun's Gift
+END
+VER 3 0100000000000006 "Soothing Mist" "134400"
+#showtooltip
+/cast [@mouseover] Soothing Mist
+END
+VER 3 0100000000000002 "Summon Statue" "134400"
+#showtooltip
+/cast [@cursor, known:115313] Summon Jade Serpent Statue;[@cursor, known:388686] Summon White Tiger Statue; [@cursor, known:115315] Summon Black Ox Statue
+END
+VER 3 0100000000000001 "Tiger's Lust" "134400"
+#showtooltip
+/cast [@player] !Tiger's Lust
+END
+VER 3 0100000000000005 "Vivify" "134400"
+#showtooltip
+/cast [@mouseover] Vivify
+END
+VER 3 0100000000000015 "Zen Pulse" "134400"
+#showtooltip
+/cast [@mouseover] Zen Pulse
+END

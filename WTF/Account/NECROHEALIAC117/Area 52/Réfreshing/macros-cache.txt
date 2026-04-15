@@ -1,0 +1,4 @@
+VER 3 010000000000001D "Tiger's Lust" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@player] Tiger's Lust
+END

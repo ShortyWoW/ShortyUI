@@ -1,0 +1,34 @@
+VER 3 0100000000000007 "BOP" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@Fruitvendor] Hand of Protection
+END
+VER 3 0100000000000001 "Cleanse" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Cleanse
+END
+VER 3 0100000000000005 "Holy Prism" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Holy Prism
+END
+VER 3 0100000000000003 "Interrupt Boss" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@boss2] Rebuke
+END
+VER 3 0100000000000006 "Prism Holy" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@boss1] Holy Prism
+/cast [@boss2] Holy Prism
+/cast [@boss3] Holy Prism
+/cast [@Cruelfang] Holy Prism
+/cast [@Dreadwing] Holy Prism
+/cast [@Ironcrusher] Holy Prism
+/cast [@target] Holy Prism 
+END
+VER 3 0100000000000004 "Rebuke" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Rebuke
+END
+VER 3 0100000000000002 "Stun" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Fist of Justice
+END

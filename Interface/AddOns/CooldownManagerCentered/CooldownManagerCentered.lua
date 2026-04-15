@@ -1,0 +1,284 @@
+local _, ns = ...
+local addon = ns.Addon
+
+local AddOnFrame = CreateFrame("Frame")
+AddOnFrame:RegisterEvent("ADDON_LOADED")
+
+function addon:OpenSettings()
+    if InCombatLockdown() then
+        ns.Addon:Print("Cannot open settings panel while in combat.")
+        return
+    end
+    if ns.WilduSettings then
+        local id = ns.WilduSettings.SettingsLayout.rootCategory:GetID()
+        Settings.OpenToCategory(id)
+    end
+end
+
+function addon:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New("CooldownManagerCenteredDB", ns.DEFAULT_SETTINGS, true)
+    ns.db = self.db
+
+    -- Register database callbacks for profile changes
+    self.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
+    self.db.RegisterCallback(self, "OnProfileCopied", "RefreshConfig")
+    self.db.RegisterCallback(self, "OnProfileReset", "RefreshConfig")
+    self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
+    self.db.RegisterCallback(self, "OnProfileDeleted", "OnProfileDeleted")
+
+    if ns.WilduSettings then
+        ns.WilduSettings:RegisterSettings()
+        ns.WilduSettings:InitializeSettings()
+    end
+end
+local openCooldownViewerSettings = function()
+    if InCombatLockdown() then
+        CooldownViewerSettings:Show()
+        local frameName = CooldownViewerSettings:GetName()
+        if frameName and not tContains(UISpecialFrames, frameName) then
+            tinsert(UISpecialFrames, frameName)
+        end
+    else
+        CooldownViewerSettings:ShowUIPanel(false)
+    end
+end
+
+SLASH_CMC_CVS1 = "/cds"
+SLASH_CMC_CVS2 = "/cdm"
+SlashCmdList["CMC_CVS"] = openCooldownViewerSettings
+SLASH_CMC_COMMAND1 = "/cmc"
+SlashCmdList["CMC_COMMAND"] = function(msg)
+    if not msg or msg == "" then
+        addon:OpenSettings()
+        return
+    end
+    local chunks = {}
+    for substring in msg:gmatch("%S+") do
+        table.insert(chunks, substring)
+    end
+    local command = chunks[1] and chunks[1]:lower()
+    local arg = chunks[2] and chunks[2]:lower()
+    if command == "track" and (arg == "spell" or arg == "item") and chunks[3] then
+        local ok, error = ns.API:AddToTracking(arg, chunks[3])
+        if not ok then
+            ns.Addon:Print(error)
+        end
+        return
+    end
+
+    ns.Addon:Print("Available commands:")
+    print("/cmc - Open the settings panel")
+    print("/cmc track spell {id} - Add a spell to the custom tracked list")
+    print("/cmc track item {id} - Add an item to the custom tracked list")
+end
+
+function addon:RefreshConfig()
+    if ns.StyledIcons then
+        ns.StyledIcons:Initialize()
+    end
+    if ns.CooldownManager then
+        ns.CooldownManager.Initialize()
+    end
+    if ns.Stacks then
+        ns.Stacks:Initialize()
+    end
+    if ns.Keybinds then
+        ns.Keybinds:Initialize()
+    end
+    if ns.Assistant then
+        ns.Assistant:Initialize()
+    end
+    if ns.CooldownFont then
+        ns.CooldownFont:Initialize()
+    end
+    if ns.TrackerDB then
+        ns.TrackerDB:InitializeDB()
+    end
+    if ns.TrackerItemViewer then
+        ns.TrackerItemViewer:Initialize()
+    end
+    if ns.GlowStyle then
+        ns.GlowStyle:Initialize()
+    end
+    if not ns.db.profile.cooldownManager_experimental_disablePerSpellSettings then
+        if ns.CooldownStyle then
+            ns.CooldownStyle:Initialize()
+        end
+    end
+    if ns.ButtonPress then
+        ns.ButtonPress:Initialize()
+    end
+    if ns.CMCVisibility then
+        ns.CMCVisibility:Initialize()
+    end
+
+    ns.API:RefreshCooldownManager()
+    ns.API:ShowReloadUIConfirmation()
+    self:Print("Profile settings applied.")
+end
+
+function addon:OnNewProfile(event, db, profile)
+    self:Print("Created new profile: " .. profile)
+end
+
+function addon:OnProfileDeleted(event, db, profile)
+    self:Print("Deleted profile: " .. profile)
+end
+
+local function _cleanup()
+    ns.db.profile.cooldownManager_forceCenterX_BuffIcons = nil
+    ns.db.profile.cooldownManager_forceCenterX_Essential = nil
+    ns.db.profile.cooldownManager_forceCenterX_Utility = nil
+    ns.db.profile.cooldownManager_forceCenterX_BuffIcons_lastY = nil
+    ns.db.profile.cooldownManager_forceCenterX_Essential_lastY = nil
+    ns.db.profile.cooldownManager_forceCenterX_Utility_lastY = nil
+
+    ns.db.profile.cooldownManager_experimental_subsequentRowScaling = nil
+    ns.db.profile.cooldownManager_experimental_subsequentRowScaling_Essential = nil
+    ns.db.profile.cooldownManager_experimental_subsequentRowScaling_Utility = nil
+    ns.db.profile.cooldownManager_experimental_hideAuras = nil
+    if ns.db.profile.cooldownManager_experimental_trinketRacialTracker ~= nil then
+        ns.db.profile.tracker_enabled = ns.db.profile.cooldownManager_experimental_trinketRacialTracker
+        local oldTrackerPosition = ns.db.profile.editMode.trinketRacialTracker
+        for k, v in pairs(oldTrackerPosition) do
+            ns.db.profile.editMode.tracker1[k] = v
+        end
+
+        ns.db.profile.cooldownManager_experimental_trinketRacialTracker = nil
+        ns.db.profile.editMode.trinketRacialTracker = nil
+    end
+    if
+        ns.db.profile.trinketRacialTracker_position ~= nil
+        or ns.db.profile.editMode.trinketRacialTracker ~= nil
+        or ns.db.profile.trinketRacialTracker_ignoredRacials ~= nil
+        or ns.db.profile.trinketRacialTracker_ignoredItems ~= nil
+    then
+        -- cleanup old settings... later
+        ns.db.profile.editMode.trinketRacialTracker = nil
+        ns.db.profile.trinketRacialTracker_position = nil
+        ns.db.profile.trinketRacialTracker_ignoredRacials = nil
+        ns.db.profile.trinketRacialTracker_ignoredItems = nil
+    end
+
+    if ns.db.profile.cooldownManager_experimental_buttonPress ~= nil then
+        ns.db.profile.cooldownManager_buttonPress = ns.db.profile.cooldownManager_experimental_buttonPress
+        ns.db.profile.cooldownManager_experimental_buttonPress = nil
+    end
+
+    if ns.db.profile.cooldownManager_experimental_enableRectangularIcons ~= nil then
+        ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential =
+            ns.db.profile.cooldownManager_experimental_enableRectangularIcons
+        ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility =
+            ns.db.profile.cooldownManager_experimental_enableRectangularIcons
+        ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons =
+            ns.db.profile.cooldownManager_experimental_enableRectangularIcons
+        ns.db.profile.cooldownManager_experimental_enableRectangularIcons = nil
+    end
+
+    ns.db.profile.cooldownManager_visibility_enabled = nil
+
+    ns.db.profile.cooldownManager_centerBuffIcons = nil
+    ns.db.profile.cooldownManager_alignBuffBars = nil
+    ns.db.profile.cooldownManager_centerEssential = nil
+    ns.db.profile.cooldownManager_centerUtility = nil
+    ns.db.profile.cmcSpellSettings = nil
+    ns.db.profile.cmcMiscTracked = nil
+    ns.db.profile.cooldownManager_experimental_miscTracker = nil
+    ns.db.profile.cooldownManager_smallerSpacing = nil
+    ns.db.profile.CooldownSkinning = nil
+    ns.db.profile.cooldownManager_customActiveColor_enabled = nil
+    ns.db.profile.miscTracker_squareIcons = nil
+    -- ns.db.profile.cooldownManager_experimental_custom_glows = false,
+end
+
+function addon:OnEnable()
+    _cleanup()
+    C_CVar.SetCVar("cooldownViewerEnabled", "1")
+    if ns.StyledIcons then
+        ns.StyledIcons:Initialize()
+    end
+    if ns.CooldownManager then
+        ns.CooldownManager.Initialize()
+    end
+    if ns.Stacks then
+        ns.Stacks:Initialize()
+    end
+    if ns.Keybinds then
+        ns.Keybinds:Initialize()
+    end
+    if ns.Assistant then
+        ns.Assistant:Initialize()
+    end
+    if ns.CooldownFont then
+        ns.CooldownFont:Initialize()
+    end
+    if ns.TrackerDB then
+        ns.TrackerDB:InitializeDB()
+    end
+    if ns.TrackerItemViewer then
+        ns.TrackerItemViewer:Initialize()
+    end
+    if ns.GlowStyle then
+        ns.GlowStyle:Initialize()
+    end
+    if not ns.db.profile.cooldownManager_experimental_disablePerSpellSettings then
+        if ns.CooldownStyle then
+            ns.CooldownStyle:Initialize()
+        end
+    end
+
+    if ns.ButtonPress then
+        ns.ButtonPress:Initialize()
+    end
+    if ns.CMCVisibility then
+        ns.CMCVisibility:Initialize()
+    end
+
+    if ns.db.profile.cooldownManager_buttonPress then
+        AddOnFrame:SetScript("OnEvent", function(_, event, argument)
+            if not ns.db.profile.cooldownManager_buttonPress then
+                return
+            end
+            if event == "ADDON_LOADED" and argument == "Dominos" then
+                ns.ButtonPress:HookAllDominosButtons()
+            end
+            if event == "ADDON_LOADED" and argument == "ElvUI" then
+                ns.ButtonPress:RegisterElvUICallbacks()
+            end
+        end)
+        if C_AddOns.IsAddOnLoaded("Dominos") then
+            ns.ButtonPress:HookAllDominosButtons()
+        end
+        if C_AddOns.IsAddOnLoaded("ElvUI") then
+            ns.ButtonPress:RegisterElvUICallbacks()
+        end
+    end
+end
+local gameVersion = select(1, GetBuildInfo())
+addon.isMidnight = gameVersion:match("^12")
+addon.isRetail = gameVersion:match("^11")
+
+C_Timer.After(2, function()
+    local time = C_DateAndTime.GetCurrentCalendarTime()
+    local todaysDate = time.year * 10000 + time.month * 100 + time.monthDay
+
+    if
+        ns.API:IsElvUICDMSkinningEnabled()
+        and (ns.StyledIcons:IsAnyStyledFeatureEnabled() or ns.Stacks:IsAnyStacksFeatureEnabled())
+        and (
+            not ns.db.profile._elvui_skinning_asked
+            or (ns.db.profile._elvui_skinning_asked < todaysDate - 4 or ns.db.profile._elvui_skinning_asked < 10000)
+        )
+    then
+        StaticPopup_Show("CMC_ELVUI_SKINNING_ASK")
+        ns.db.profile._elvui_skinning_asked = todaysDate
+    end
+
+    -- -- Hide it for now
+    -- if not ns.db.profile._bug_warning_displayed or (ns.db.profile._bug_warning_displayed <= todaysDate - 1) then
+    --     print(
+    --         "|cff008945Cool|r|cff1e9a4e|r|cff3faa4fdown Ma|r|cff5fb64anag|r|cff7ac243er Ce|r|cff8ccd00ntered|r is rarely responsible for Cooldown Manager bugs. Through the beta cycle, Blizzard ignored and still did not resolve many issues related to disappearing/changing abilities, wrong or missing auras, and other bugs. If you encounter any of those, please report them to Blizzard as well, so they can prioritize fixing them."
+    --     )
+    --     ns.db.profile._bug_warning_displayed = todaysDate
+    -- end
+end)

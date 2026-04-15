@@ -1,0 +1,148 @@
+
+AccountPlayedDB = {
+["Area52-Cyword"] = {
+["time"] = 14802171,
+["class"] = "PRIEST",
+},
+["Stormrage-Absolusion"] = {
+["time"] = 2629815,
+["class"] = "MAGE",
+},
+["Area52-Phiber"] = {
+["time"] = 1440144,
+["class"] = "DEATHKNIGHT",
+},
+["Area52-Réfreshing"] = {
+["time"] = 1333437,
+["class"] = "MONK",
+},
+["Area52-Azurê"] = {
+["time"] = 7065917,
+["class"] = "SHAMAN",
+},
+["Area52-Shortbowjob"] = {
+["time"] = 937792,
+["class"] = "HUNTER",
+},
+["Area52-Shortbreath"] = {
+["time"] = 146766,
+["class"] = "EVOKER",
+},
+["BleedingHollow-Phiberoptik"] = {
+["time"] = 4085547,
+["class"] = "WARRIOR",
+},
+["Stormrage-Lildotnrg"] = {
+["time"] = 679119,
+["class"] = "WARLOCK",
+},
+["Dalaran-Shortyaddons"] = {
+["time"] = 23691,
+["class"] = "WARRIOR",
+},
+["Area52-Fibear"] = {
+["time"] = 13677343,
+["class"] = "DRUID",
+},
+["Mal'Ganis-Chugmonk"] = {
+["time"] = 1833912,
+["class"] = "MONK",
+},
+["Area52-Callmeshorty"] = {
+["time"] = 835120,
+["class"] = "MAGE",
+},
+["Dalaran-Randuhrr"] = {
+["time"] = 35,
+["class"] = "ROGUE",
+},
+["BleedingHollow-Fiberoptic"] = {
+["time"] = 495810,
+["class"] = "DRUID",
+},
+["Area52-Catfive"] = {
+["time"] = 2680325,
+["class"] = "HUNTER",
+},
+["Area52-Shortbeef"] = {
+["time"] = 161629,
+["class"] = "MONK",
+},
+["Dalaran-Drewishlazer"] = {
+["time"] = 842037,
+["class"] = "DEMONHUNTER",
+},
+["MoonGuard-Callmeshortÿ"] = {
+["time"] = 6523977,
+["class"] = "SHAMAN",
+},
+["Area52-Shortonheals"] = {
+["time"] = 57753,
+["class"] = "PRIEST",
+},
+["Dalaran-Shortypal"] = {
+["time"] = 247336,
+["class"] = "PALADIN",
+},
+["Dalaran-Randysmells"] = {
+["time"] = 1,
+["class"] = "WARLOCK",
+},
+["Area52-Fiberoptic"] = {
+["time"] = 8320131,
+["class"] = "PALADIN",
+},
+["Azgalor-Phiberoptik"] = {
+["time"] = 1397248,
+["class"] = "PALADIN",
+},
+["Area52-Callmeshorte"] = {
+["time"] = 46437,
+["class"] = "HUNTER",
+},
+["Dalaran-Drewishlaser"] = {
+["time"] = 34928,
+["class"] = "DRUID",
+},
+["Area52-Callmeshawte"] = {
+["time"] = 16308,
+["class"] = "WARLOCK",
+},
+["Dalaran-Rndylikehoof"] = {
+["time"] = 29,
+["class"] = "PALADIN",
+},
+["Stormrage-Absoloot"] = {
+["time"] = 1006498,
+["class"] = "DRUID",
+},
+["Area52-Fiber"] = {
+["time"] = 4490411,
+["class"] = "ROGUE",
+},
+["Area52-Locknlol"] = {
+["time"] = 8431786,
+["class"] = "WARLOCK",
+},
+["Mal'Ganis-Medimilk"] = {
+["time"] = 2426340,
+["class"] = "HUNTER",
+},
+["Mal'Ganis-Udderstorm"] = {
+["time"] = 1443427,
+["class"] = "PALADIN",
+},
+}
+AccountPlayedMinimapDB = {
+["y"] = -74.24621202458748,
+["x"] = -74.2462120245875,
+["locked"] = false,
+}
+AccountPlayedPopupDB = {
+["y"] = 0,
+["x"] = 0,
+["point"] = "CENTER",
+["height"] = 300,
+["useYears"] = false,
+["width"] = 520,
+}

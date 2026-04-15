@@ -1,0 +1,14 @@
+
+ShortyInterruptDB = {
+["ui"] = {
+["y"] = -93,
+["relPoint"] = "CENTER",
+["point"] = "CENTER",
+["x"] = -320.0000305175781,
+["locked"] = true,
+["relName"] = "UIParent",
+["w"] = 280.9998779296875,
+["h"] = 125.9999618530273,
+},
+["debug"] = true,
+}

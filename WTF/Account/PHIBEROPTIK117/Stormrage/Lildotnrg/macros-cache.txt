@@ -1,0 +1,24 @@
+VER 3 0100000000000006 "Call Pets" "134400"
+#showtooltip
+/castsequence reset=15 Summon Imp, Summon Felguard
+END
+VER 3 0100000000000004 "Gateway" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@cursor] !Demonic Gateway
+END
+VER 3 0100000000000002 "Shadowfury" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@cursor] !Shadowfury
+END
+VER 3 0100000000000007 "Singe Magic" "134400"
+#showtooltip
+/cast [@mouseover] Singe Magic(Command Demon Ability)
+END
+VER 3 0100000000000005 "Soulstone" "134400"
+#showtooltip
+/cast [@mouseover] Soulstone
+END
+VER 3 0100000000000008 "Subjugate Demon" "134400"
+#showtooltip
+/cast [@mousevoer] Subjugate Demon
+END

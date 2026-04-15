@@ -1,0 +1,65 @@
+VER 3 0100000000000011 "Buff" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/dismount
+/cast [@player] Power Word: Fortitude
+END
+VER 3 0100000000000025 "Castcade" "INV_MISC_QUESTIONMARK"
+#show
+/cast [@mouseover] Cascade
+END
+VER 3 0100000000000015 "Flash Heal" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Flash Heal
+END
+VER 3 010000000000001F "Leap" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Leap of Faith
+END
+VER 3 010000000000001B "Levitate" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cancelaura Levitate
+/stopcasting
+/dismount
+/cast [@player] Levitate
+END
+VER 3 0100000000000018 "Mass Dispel" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast !Mass Dispel
+END
+VER 3 0100000000000024 "Mindbender" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Mindbender
+/cast Arcane Torrent(Racial)
+/use Soothing Talisman of the Shado-Pan Assault
+END
+VER 3 0100000000000020 "Pain Sup" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Pain Suppression
+END
+VER 3 0100000000000012 "Penance" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Penance
+END
+VER 3 0100000000000013 "POM" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Prayer of Mending
+END
+VER 3 0100000000000014 "Power Word: Shie" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Power Word: Shield
+END
+VER 3 0100000000000022 "Purify" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stopcasting
+/cast [@mouseover] Purify
+END
+VER 3 010000000000001C "Shit" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stopcasting
+/cast Desperate Prayer
+/cast [@player] Renew
+END
+VER 3 0100000000000027 "ZGVMacro1" "0"
+/target Ameri Windblade
+/run ZGV:MRM()
+END

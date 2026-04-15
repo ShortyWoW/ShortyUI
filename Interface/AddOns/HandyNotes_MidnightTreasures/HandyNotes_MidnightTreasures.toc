@@ -1,0 +1,48 @@
+## Interface: 120001
+## Title: HandyNotes: Midnight Treasures and Rares
+## Notes: Where are the hidden treasures in Midnight?
+## Author: Kemayo
+## Version: v43
+## IconTexture: Interface\Icons\Ability_Spy
+## DefaultState: enabled
+## X-Category: Map
+## X-eMail: kemayo @ gmail DOT com
+## X-Curse-Project-ID: 934070
+## X-Wago-ID: kGr0me6y
+## SavedVariables: HandyNotes_MidnightTreasuresDB
+## RequiredDeps: HandyNotes
+
+handler\handler.xml
+
+midnight.lua
+
+zones\Quelthalas.lua
+zones\EversongWoods.lua
+zones\SilvermoonCity.lua
+zones\Zulaman.lua
+zones\Voidstorm.lua
+zones\Harandar.lua
+zones\IsleOfQueldanas.lua
+zones\Arcantina.lua
+
+achievements\DustEmOff.lua
+achievements\GlyphHunter.lua
+achievements\HighestPeaks.lua
+achievements\LoreHunter.lua
+achievements\MoreThanJustTheirRoots.lua
+
+shared\Delves.lua
+shared\WorldBosses.lua
+
+#professions\Masters.lua
+professions\Alchemy.lua
+professions\Blacksmithing.lua
+professions\Enchanting.lua
+professions\Engineering.lua
+professions\Inscription.lua
+professions\Jewelcrafting.lua
+professions\Leatherworking.lua
+professions\Tailoring.lua
+professions\Herbalism.lua
+professions\Mining.lua
+professions\Skinning.lua

@@ -1,0 +1,27 @@
+## Title: |cff4beb2cLuckyoneUI|r |cff67f100TBC|r
+## Notes: Luckyone's user interface and Addon profiles
+## OptionalDeps: ElvUI
+## SavedVariables: LuckyoneDB
+
+## DefaultState: enabled
+## Author: Luckyone
+## Version: 4.09
+
+## Interface: 20505
+## X-Required-ElvUI: 15.11
+
+## X-Curse-Project-ID: 363472
+## X-Wago-ID: Rn6VLGdB
+
+## IconTexture: Interface\AddOns\LuckyoneUI\Media\Textures\Compartment.png
+
+Libs\Libs.xml
+Locales\Locales.xml
+
+Init.lua
+
+Core\Core.xml
+
+Media\Media.lua
+Modules\Modules.xml
+Profiles\Profiles.xml

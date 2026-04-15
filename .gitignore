@@ -1,0 +1,64 @@
+# Irrelevant Folders
+Cache/
+Utils/
+OLD*/
+Errors/
+GPUCache/
+
+# Logs folder containing files we don't want to back up.
+Logs/BlizzardBrowser
+Logs/AccountData.log
+Logs/AccountData.log.old
+Logs/BattleNet.log
+Logs/Checkout.log
+Logs/Client.log
+Logs/ComponentRequests.log
+Logs/Connection.log
+Logs/cpu.log
+Logs/DefaultLogs.log
+Logs/EditMode.log
+Logs/EditMode.log.old
+Logs/FrameXML.log
+Logs/gx.log
+Logs/Hotfix.log
+Logs/Model.log
+Logs/Movie.log
+Logs/Movie.log.old
+Logs/QuestCache.log
+Logs/QuestCache.log.old
+Logs/Sound.log
+Logs/Tact.log
+Logs/Voice.log
+Logs/WowConnection.log
+
+# Optional Folders -- If you do NOT want to back up these folders, remove the "#" infront of them.
+Fonts/
+Logs/
+Screenshots/
+
+# RaiderIO updates their Database every day, we do NOT want to store this 135mb+ file.
+Interface/AddOns/RaiderIO/db
+Interface/AddOns/RaiderIO/db/*
+Interface/AddOns/guess/
+
+# Random Blizzard Files
+.flavor.info
+
+# Additional files (from third party apps)
+.curseclient
+
+# DLL Files
+*.dll
+
+# EXE Files
+Wow.exe
+BlizzardError.exe
+
+# Backup Files
+*.rar
+*.zip
+*.7z
+*.gz
+
+# Git Files
+nightly.bat

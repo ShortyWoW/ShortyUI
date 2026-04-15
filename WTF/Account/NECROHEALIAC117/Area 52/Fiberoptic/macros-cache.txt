@@ -1,0 +1,78 @@
+VER 3 0100000000000008 "Boost" "INV_MISC_QUESTIONMARK"
+#showtooltip Poisonbinder Girth
+/cast [@player] Hand of Freedom
+/cast Speed of Light
+/use Poisonbinder Girth
+/use Qian-Ying, Fortitude of Niuzao
+END
+VER 3 0100000000000007 "BOP" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Hand of Protection
+END
+VER 3 010000000000000A "Crusader Strike" "INV_MISC_QUESTIONMARK"
+#showtooltip Crusader Strike
+/cast Crusader Strike
+END
+VER 3 0100000000000013 "Divine Prot" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Divine Protection
+/use Handguards of Winged Triumph
+/cast Barkskin(Symbiosis)
+END
+VER 3 0100000000000001 "Eternal Heal" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@player] Word of Glory
+END
+VER 3 0100000000000011 "FeastSnack" "INV_Misc_QuestionMark"
+/dance
+END
+VER 3 010000000000000D "Flame" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Word of Glory
+END
+VER 3 0100000000000012 "FlaskSnack" "INV_Misc_QuestionMark"
+/use item:76086
+END
+VER 3 0100000000000005 "Freedom" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Hand of Purity
+END
+VER 3 0100000000000006 "Hand of Salv" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Hand of Salvation
+END
+VER 3 0100000000000002 "Hands" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@player] Lay on Hands
+END
+VER 3 010000000000000F "HealthSnack" "INV_Misc_QuestionMark"
+/use [combat] item:76097; item:76097
+END
+VER 3 010000000000000C "Holy Prism" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@player] Holy Prism
+END
+VER 3 0100000000000009 "HoR AOE" "INV_MISC_QUESTIONMARK"
+#showtooltip Hammer of the Righteous
+/cast !Seal of Righteousness
+/cast Hammer of the Righteous
+END
+VER 3 010000000000000E "LOH" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Lay on Hands
+END
+VER 3 0100000000000004 "SAC - OT" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast [@mouseover] Hand of Sacrifice
+/cast Divine Protection
+END
+VER 3 0100000000000003 "Threat" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Avenging Wrath
+/cast Holy Avenger
+/use Handguards of Winged Triumph
+END
+VER 3 0100000000000015 "ZGVMacro1" "0"
+/target Ameri Windblade
+/run ZGV:MRM()
+END

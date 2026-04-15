@@ -17,15 +17,19 @@ LoggerHeadDB = {
 ["Default"] = {
 ["log"] = {
 ["party"] = {
-["Upper Blackrock Spire"] = {
+["Magisters' Terrace"] = {
+true,
+true,
+[23] = true,
+[8] = true,
 },
 ["Azjol-Nerub"] = {
 false,
 },
-["Throne of the Tides"] = {
-[24] = false,
+["Darkflame Cleft"] = {
+true,
 },
-["Sunken Temple"] = {
+["Scholomance"] = {
 },
 ["Drak'Tharon Keep"] = {
 false,
@@ -33,82 +37,12 @@ false,
 ["Lost City of the Tol'vir"] = {
 [24] = false,
 },
-["Lower Blackrock Spire"] = {
-false,
+["The Vortex Pinnacle"] = {
+[24] = false,
 },
-["Magisters' Terrace"] = {
-true,
-true,
-[23] = true,
-[8] = true,
+["Upper Blackrock Spire"] = {
 },
 ["Pit of Saron"] = {
-[23] = true,
-[8] = true,
-},
-["Maisara Caverns"] = {
-true,
-true,
-[23] = true,
-},
-["The Stonecore"] = {
-[24] = false,
-},
-["Scholomance"] = {
-},
-["Nexus-Point Xenas"] = {
-true,
-true,
-[23] = true,
-[8] = true,
-},
-["The Nexus"] = {
-false,
-},
-["Zul'Farrak"] = {
-false,
-},
-["End Time"] = {
-[24] = true,
-},
-["Blackrock Caverns"] = {
-[24] = false,
-},
-["Utgarde Keep"] = {
-false,
-},
-["Maraudon"] = {
-},
-["Den of Nalorakk"] = {
-true,
-true,
-[23] = true,
-},
-["Utgarde Pinnacle"] = {
-false,
-},
-["The Blinding Vale"] = {
-true,
-true,
-[23] = true,
-},
-["Stratholme"] = {
-false,
-},
-["Gundrak"] = {
-false,
-},
-["Seat of the Triumvirate"] = {
-[8] = true,
-[2] = true,
-[23] = true,
-},
-["Halls of Stone"] = {
-false,
-},
-["Windrunner Spire"] = {
-true,
-true,
 [23] = true,
 [8] = true,
 },
@@ -117,14 +51,80 @@ true,
 true,
 [23] = true,
 },
-["The Vortex Pinnacle"] = {
+["Throne of the Tides"] = {
 [24] = false,
+},
+["Sunken Temple"] = {
+},
+["Nexus-Point Xenas"] = {
+true,
+true,
+[23] = true,
+[8] = true,
+},
+["Maisara Caverns"] = {
+true,
+true,
+[23] = true,
+},
+["Windrunner Spire"] = {
+true,
+true,
+[23] = true,
+[8] = true,
+},
+["End Time"] = {
+[24] = true,
+},
+["Utgarde Keep"] = {
+false,
+},
+["Blackrock Caverns"] = {
+[24] = false,
+},
+["Maraudon"] = {
+},
+["Den of Nalorakk"] = {
+true,
+true,
+[23] = true,
+},
+["Seat of the Triumvirate"] = {
+[8] = true,
+[2] = true,
+[23] = true,
+},
+["Gundrak"] = {
+false,
+},
+["Stratholme"] = {
+false,
+},
+["The Blinding Vale"] = {
+true,
+true,
+[23] = true,
+},
+["Utgarde Pinnacle"] = {
+false,
+},
+["Halls of Stone"] = {
+false,
+},
+["Zul'Farrak"] = {
+false,
+},
+["The Nexus"] = {
+false,
+},
+["Lower Blackrock Spire"] = {
+false,
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Darkflame Cleft"] = {
-true,
+["The Stonecore"] = {
+[24] = false,
 },
 ["Murder Row"] = {
 true,
@@ -154,10 +154,10 @@ true,
 ["The Darkway"] = {
 [208] = false,
 },
-["The Shadow Enclave"] = {
+["The Gulf of Memory"] = {
 [208] = true,
 },
-["The Gulf of Memory"] = {
+["The Shadow Enclave"] = {
 [208] = true,
 },
 ["Atal'Aman"] = {
@@ -165,9 +165,8 @@ true,
 },
 },
 ["raid"] = {
-["Manaforge Omega"] = {
-[16] = true,
-[15] = false,
+["Firelands"] = {
+[24] = true,
 },
 ["March on Quel'Danas"] = {
 [14] = true,
@@ -176,10 +175,8 @@ true,
 [14] = true,
 [16] = true,
 },
-["The Voidspire"] = {
-[14] = true,
-[17] = false,
-[15] = true,
+["Molten Core"] = {
+[9] = false,
 },
 ["The Dreamrift"] = {
 [15] = true,
@@ -188,11 +185,14 @@ true,
 ["Icecrown Citadel"] = {
 [3] = false,
 },
-["Molten Core"] = {
-[9] = false,
+["The Voidspire"] = {
+[14] = true,
+[17] = false,
+[15] = true,
 },
-["Firelands"] = {
-[24] = true,
+["Manaforge Omega"] = {
+[16] = true,
+[15] = false,
 },
 },
 },

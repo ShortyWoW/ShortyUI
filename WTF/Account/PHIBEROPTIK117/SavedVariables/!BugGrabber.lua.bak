@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
+["session"] = 27,
 ["lastSanitation"] = 3,
-["session"] = 26,
 ["errors"] = {
 {
 ["message"] = "bad argument #1 to '?' (Usage: local classInfo = C_CreatureInfo.GetClassInfo(classID). Secret values are only allowed during untainted execution for this argument.)",
@@ -18,6 +18,12 @@ BugGrabberDB = {
 ["stack"] = "[Interface/AddOns/BadBoy_Levels/BadBoy_Levels.lua]:160: in function '?'\n[Interface/AddOns/BadBoy_Levels/BadBoy_Levels.lua]:13: in function <Interface/AddOns/BadBoy_Levels/BadBoy_Levels.lua:12>\n",
 ["session"] = 12,
 ["counter"] = 7,
+},
+{
+["message"] = "LUA_WARNING: Interface/AddOns/LuckyoneUI/Profiles/Profiles.xml:5 Error loading Interface/AddOns/LuckyoneUI/Chattynator.lua",
+["time"] = 1776247850,
+["session"] = 27,
+["counter"] = 1,
 },
 },
 }

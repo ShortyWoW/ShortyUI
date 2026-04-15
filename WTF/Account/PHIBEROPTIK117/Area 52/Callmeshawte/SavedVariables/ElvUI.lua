@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Mangyao-Area52 how much for swift?",
-"/cw Mangyao-Area52 if you tell me to add you on skype i'mma block you",
-"/sorry",
 "/cw Guårdiån-Gnomeregan Sorry",
 "/p ty",
+"/i now we're not going to get CE",
+"/i Did he just call us honorless scum?",
+"/i what a baby back bitch",
 },
 ["ChatHistoryLog"] = {
 {

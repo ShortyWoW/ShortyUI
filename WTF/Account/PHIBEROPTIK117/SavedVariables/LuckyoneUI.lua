@@ -1,5 +1,10 @@
 
 LuckyoneDB = {
+["global"] = {
+["install_version"] = 4.07,
+["DebugDisabledAddOns"] = {
+},
+},
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Cyword - Area 52"] = "Default",
@@ -24,11 +29,6 @@ LuckyoneDB = {
 ["Shortlite - Dalaran"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
 ["Lildotnrg - Stormrage"] = "Default",
-},
-["global"] = {
-["install_version"] = 4.07,
-["DebugDisabledAddOns"] = {
-},
 },
 ["profiles"] = {
 ["Default"] = {

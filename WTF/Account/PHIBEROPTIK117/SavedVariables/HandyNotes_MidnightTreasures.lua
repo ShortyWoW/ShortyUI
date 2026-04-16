@@ -11,12 +11,12 @@ HandyNotes_MidnightTreasuresDB = {
 },
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
-["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
-["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
-["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
+["Shortypal - Dalaran"] = "Shortypal - Dalaran",
+["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -29,39 +29,39 @@ HandyNotes_MidnightTreasuresDB = {
 [62185] = true,
 [62125] = false,
 [61507] = true,
-[62104] = true,
-[62202] = false,
+[62289] = true,
+[61582] = true,
 [62130] = true,
 [61263] = false,
 [61264] = true,
 [62288] = true,
-[62289] = true,
+[61576] = true,
 [62290] = true,
 [62291] = true,
 [61455] = false,
-[61581] = true,
 [62201] = true,
-[61582] = true,
-[61576] = true,
+[61581] = true,
+[62202] = false,
+[62104] = true,
 },
-["show_npcs"] = false,
-["show_treasure_filter"] = "notable",
 ["groupsHidden"] = {
 ["professionknowledge"] = false,
 ["glyphs"] = true,
 },
-},
-["Drewishlaser - Dalaran"] = {
+["show_treasure_filter"] = "notable",
+["show_npcs"] = false,
 },
 ["Callmeshorty - Illidan"] = {
 },
-["Callmeshawte - Area 52"] = {
+["Shortbowjob - Area 52"] = {
 },
-["Shortbeef - Vashj"] = {
+["Callmeshawte - Area 52"] = {
 },
 ["Shortypal - Dalaran"] = {
 },
-["Shortbowjob - Area 52"] = {
+["Shortbeef - Vashj"] = {
+},
+["Drewishlaser - Dalaran"] = {
 },
 },
 }

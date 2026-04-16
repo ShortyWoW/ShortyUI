@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Return-Vashj lol not even close",
-"/cw Return-Vashj I'm 99% sure the sim dying is what puts us in Intermission 2, not Alerias health",
 "/cw Return-Vashj \"Once the Simulacrum dies, all players will again be knocked up and Alleria will smash into the center of the room, deepening the 3 splits on the platform.\"",
 "/rc",
 "/pull 10",
+"/simc",
+"/g I have been blessed |cnIQ4:|Hitem:249369:7967:240890::::::90:581::5:4:6652:13668:13334:12795::::::|h[Bond of Light]|h|r",
 },
 ["ChatHistoryLog"] = {
 {

@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Guårdiån-Gnomeregan Sorry",
-"/p ty",
-"/i now we're not going to get CE",
-"/i Did he just call us honorless scum?",
-"/i what a baby back bitch",
+"/g I'd prefer just 1 big guild building, where you could decorate it with statues of raid bosses you've killed, etc.",
+"/g but i'm weird so",
+"/g oh that's true",
+"Sure",
+"lemme swap characters",
 },
 ["ChatHistoryLog"] = {
 {

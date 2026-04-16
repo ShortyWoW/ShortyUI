@@ -32,55 +32,23 @@ PremadeGroupsFilterState = {
 },
 ["expression"] = "",
 ["difficulty"] = {
-["val"] = 3,
 ["act"] = true,
+["val"] = 3,
 },
-["partyfit"] = true,
 ["tanks"] = {
 ["max"] = "",
 ["min"] = "",
 ["act"] = false,
 },
+["partyfit"] = true,
 },
 },
 ["c121f4"] = {
 ["enabled"] = true,
 },
 ["version"] = 8,
-["c3f5"] = {
-["enabled"] = false,
-["raid"] = {
-["difficulty"] = {
-["act"] = true,
-["val"] = 1,
-},
-["heals"] = {
-["max"] = "",
-["min"] = "",
-["act"] = false,
-},
-["tanks"] = {
-["max"] = "1",
-["min"] = "0",
-["act"] = true,
-},
-["members"] = {
-["max"] = "",
-["min"] = "",
-["act"] = false,
-},
-["dps"] = {
-["max"] = "",
-["min"] = "",
-["act"] = false,
-},
-["defeated"] = {
-["max"] = "",
-["min"] = "",
-["act"] = false,
-},
-["expression"] = "members>1",
-},
+["c9f8"] = {
+["enabled"] = true,
 },
 ["c114f6"] = {
 ["enabled"] = true,
@@ -103,6 +71,41 @@ PremadeGroupsFilterState = {
 ["min"] = "",
 ["act"] = false,
 },
+["members"] = {
+["max"] = "",
+["min"] = "",
+["act"] = false,
+},
+["dps"] = {
+["max"] = "",
+["min"] = "",
+["act"] = false,
+},
+["defeated"] = {
+["max"] = "",
+["min"] = "",
+["act"] = false,
+},
+["expression"] = "",
+},
+},
+["c3f5"] = {
+["enabled"] = false,
+["raid"] = {
+["difficulty"] = {
+["val"] = 1,
+["act"] = true,
+},
+["heals"] = {
+["max"] = "",
+["min"] = "",
+["act"] = false,
+},
+["tanks"] = {
+["max"] = "1",
+["min"] = "0",
+["act"] = true,
+},
 ["defeated"] = {
 ["max"] = "",
 ["min"] = "",
@@ -118,10 +121,7 @@ PremadeGroupsFilterState = {
 ["min"] = "",
 ["act"] = false,
 },
-["expression"] = "",
+["expression"] = "members>1",
 },
-},
-["c9f8"] = {
-["enabled"] = true,
 },
 }

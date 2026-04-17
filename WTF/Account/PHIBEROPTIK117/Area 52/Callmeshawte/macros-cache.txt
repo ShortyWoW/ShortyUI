@@ -1,3 +1,7 @@
+VER 3 0100000000000004 "Banish" "134400"
+#showtooltip
+/cast [@mouseover] Banish
+END
 VER 3 0100000000000001 "Fury" "134400"
 #showtooltip
 /cast [@cursor] Shadowfury

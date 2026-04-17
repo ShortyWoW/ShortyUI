@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
+["session"] = 6,
 ["lastSanitation"] = 3,
-["session"] = 3,
 ["errors"] = {
 {
 ["message"] = "...e/AddOns/ElvUI_WindTools/Modules/Social/ChatText.lua:1258: bad argument #3 to 'format' (number expected, got no value)",

@@ -16,7 +16,7 @@
 ]]
 
 BIT = BIT or {}
-BIT.VERSION    = "3.3.4"
+BIT.VERSION    = "3.3.6"
 BIT.SyncCD      = BIT.SyncCD      or {}
 BIT.SyncCD.users = BIT.SyncCD.users or {}  -- name → {class, specID} — only HELLO senders, never touched by interrupt system
 BIT.syncCdState = BIT.syncCdState or {}
@@ -36,11 +36,11 @@ BIT.devLogMode = false  -- silent log: captures to buffer, no chat output
 ------------------------------------------------------------
 do
     local _buf     = {}
-    local _BUF_MAX = 600
+    local _BUF_MAX = 2000   -- large enough for a full M+ attempt
     local _t0      = GetTime()
 
     -- BIT.DevLog(msg): verbose/spammy events → buffer only, never chat.
-    --   Activate with /bitdevlog, review with /bitdevdump.
+    --   Activate with /bitdevlog, review with /bitdevdump [N] [filter].
     --   Important events (GLOW-ON, AURA-MATCH, etc.) use plain print()
     --   when BIT.debugMode is on — those are NOT routed through here.
     function BIT.DevLog(msg)
@@ -56,15 +56,25 @@ do
         _t0  = GetTime()
     end
 
-    function BIT.DevLogDump(n)
-        n = tonumber(n) or 80
+    -- /bitdevdump [N] [filter]
+    -- N       = how many lines to show (default 80, 0 = all)
+    -- filter  = optional keyword; only lines containing it are shown
+    function BIT.DevLogDump(args)
+        local nStr, filter = (args or ""):match("^(%S*)%s*(.-)%s*$")
+        local n = tonumber(nStr) == 0 and #_buf or (tonumber(nStr) or 80)
         if #_buf == 0 then
             print("|cffff9900BIT DevLog|r buffer is empty — use /bitdevlog to start")
             return
         end
-        local s = math.max(1, #_buf - n + 1)
-        print("|cffff9900BIT DevLog|r === last " .. (#_buf - s + 1) .. " / " .. #_buf .. " entries ===")
-        for i = s, #_buf do print(_buf[i]) end
+        local matched = {}
+        for i = math.max(1, #_buf - n + 1), #_buf do
+            if filter == "" or _buf[i]:find(filter, 1, true) then
+                matched[#matched + 1] = _buf[i]
+            end
+        end
+        local filterNote = filter ~= "" and (" filter=|cffffd700" .. filter .. "|r") or ""
+        print("|cffff9900BIT DevLog|r === " .. #matched .. " lines" .. filterNote .. " (buffer: " .. #_buf .. ") ===")
+        for _, line in ipairs(matched) do print(line) end
         print("|cffff9900BIT DevLog|r === end ===")
     end
 
@@ -80,6 +90,23 @@ do
 end
 
 ------------------------------------------------------------
+-- Effective custom name resolver
+-- Returns the nickname that should be broadcast for this
+-- character. If "Use Global Custom Name" is enabled, the
+-- account-wide globalCustomName wins; otherwise the
+-- per-character charDb.myCustomName is used.
+------------------------------------------------------------
+function BIT.GetEffectiveCustomName()
+    if not BIT.db then return "" end
+    if BIT.db.useGlobalCustomName and BIT.db.globalCustomName and BIT.db.globalCustomName ~= "" then
+        return BIT.db.globalCustomName
+    end
+    local perChar = BIT.charDb and BIT.charDb.myCustomName
+    if perChar and perChar ~= "" then return perChar end
+    return ""
+end
+
+------------------------------------------------------------
 -- Custom display name lookup
 -- Returns the user-defined nickname for a player, or the
 -- original name if no custom name is set.
@@ -88,8 +115,9 @@ function BIT.GetDisplayName(name)
     if not name then return nil end
     if not (BIT.db and BIT.db.showCustomNames ~= false) then return name end
     -- Own custom name
-    if name == BIT.myName and BIT.db.myCustomName and BIT.db.myCustomName ~= "" then
-        return BIT.db.myCustomName
+    if name == BIT.myName then
+        local own = BIT.GetEffectiveCustomName and BIT.GetEffectiveCustomName() or ""
+        if own ~= "" then return own end
     end
     -- Custom name received from other addon users
     local users = BIT.SyncCD and BIT.SyncCD.users
@@ -263,7 +291,7 @@ do
     local function Msg(...) return table.concat({HDR, ...}, SEP) end
 
     function BIT.Net:AnnounceHello(class, spellID, cd)
-        local cn = BIT.db and BIT.db.myCustomName or ""
+        local cn = BIT.GetEffectiveCustomName and BIT.GetEffectiveCustomName() or ""
         if cn ~= "" then
             Transmit(Msg("HELLO", class, spellID, cd, cn))
         else
@@ -288,7 +316,7 @@ do
     end
 
     function BIT.Net:AnnounceSyncHello(class)
-        local cn = BIT.db and BIT.db.myCustomName or ""
+        local cn = BIT.GetEffectiveCustomName and BIT.GetEffectiveCustomName() or ""
         -- Include own specID so receivers don't need to inspect
         local specID = ""
         local idx = GetSpecialization and GetSpecialization()
@@ -1218,10 +1246,62 @@ function BIT:CleanPartyList()
     for name in pairs(BIT.Inspect.done) do
         if not active[name] then BIT.Inspect.done[name] = nil end
     end
+    if BIT._nonAddonSpecCache then
+        for name in pairs(BIT._nonAddonSpecCache) do
+            if not active[name] then BIT._nonAddonSpecCache[name] = nil end
+        end
+    end
     BIT.Self:BroadcastHello()
     C_Timer.After(0.1, function()
         if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end
     end)
+end
+
+-- Persistent spec cache for non-addon party members
+BIT._nonAddonSpecCache = BIT._nonAddonSpecCache or {}
+
+-- Apply the spec override from a fresh GetInspectSpecialization read
+local function RetrySpecOverride(name, unitHint)
+    local entry = BIT.Registry:Get(name)
+    if not entry then return end
+    local u
+    if unitHint and UnitExists(unitHint) and UnitName(unitHint) == name then
+        u = unitHint
+    else
+        for i = 1, 4 do
+            local pu = "party" .. i
+            if UnitExists(pu) and UnitName(pu) == name then u = pu; break end
+        end
+    end
+    if not u then return end
+    local specID = GetInspectSpecialization(u)
+    if not (specID and specID > 0) then return false end
+    BIT._nonAddonSpecCache[name] = specID
+    if BIT.SPEC_NO_INTERRUPT[specID] then
+        BIT.Registry:Remove(name)
+        BIT.Inspect.noKick[name] = true
+        if BIT.UI and BIT.UI.RebuildBars then BIT.UI:RebuildBars() end
+        return true
+    end
+    local ov = BIT.SPEC_INTERRUPT_OVERRIDES[specID]
+    if ov and not ov.isPet then
+        local changed = (entry.spellID ~= ov.id) or (entry.baseCd ~= ov.cd)
+        entry.spellID    = ov.id
+        entry.baseCd     = ov.cd
+        entry.cdEnd      = 0
+        entry.extraKicks = {}
+        if changed and BIT.UI and BIT.UI.RebuildBars then BIT.UI:RebuildBars() end
+    end
+    return true
+end
+
+-- Schedule progressively longer retries to cover slow dungeon inspect data
+local function ScheduleSpecRetries(name, unitHint)
+    for _, delay in ipairs({ 1, 2, 4, 8, 15, 25 }) do
+        C_Timer.After(delay, function()
+            RetrySpecOverride(name, unitHint)
+        end)
+    end
 end
 
 function BIT:AutoRegisterPartyByClass()
@@ -1242,17 +1322,27 @@ function BIT:AutoRegisterPartyByClass()
                         entry.spellID = kick.id
                         entry.baseCd  = kick.cd
                         entry.cdEnd   = 0
-                        -- Apply spec override if inspect data is already cached
                         local specID = GetInspectSpecialization(u)
+                        if not (specID and specID > 0) then
+                            specID = BIT._nonAddonSpecCache[name]
+                        end
+                        local specApplied = false
                         if specID and specID > 0 then
                             local ov = BIT.SPEC_INTERRUPT_OVERRIDES[specID]
                             if ov and not ov.isPet then
                                 entry.spellID = ov.id
                                 entry.baseCd  = ov.cd
+                                specApplied = true
                             elseif BIT.SPEC_NO_INTERRUPT[specID] then
                                 BIT.Registry:Remove(name)
                                 BIT.Inspect.noKick[name] = true
+                                specApplied = true
+                            else
+                                specApplied = true
                             end
+                        end
+                        if not specApplied then
+                            ScheduleSpecRetries(name, u)
                         end
                     end
                 end
@@ -1825,14 +1915,86 @@ function BIT:Initialize()
     local pName  = UnitName("player") or "Unknown"
     local pRealm = GetNormalizedRealmName() or GetRealmName() or "Unknown"
     BIT.charKey  = pName .. "-" .. pRealm
-    if self.db.charProfiles and self.db.charProfiles[BIT.charKey] then
-        local snap = self.db.charProfiles[BIT.charKey]
+    if self.db.useGlobalDefault    == nil then self.db.useGlobalDefault    = false end
+    if self.db.useSpecProfile      == nil then self.db.useSpecProfile      = false end
+    if self.db.useRoleProfile      == nil then self.db.useRoleProfile      = false end
+    if self.db.useGlobalCustomName == nil then self.db.useGlobalCustomName = false end
+    if self.db.globalCustomName    == nil then self.db.globalCustomName    = ""    end
+
+    -- Migration: legacy db.myCustomName was account-wide; move it to per-character
+    -- storage so every character can keep its own nickname. Only migrate if the
+    -- current character has no per-character name yet and a legacy value exists.
+    if self.charDb.myCustomName == nil then
+        if self.db.myCustomName and self.db.myCustomName ~= "" then
+            self.charDb.myCustomName = self.db.myCustomName
+        else
+            self.charDb.myCustomName = ""
+        end
+    end
+    -- Wipe legacy account-wide key so it doesn't leak to other chars
+    self.db.myCustomName = nil
+
+    -- Profile selection priority (highest → lowest):
+    --   1. Spec profile (matches current specID)
+    --   2. Role profile (matches current role: TANK/HEALER/DAMAGER)
+    --   3. Global default profile
+    --   4. Character profile (this charKey)
+    --   5. DEFAULTS (already applied above)
+    --
+    -- NOTE: spec/role resolution requires GetSpecialization() which may return nil
+    -- during Initialize (talent data not loaded yet). In that case spec/role
+    -- profiles are applied later by PLAYER_SPECIALIZATION_CHANGED / PLAYER_LOGIN.
+    local hasCharProfile = self.db.charProfiles and self.db.charProfiles[BIT.charKey]
+    local applyGlobal    = self.db.useGlobalDefault and self.db.globalProfile
+    local applyChar      = hasCharProfile
+    local snap = nil
+
+    -- Spec profile
+    if self.db.useSpecProfile and self.db.specProfiles then
+        local idx  = GetSpecialization and GetSpecialization()
+        local sid  = idx and GetSpecializationInfo and GetSpecializationInfo(idx)
+        if sid and self.db.specProfiles[sid] then
+            snap = self.db.specProfiles[sid]
+        end
+    end
+
+    -- Role profile (fallback if no spec profile)
+    if not snap and self.db.useRoleProfile and self.db.roleProfiles then
+        local idx  = GetSpecialization and GetSpecialization()
+        local role
+        if idx then
+            role = select(5, GetSpecializationInfo(idx))
+        end
+        if not role then role = UnitGroupRolesAssigned and UnitGroupRolesAssigned("player") end
+        if role and self.db.roleProfiles[role] then
+            snap = self.db.roleProfiles[role]
+        end
+    end
+
+    -- Global default (fallback)
+    if not snap and applyGlobal then
+        snap = self.db.globalProfile
+    end
+
+    -- Character profile (lowest fallback)
+    if not snap and applyChar then
+        snap = self.db.charProfiles[BIT.charKey]
+    end
+
+    if snap then
         for k in pairs(BIT.DEFAULTS) do
             if snap[k] ~= nil then self.db[k] = snap[k] end
         end
-        -- fontPath/fontName are not in DEFAULTS (nil default) but are saved explicitly by SaveCharProfile
         if snap.fontPath then self.db.fontPath = snap.fontPath end
         if snap.fontName then self.db.fontName = snap.fontName end
+        if snap._posX      then self.charDb.posX            = snap._posX      end
+        if snap._posY      then self.charDb.posY            = snap._posY      end
+        if snap._posXUp    then self.charDb.posXUp          = snap._posXUp    end
+        if snap._posYUp    then self.charDb.posYUp          = snap._posYUp    end
+        if snap._syncX     then self.charDb.syncCdBarsPosX  = snap._syncX     end
+        if snap._syncY     then self.charDb.syncCdBarsPosY  = snap._syncY     end
+        if snap._syncIconX then self.charDb.syncCdPosX      = snap._syncIconX end
+        if snap._syncIconY then self.charDb.syncCdPosY      = snap._syncIconY end
     end
 
     -- Remove old anchor keys; positions stored as absolute coords only
@@ -1909,6 +2071,11 @@ function BIT:Initialize()
 
     -- Periodic re-inspect to pick up spec changes
     C_Timer.After(2, function() BIT.Self:BroadcastHello() end)
+
+    -- Smart Misdirect (Hunter/Rogue extra feature — self-gates on class)
+    if BIT.SmartMisdirect and BIT.SmartMisdirect.Initialize then
+        BIT.SmartMisdirect:Initialize()
+    end
 end
 
 ------------------------------------------------------------
@@ -1966,6 +2133,22 @@ eventHandlers["PLAYER_REGEN_ENABLED"] = function()
     BIT.inCombat = false
     BIT.Self:CacheCooldown()
     BIT.UI:CheckZoneVisibility()
+    -- Flush any frames whose SetPropagateMouseClicks was deferred because we were
+    -- in combat when RebuildBars ran (protected function in 11.x/12.x).
+    if BIT._pendingPropagate then
+        for _, fr in ipairs(BIT._pendingPropagate) do
+            if fr and fr.SetPropagateMouseClicks then
+                pcall(fr.SetPropagateMouseClicks, fr, true)
+            end
+        end
+        BIT._pendingPropagate = nil
+    end
+    -- Smart Misdirect: any update queued during combat runs now that it's safe
+    -- to change secure-frame attributes again.
+    if BIT.SmartMisdirect and BIT.SmartMisdirect.ProcessQueuedUpdate then
+        BIT.SmartMisdirect._updateQueued = true
+        BIT.SmartMisdirect:ProcessQueuedUpdate()
+    end
 end
 
 eventHandlers["PLAYER_REGEN_DISABLED"] = function()
@@ -1975,7 +2158,51 @@ end
 
 -- INSPECT_READY removed — talent data now comes from LibSpecialization
 
+-- Tracks the previously active spec so the Save-on-switch path knows which slot
+-- to update. Declared upvalue so it persists across event fires. Set on login by
+-- the initial PLAYER_SPECIALIZATION_CHANGED that fires after entering the world.
+local _bitLastSpecID = nil
+
 eventHandlers["PLAYER_SPECIALIZATION_CHANGED"] = function(unit)
+    -- ── Self-path: handle spec-profile / role-profile auto-apply ──
+    if not unit or unit == "player" then
+        if BIT.db then
+            local newSpec = BIT.GetCurrentSpecID and BIT.GetCurrentSpecID()
+            if newSpec then
+                -- Save previous spec's settings if that slot already has a profile.
+                if _bitLastSpecID and _bitLastSpecID ~= newSpec
+                   and BIT.db.useSpecProfile and BIT.db.specProfiles
+                   and BIT.db.specProfiles[_bitLastSpecID]
+                   and BIT.SaveSpecProfile
+                then
+                    BIT.SaveSpecProfile(_bitLastSpecID)
+                end
+                _bitLastSpecID = newSpec
+
+                -- Apply new spec/role profile if auto-apply is active.
+                local applied = false
+                if BIT.db.useSpecProfile and BIT.ApplySpecProfile and BIT.HasSpecProfile
+                   and BIT.HasSpecProfile(newSpec)
+                then
+                    applied = BIT.ApplySpecProfile(newSpec)
+                end
+                if not applied and BIT.db.useRoleProfile and BIT.ApplyRoleProfile
+                   and BIT.HasRoleProfile and BIT.HasRoleProfile()
+                then
+                    BIT.ApplyRoleProfile()
+                end
+            end
+        end
+        -- Smart Misdirect: in case the player swapped from Hunter-spec-A to
+        -- Hunter-spec-B (same class), the spell is unchanged but the role
+        -- might have — requeue a target recalc.
+        if BIT.SmartMisdirect then
+            if BIT.SmartMisdirect.OnSpecChanged then BIT.SmartMisdirect:OnSpecChanged() end
+            if BIT.SmartMisdirect.QueueUpdate    then BIT.SmartMisdirect:QueueUpdate()    end
+        end
+    end
+
+    -- ── Other-unit path: existing party-member inspect / kick-tracking logic ──
     if unit and unit ~= "player" then
         local name = UnitName(unit)
         if name then
@@ -2082,6 +2309,10 @@ eventHandlers["ROLE_CHANGED_INFORM"] = function()
             end
         end
     end
+    -- Smart Misdirect: a role change can promote / demote a tank.
+    if BIT.SmartMisdirect and BIT.SmartMisdirect.QueueUpdate then
+        BIT.SmartMisdirect:QueueUpdate()
+    end
 end
 
 eventHandlers["GROUP_ROSTER_UPDATE"] = function()
@@ -2109,11 +2340,33 @@ eventHandlers["GROUP_ROSTER_UPDATE"] = function()
     C_Timer.After(5, function()
         if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end
     end)
+    -- Smart Misdirect: recompute the target list when the roster changes.
+    if BIT.SmartMisdirect and BIT.SmartMisdirect.QueueUpdate then
+        BIT.SmartMisdirect:QueueUpdate()
+    end
 end
 
 eventHandlers["PLAYER_LOGOUT"] = function()
-    -- Auto-save current settings + positions as this character's profile snapshot
     BIT.SaveCharProfile()
+    if BIT.db and BIT.db.useGlobalDefault and BIT.db.globalProfile and BIT.SaveGlobalProfile then
+        BIT.SaveGlobalProfile()
+    end
+    -- Auto-save active spec profile on logout if user opted in — lets the current
+    -- spec's settings follow the player across characters on the same spec.
+    if BIT.db and BIT.db.useSpecProfile and BIT.SaveSpecProfile then
+        local sid = BIT.GetCurrentSpecID and BIT.GetCurrentSpecID()
+        if sid and BIT.db.specProfiles and BIT.db.specProfiles[sid] then
+            BIT.SaveSpecProfile(sid)
+        end
+    end
+    -- Same for role profile: only overwrite if the user already has one saved for
+    -- this role, to avoid creating unintended profiles on first logout.
+    if BIT.db and BIT.db.useRoleProfile and BIT.SaveRoleProfile then
+        local role = BIT.GetCurrentRole and BIT.GetCurrentRole()
+        if role and BIT.db.roleProfiles and BIT.db.roleProfiles[role] then
+            BIT.SaveRoleProfile(role)
+        end
+    end
 end
 
 eventHandlers["PLAYER_ENTERING_WORLD"] = function()
@@ -2162,6 +2415,10 @@ eventHandlers["PLAYER_ENTERING_WORLD"] = function()
     C_Timer.After(4,  function() if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end end)
     C_Timer.After(8,  function() if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end end)
     C_Timer.After(15, function() if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end end)
+    -- Smart Misdirect: zone transitions / instance boundaries change unit tokens.
+    if BIT.SmartMisdirect and BIT.SmartMisdirect.QueueUpdate then
+        C_Timer.After(2, function() BIT.SmartMisdirect:QueueUpdate() end)
+    end
 end
 
 local ef = CreateFrame("Frame")
@@ -2365,9 +2622,6 @@ SlashCmdList["BLIZZITEST"] = function() BIT:StartTestMode() end
 SLASH_BITROTATION1 = "/bitrotation"
 SlashCmdList["BITROTATION"] = function() BIT.UI:ShowRotationPanel() end
 
-SLASH_BITPROFILE1 = "/bitprofile"
-SlashCmdList["BITPROFILE"] = function() BIT.UI:ShowProfilePanel() end
-
 --- /bitdevlog — toggle silent dev log (no chat spam; use /bitdevdump to review)
 SLASH_BITDEVLOG1 = "/bitdevlog"
 SlashCmdList["BITDEVLOG"] = function()
@@ -2380,7 +2634,10 @@ SlashCmdList["BITDEVLOG"] = function()
     end
 end
 
---- /bitdevdump [N] — print last N entries from dev log buffer (default 80)
+--- /bitdevdump [N] [filter] — print last N entries, optionally filtered by keyword
+--- Examples: /bitdevdump 200 363916   (Obsidian Scales)
+---           /bitdevdump 100 GLOW-SET (all glow triggers)
+---           /bitdevdump 0 GLOW-MISS  (all misses, entire buffer)
 SLASH_BITDEVDUMP1 = "/bitdevdump"
 SlashCmdList["BITDEVDUMP"] = function(args) BIT.DevLogDump(args) end
 

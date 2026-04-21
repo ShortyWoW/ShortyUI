@@ -1,0 +1,8 @@
+## Interface: 120001
+## Title: Lura Tily Helper
+## Notes: Boss mechanic order tracker - Click icons to build the pattern
+## Author: CustomAddon
+## Version: 1.0.0
+## SavedVariables: LuraTilyHelperDB
+
+LuraTilyHelper.lua

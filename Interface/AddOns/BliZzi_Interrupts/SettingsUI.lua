@@ -76,16 +76,12 @@ local function Refresh()
     end
     -- Rebuild the interrupt tracker bars (handles size, font, color, layout changes)
     if BIT.UI then
-        if BIT.UI.RebuildBars then
-            C_Timer.After(0.05, function() BIT.UI:RebuildBars() end)
-        end
-        if BIT.UI.CheckZoneVisibility then
-            C_Timer.After(0.06, function() BIT.UI:CheckZoneVisibility() end)
-        end
+        if BIT.UI.RebuildBars then BIT.UI:RebuildBars() end
+        if BIT.UI.CheckZoneVisibility then BIT.UI:CheckZoneVisibility() end
     end
-    -- Rebuild party CD tracker
+    -- Rebuild party CD tracker (Rebuild() debounces internally at 50ms)
     if BIT.SyncCD and BIT.SyncCD.Rebuild then
-        C_Timer.After(0.1, function() BIT.SyncCD:Rebuild() end)
+        BIT.SyncCD:Rebuild()
     end
     -- Apply frame scale
     if BIT.UI and BIT.UI.mainFrame and BIT.db then
@@ -215,8 +211,11 @@ local function CreateSlider(parent, label, minV, maxV, step, getter, setter, fmt
     local initVal = getter()
     eb:SetText(fmt and fmt(initVal) or tostring(math.floor(initVal + 0.5)))
 
+    local _lastApplied
     local function UpdateVal(v)
         v = math.max(minV, math.min(maxV, v))
+        if v == _lastApplied then return end
+        _lastApplied = v
         setter(v)
         sl:SetValue(v)
         eb:SetText(fmt and fmt(v) or tostring(math.floor(v + 0.5)))
@@ -226,6 +225,17 @@ local function CreateSlider(parent, label, minV, maxV, step, getter, setter, fmt
 
     sl:SetScript("OnValueChanged", function(_, v)
         UpdateVal(v)
+    end)
+    -- Live update during drag: OnValueChanged may not fire on every frame,
+    -- so poll the slider value while mouse is held down.
+    sl:HookScript("OnMouseDown", function()
+        sl:SetScript("OnUpdate", function()
+            UpdateVal(sl:GetValue())
+        end)
+    end)
+    sl:HookScript("OnMouseUp", function()
+        sl:SetScript("OnUpdate", nil)
+        UpdateVal(sl:GetValue())
     end)
     eb:SetScript("OnEnterPressed", function(self)
         local raw = self:GetText():gsub("[^%d%.%-]", "")  -- strip px, %, etc.
@@ -1091,19 +1101,29 @@ local function LayoutWidgets(widgetList)
         elseif currentSection then
             -- child of a section
             if currentSection._expanded then
-                w:ClearAllPoints()
-                w:SetPoint("TOPLEFT", contentChild, "TOPLEFT", CONTENT_PAD, y)
-                w:Show()
-                y = y - (w:GetHeight()) - GAP
+                if w._dynamic and not w:IsShown() then
+                    -- conditional widget hidden by _update — skip, no gap
+                else
+                    w:ClearAllPoints()
+                    w:SetPoint("TOPLEFT", contentChild, "TOPLEFT", CONTENT_PAD, y)
+                    if not w._dynamic then w:Show() end
+                    local wh = w:GetHeight()
+                    y = y - wh - (wh > 0 and GAP or 0)
+                end
             else
                 w:Hide()
             end
         else
             -- no section yet — just place it
-            w:ClearAllPoints()
-            w:SetPoint("TOPLEFT", contentChild, "TOPLEFT", CONTENT_PAD, y)
-            w:Show()
-            y = y - (w:GetHeight()) - GAP
+            if w._dynamic and not w:IsShown() then
+                -- conditional widget hidden — skip, no gap
+            else
+                w:ClearAllPoints()
+                w:SetPoint("TOPLEFT", contentChild, "TOPLEFT", CONTENT_PAD, y)
+                if not w._dynamic then w:Show() end
+                local wh = w:GetHeight()
+                y = y - wh - (wh > 0 and GAP or 0)
+            end
         end
     end
     contentChild:SetHeight(math.abs(y) + 20)
@@ -1153,9 +1173,29 @@ local function BuildGeneral()
     w[#w+1] = CreateToggle(p, "Show Custom Names",
         function() return BIT.db.showCustomNames end,
         function(v) BIT.db.showCustomNames = v end)
-    w[#w+1] = CreateEditBox(p, LS("CUSTOM_NAMES_NICK", "Nickname"),
-        function() return BIT.db.myCustomName or "" end,
-        function(v) BIT.db.myCustomName = v; if BIT.Self and BIT.Self.BroadcastHello then BIT.Self:BroadcastHello() end end)
+    -- Per-character nickname (stored in BIT.charDb.myCustomName)
+    w[#w+1] = CreateEditBox(p, LS("CUSTOM_NAMES_NICK_CHAR", "Character Nickname"),
+        function() return (BIT.charDb and BIT.charDb.myCustomName) or "" end,
+        function(v)
+            if not BIT.charDb then return end
+            BIT.charDb.myCustomName = v
+            if BIT.Self and BIT.Self.BroadcastHello then BIT.Self:BroadcastHello() end
+        end)
+    -- Global override: use the same nickname on every character
+    w[#w+1] = CreateToggle(p, LS("CUSTOM_NAMES_USE_GLOBAL", "Use Global Nickname (overrides per-character)"),
+        function() return BIT.db.useGlobalCustomName end,
+        function(v)
+            BIT.db.useGlobalCustomName = v
+            if BIT.Self and BIT.Self.BroadcastHello then BIT.Self:BroadcastHello() end
+        end)
+    w[#w+1] = CreateEditBox(p, LS("CUSTOM_NAMES_NICK_GLOBAL", "Global Nickname"),
+        function() return BIT.db.globalCustomName or "" end,
+        function(v)
+            BIT.db.globalCustomName = v
+            if BIT.db.useGlobalCustomName and BIT.Self and BIT.Self.BroadcastHello then
+                BIT.Self:BroadcastHello()
+            end
+        end)
 
     -- Minimap Button
     w[#w+1] = CreateSectionHeader(p, "Minimap", "sui_gen_minimap")
@@ -1186,6 +1226,12 @@ local function BuildInterrupts()
 
     -- General
     w[#w+1] = CreateSectionHeader(p, "General", "sui_int_gen")
+    w[#w+1] = CreateToggle(p, LS("SEC_TEST_MODE", "Test Mode"),
+        function() return BIT.testMode end,
+        function(v) if v then BIT:StartTestMode() else BIT:StopTestMode() end end)
+    w[#w+1] = CreateToggle(p, LS("SEC_SOLO_MODE", "Solo Mode") .. " |cFF888888(" .. LS("SEC_SOLO_MODE_HINT", "only your own interrupt is tracked") .. ")|r",
+        function() return BIT.db.soloMode end,
+        function(v) BIT.db.soloMode = v end)
     w[#w+1] = CreateToggle(p, LS("CB_LOCK_POSITION", "Lock Position"),
         function() return BIT.db.locked end,
         function(v) BIT.db.locked = v end)
@@ -1459,12 +1505,34 @@ local function BuildColors()
     w[#w+1] = CreateSectionHeader(p, "Bar Color", "sui_col_bar")
     w[#w+1] = CreateToggle(p, LS("COLOR_CLASS", "Use Class Colors"),
         function() return BIT.db.useClassColors end,
-        function(v) BIT.db.useClassColors = v end)
-    w[#w+1] = CreateColorSwatch(p, LS("COLOR_CUSTOM", "Custom Bar Color"),
+        function(v)
+            BIT.db.useClassColors = v
+            if pages[activePage] and pages[activePage].refresh then pages[activePage].refresh() end
+            if pages[activePage] and pages[activePage].layout  then pages[activePage].layout()  end
+        end)
+    local fadeToggle = CreateToggle(p, LS("COLOR_CD_FADE", 'Fade (Looks good with "Fill" Option)'),
+        function() return BIT.db.cdBarFade end,
+        function(v) BIT.db.cdBarFade = v end)
+    fadeToggle._dynamic = true
+    fadeToggle._update = function()
+        if BIT.db.useClassColors then
+            fadeToggle:Hide()
+        else
+            fadeToggle:Show()
+        end
+    end
+    fadeToggle._update()
+    w[#w+1] = fadeToggle
+    w[#w+1] = CreateColorSwatch(p, LS("COLOR_CUSTOM", "Ready Bar"),
         function() return BIT.db.customColorR or 0.4 end,
         function() return BIT.db.customColorG or 0.8 end,
         function() return BIT.db.customColorB or 1.0 end,
         function(r, g, b) BIT.db.customColorR = r; BIT.db.customColorG = g; BIT.db.customColorB = b end)
+    w[#w+1] = CreateColorSwatch(p, LS("COLOR_CD_BAR", "Cooldown Bar"),
+        function() return BIT.db.cdBarColorR or 0.8 end,
+        function() return BIT.db.cdBarColorG or 0.2 end,
+        function() return BIT.db.cdBarColorB or 0.2 end,
+        function(r, g, b) BIT.db.cdBarColorR = r; BIT.db.cdBarColorG = g; BIT.db.cdBarColorB = b end)
 
     w[#w+1] = CreateSectionHeader(p, "Title Color", "sui_col_title")
     w[#w+1] = CreateColorSwatch(p, "Title Color",
@@ -1621,6 +1689,41 @@ local function BuildPartyCDs()
         function(v) BIT.db.syncCdCounterSize = v end,
         function(v) return math.floor(v) .. "px" end)
 
+    -- ── Charges ─────────────────────────────────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("SEC_PCD_CHARGES", "Charges"), "sui_pcd_charges")
+    local function chargeStyleSetter(key, def)
+        return function(v)
+            BIT.db[key] = v
+            if BIT.SyncCD and BIT.SyncCD.UpdateChargeBadgeStyle then
+                BIT.SyncCD:UpdateChargeBadgeStyle()
+            end
+        end
+    end
+    w[#w+1] = CreateSlider(p, LS("SL_CHARGE_SIZE", "Badge Size"), 6, 24, 1,
+        function() return BIT.db.syncCdChargeSize or 13 end,
+        chargeStyleSetter("syncCdChargeSize"),
+        function(v) return math.floor(v) .. "px" end)
+    w[#w+1] = CreateDropdown(p, LS("DD_CHARGE_ANCHOR", "Anchor"),
+        { { value = "TOPLEFT",     label = "Top Left" },
+          { value = "TOP",         label = "Top" },
+          { value = "TOPRIGHT",    label = "Top Right" },
+          { value = "LEFT",        label = "Left" },
+          { value = "CENTER",      label = "Center" },
+          { value = "RIGHT",       label = "Right" },
+          { value = "BOTTOMLEFT",  label = "Bottom Left" },
+          { value = "BOTTOM",      label = "Bottom" },
+          { value = "BOTTOMRIGHT", label = "Bottom Right" } },
+        function() return BIT.db.syncCdChargeAnchor or "BOTTOMRIGHT" end,
+        chargeStyleSetter("syncCdChargeAnchor"))
+    w[#w+1] = CreateSlider(p, LS("SL_CHARGE_OFFSET_X", "Offset X"), -20, 20, 1,
+        function() return BIT.db.syncCdChargeOffX or -1 end,
+        chargeStyleSetter("syncCdChargeOffX"),
+        function(v) return math.floor(v) .. "px" end)
+    w[#w+1] = CreateSlider(p, LS("SL_CHARGE_OFFSET_Y", "Offset Y"), -20, 20, 1,
+        function() return BIT.db.syncCdChargeOffY or 1 end,
+        chargeStyleSetter("syncCdChargeOffY"),
+        function(v) return math.floor(v) .. "px" end)
+
     -- ── Spell Filters — Party CDs ───────────────────────────────────
     w[#w+1] = CreateSectionHeader(p, "Spell Filters", "sui_pcd_spellfilter")
 
@@ -1682,6 +1785,33 @@ local function BuildPartyCDs()
         elseif s.cat == "DMG" then pcdDmg[#pcdDmg+1] = s end
     end
 
+    -- Build racial list from BIT.SyncCD.byRace (Shadowmeld, Stoneform, …).
+    -- Racials have no class affiliation — use class="RACIAL" so the panel's
+    -- CLASS_COLORS lookup falls back to neutral gray; race name is shown
+    -- as the suffix (e.g. "Shadowmeld (Night Elf)").
+    local PCD_RACE_DISPLAY = {
+        NightElf = "Night Elf",
+        Dwarf    = "Dwarf",
+    }
+    local pcdRacial = {}
+    if BIT.SyncCD and BIT.SyncCD.byRace then
+        for raceKey, entries in pairs(BIT.SyncCD.byRace) do
+            for _, s in ipairs(entries) do
+                pcdRacial[#pcdRacial+1] = {
+                    id        = s.id,
+                    label     = s.name,
+                    class     = "RACIAL",
+                    className = PCD_RACE_DISPLAY[raceKey] or raceKey,
+                    cat       = s.cat or "DEF",
+                }
+            end
+        end
+        table.sort(pcdRacial, function(a, b)
+            if a.className ~= b.className then return a.className < b.className end
+            return a.label < b.label
+        end)
+    end
+
     local pcdGetter = function(sid) return not (BIT.db.syncCdDisabled and BIT.db.syncCdDisabled[sid]) end
     local pcdSetter = function(sid, enabled)
         if not BIT.db.syncCdDisabled then BIT.db.syncCdDisabled = {} end
@@ -1691,9 +1821,169 @@ local function BuildPartyCDs()
     end
 
     w[#w+1] = CreateSpellFilterPanel(p, pcdDef, pcdGetter, pcdSetter, {
-        { label = "Def",  spells = pcdDef },
-        { label = "Off",  spells = pcdDmg },
+        { label = "Def",    spells = pcdDef    },
+        { label = "Off",    spells = pcdDmg    },
+        { label = "Racial", spells = pcdRacial },
     })
+
+    return w
+end
+
+------------------------------------------------------------
+-- ── Category: Smart Misdirect ────────────────────────────
+--   Hunter: Misdirection (34477)
+--   Rogue : Tricks of the Trade (57934)
+--   For any other class we render a short "not available"
+--   notice so the page never silently goes blank.
+------------------------------------------------------------
+local function BuildSmartMisdirect()
+    local w = {}
+    local p = contentChild
+
+    local myClass = BIT.Self and BIT.Self.class or BIT.myClass
+    local eligible = (myClass == "HUNTER" or myClass == "ROGUE")
+
+    w[#w+1] = CreateSectionHeader(p, LS("SMD_SEC_GENERAL", "General"), "sui_smd_gen")
+
+    if not eligible then
+        w[#w+1] = CreateLabel(p,
+            "|cffff8800" .. LS("SMD_DESC_CLASS", "Only Hunters and Rogues can use Smart Misdirect.") .. "|r",
+            12)
+        return w
+    end
+
+    w[#w+1] = CreateLabel(p, LS("SMD_DESC",
+        "Automatically re-targets Misdirection / Tricks of the Trade based on your group, focus and tanks."),
+        11)
+    w[#w+1] = CreateToggle(p, LS("SMD_ENABLED", "Enable Smart Misdirect"),
+        function() return BIT.db.smartMdEnabled end,
+        function(v)
+            BIT.db.smartMdEnabled = v
+            if not BIT.SmartMisdirect then return end
+            if v then
+                if BIT.SmartMisdirect.CreateButtons then BIT.SmartMisdirect:CreateButtons() end
+                if BIT.SmartMisdirect.QueueUpdate   then BIT.SmartMisdirect:QueueUpdate()   end
+            else
+                if BIT.SmartMisdirect.ClearButtons  then BIT.SmartMisdirect:ClearButtons()  end
+            end
+        end)
+    w[#w+1] = CreateToggle(p, LS("SMD_ANNOUNCE_TARGET", "Announce target change in chat"),
+        function() return BIT.db.smartMdAnnounceTarget end,
+        function(v) BIT.db.smartMdAnnounceTarget = v end)
+
+    -- ── Targeting ───────────────────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("SMD_SEC_TARGETING", "Targeting"), "sui_smd_target")
+    w[#w+1] = CreateToggle(p, LS("SMD_PRIORITIZE_FOCUS", "Prefer Focus target (if in group)"),
+        function() return BIT.db.smartMdPrioritizeFocus end,
+        function(v)
+            BIT.db.smartMdPrioritizeFocus = v
+            if BIT.SmartMisdirect then BIT.SmartMisdirect:QueueUpdate() end
+        end)
+    if myClass == "HUNTER" then
+        w[#w+1] = CreateToggle(p, LS("SMD_INCLUDE_PET", "Fallback to own pet (Hunter)"),
+            function() return BIT.db.smartMdIncludePet end,
+            function(v)
+                BIT.db.smartMdIncludePet = v
+                if BIT.SmartMisdirect then BIT.SmartMisdirect:QueueUpdate() end
+            end)
+    end
+    w[#w+1] = CreateDropdown(p, LS("SMD_TANK_METHOD", "Tank Selection"),
+        { { value = "byRole",          label = LS("SMD_METHOD_BY_ROLE",    "By Role (TANK)") },
+          { value = "roleAndMainTank", label = LS("SMD_METHOD_ROLE_AND_MT","Role + Main Tank") },
+          { value = "mainTankFirst",   label = LS("SMD_METHOD_MT_FIRST",   "Main Tank first") },
+          { value = "mainTankOnly",    label = LS("SMD_METHOD_MT_ONLY",    "Main Tank only") } },
+        function() return BIT.db.smartMdTankMethod or "byRole" end,
+        function(v)
+            BIT.db.smartMdTankMethod = v
+            if BIT.SmartMisdirect then BIT.SmartMisdirect:QueueUpdate() end
+        end)
+
+    -- ── Manual Override ─────────────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("SMD_SEC_OVERRIDE", "Manual Override"), "sui_smd_over")
+    w[#w+1] = CreateLabel(p, LS("SMD_OVERRIDE_HINT", "Leave empty to disable."), 11)
+    w[#w+1] = CreateEditBox(p, LS("SMD_OVERRIDE_NAME", "Player Name"),
+        function() return BIT.db.smartMdManualName or "" end,
+        function(v)
+            BIT.db.smartMdManualName = v or ""
+            if BIT.SmartMisdirect then BIT.SmartMisdirect:QueueUpdate() end
+        end)
+    w[#w+1] = CreateEditBox(p, LS("SMD_OVERRIDE_REALM", "Realm (cross-realm only)"),
+        function() return BIT.db.smartMdManualRealm or "" end,
+        function(v)
+            BIT.db.smartMdManualRealm = v or ""
+            if BIT.SmartMisdirect then BIT.SmartMisdirect:QueueUpdate() end
+        end)
+    -- Clear button
+    do
+        local f = CreateFrame("Frame", nil, p)
+        f:SetSize(p:GetWidth() - CONTENT_PAD * 2, WIDGET_H)
+        local btn = CreateFrame("Button", nil, f, "BackdropTemplate")
+        btn:SetSize(160, 24)
+        btn:SetPoint("LEFT", 0, 0)
+        MakeBg(btn, 0.18, 0.10, 0.10, 1)
+        local txt = btn:CreateFontString(nil, "OVERLAY")
+        ApplyFont(txt, 11)
+        txt:SetPoint("CENTER")
+        txt:SetTextColor(1, 0.5, 0.5)
+        txt:SetText(LS("SMD_OVERRIDE_CLEAR", "Clear Override"))
+        btn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(1, 0.4, 0.4) end)
+        btn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+        btn:SetScript("OnClick", function()
+            if BIT.SmartMisdirect and BIT.SmartMisdirect.ClearManualOverride then
+                BIT.SmartMisdirect:ClearManualOverride(false)
+            end
+            -- Force a rebuild so the two EditBox widgets re-read the empty value
+            if pages[activePage] and pages[activePage].layout then
+                pages[activePage].layout()
+            end
+            Refresh()
+        end)
+        w[#w+1] = f
+    end
+
+    -- ── Macro ───────────────────────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("SMD_SEC_MACRO", "Macro"), "sui_smd_macro")
+    w[#w+1] = CreateLabel(p, LS("SMD_MACRO_HINT",
+        "Creates a per-character macro you can drag onto your action bar."), 11)
+    do
+        local f = CreateFrame("Frame", nil, p)
+        f:SetSize(p:GetWidth() - CONTENT_PAD * 2, WIDGET_H + 6)
+
+        local btn = CreateFrame("Button", nil, f, "BackdropTemplate")
+        btn:SetSize(220, 26)
+        btn:SetPoint("LEFT", 0, 0)
+        MakeBg(btn, 0.15, 0.15, 0.18, 1)
+        local txt = btn:CreateFontString(nil, "OVERLAY")
+        ApplyFont(txt, 12)
+        txt:SetPoint("CENTER")
+        txt:SetTextColor(RGB(ACCENT))
+        txt:SetText(LS("SMD_MACRO_BTN", "Create / Update Macro"))
+        btn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+        btn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+        btn:SetScript("OnClick", function()
+            if not BIT.SmartMisdirect or not BIT.SmartMisdirect.CreateMacro then return end
+            if InCombatLockdown() then
+                txt:SetTextColor(1, 0.4, 0.4)
+                txt:SetText("|cffff5555" .. LS("SMD_MACRO_IN_COMBAT",
+                    "Cannot create macros while in combat.") .. "|r")
+                C_Timer.After(3, function()
+                    txt:SetTextColor(RGB(ACCENT))
+                    txt:SetText(LS("SMD_MACRO_BTN", "Create / Update Macro"))
+                end)
+                return
+            end
+            local idx, created, updated = BIT.SmartMisdirect:CreateMacro()
+            if idx then
+                txt:SetText("|cFF00FF00" .. (created and "Created!" or "Updated!") .. "|r")
+                C_Timer.After(2, function()
+                    txt:SetTextColor(RGB(ACCENT))
+                    txt:SetText(LS("SMD_MACRO_BTN", "Create / Update Macro"))
+                end)
+            end
+        end)
+
+        w[#w+1] = f
+    end
 
     return w
 end
@@ -1775,9 +2065,31 @@ local function BuildProfiles()
                 nameLbl:SetTextColor(RGB(TEXT))
                 nameLbl:SetText(key)
 
+                local capturedKey = key
+
+                local delBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                delBtn:SetSize(60, 20)
+                delBtn:SetPoint("RIGHT", -4, 0)
+                MakeBg(delBtn, 0.18, 0.10, 0.10, 1)
+
+                local delTxt = delBtn:CreateFontString(nil, "OVERLAY")
+                ApplyFont(delTxt, 10)
+                delTxt:SetPoint("CENTER")
+                delTxt:SetTextColor(1, 0.5, 0.5)
+                delTxt:SetText("Delete")
+
+                delBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(1, 0.4, 0.4) end)
+                delBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                delBtn:SetScript("OnClick", function()
+                    StaticPopup_Show("BIT_CONFIRM_DELETE_PROFILE", capturedKey, nil, {
+                        key = capturedKey,
+                        onSuccess = function() if f._update then f._update() end; Refresh() end,
+                    })
+                end)
+
                 local copyBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
                 copyBtn:SetSize(60, 20)
-                copyBtn:SetPoint("RIGHT", -4, 0)
+                copyBtn:SetPoint("RIGHT", delBtn, "LEFT", -4, 0)
                 MakeBg(copyBtn, 0.15, 0.15, 0.18, 1)
 
                 local copyTxt = copyBtn:CreateFontString(nil, "OVERLAY")
@@ -1788,7 +2100,6 @@ local function BuildProfiles()
 
                 copyBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
                 copyBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
-                local capturedKey = key
                 copyBtn:SetScript("OnClick", function()
                     StaticPopup_Show("BIT_CONFIRM_COPY_PROFILE", capturedKey, nil, {
                         key = capturedKey,
@@ -1803,6 +2114,365 @@ local function BuildProfiles()
                 charRows[#charRows+1] = row
             end
             f:SetHeight(#others * (rowH + 2))
+        end
+        f._update()
+        w[#w+1] = f
+    end
+
+    -- ── Global Default Profile ──────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("PROFILE_GLOBAL", "Global Default"), "sui_prof_global")
+
+    do
+        local f = CreateFrame("Frame", nil, p)
+        f:SetSize(p:GetWidth() - CONTENT_PAD * 2, WIDGET_H)
+
+        local statusLbl = f:CreateFontString(nil, "OVERLAY")
+        ApplyFont(statusLbl, 11)
+        statusLbl:SetPoint("LEFT", 0, 0)
+
+        local function RefreshStatus()
+            if BIT.HasGlobalProfile and BIT.HasGlobalProfile() then
+                statusLbl:SetTextColor(0.4, 1, 0.4)
+                statusLbl:SetText(LS("PROFILE_GLOBAL_SAVED", "Saved"))
+            else
+                statusLbl:SetTextColor(RGB(TEXT_DIM))
+                statusLbl:SetText(LS("PROFILE_GLOBAL_NONE", "Not saved"))
+            end
+        end
+        RefreshStatus()
+
+        local applyBtn = CreateFrame("Button", nil, f, "BackdropTemplate")
+        applyBtn:SetSize(140, 24)
+        applyBtn:SetPoint("RIGHT", 0, 0)
+        MakeBg(applyBtn, 0.15, 0.15, 0.18, 1)
+        local applyTxt = applyBtn:CreateFontString(nil, "OVERLAY")
+        ApplyFont(applyTxt, 11)
+        applyTxt:SetPoint("CENTER")
+        applyTxt:SetTextColor(RGB(ACCENT))
+        applyTxt:SetText(LS("PROFILE_BTN_APPLY_GLOBAL", "Apply Global"))
+        applyBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+        applyBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+        applyBtn:SetScript("OnClick", function()
+            if BIT.ApplyGlobalProfile and BIT.ApplyGlobalProfile() then
+                applyTxt:SetText("|cFF00FF00Done!|r")
+                C_Timer.After(2, function()
+                    applyTxt:SetTextColor(RGB(ACCENT))
+                    applyTxt:SetText(LS("PROFILE_BTN_APPLY_GLOBAL", "Apply Global"))
+                end)
+                Refresh()
+            end
+        end)
+
+        local saveBtn = CreateFrame("Button", nil, f, "BackdropTemplate")
+        saveBtn:SetSize(140, 24)
+        saveBtn:SetPoint("RIGHT", applyBtn, "LEFT", -6, 0)
+        MakeBg(saveBtn, 0.15, 0.15, 0.18, 1)
+        local saveTxt = saveBtn:CreateFontString(nil, "OVERLAY")
+        ApplyFont(saveTxt, 11)
+        saveTxt:SetPoint("CENTER")
+        saveTxt:SetTextColor(RGB(ACCENT))
+        saveTxt:SetText(LS("PROFILE_BTN_SAVE_GLOBAL", "Save as Global"))
+        saveBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+        saveBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+        saveBtn:SetScript("OnClick", function()
+            if BIT.SaveGlobalProfile then
+                BIT.SaveGlobalProfile()
+                RefreshStatus()
+                saveTxt:SetText("|cFF00FF00Saved!|r")
+                C_Timer.After(2, function()
+                    saveTxt:SetTextColor(RGB(ACCENT))
+                    saveTxt:SetText(LS("PROFILE_BTN_SAVE_GLOBAL", "Save as Global"))
+                end)
+            end
+        end)
+
+        local delBtn = CreateFrame("Button", nil, f, "BackdropTemplate")
+        delBtn:SetSize(80, 24)
+        delBtn:SetPoint("RIGHT", saveBtn, "LEFT", -6, 0)
+        MakeBg(delBtn, 0.18, 0.10, 0.10, 1)
+        local delTxt = delBtn:CreateFontString(nil, "OVERLAY")
+        ApplyFont(delTxt, 11)
+        delTxt:SetPoint("CENTER")
+        delTxt:SetTextColor(1, 0.5, 0.5)
+        delTxt:SetText(LS("PROFILE_BTN_DELETE_GLOBAL", "Delete"))
+        delBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(1, 0.4, 0.4) end)
+        delBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+        delBtn:SetScript("OnClick", function()
+            if not (BIT.HasGlobalProfile and BIT.HasGlobalProfile()) then return end
+            StaticPopup_Show("BIT_CONFIRM_DELETE_GLOBAL", nil, nil, {
+                onSuccess = function() RefreshStatus() end,
+            })
+        end)
+
+        w[#w+1] = f
+    end
+
+    w[#w+1] = CreateToggle(p, LS("PROFILE_AUTO_APPLY", "Auto-apply to new characters"),
+        function() return BIT.db.useGlobalDefault end,
+        function(v) BIT.db.useGlobalDefault = v end)
+
+    -- ── Spec Profiles ────────────────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("PROFILE_SPEC", "Spec Profiles"), "sui_prof_spec")
+
+    w[#w+1] = CreateToggle(p, LS("PROFILE_AUTO_APPLY_SPEC", "Auto-apply on spec change"),
+        function() return BIT.db.useSpecProfile end,
+        function(v) BIT.db.useSpecProfile = v end)
+
+    -- Row list: show all 3-4 specs of the player's class, each with status + buttons.
+    do
+        local f = CreateFrame("Frame", nil, p)
+        f:SetSize(p:GetWidth() - CONTENT_PAD * 2, 10)
+
+        local specRows = {}
+        f._update = function()
+            for _, r in ipairs(specRows) do r:Hide() end
+            wipe(specRows)
+
+            -- Enumerate the player's class specs.
+            local classID = select(3, UnitClass("player"))
+            local numSpecs = classID and GetNumSpecializationsForClassID
+                             and GetNumSpecializationsForClassID(classID) or 0
+            if numSpecs == 0 then
+                local empty = f:CreateFontString(nil, "OVERLAY")
+                ApplyFont(empty, 11)
+                empty:SetPoint("TOPLEFT", 0, 0)
+                empty:SetTextColor(RGB(TEXT_DIM))
+                empty:SetText(LS("PROFILE_SPEC_NONE", "No specs available."))
+                specRows[1] = empty
+                f:SetHeight(20)
+                return
+            end
+
+            local curSpec = BIT.GetCurrentSpecID and BIT.GetCurrentSpecID()
+            local rowH    = 26
+            for i = 1, numSpecs do
+                local specID, specName = GetSpecializationInfoForClassID(classID, i)
+                if specID then
+                    local row = CreateFrame("Frame", nil, f, "BackdropTemplate")
+                    row:SetSize(f:GetWidth(), rowH)
+                    row:SetPoint("TOPLEFT", 0, -(i - 1) * (rowH + 2))
+                    MakeBg(row, i % 2 == 0 and 0.10 or 0.13, 0.10, i % 2 == 0 and 0.10 or 0.13, 1)
+
+                    local nameLbl = row:CreateFontString(nil, "OVERLAY")
+                    ApplyFont(nameLbl, 11)
+                    nameLbl:SetPoint("LEFT", 8, 0)
+                    if specID == curSpec then
+                        nameLbl:SetTextColor(1, 0.84, 0)  -- gold for current spec
+                        nameLbl:SetText(specName .. "  |cFF888888(current)|r")
+                    else
+                        nameLbl:SetTextColor(RGB(TEXT))
+                        nameLbl:SetText(specName)
+                    end
+
+                    local hasProf = BIT.HasSpecProfile and BIT.HasSpecProfile(specID)
+                    local statusLbl = row:CreateFontString(nil, "OVERLAY")
+                    ApplyFont(statusLbl, 10)
+                    statusLbl:SetPoint("LEFT", nameLbl, "RIGHT", 8, 0)
+                    if hasProf then
+                        statusLbl:SetTextColor(0.4, 1, 0.4)
+                        statusLbl:SetText(LS("PROFILE_GLOBAL_SAVED", "Saved"))
+                    else
+                        statusLbl:SetTextColor(RGB(TEXT_DIM))
+                        statusLbl:SetText(LS("PROFILE_GLOBAL_NONE", "Not saved"))
+                    end
+
+                    local capturedSpecID = specID
+                    local capturedName   = specName
+
+                    -- Delete
+                    local delBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                    delBtn:SetSize(60, 20)
+                    delBtn:SetPoint("RIGHT", -4, 0)
+                    MakeBg(delBtn, 0.18, 0.10, 0.10, 1)
+                    local delTxt = delBtn:CreateFontString(nil, "OVERLAY")
+                    ApplyFont(delTxt, 10); delTxt:SetPoint("CENTER")
+                    delTxt:SetTextColor(1, 0.5, 0.5); delTxt:SetText(LS("PROFILE_BTN_DELETE", "Delete"))
+                    delBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(1, 0.4, 0.4) end)
+                    delBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                    delBtn:SetScript("OnClick", function()
+                        if not (BIT.HasSpecProfile and BIT.HasSpecProfile(capturedSpecID)) then return end
+                        StaticPopup_Show("BIT_CONFIRM_DELETE_SPEC_PROFILE", capturedName, nil, {
+                            specID    = capturedSpecID,
+                            onSuccess = function() if f._update then f._update() end end,
+                        })
+                    end)
+
+                    -- Apply
+                    local applyBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                    applyBtn:SetSize(60, 20)
+                    applyBtn:SetPoint("RIGHT", delBtn, "LEFT", -4, 0)
+                    MakeBg(applyBtn, 0.15, 0.15, 0.18, 1)
+                    local applyTxt = applyBtn:CreateFontString(nil, "OVERLAY")
+                    ApplyFont(applyTxt, 10); applyTxt:SetPoint("CENTER")
+                    applyTxt:SetTextColor(RGB(ACCENT)); applyTxt:SetText(LS("PROFILE_BTN_APPLY", "Apply"))
+                    applyBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+                    applyBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                    applyBtn:SetScript("OnClick", function()
+                        if BIT.ApplySpecProfile and BIT.ApplySpecProfile(capturedSpecID) then
+                            applyTxt:SetText("|cFF00FF00Done!|r")
+                            C_Timer.After(2, function()
+                                applyTxt:SetTextColor(RGB(ACCENT))
+                                applyTxt:SetText(LS("PROFILE_BTN_APPLY", "Apply"))
+                            end)
+                            Refresh()
+                        end
+                    end)
+
+                    -- Save (only enabled for current spec — you can't save settings of another spec)
+                    local saveBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                    saveBtn:SetSize(60, 20)
+                    saveBtn:SetPoint("RIGHT", applyBtn, "LEFT", -4, 0)
+                    MakeBg(saveBtn, 0.15, 0.15, 0.18, 1)
+                    local saveTxt = saveBtn:CreateFontString(nil, "OVERLAY")
+                    ApplyFont(saveTxt, 10); saveTxt:SetPoint("CENTER")
+                    if specID == curSpec then
+                        saveTxt:SetTextColor(RGB(ACCENT)); saveTxt:SetText(LS("PROFILE_BTN_SAVE_SHORT", "Save"))
+                        saveBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+                        saveBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                        saveBtn:SetScript("OnClick", function()
+                            if BIT.SaveSpecProfile and BIT.SaveSpecProfile(capturedSpecID) then
+                                saveTxt:SetText("|cFF00FF00Saved!|r")
+                                if f._update then f._update() end
+                                C_Timer.After(2, function()
+                                    if saveTxt and saveTxt.SetText then
+                                        saveTxt:SetTextColor(RGB(ACCENT))
+                                        saveTxt:SetText(LS("PROFILE_BTN_SAVE_SHORT", "Save"))
+                                    end
+                                end)
+                            end
+                        end)
+                    else
+                        saveTxt:SetTextColor(RGB(TEXT_DIM))
+                        saveTxt:SetText(LS("PROFILE_BTN_SAVE_SHORT", "Save"))
+                        saveBtn:EnableMouse(false)
+                    end
+
+                    specRows[#specRows+1] = row
+                end
+            end
+            f:SetHeight(math.max(20, numSpecs * (rowH + 2)))
+        end
+        f._update()
+        w[#w+1] = f
+    end
+
+    -- ── Role Profiles ────────────────────────────────────
+    w[#w+1] = CreateSectionHeader(p, LS("PROFILE_ROLE", "Role Profiles"), "sui_prof_role")
+
+    w[#w+1] = CreateToggle(p, LS("PROFILE_AUTO_APPLY_ROLE", "Auto-apply on role change"),
+        function() return BIT.db.useRoleProfile end,
+        function(v) BIT.db.useRoleProfile = v end)
+
+    do
+        local f = CreateFrame("Frame", nil, p)
+        f:SetSize(p:GetWidth() - CONTENT_PAD * 2, 10)
+
+        local roleRows   = {}
+        local ROLE_ORDER = { "TANK", "HEALER", "DAMAGER" }
+        local ROLE_LABEL = { TANK = "Tank", HEALER = "Healer", DAMAGER = "DPS" }
+
+        f._update = function()
+            for _, r in ipairs(roleRows) do r:Hide() end
+            wipe(roleRows)
+
+            local curRole = BIT.GetCurrentRole and BIT.GetCurrentRole()
+            local rowH    = 26
+            for i, role in ipairs(ROLE_ORDER) do
+                local row = CreateFrame("Frame", nil, f, "BackdropTemplate")
+                row:SetSize(f:GetWidth(), rowH)
+                row:SetPoint("TOPLEFT", 0, -(i - 1) * (rowH + 2))
+                MakeBg(row, i % 2 == 0 and 0.10 or 0.13, 0.10, i % 2 == 0 and 0.10 or 0.13, 1)
+
+                local nameLbl = row:CreateFontString(nil, "OVERLAY")
+                ApplyFont(nameLbl, 11)
+                nameLbl:SetPoint("LEFT", 8, 0)
+                if role == curRole then
+                    nameLbl:SetTextColor(1, 0.84, 0)
+                    nameLbl:SetText(ROLE_LABEL[role] .. "  |cFF888888(current)|r")
+                else
+                    nameLbl:SetTextColor(RGB(TEXT))
+                    nameLbl:SetText(ROLE_LABEL[role])
+                end
+
+                local hasProf = BIT.HasRoleProfile and BIT.HasRoleProfile(role)
+                local statusLbl = row:CreateFontString(nil, "OVERLAY")
+                ApplyFont(statusLbl, 10)
+                statusLbl:SetPoint("LEFT", nameLbl, "RIGHT", 8, 0)
+                if hasProf then
+                    statusLbl:SetTextColor(0.4, 1, 0.4)
+                    statusLbl:SetText(LS("PROFILE_GLOBAL_SAVED", "Saved"))
+                else
+                    statusLbl:SetTextColor(RGB(TEXT_DIM))
+                    statusLbl:SetText(LS("PROFILE_GLOBAL_NONE", "Not saved"))
+                end
+
+                local capturedRole = role
+
+                -- Delete
+                local delBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                delBtn:SetSize(60, 20)
+                delBtn:SetPoint("RIGHT", -4, 0)
+                MakeBg(delBtn, 0.18, 0.10, 0.10, 1)
+                local delTxt = delBtn:CreateFontString(nil, "OVERLAY")
+                ApplyFont(delTxt, 10); delTxt:SetPoint("CENTER")
+                delTxt:SetTextColor(1, 0.5, 0.5); delTxt:SetText(LS("PROFILE_BTN_DELETE", "Delete"))
+                delBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(1, 0.4, 0.4) end)
+                delBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                delBtn:SetScript("OnClick", function()
+                    if not (BIT.HasRoleProfile and BIT.HasRoleProfile(capturedRole)) then return end
+                    StaticPopup_Show("BIT_CONFIRM_DELETE_ROLE_PROFILE", ROLE_LABEL[capturedRole], nil, {
+                        role      = capturedRole,
+                        onSuccess = function() if f._update then f._update() end end,
+                    })
+                end)
+
+                -- Apply
+                local applyBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                applyBtn:SetSize(60, 20)
+                applyBtn:SetPoint("RIGHT", delBtn, "LEFT", -4, 0)
+                MakeBg(applyBtn, 0.15, 0.15, 0.18, 1)
+                local applyTxt = applyBtn:CreateFontString(nil, "OVERLAY")
+                ApplyFont(applyTxt, 10); applyTxt:SetPoint("CENTER")
+                applyTxt:SetTextColor(RGB(ACCENT)); applyTxt:SetText(LS("PROFILE_BTN_APPLY", "Apply"))
+                applyBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+                applyBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                applyBtn:SetScript("OnClick", function()
+                    if BIT.ApplyRoleProfile and BIT.ApplyRoleProfile(capturedRole) then
+                        applyTxt:SetText("|cFF00FF00Done!|r")
+                        C_Timer.After(2, function()
+                            applyTxt:SetTextColor(RGB(ACCENT))
+                            applyTxt:SetText(LS("PROFILE_BTN_APPLY", "Apply"))
+                        end)
+                        Refresh()
+                    end
+                end)
+
+                -- Save (always enabled — saves current settings into this role slot)
+                local saveBtn = CreateFrame("Button", nil, row, "BackdropTemplate")
+                saveBtn:SetSize(60, 20)
+                saveBtn:SetPoint("RIGHT", applyBtn, "LEFT", -4, 0)
+                MakeBg(saveBtn, 0.15, 0.15, 0.18, 1)
+                local saveTxt = saveBtn:CreateFontString(nil, "OVERLAY")
+                ApplyFont(saveTxt, 10); saveTxt:SetPoint("CENTER")
+                saveTxt:SetTextColor(RGB(ACCENT)); saveTxt:SetText(LS("PROFILE_BTN_SAVE_SHORT", "Save"))
+                saveBtn:SetScript("OnEnter", function(self) self:SetBackdropBorderColor(RGB(ACCENT)) end)
+                saveBtn:SetScript("OnLeave", function(self) self:SetBackdropBorderColor(RGB(BORDER)) end)
+                saveBtn:SetScript("OnClick", function()
+                    if BIT.SaveRoleProfile and BIT.SaveRoleProfile(capturedRole) then
+                        saveTxt:SetText("|cFF00FF00Saved!|r")
+                        if f._update then f._update() end
+                        C_Timer.After(2, function()
+                            if saveTxt and saveTxt.SetText then
+                                saveTxt:SetTextColor(RGB(ACCENT))
+                                saveTxt:SetText(LS("PROFILE_BTN_SAVE_SHORT", "Save"))
+                            end
+                        end)
+                    end
+                end)
+
+                roleRows[#roleRows+1] = row
+            end
+            f:SetHeight(#ROLE_ORDER * (rowH + 2))
         end
         f._update()
         w[#w+1] = f
@@ -2031,20 +2701,29 @@ function BIT.SettingsUI:Init()
     CreateMainFrame()
 
     -- Register pages
-    RegisterPage("General",     BuildGeneral)
-    RegisterPage("Interrupts",  BuildInterrupts)
-    RegisterPage("Size & Font", BuildSizeFont)
-    RegisterPage("Colors",      BuildColors)
-    RegisterPage("Party CDs",   BuildPartyCDs)
-    RegisterPage("Profiles",    BuildProfiles)
+    RegisterPage("General",        BuildGeneral)
+    RegisterPage("Interrupts",     BuildInterrupts)
+    RegisterPage("Size & Font",    BuildSizeFont)
+    RegisterPage("Colors",         BuildColors)
+    RegisterPage("Party CDs",      BuildPartyCDs)
+    RegisterPage("Smart Misdirect",BuildSmartMisdirect)
+    RegisterPage("Profiles",       BuildProfiles)
 
     -- Create sidebar buttons
-    CreateSidebarBtn(1, "General",     136243) -- Interface/misc
-    CreateSidebarBtn(2, "Interrupts",  236281) -- Ability_kick
-    CreateSidebarBtn(3, "Size & Font", 134063) -- inv_misc_note_01
-    CreateSidebarBtn(4, "Colors",      134572) -- inv_misc_gem_variety1
-    CreateSidebarBtn(5, "Party CDs",   236440) -- Spell_holy_powerwordbarrier
-    CreateSidebarBtn(6, "Profiles",    134400) -- inv_misc_note_05
+    CreateSidebarBtn(1, "General",        136243) -- Interface/misc
+    CreateSidebarBtn(2, "Interrupts",     236281) -- Ability_kick
+    CreateSidebarBtn(3, "Size & Font",    134063) -- inv_misc_note_01
+    CreateSidebarBtn(4, "Colors",         134572) -- inv_misc_gem_variety1
+    CreateSidebarBtn(5, "Party CDs",      236440) -- Spell_holy_powerwordbarrier
+    -- Smart Misdirect: only show sidebar entry for Hunter / Rogue so the page
+    -- is invisible to classes that cannot use the feature.
+    local _cls = BIT.Self and BIT.Self.class or BIT.myClass
+    local _smdIdx = 6
+    if _cls == "HUNTER" or _cls == "ROGUE" then
+        CreateSidebarBtn(6, "Smart Misdirect", 132180) -- ability_hunter_misdirection
+        _smdIdx = 7
+    end
+    CreateSidebarBtn(_smdIdx, "Profiles",  134400) -- inv_misc_note_05
 
     -- Adjust contentChild width after frame is visible
     mainFrame:HookScript("OnShow", function()
@@ -2098,7 +2777,9 @@ function BIT.SettingsUI:CreateMinimapButton()
         text = "BliZzi Interrupts",
         icon = ICON,
         OnClick = function(_, button)
-            if button == "LeftButton" then
+            if IsShiftKeyDown() then
+                BIT:StartTestMode()
+            elseif button == "LeftButton" then
                 BIT.SettingsUI:Toggle()
             elseif button == "RightButton" then
                 if BIT.UI and BIT.UI.ShowRotationPanel then
@@ -2111,6 +2792,7 @@ function BIT.SettingsUI:CreateMinimapButton()
             tt:AddLine(" ")
             tt:AddLine("|cFFFFD700Left-Click|r  Open Settings", 0.8, 0.8, 0.8)
             tt:AddLine("|cFFFFD700Right-Click|r  Kick Rotation", 0.8, 0.8, 0.8)
+            tt:AddLine("|cFFFFD700Shift-Click|r  Toggle Test Mode", 0.8, 0.8, 0.8)
             tt:AddLine("|cFFFFD700Drag|r  Move Button", 0.8, 0.8, 0.8)
         end,
     })

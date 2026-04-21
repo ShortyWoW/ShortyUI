@@ -1,8 +1,8 @@
-## Interface: 120000, 120001
+## Interface: 120000, 120001, 120005
 ## X-Min-Interface: 120000
 ## Title: |cff0091edBliZzi|r|cffffa300Interrupts|r
 ## Author: BliZzi1337
-## Version: 3.3.4
+## Version: 3.3.6
 ## DefaultState: Enabled
 ## Category: Combat
 ## IconTexture: Interface\AddOns\BliZzi_Interrupts\Media\icon
@@ -33,6 +33,7 @@ Core.lua
 UI.lua
 SpellData.lua
 SyncCD.lua
+SmartMisdirect.lua
 Profile.lua
 DebugReport.lua
 Config.xml

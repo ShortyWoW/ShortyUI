@@ -155,7 +155,7 @@ BigWigs:AddSounds("Den of Nalorakk Trash", {
 })
 
 BigWigs:AddColors("Arcanotron Custos", {
-	[474345] = "cyan",
+	[474345] = {"cyan","green"},
 	[474496] = "purple",
 	[1214032] = "yellow",
 	[1214081] = "orange",
@@ -170,12 +170,14 @@ BigWigs:AddSounds("Arcanotron Custos", {
 
 BigWigs:AddColors("Seranel Sunlash", {
 	[1224903] = "orange",
+	[1225193] = "red",
 	[1225787] = "yellow",
 	[1248689] = "purple",
 })
 
 BigWigs:AddSounds("Seranel Sunlash", {
 	[1224903] = "alarm",
+	[1225193] = "warning",
 	[1225787] = "alert",
 	[1248689] = "info",
 })
@@ -195,11 +197,13 @@ BigWigs:AddSounds("Gemellus", {
 })
 
 BigWigs:AddColors("Degentrius", {
+	[1215087] = "red",
 	[1215897] = "yellow",
 	[1280113] = "purple",
 })
 
 BigWigs:AddSounds("Degentrius", {
+	[1215087] = "info",
 	[1215897] = "alert",
 	[1280113] = "alarm",
 })

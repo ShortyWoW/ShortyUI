@@ -193,47 +193,22 @@ BigWigs_MidnightRaid1VoiceAssistDB = {
 ["dbKey"] = "1247738_VoidConvergence_5",
 },
 },
-["1248983"] = {
+["1244917"] = {
 {
 ["enabled"] = true,
-["label"] = "Execution Sentence",
+["label"] = "Void Howl",
 ["trigger"] = 5,
-["sound"] = "!Soak_Player_Circles_And_Dodge_Soon",
-["dbKey"] = "1248983_ExecutionSentence_5",
+["sound"] = "!Loose_Stack_And_Adds_Soon",
+["dbKey"] = "1244917_VoidHowl_5",
 },
 },
-["1248644"] = {
+["1245874"] = {
 {
 ["enabled"] = true,
-["label"] = "Divine Toll",
+["label"] = "Orbiting Matter",
 ["trigger"] = 5,
 ["sound"] = "!Get_Ready_To_Dodge",
-["dbKey"] = "1248644_DivineToll_5",
-},
-{
-["enabled"] = true,
-["label"] = "Divine Toll",
-["trigger"] = 1,
-["sound"] = "!Dodge",
-["dbKey"] = "1248644_DivineToll_1",
-},
-},
-["1245406"] = {
-{
-["enabled"] = true,
-["label"] = "Ravenous Dive",
-["trigger"] = 5,
-["sound"] = "!Boss_Landing_Soon_-_Use_Defensive",
-["dbKey"] = "1245406_RavenousDive_5",
-},
-},
-["1246918"] = {
-{
-["enabled"] = true,
-["label"] = "Cosmic Barrier",
-["trigger"] = 5,
-["sound"] = "!Break_Shield_Soon",
-["dbKey"] = "1246918_CosmicBarrier_5",
+["dbKey"] = "1245874_OrbitingMatter_5",
 },
 },
 ["1249748"] = {
@@ -245,13 +220,31 @@ BigWigs_MidnightRaid1VoiceAssistDB = {
 ["dbKey"] = "1249748_MidnightFlames_5",
 },
 },
-["1250803"] = {
+["1246918"] = {
 {
 ["enabled"] = true,
-["label"] = "Shattering Twilight",
+["label"] = "Cosmic Barrier",
 ["trigger"] = 5,
-["sound"] = "!Dodge_Spikes_Soon",
-["dbKey"] = "1250803_ShatteringTwilight_5",
+["sound"] = "!Break_Shield_Soon",
+["dbKey"] = "1246918_CosmicBarrier_5",
+},
+},
+["1245406"] = {
+{
+["enabled"] = true,
+["label"] = "Ravenous Dive",
+["trigger"] = 5,
+["sound"] = "!Boss_Landing_Soon_-_Use_Defensive",
+["dbKey"] = "1245406_RavenousDive_5",
+},
+},
+["1248449"] = {
+{
+["enabled"] = true,
+["label"] = "Aura Of Wrath",
+["trigger"] = 5,
+["sound"] = "!Run_Away_From_Boss",
+["dbKey"] = "1248449_AuraOfWrath_5",
 },
 },
 ["1255368"] = {
@@ -290,13 +283,13 @@ BigWigs_MidnightRaid1VoiceAssistDB = {
 ["dbKey"] = "1245391_Gloom_5",
 },
 },
-["1244221"] = {
+["1242981"] = {
 {
 ["enabled"] = true,
-["label"] = "Dread Breath",
+["label"] = "Radiant Echoes",
 ["trigger"] = 5,
-["sound"] = "!Breath_Soon",
-["dbKey"] = "1244221_DreadBreath_5",
+["sound"] = "!Soak_Your_Colored_Orb_Soon",
+["dbKey"] = "1242981_RadiantEchoes_5",
 },
 },
 ["1245486"] = {
@@ -306,24 +299,6 @@ BigWigs_MidnightRaid1VoiceAssistDB = {
 ["trigger"] = 5,
 ["sound"] = "!Bait_Breath",
 ["dbKey"] = "1245486_CorruptedDevastation_5",
-},
-},
-["1258610"] = {
-{
-["enabled"] = true,
-["label"] = "Rift Emergence",
-["trigger"] = 5,
-["sound"] = "!Adds_Soon",
-["dbKey"] = "1258610_RiftEmergence_5",
-},
-},
-["1246162"] = {
-{
-["enabled"] = true,
-["label"] = "Aura Of Devotion",
-["trigger"] = 5,
-["sound"] = "!Run_Away_And_Dodge_Soon",
-["dbKey"] = "1246162_AuraOfDevotion_5",
 },
 },
 ["1248674"] = {
@@ -342,22 +317,40 @@ BigWigs_MidnightRaid1VoiceAssistDB = {
 ["dbKey"] = "1248674_SacredShield_1",
 },
 },
-["1242981"] = {
+["1246162"] = {
 {
 ["enabled"] = true,
-["label"] = "Radiant Echoes",
+["label"] = "Aura Of Devotion",
 ["trigger"] = 5,
-["sound"] = "!Soak_Your_Colored_Orb_Soon",
-["dbKey"] = "1242981_RadiantEchoes_5",
+["sound"] = "!Run_Away_And_Dodge_Soon",
+["dbKey"] = "1246162_AuraOfDevotion_5",
 },
 },
-["1248449"] = {
+["1258610"] = {
 {
 ["enabled"] = true,
-["label"] = "Aura Of Wrath",
+["label"] = "Rift Emergence",
 ["trigger"] = 5,
-["sound"] = "!Run_Away_From_Boss",
-["dbKey"] = "1248449_AuraOfWrath_5",
+["sound"] = "!Adds_Soon",
+["dbKey"] = "1258610_RiftEmergence_5",
+},
+},
+["1244221"] = {
+{
+["enabled"] = true,
+["label"] = "Dread Breath",
+["trigger"] = 5,
+["sound"] = "!Breath_Soon",
+["dbKey"] = "1244221_DreadBreath_5",
+},
+},
+["1250803"] = {
+{
+["enabled"] = true,
+["label"] = "Shattering Twilight",
+["trigger"] = 5,
+["sound"] = "!Dodge_Spikes_Soon",
+["dbKey"] = "1250803_ShatteringTwilight_5",
 },
 },
 ["1241692"] = {
@@ -369,22 +362,29 @@ BigWigs_MidnightRaid1VoiceAssistDB = {
 ["dbKey"] = "1241692_ShadowclawSlam_5",
 },
 },
-["1245874"] = {
+["1248644"] = {
 {
 ["enabled"] = true,
-["label"] = "Orbiting Matter",
+["label"] = "Divine Toll",
 ["trigger"] = 5,
 ["sound"] = "!Get_Ready_To_Dodge",
-["dbKey"] = "1245874_OrbitingMatter_5",
+["dbKey"] = "1248644_DivineToll_5",
 },
-},
-["1244917"] = {
 {
 ["enabled"] = true,
-["label"] = "Void Howl",
+["label"] = "Divine Toll",
+["trigger"] = 1,
+["sound"] = "!Dodge",
+["dbKey"] = "1248644_DivineToll_1",
+},
+},
+["1248983"] = {
+{
+["enabled"] = true,
+["label"] = "Execution Sentence",
 ["trigger"] = 5,
-["sound"] = "!Loose_Stack_And_Adds_Soon",
-["dbKey"] = "1244917_VoidHowl_5",
+["sound"] = "!Soak_Player_Circles_And_Dodge_Soon",
+["dbKey"] = "1248983_ExecutionSentence_5",
 },
 },
 ["1260712"] = {

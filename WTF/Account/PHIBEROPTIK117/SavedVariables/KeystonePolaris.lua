@@ -10,7 +10,6 @@ KeystonePolarisDB = {
 },
 ["profiles"] = {
 ["Default"] = {
-["lastSeasonCheck"] = "2026-03-26",
 ["general"] = {
 ["showMinimapIcon"] = false,
 ["lastVersionCheck"] = "3.7.1",
@@ -20,6 +19,7 @@ KeystonePolarisDB = {
 ["hide"] = true,
 },
 },
+["lastSeasonCheck"] = "2026-03-26",
 },
 },
 }

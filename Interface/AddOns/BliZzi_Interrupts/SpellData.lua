@@ -70,7 +70,7 @@ local byClass = {
         { id = 342245, cd =  50, cat = "DEF", name = "Alter Time", buffDur = 10, talent = true },
     },
     MONK = {
-        { id = 115203, cd = 120, cat = "DEF", name = "Fortifying Brew", buffDur = 15 },
+        { id = 115203, cd = 120, cat = "DEF", name = "Fortifying Brew", buffDur = 15, buffId = 120954 },
     },
     PALADIN = {
         { id =   642, cd = 300, cat = "DEF", name = "Divine Shield", buffDur = 8 },
@@ -352,6 +352,7 @@ BIT.SyncCD.CD_REDUCER_SPELLS = {
 BIT.SyncCD.SPELL_BUFF_MAP = {
     [342245] = 110909,  -- Alter Time: spell=342245, buff aura=110909
     [187827] = 187827,  -- Metamorphosis: same ID
+    [58984]  = 58984,   -- Shadowmeld (Night Elf racial): stealth buff 58984 on cast
 }
 
 ------------------------------------------------------------

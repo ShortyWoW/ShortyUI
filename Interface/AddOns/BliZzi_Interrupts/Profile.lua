@@ -83,7 +83,11 @@ end
 local TABLE_KEYS = { disabledSpells = true, rotationOrder = true }
 -- Keys that are purely internal / should never be exported
 local SKIP_KEYS  = { rotationIndex = true, fontPath = true, borderTexturePath = true, barTexturePath = true,
-                     charProfiles = true }
+                     charProfiles = true, globalProfile = true, useGlobalDefault = true,
+                     specProfiles = true, roleProfiles = true,
+                     useSpecProfile = true, useRoleProfile = true,
+                     -- per-character nickname lives in charDb; global nickname is account-wide
+                     myCustomName = true, globalCustomName = true, useGlobalCustomName = true }
 
 local function SerializeValue(v)
     local t = type(v)
@@ -327,6 +331,225 @@ function BIT.CopyCharProfile(sourceKey)
     return true
 end
 
+-- Saves the current settings + all frame positions as the account-wide global default profile
+function BIT.SaveGlobalProfile()
+    local snap = {}
+    for k in pairs(BIT.DEFAULTS) do
+        if BIT.db[k] ~= nil then snap[k] = BIT.db[k] end
+    end
+    if BIT.db.fontPath then snap.fontPath = BIT.db.fontPath end
+    if BIT.db.fontName then snap.fontName = BIT.db.fontName end
+    snap._posX        = BIT.charDb.posX
+    snap._posY        = BIT.charDb.posY
+    snap._posXUp      = BIT.charDb.posXUp
+    snap._posYUp      = BIT.charDb.posYUp
+    snap._syncX       = BIT.charDb.syncCdBarsPosX
+    snap._syncY       = BIT.charDb.syncCdBarsPosY
+    snap._syncIconX   = BIT.charDb.syncCdPosX
+    snap._syncIconY   = BIT.charDb.syncCdPosY
+    BIT.db.globalProfile = snap
+end
+
+-- Applies the global default profile (settings + positions) to the current character
+function BIT.ApplyGlobalProfile()
+    local snap = BIT.db and BIT.db.globalProfile
+    if not snap then return false end
+    for k in pairs(BIT.DEFAULTS) do
+        if snap[k] ~= nil then BIT.db[k] = snap[k] end
+    end
+    if snap.fontPath then BIT.db.fontPath = snap.fontPath end
+    if snap.fontName then BIT.db.fontName = snap.fontName end
+    if snap._posX      then BIT.charDb.posX            = snap._posX      end
+    if snap._posY      then BIT.charDb.posY            = snap._posY      end
+    if snap._posXUp    then BIT.charDb.posXUp          = snap._posXUp    end
+    if snap._posYUp    then BIT.charDb.posYUp          = snap._posYUp    end
+    if snap._syncX     then BIT.charDb.syncCdBarsPosX  = snap._syncX     end
+    if snap._syncY     then BIT.charDb.syncCdBarsPosY  = snap._syncY     end
+    if snap._syncIconX then BIT.charDb.syncCdPosX      = snap._syncIconX end
+    if snap._syncIconY then BIT.charDb.syncCdPosY      = snap._syncIconY end
+    BIT:ApplyLocale()
+    if BIT.UI and BIT.UI.RebuildBars then BIT.UI:RebuildBars() end
+    if BIT.UI and BIT.UI.ApplyFramePosition then BIT.UI.ApplyFramePosition() end
+    if BIT.SyncCD and BIT.SyncCD.ApplyBarsFrameSettings then
+        BIT.SyncCD:ApplyBarsFrameSettings()
+    end
+    BIT.SaveCharProfile()
+    return true
+end
+
+-- Removes the global default profile
+function BIT.ClearGlobalProfile()
+    if BIT.db then BIT.db.globalProfile = nil end
+end
+
+-- Returns true if a global default profile is saved
+function BIT.HasGlobalProfile()
+    return BIT.db and BIT.db.globalProfile ~= nil
+end
+
+------------------------------------------------------------
+-- Spec / Role Profile helpers
+------------------------------------------------------------
+
+-- Role tokens used as role-profile keys (match UnitGroupRolesAssigned values).
+local VALID_ROLES = { TANK = true, HEALER = true, DAMAGER = true }
+
+-- Build a full settings snapshot from current BIT.db (shared by Save*Profile).
+local function BuildSettingsSnapshot()
+    local snap = {}
+    for k in pairs(BIT.DEFAULTS) do
+        if BIT.db[k] ~= nil then snap[k] = BIT.db[k] end
+    end
+    if BIT.db.fontPath then snap.fontPath = BIT.db.fontPath end
+    if BIT.db.fontName then snap.fontName = BIT.db.fontName end
+    snap._posX      = BIT.charDb.posX
+    snap._posY      = BIT.charDb.posY
+    snap._posXUp    = BIT.charDb.posXUp
+    snap._posYUp    = BIT.charDb.posYUp
+    snap._syncX     = BIT.charDb.syncCdBarsPosX
+    snap._syncY     = BIT.charDb.syncCdBarsPosY
+    snap._syncIconX = BIT.charDb.syncCdPosX
+    snap._syncIconY = BIT.charDb.syncCdPosY
+    return snap
+end
+
+-- Apply a snapshot to BIT.db + BIT.charDb + refresh UI (shared by Apply*Profile).
+local function ApplySettingsSnapshot(snap)
+    for k in pairs(BIT.DEFAULTS) do
+        if snap[k] ~= nil then BIT.db[k] = snap[k] end
+    end
+    if snap.fontPath then BIT.db.fontPath = snap.fontPath end
+    if snap.fontName then BIT.db.fontName = snap.fontName end
+    if snap._posX      then BIT.charDb.posX            = snap._posX      end
+    if snap._posY      then BIT.charDb.posY            = snap._posY      end
+    if snap._posXUp    then BIT.charDb.posXUp          = snap._posXUp    end
+    if snap._posYUp    then BIT.charDb.posYUp          = snap._posYUp    end
+    if snap._syncX     then BIT.charDb.syncCdBarsPosX  = snap._syncX     end
+    if snap._syncY     then BIT.charDb.syncCdBarsPosY  = snap._syncY     end
+    if snap._syncIconX then BIT.charDb.syncCdPosX      = snap._syncIconX end
+    if snap._syncIconY then BIT.charDb.syncCdPosY      = snap._syncIconY end
+    BIT:ApplyLocale()
+    if BIT.UI and BIT.UI.RebuildBars then BIT.UI:RebuildBars() end
+    if BIT.UI and BIT.UI.ApplyFramePosition then BIT.UI.ApplyFramePosition() end
+    if BIT.SyncCD and BIT.SyncCD.ApplyBarsFrameSettings then
+        BIT.SyncCD:ApplyBarsFrameSettings()
+    end
+end
+
+-- Returns the player's current spec ID (or nil if unavailable).
+function BIT.GetCurrentSpecID()
+    local idx = GetSpecialization and GetSpecialization()
+    if not idx then return nil end
+    local sid = GetSpecializationInfo and GetSpecializationInfo(idx)
+    return sid
+end
+
+-- Returns the player's current role token: "TANK", "HEALER", "DAMAGER", or nil.
+-- Prefers the spec's role (stable across group changes) over UnitGroupRolesAssigned.
+function BIT.GetCurrentRole()
+    local idx = GetSpecialization and GetSpecialization()
+    if idx then
+        local _, _, _, _, role = GetSpecializationInfo(idx)
+        if role and VALID_ROLES[role] then return role end
+    end
+    local r = UnitGroupRolesAssigned and UnitGroupRolesAssigned("player")
+    if r and VALID_ROLES[r] then return r end
+    return nil
+end
+
+-- Returns the localized spec name for a given specID (for UI labels).
+function BIT.GetSpecName(specID)
+    if not specID then return "?" end
+    local _, name = pcall(function() return select(2, GetSpecializationInfoByID(specID)) end)
+    return name or tostring(specID)
+end
+
+------------------------------------------------------------
+-- Spec Profiles (specID-keyed)
+------------------------------------------------------------
+
+function BIT.SaveSpecProfile(specID)
+    specID = specID or BIT.GetCurrentSpecID()
+    if not specID then return false end
+    BIT.db.specProfiles = BIT.db.specProfiles or {}
+    BIT.db.specProfiles[specID] = BuildSettingsSnapshot()
+    return true
+end
+
+function BIT.ApplySpecProfile(specID)
+    specID = specID or BIT.GetCurrentSpecID()
+    if not specID then return false end
+    local snap = BIT.db.specProfiles and BIT.db.specProfiles[specID]
+    if not snap then return false end
+    ApplySettingsSnapshot(snap)
+    BIT.SaveCharProfile()
+    return true
+end
+
+function BIT.DeleteSpecProfile(specID)
+    if not specID or not BIT.db.specProfiles then return false end
+    if BIT.db.specProfiles[specID] == nil then return false end
+    BIT.db.specProfiles[specID] = nil
+    return true
+end
+
+function BIT.HasSpecProfile(specID)
+    specID = specID or BIT.GetCurrentSpecID()
+    return specID and BIT.db.specProfiles and BIT.db.specProfiles[specID] ~= nil or false
+end
+
+-- Returns an array of saved specIDs (sorted).
+function BIT.GetAllSpecProfiles()
+    local out = {}
+    if BIT.db.specProfiles then
+        for sid in pairs(BIT.db.specProfiles) do out[#out+1] = sid end
+        table.sort(out)
+    end
+    return out
+end
+
+------------------------------------------------------------
+-- Role Profiles (role-keyed: TANK / HEALER / DAMAGER)
+------------------------------------------------------------
+
+function BIT.SaveRoleProfile(role)
+    role = role or BIT.GetCurrentRole()
+    if not (role and VALID_ROLES[role]) then return false end
+    BIT.db.roleProfiles = BIT.db.roleProfiles or {}
+    BIT.db.roleProfiles[role] = BuildSettingsSnapshot()
+    return true
+end
+
+function BIT.ApplyRoleProfile(role)
+    role = role or BIT.GetCurrentRole()
+    if not (role and VALID_ROLES[role]) then return false end
+    local snap = BIT.db.roleProfiles and BIT.db.roleProfiles[role]
+    if not snap then return false end
+    ApplySettingsSnapshot(snap)
+    BIT.SaveCharProfile()
+    return true
+end
+
+function BIT.DeleteRoleProfile(role)
+    if not (role and VALID_ROLES[role]) then return false end
+    if not BIT.db.roleProfiles or BIT.db.roleProfiles[role] == nil then return false end
+    BIT.db.roleProfiles[role] = nil
+    return true
+end
+
+function BIT.HasRoleProfile(role)
+    role = role or BIT.GetCurrentRole()
+    return role and BIT.db.roleProfiles and BIT.db.roleProfiles[role] ~= nil or false
+end
+
+-- Deletes a saved per-character profile by charKey
+function BIT.DeleteCharProfile(key)
+    if not key or not BIT.db.charProfiles then return false end
+    if BIT.db.charProfiles[key] == nil then return false end
+    BIT.db.charProfiles[key] = nil
+    return true
+end
+
 -- Returns a sorted list of charKeys that have saved profiles (excluding current char)
 function BIT.GetOtherCharProfiles()
     local list = {}
@@ -359,6 +582,68 @@ StaticPopupDialogs["BIT_CONFIRM_COPY_PROFILE"] = {
     preferredIndex = 3,
 }
 
+StaticPopupDialogs["BIT_CONFIRM_DELETE_PROFILE"] = {
+    text          = "|cFF00DDDDBliZzi Interrupts|r\n\nDelete profile |cFFFFD700%s|r?\n|cFFAAAAAA(This cannot be undone.)|r",
+    button1       = "Delete",
+    button2       = "Cancel",
+    OnAccept      = function(self, data)
+        if data and data.key then
+            local ok = BIT.DeleteCharProfile(data.key)
+            if ok and data.onSuccess then data.onSuccess() end
+        end
+    end,
+    timeout       = 0,
+    whileDead     = true,
+    hideOnEscape  = true,
+    preferredIndex = 3,
+}
+
+StaticPopupDialogs["BIT_CONFIRM_DELETE_GLOBAL"] = {
+    text          = "|cFF00DDDDBliZzi Interrupts|r\n\nDelete the global default profile?\n|cFFAAAAAA(This cannot be undone.)|r",
+    button1       = "Delete",
+    button2       = "Cancel",
+    OnAccept      = function(self, data)
+        BIT.ClearGlobalProfile()
+        if data and data.onSuccess then data.onSuccess() end
+    end,
+    timeout       = 0,
+    whileDead     = true,
+    hideOnEscape  = true,
+    preferredIndex = 3,
+}
+
+StaticPopupDialogs["BIT_CONFIRM_DELETE_SPEC_PROFILE"] = {
+    text          = "|cFF00DDDDBliZzi Interrupts|r\n\nDelete the spec profile for |cFFFFD700%s|r?\n|cFFAAAAAA(This cannot be undone.)|r",
+    button1       = "Delete",
+    button2       = "Cancel",
+    OnAccept      = function(self, data)
+        if data and data.specID then
+            local ok = BIT.DeleteSpecProfile(data.specID)
+            if ok and data.onSuccess then data.onSuccess() end
+        end
+    end,
+    timeout       = 0,
+    whileDead     = true,
+    hideOnEscape  = true,
+    preferredIndex = 3,
+}
+
+StaticPopupDialogs["BIT_CONFIRM_DELETE_ROLE_PROFILE"] = {
+    text          = "|cFF00DDDDBliZzi Interrupts|r\n\nDelete the |cFFFFD700%s|r role profile?\n|cFFAAAAAA(This cannot be undone.)|r",
+    button1       = "Delete",
+    button2       = "Cancel",
+    OnAccept      = function(self, data)
+        if data and data.role then
+            local ok = BIT.DeleteRoleProfile(data.role)
+            if ok and data.onSuccess then data.onSuccess() end
+        end
+    end,
+    timeout       = 0,
+    whileDead     = true,
+    hideOnEscape  = true,
+    preferredIndex = 3,
+}
+
 ------------------------------------------------------------
 -- Panel UI
 ------------------------------------------------------------
@@ -370,7 +655,7 @@ function BIT.UI:ShowProfilePanel()
         return
     end
 
-    local PW, PH = 400, 500
+    local PW, PH = 400, 588
     profilePanel = CreateFrame("Frame", "BITProfilePanel", UIParent, "BackdropTemplate")
     profilePanel:SetSize(PW, PH)
     profilePanel:SetPoint("CENTER")
@@ -581,25 +866,69 @@ function BIT.UI:ShowProfilePanel()
 
     RebuildCharList()
 
-    -- divider between profiles and export
     local div1 = profilePanel:CreateTexture(nil, "BORDER")
     div1:SetColorTexture(0.25, 0.25, 0.25, 1)
     div1:SetHeight(1)
     div1:SetPoint("TOPLEFT",  profilePanel, "TOPLEFT",  12, -228)
     div1:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -228)
 
+    -- ── GLOBAL DEFAULT PROFILE SECTION ──────────────────────────────
+    SectionLabel(LL("PROFILE_GLOBAL", "Global Default"), -240)
+
+    local globalStatusLbl = profilePanel:CreateFontString(nil, "OVERLAY")
+    globalStatusLbl:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")
+    globalStatusLbl:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -240)
+
+    local function RefreshGlobalStatus()
+        if BIT.HasGlobalProfile() then
+            globalStatusLbl:SetText("|cFF00FF00" .. LL("PROFILE_GLOBAL_SAVED", "Saved") .. "|r")
+        else
+            globalStatusLbl:SetText("|cFF888888" .. LL("PROFILE_GLOBAL_NONE", "Not saved") .. "|r")
+        end
+    end
+    RefreshGlobalStatus()
+
+    local saveGlobalBtn = MakeBtn(LL("PROFILE_BTN_SAVE_GLOBAL", "Save as Global"), 130, 22)
+    saveGlobalBtn:SetPoint("TOPLEFT", profilePanel, "TOPLEFT", 12, -260)
+    saveGlobalBtn:SetScript("OnClick", function()
+        BIT.SaveGlobalProfile()
+        RefreshGlobalStatus()
+    end)
+
+    local applyGlobalBtn = MakeBtn(LL("PROFILE_BTN_APPLY_GLOBAL", "Apply Global"), 130, 22)
+    applyGlobalBtn:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -260)
+    applyGlobalBtn:SetScript("OnClick", function()
+        if BIT.ApplyGlobalProfile() then
+            curLbl:SetText("|cFFAAAAAACurrent: |r|cFF00FF00" .. (BIT.charKey or "?") .. " ✓|r")
+            C_Timer.After(3, function()
+                curLbl:SetText("|cFFAAAAAACurrent: |r|cFFFFD700" .. (BIT.charKey or "?") .. "|r")
+            end)
+        end
+    end)
+
+    local autoApplyChk = MakeCheck(LL("PROFILE_AUTO_APPLY", "Auto-apply to new characters"), -290, BIT.db.useGlobalDefault)
+    autoApplyChk:SetScript("OnClick", function(self)
+        BIT.db.useGlobalDefault = self:GetChecked() and true or false
+    end)
+
+    local div2 = profilePanel:CreateTexture(nil, "BORDER")
+    div2:SetColorTexture(0.25, 0.25, 0.25, 1)
+    div2:SetHeight(1)
+    div2:SetPoint("TOPLEFT",  profilePanel, "TOPLEFT",  12, -316)
+    div2:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -316)
+
     -- ── EXPORT SECTION ──────────────────────────────────────────────
-    SectionLabel(LL("PROFILE_EXPORT", "Export"), -240)
+    SectionLabel(LL("PROFILE_EXPORT", "Export"), -328)
 
-    local chkSettings = MakeCheck(LL("PROFILE_OPT_SETTINGS", "Settings"), -260,  true)
-    local chkPosition = MakeCheck(LL("PROFILE_OPT_POSITION", "Position"), -260, false)
-    chkPosition:SetPoint("TOPLEFT", profilePanel, "TOPLEFT", 140, -260)
+    local chkSettings = MakeCheck(LL("PROFILE_OPT_SETTINGS", "Settings"), -348,  true)
+    local chkPosition = MakeCheck(LL("PROFILE_OPT_POSITION", "Position"), -348, false)
+    chkPosition:SetPoint("TOPLEFT", profilePanel, "TOPLEFT", 140, -348)
 
-    local exportBox = MakeEditBox(-286, 28, true)
+    local exportBox = MakeEditBox(-374, 28, true)
     exportBox._val = ""
 
     local exportBtn = MakeBtn(LL("PROFILE_BTN_EXPORT", "Export"), 100, 26)
-    exportBtn:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -320)
+    exportBtn:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -408)
     exportBtn:SetScript("OnClick", function()
         local s = chkSettings:GetChecked()
         local p = chkPosition:GetChecked()
@@ -614,17 +943,16 @@ function BIT.UI:ShowProfilePanel()
         exportBox:SetFocus()
     end)
 
-    -- divider
     local div = profilePanel:CreateTexture(nil, "BORDER")
     div:SetColorTexture(0.25, 0.25, 0.25, 1)
     div:SetHeight(1)
-    div:SetPoint("TOPLEFT",  profilePanel, "TOPLEFT",  12, -356)
-    div:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -356)
+    div:SetPoint("TOPLEFT",  profilePanel, "TOPLEFT",  12, -444)
+    div:SetPoint("TOPRIGHT", profilePanel, "TOPRIGHT", -12, -444)
 
     -- ── IMPORT SECTION ──────────────────────────────────────────────
-    SectionLabel(LL("PROFILE_IMPORT", "Import"), -368)
+    SectionLabel(LL("PROFILE_IMPORT", "Import"), -456)
 
-    local importBox = MakeEditBox(-388, 28, false)
+    local importBox = MakeEditBox(-476, 28, false)
 
     local statusLbl = profilePanel:CreateFontString(nil, "OVERLAY")
     statusLbl:SetFont(STANDARD_TEXT_FONT, 11, "OUTLINE")

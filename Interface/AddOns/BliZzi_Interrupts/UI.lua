@@ -280,7 +280,13 @@ function BIT.UI:RebuildBars()
         end
         iconBtn:SetFrameLevel(f:GetFrameLevel() + 10)
         iconBtn:EnableMouse(true)
-        iconBtn:SetPropagateMouseClicks(true)
+        -- SetPropagateMouseClicks is protected in 11.x/12.x; defer if currently in combat
+        if not InCombatLockdown() then
+            iconBtn:SetPropagateMouseClicks(true)
+        else
+            BIT._pendingPropagate = BIT._pendingPropagate or {}
+            BIT._pendingPropagate[#BIT._pendingPropagate+1] = iconBtn
+        end
         f.iconBtn = iconBtn
         iconBtn:SetScript("OnClick", function(self, button)
             if button == "LeftButton" and false then -- Under Construction
@@ -436,7 +442,13 @@ function BIT.UI:RebuildBars()
         wrap:SetAllPoints()
         wrap:SetFrameLevel(content:GetFrameLevel() + 1)
         wrap:EnableMouse(true)
-        wrap:SetPropagateMouseClicks(true)  -- pass unhandled clicks down to mainFrame for drag
+        -- SetPropagateMouseClicks is protected in 11.x/12.x; defer if currently in combat
+        if not InCombatLockdown() then
+            wrap:SetPropagateMouseClicks(true)  -- pass unhandled clicks down to mainFrame for drag
+        else
+            BIT._pendingPropagate = BIT._pendingPropagate or {}
+            BIT._pendingPropagate[#BIT._pendingPropagate+1] = wrap
+        end
         -- no click handler on bar — announce is on icon instead
         f.barWrap = wrap
         local mycd = wrap:CreateFontString(nil, "OVERLAY")
@@ -826,7 +838,23 @@ function BIT.UI:UpdateDisplay()
                     bar.cdBar:SetMinMaxValues(0, baseCd)
                     bar.cdBar:SetValue(val < 0 and 0 or val)
                 end
-                bar.cdBar:SetStatusBarColor(_col[1], _col[2], _col[3], 0.85)
+                local cdR, cdG, cdB
+                if db.useClassColors then
+                    cdR, cdG, cdB = _col[1], _col[2], _col[3]
+                else
+                    cdR = db.cdBarColorR or 0.8
+                    cdG = db.cdBarColorG or 0.2
+                    cdB = db.cdBarColorB or 0.2
+                    if db.cdBarFade and baseCd > 0 then
+                        -- t=1 → full CD (cd color), t=0 → almost ready (ready color)
+                        local t = rem / baseCd
+                        if t > 1 then t = 1 elseif t < 0 then t = 0 end
+                        cdR = _col[1] + (cdR - _col[1]) * t
+                        cdG = _col[2] + (cdG - _col[2]) * t
+                        cdB = _col[3] + (cdB - _col[3]) * t
+                    end
+                end
+                bar.cdBar:SetStatusBarColor(cdR, cdG, cdB, 0.85)
                 bar.barBg:SetVertexColor(_bg[1], _bg[2], _bg[3], 0.9)
                 if bar.iconBg then bar.iconBg:SetVertexColor(_bg[1]*0.7, _bg[2]*0.7, _bg[3]*0.7, 1) end
                 bar.playerCdWrapper:SetAlpha(1)
@@ -956,6 +984,7 @@ function BIT.UI:UpdateDisplay()
     for _, e in ipairs(_restoShamanEntries) do tinsert(_sortedParty, e) end
 
     local function AddPartyBars()
+        if db.soloMode then return end
         for _, entry in ipairs(_sortedParty) do
             if barIdx > 7 then break end
             local name, info, data = entry.name, entry.info, entry.data

@@ -127,6 +127,7 @@ local _lastShieldTime     = {}  -- UNIT_ABSORB_AMOUNT_CHANGED
 local _lastUnitFlagsTime  = {}  -- UNIT_FLAGS (non-feign)
 local _lastFeignDeathTime = {}  -- UNIT_FLAGS feign death transition
 local _prevFeignDeath     = {}  -- previous UnitIsFeignDeath state
+local _fdAuraActive       = false  -- own-player FD aura presence (UNIT_AURA-driven)
 local _lastCombatDropTime = {}  -- UNIT_FLAGS: inCombat true→false
 local _prevInCombat       = {}  -- previous UnitAffectingCombat state
 local _lastDebuffRemovedTime = {} -- HARMFUL aura removed (for Stoneform etc.)
@@ -424,11 +425,11 @@ local function MatchRule(unit, auraTypes, measuredDur, evidence, activeCooldowns
     local function tryRuleList(ruleList)
         if not ruleList then return end
         for _, rule in ipairs(ruleList) do
-            -- SpellId gate: if we know the actual buff spellId, only match rules for that spell.
-            -- This prevents e.g. SotF (264735) from matching AoT's rule (186265)
-            -- when both have identical AuraTypes and duration.
-            if buffSpellId and rule.SpellId ~= buffSpellId then
-                -- skip: buff spellId doesn't match this rule
+            -- SpellId gate (strict): require the buff's spellId to be known AND match the rule.
+            -- Missing spellId would otherwise let rules match on AuraTypes+Evidence+Duration alone,
+            -- causing cross-spell false attributions when two defensives share those properties.
+            if (not buffSpellId) or rule.SpellId ~= buffSpellId then
+                -- skip: buff spellId missing or doesn't match this rule
             -- RaidInCombat gate: skip player-defensive rules for boss-applied M+ buffs
             elseif rule.RaidInCombatExclude and isRaidInCombat then
                 -- skip: aura is RAID_IN_COMBAT (boss buff), not a player defensive
@@ -539,6 +540,10 @@ local function FindBestCandidate(unit, tracked, measuredDur)
         local cdState = BIT.syncCdState and BIT.syncCdState[SafeUnitName(candidateUnit)]
         local rule = MatchRule(candidateUnit, tracked.AuraTypes, measuredDur, cEvidence, cdState, tracked.SpellId, tracked.IsRaidInCombat)
         if not rule then return end
+        -- Non-target candidates may only claim external defensive rules.
+        -- Prevents e.g. Barkskin (ExternalDefensive=false) from being attributed
+        -- to the Druid when a DK's AMS appears on the scanned unit and self-match fails.
+        if not isTarget and not rule.ExternalDefensive then return end
 
         local castTime = tracked.CastSnapshot and tracked.CastSnapshot[candidateUnit]
         -- diff = how close this cast was to the aura appearing (smaller = better)
@@ -610,8 +615,11 @@ local function FindGlowOnAuraAppear(unit, tracked)
             if not ruleList then return nil end
             for _, rule in ipairs(ruleList) do
                 if (rule.BuffDuration or 0) > 0 then
-                    -- SpellId gate: if we know the buff's spellId, skip rules for other spells.
-                    if tracked.SpellId and rule.SpellId ~= tracked.SpellId then
+                    -- SpellId gate (strict): the buff's spellId must be known AND match the rule.
+                    -- A missing spellId (tainted/unavailable in WoW 12.x) would otherwise let any
+                    -- rule match on AuraTypes+Evidence alone, causing cross-spell false glows
+                    -- (e.g. Hunter SotF aura attributed to DH Blur rule when evidence aligns).
+                    if (not tracked.SpellId) or rule.SpellId ~= tracked.SpellId then
                         if BIT.devLogMode then
                             BIT.DevLog("[GLOW-MISS] " .. tostring(cName) .. " SpellId gate: buff="
                                 .. tostring(tracked.SpellId) .. " rule=" .. tostring(rule.SpellId))
@@ -640,9 +648,10 @@ local function FindGlowOnAuraAppear(unit, tracked)
                             if cEvidence then
                                 for k in pairs(cEvidence) do evParts[#evParts+1] = k end
                             end
-                            BIT.DevLog("[GLOW-MISS] " .. tostring(cName) .. " Evidence mismatch: req="
-                                .. tostring(rule.RequiresEvidence)
-                                .. " have=" .. table.concat(evParts, "+"))
+                            BIT.DevLog("[GLOW-MISS] " .. tostring(cName)
+                                .. " spell=" .. tostring(rule.SpellId)
+                                .. " Evidence mismatch: req=" .. tostring(rule.RequiresEvidence)
+                                .. " have=" .. (next(evParts) and table.concat(evParts, "+") or "none"))
                         end
                     else
                         return rule
@@ -684,6 +693,12 @@ local function FindGlowOnAuraAppear(unit, tracked)
     local function considerExt(candidateUnit)
         local r, ru = tryMatch(candidateUnit)
         if not r then return end
+        -- Only external defensive rules may be attributed to a different caster.
+        -- Self-cast rules (Barkskin, AMS, …) must never match via external attribution:
+        -- that would trigger false positives when e.g. a DK uses AMS and the scan
+        -- fails to self-match (missing evidence), then falls through to a Druid whose
+        -- Barkskin class rule has no evidence requirement and the same aura types.
+        if not r.ExternalDefensive then return end
         local castTime = tracked.CastSnapshot and tracked.CastSnapshot[candidateUnit]
         local diff = castTime and math.abs(tracked.StartTime - castTime) or nil
         if not bestExtRule then
@@ -775,18 +790,18 @@ end
 
 local function GetSpellsForPlayer(name)
     local specID = GetSpecForPlayer(name)
-    if not specID then return {} end
-    local spells = BIT.SYNC_SPELLS[specID]
-    if not spells then return {} end
     local isOwnPlayer  = (name == BIT.myName)
-    -- Party member without LibSpec talent data: show nothing so it's clear the data is missing.
-    -- Own player always has talent data from ScanOwnTalents().
+    local spells = specID and BIT.SYNC_SPELLS[specID]
+    -- Party member without LibSpec talent data: skip spec spells so missing data is obvious.
+    -- Racial spells (handled below) do NOT depend on spec/talent scan and are always shown.
+    local hasTalentData = isOwnPlayer
     if not isOwnPlayer then
         local ue = BIT.SyncCD.users and BIT.SyncCD.users[name]
-        if not (ue and ue.knownSpells) then return {} end
+        if ue and ue.knownSpells then hasTalentData = true end
     end
     local knownTalents = GetKnownTalents(name)
     local out = {}
+    if spells and hasTalentData then
     for _, s in ipairs(spells) do
         if s.replacedBy then
             if not IsCatEnabled(s.cat) then
@@ -861,6 +876,7 @@ local function GetSpellsForPlayer(name)
                 end
             end
         end
+    end
     end
     -- Append racial spells (e.g. Shadowmeld for Night Elf)
     local raceFile
@@ -1188,11 +1204,15 @@ local function CreateIcon(parent, spellID)
     f.cdText:SetPoint("CENTER")
     f.cdText:Hide()
 
-    -- Charge count badge (bottom-right corner, only shown for multi-charge spells)
+    -- Charge count badge (configurable position, only shown for multi-charge spells)
     f.chargeBadge = textHolder:CreateFontString(nil, "OVERLAY")
-    BIT.Media:SetFont(f.chargeBadge, 13)
+    local chSize   = (BIT.db and BIT.db.syncCdChargeSize) or 13
+    BIT.Media:SetFont(f.chargeBadge, chSize)
     f.chargeBadge:SetTextColor(1, 1, 1, 1)  -- white
-    f.chargeBadge:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -1, 1)
+    local chAnchor = (BIT.db and BIT.db.syncCdChargeAnchor) or "BOTTOMRIGHT"
+    local chOffX   = (BIT.db and BIT.db.syncCdChargeOffX) or -1
+    local chOffY   = (BIT.db and BIT.db.syncCdChargeOffY) or 1
+    f.chargeBadge:SetPoint(chAnchor, f, chAnchor, chOffX, chOffY)
     f.chargeBadge:Hide()
     f._maxCharges = 0
 
@@ -1351,13 +1371,56 @@ do
         if not activeBuffs[name] then activeBuffs[name] = {} end
 
         for spellID, buffID in pairs(SPELL_BUFF_MAP) do
+            -- Shadowmeld (58984): aura is hidden on partyN (stealth). State is managed
+            -- manually by the UNIT_FLAGS combat-drop trigger + auto-expire timer, so
+            -- skip it here — otherwise this loop would immediately clear the buff we
+            -- just set (now=false every poll because the API can't see the aura).
+            if buffID == 58984 and not isPlayer then
+                -- intentionally skip — manual management
+            else
             local wasActive = activeBuffs[name][buffID]
-            local ok, auraData = pcall(C_UnitAuras.GetAuraDataBySpellID, unit, buffID, "HELPFUL")
-            local nowActive = ok and auraData ~= nil
-            if BIT.devLogMode and buffID == 110909 and (nowActive or wasActive ~= nil) then
+            local origOk, origRet = pcall(C_UnitAuras.GetAuraDataBySpellID, unit, buffID, "HELPFUL")
+            local ok, auraData = origOk, origRet
+            -- Fallback 1: GetAuraDataBySpellID sometimes throws in 12.x when its internal
+            -- lookup hits tainted data (secret bool). Try without the filter arg too.
+            if not ok then
+                local ok2, ad2 = pcall(C_UnitAuras.GetAuraDataBySpellID, unit, buffID)
+                if ok2 then ok, auraData = true, ad2 end
+            end
+            -- Fallback 2: If GetAuraDataBySpellID still fails, enumerate via GetUnitAuras
+            -- and match by spellId. GetUnitAuras works reliably in 12.x (used by scan path).
+            if not ok then
+                local okU, auras = pcall(C_UnitAuras.GetUnitAuras, unit, "HELPFUL")
+                if okU and auras then
+                    for _, ad in ipairs(auras) do
+                        if ad and ad.spellId then
+                            local okS, s = pcall(string.format, "%.0f", ad.spellId)
+                            local sid = okS and tonumber(s)
+                            if sid == buffID then
+                                ok, auraData = true, ad
+                                break
+                            end
+                        end
+                    end
+                    if not ok then ok = true end  -- no match, but scan succeeded
+                end
+            end
+            local nowActive = ok and auraData ~= nil and type(auraData) == "table"
+            if BIT.devLogMode and (buffID == 110909 or buffID == 58984) and (nowActive or wasActive ~= nil) then
                 BIT.DevLog("[SyncCD-AURA] unit=" .. tostring(unit)
+                      .. " name=" .. tostring(name)
                       .. " buffID=" .. tostring(buffID) .. " now=" .. tostring(nowActive)
                       .. " was=" .. tostring(wasActive ~= nil))
+            end
+            -- Extra diagnostic for Shadowmeld: log every poll on non-player units
+            -- so we can see whether UNIT_AURA fires at all when the buff is applied.
+            if BIT.devLogMode and buffID == 58984 and not isPlayer then
+                local errStr = (not origOk) and tostring(origRet or "?"):sub(1, 80) or nil
+                BIT.DevLog("[SM-POLL] unit=" .. tostring(unit)
+                      .. " name=" .. tostring(name)
+                      .. " ok=" .. tostring(ok)
+                      .. " now=" .. tostring(nowActive)
+                      .. (errStr and (" err=" .. errStr) or ""))
             end
 
             if nowActive ~= wasActive then
@@ -1391,8 +1454,23 @@ do
                             if isPlayer and BIT.Net then BIT.Net:AnnounceSync(342245, 50) end
                         end
                     end)
+                elseif nowActive and spellID == 58984 then
+                    -- Shadowmeld: racial stealth buff 58984 appeared. Cast detection via
+                    -- UNIT_SPELLCAST_SUCCEEDED is unreliable for racials on party members
+                    -- (tainted spellID + instant cast). Aura-based trigger is robust.
+                    local delay = isPlayer and 0 or 0.5
+                    C_Timer.After(delay, function()
+                        if not (activeBuffs[name] and activeBuffs[name][58984]) then return end
+                        local cdState = BIT.syncCdState and BIT.syncCdState[name]
+                        local cdEnd   = cdState and cdState[58984]
+                        if not cdEnd or cdEnd <= GetTime() then
+                            BIT.SyncCD:OnSpellUsed(name, 58984, 120)
+                            if isPlayer and BIT.Net then BIT.Net:AnnounceSync(58984, 120) end
+                        end
+                    end)
                 end
             end
+            end -- closes: if buffID == 58984 and not isPlayer then ... else
         end
 
         -- Also check buff 342245 (Alter Time spell aura, fallback if 110909 not present)
@@ -1423,6 +1501,38 @@ do
                     end)
                 end
             end
+        end
+
+        -- ── Feign Death (5384) own-player aura lifecycle ────────────────
+        -- FD is not in SPELL_BUFF_MAP (its cast spellID and buff spellID are
+        -- identical, but it needs special cast-time logic in OnPartySpellCast
+        -- that bypasses the normal CD start). However, relying only on
+        -- UNIT_FLAGS to detect the buff END is fragile:
+        --   • Early cancel (damage taken during the 0.5s cast-to-FD latency)
+        --     can drop the buff BEFORE UnitIsFeignDeath ever flips true,
+        --     so wasFD stays false and the FD-end branch never fires.
+        --   • Manual /cancelaura drops the buff without changing UnitIsFeignDeath.
+        --   • Tainted C_UnitAuras.GetAuraDataBySpellID pcalls in the UpdateIcon
+        --     self-cancel check silently fail, leaving the glow stuck.
+        -- UNIT_AURA on "player" is non-tainted and fires reliably on buff
+        -- application / removal — use it as the primary lifecycle signal.
+        if isPlayer then
+            local okFD, fdAura = pcall(C_UnitAuras.GetAuraDataBySpellID, "player", 5384, "HELPFUL")
+            local isFdActive = okFD and fdAura ~= nil
+            if _fdAuraActive and not isFdActive then
+                -- Guard: only fire if we still think FD is active (prevents
+                -- double-fire with UNIT_FLAGS path).
+                local bEnd = _buffActiveEnd[name] and _buffActiveEnd[name][5384]
+                if bEnd and bEnd > GetTime() then
+                    BIT.SyncCD:OnSpellUsed(name, 5384, 30, 30)
+                    _buffActiveEnd[name][5384] = 0
+                    RefreshBuffHighlights(name)
+                    if BIT.devLogMode then
+                        BIT.DevLog("[FD] aura removed -> glow off, CD started")
+                    end
+                end
+            end
+            _fdAuraActive = isFdActive
         end
 
         -- ── Aura detection (Full-Scan approach) ──
@@ -1718,9 +1828,13 @@ do
                                     if not existing or existing <= GetTime() then
                                         _buffActiveEnd[casterName][glowRule.SpellId] = entry.StartTime + expectedDur
                                         if BIT.debugMode then
-                                            print("|cff0091edBIT|r |cff00ff88[GLOW-ON]|r " .. casterName
+                                            print("|cff0091edBIT|r |cff00ff88[GLOW-SET]|r "
+                                                  .. casterName
                                                   .. " spell=" .. glowRule.SpellId
-                                                  .. " dur=" .. expectedDur .. "s (aura-appear)")
+                                                  .. " auraTypes=" .. AuraTypesSignature(entry.AuraTypes)
+                                                  .. " spellIdOnAura=" .. tostring(entry.SpellId)
+                                                  .. " ric=" .. tostring(entry.IsRaidInCombat)
+                                                  .. " dur=" .. expectedDur .. "s")
                                         end
                                     end
                                 end
@@ -1777,6 +1891,13 @@ do
                     -- UNIT_SPELLCAST_SENT only fires for "player" in Midnight (12.x),
                     -- not for party members. This UNIT_SPELLCAST_SUCCEEDED path is the
                     -- primary cast-evidence source; spellID is tainted so pcall is used.
+                    if BIT.devLogMode then
+                        -- spellID is tainted — tostring via pcall for safe logging
+                        local okS, s = pcall(tostring, spellID)
+                        BIT.DevLog("[CAST-SUCCESS] unit=" .. tostring(unit)
+                              .. " name=" .. tostring(name)
+                              .. " spellID=" .. (okS and s or "<taint>"))
+                    end
                     if BIT.SyncCD.OnPartySpellCast then
                         BIT.SyncCD:OnPartySpellCast(name, spellID)
                     end
@@ -1786,16 +1907,79 @@ do
             local now = GetTime()
             -- Feign Death detection
             local isFD = UnitIsFeignDeath(unit)
-            if isFD and not _prevFeignDeath[unit] then
+            local wasFD = _prevFeignDeath[unit]
+            if isFD and not wasFD then
                 _lastFeignDeathTime[unit] = now
             elseif not isFD then
                 _lastUnitFlagsTime[unit] = now
+            end
+            -- Own player FD end: start the 30s CD now (FD defers CD start
+            -- until the buff ends because it can be cancelled early), and
+            -- clear the glow. Party members use AURA-MATCH / other evidence
+            -- paths that already handle buff-end naturally.
+            -- Guarded by _buffActiveEnd: if the UNIT_AURA path already
+            -- detected the buff drop (which fires earlier and more
+            -- reliably), _buffActiveEnd is already 0 and we skip to avoid
+            -- re-starting the CD from a later timestamp.
+            if unit == "player" and wasFD and not isFD then
+                local myName = BIT.myName
+                if myName then
+                    local bEnd = _buffActiveEnd[myName] and _buffActiveEnd[myName][5384]
+                    if bEnd and bEnd > now then
+                        BIT.SyncCD:OnSpellUsed(myName, 5384, 30, 30)
+                        -- OnSpellUsed re-arms _buffActiveEnd from buffDur;
+                        -- clear it since the buff has actually ended.
+                        _buffActiveEnd[myName][5384] = 0
+                        RefreshBuffHighlights(myName)
+                        if BIT.devLogMode then
+                            BIT.DevLog("[FD] self buff ended (UNIT_FLAGS) -> glow off, CD started")
+                        end
+                    end
+                end
             end
             _prevFeignDeath[unit] = isFD
             -- Combat drop detection (for Shadowmeld, Vanish, etc.)
             local inCombat = UnitAffectingCombat(unit)
             if _prevInCombat[unit] and not inCombat then
                 _lastCombatDropTime[unit] = now
+                if BIT.devLogMode and unit ~= "player" then
+                    local okR, _, rf = pcall(UnitRace, unit)
+                    BIT.DevLog("[COMBAT-DROP] unit=" .. tostring(unit)
+                          .. " race=" .. tostring(okR and rf or "?")
+                          .. " playerInCombat=" .. tostring(UnitAffectingCombat("player")))
+                end
+                -- Shadowmeld fallback trigger: racials don't fire UNIT_SPELLCAST_SUCCEEDED
+                -- for partyN in 12.x, and the stealth buff 58984 is hidden from
+                -- C_UnitAuras on other clients. Combat drop while the rest of the
+                -- group is still fighting is the most distinctive Shadowmeld signal.
+                if unit ~= "player" and unit:find("^party%d$") then
+                    local okR, _, raceFile = pcall(UnitRace, unit)
+                    if okR and raceFile == "NightElf" and UnitAffectingCombat("player") then
+                        local name = SafeUnitName(unit)
+                        if name then
+                            local cdState = BIT.syncCdState and BIT.syncCdState[name]
+                            local cdEnd   = cdState and cdState[58984]
+                            if not cdEnd or cdEnd <= now then
+                                if BIT.devLogMode then
+                                    BIT.DevLog("[SM-CDROP] " .. name .. " dropped combat mid-fight -> Shadowmeld")
+                                end
+                                BIT.SyncCD:OnSpellUsed(name, 58984, 120)
+                                -- Also force-set activeBuffs so the glow shows via
+                                -- RefreshBuffHighlights (buff aura is invisible on partyN)
+                                if not activeBuffs[name] then activeBuffs[name] = {} end
+                                activeBuffs[name][58984] = true
+                                RefreshBuffHighlights(name)
+                                -- Schedule buff clear after 20s (Shadowmeld max duration)
+                                C_Timer.After(20, function()
+                                    if activeBuffs[name] then
+                                        activeBuffs[name][58984] = nil
+                                        RefreshBuffHighlights(name)
+                                    end
+                                end)
+                            end
+                        end
+                    end
+                end
             end
             _prevInCombat[unit] = inCombat
         end
@@ -1938,7 +2122,48 @@ local function UpdateIcon(ico, cdEnd, playerName)
         end
     end
 
-    if cdEnd > now then
+    -- ── Determine if a buff is active (drives glow + suppresses CD UI) ──
+    -- While the buff is active, the player still has the defensive up — showing
+    -- a CD swipe/timer would be misleading. We only want the glow during that
+    -- phase; the CD becomes visible once the buff ends.
+    local buffActive = false
+    if pName and LibButtonGlow and BIT.db.syncCdGlow then
+        local buffEnd = _buffActiveEnd[pName] and _buffActiveEnd[pName][sid]
+        if buffEnd and buffEnd > now then
+            buffActive = true
+            -- For own player: verify the buff is actually still present
+            -- (handles early cancels and buffs that expire between events).
+            -- GetAuraDataBySpellID can throw in 12.x when internal lookups
+            -- hit a secret value from a tainted aura; fall back to enumerating
+            -- HELPFUL auras via GetUnitAuras so the self-cancel still works.
+            if pName == BIT.myName then
+                local okA, aura = pcall(C_UnitAuras.GetAuraDataBySpellID, "player", sid, "HELPFUL")
+                local auraPresent = okA and aura ~= nil
+                local scanOk = okA
+                if not okA then
+                    local okU, auras = pcall(C_UnitAuras.GetUnitAuras, "player", "HELPFUL")
+                    if okU and auras then
+                        scanOk = true
+                        for _, ad in ipairs(auras) do
+                            if ad and ad.spellId then
+                                local okS, s = pcall(string.format, "%.0f", ad.spellId)
+                                if okS and tonumber(s) == sid then
+                                    auraPresent = true
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+                if scanOk and not auraPresent then
+                    _buffActiveEnd[pName][sid] = 0
+                    buffActive = false
+                end
+            end
+        end
+    end
+
+    if cdEnd > now and not buffActive then
         local rem = cdEnd - now
         local cd = ico._cd or 30
         -- Start or restart the swipe when:
@@ -1977,18 +2202,6 @@ local function UpdateIcon(ico, cdEnd, playerName)
 
     -- ── Glow while buff is active (LibButtonGlow) ────────────────────
     if pName and LibButtonGlow then
-        local glowEnabled = BIT.db.syncCdGlow
-        local buffEnd = _buffActiveEnd[pName] and _buffActiveEnd[pName][sid]
-        local buffActive = glowEnabled and buffEnd and buffEnd > now
-        -- For own player: verify the buff is actually still present (handles early cancels)
-        if buffActive and pName == BIT.myName then
-            local okA, aura = pcall(C_UnitAuras.GetAuraDataBySpellID, "player", sid, "HELPFUL")
-            if okA and not aura then
-                -- Buff was cancelled early — clear the timer
-                _buffActiveEnd[pName][sid] = 0
-                buffActive = false
-            end
-        end
         if buffActive then
             if not ico._glowActive then
                 ico.cd:SetDrawSwipe(false)
@@ -2138,21 +2351,39 @@ local function RebuildWindowRow(name)
         row._lastCatVer      = curCatVer
         row._lastTalentVer   = curTalentVer
 
-        for _, ico in pairs(row.icons) do ico:Hide() end
-        row.icons = {}
-
         local spells = GetSpellsForPlayer(name)
+
+        -- Diff-based icon update: reuse existing icons for spells still in the
+        -- list (no Hide/Show flicker for unchanged entries). Only icons for
+        -- removed spells get hidden, only icons for newly added spells get created.
+        local newSet = {}
+        for _, s in ipairs(spells) do newSet[s.id] = true end
+        for sid, ico in pairs(row.icons) do
+            if not newSet[sid] then
+                if ico._glowActive and LibButtonGlow then
+                    LibButtonGlow.HideOverlayGlow(ico)
+                    ico._glowActive = false
+                end
+                ico:Hide()
+                row.icons[sid] = nil
+            end
+        end
+
         local x = NAME_W + 4
         for _, s in ipairs(spells) do
-            local ico = CreateIcon(row.frame, s.id)
+            local ico = row.icons[s.id]
+            if not ico then
+                ico = CreateIcon(row.frame, s.id)
+                row.icons[s.id] = ico
+            end
             ico:SetSize(ICON_SIZE(), ICON_SIZE())
+            ico:ClearAllPoints()
             ico:SetPoint("LEFT", row.frame, "LEFT", x, 0)
             ico._cd         = s.cd
             ico._maxCharges = s.charges or 0
             ico._playerName = name
             ico._spellName  = s.name
             ico:Show()
-            row.icons[s.id] = ico
             x = x + ICON_SIZE() + ICON_PAD()
         end
 
@@ -2241,8 +2472,6 @@ local function RebuildWindow(forceFallback)
         return
     end
 
-    for _, row in pairs(syncRows) do row.frame:Hide() end
-
     local entries = {}
     -- Own row: whenever "Show own CDs" is enabled
     if BIT.myName and BIT.myClass and BIT.db.showOwnSyncCD ~= false then
@@ -2250,6 +2479,15 @@ local function RebuildWindow(forceFallback)
     end
     for name in pairs(BIT.SyncCD.users or {}) do
         if name ~= BIT.myName then entries[#entries+1] = name end
+    end
+
+    -- Hide ONLY rows that are no longer active (prevents all-icon flicker on
+    -- rebuild triggers like HELLO broadcasts / talent noise events — rows that
+    -- are still present stay shown throughout the rebuild).
+    local activeSet = {}
+    for _, name in ipairs(entries) do activeSet[name] = true end
+    for name, row in pairs(syncRows) do
+        if not activeSet[name] and row.frame then row.frame:Hide() end
     end
 
     local y, maxW = -4, 200
@@ -2440,35 +2678,50 @@ local function BuildAttachedBar(unit, name)
         return
     end
 
-    if existing and existing.frame then existing.frame:Hide() end
-
-    if not parentFrame then return end
+    if not parentFrame then
+        if existing and existing.frame then existing.frame:Hide() end
+        return
+    end
 
     local spells = GetSpellsForPlayer(name)
-    if #spells == 0 then return end
+    if #spells == 0 then
+        if existing and existing.frame then existing.frame:Hide() end
+        return
+    end
 
     local pos = curPos
     local cfg = ATTACH_CONFIG[pos] or ATTACH_CONFIG.LEFT
 
-    local bar = {
-        icons            = {},
-        _lastParentFrame = parentFrame,
-        _lastSpec        = currentSpec,
-        _lastPos         = curPos,
-        _lastIconSize    = curIconSize,
-        _lastSpacing     = curSpacing,
-        _lastCounterSz   = curCounterSz,
-        _lastDisabledVer = curDisabledVer,
-        _lastCatVer      = curCatVer,
-        _lastRowGap       = curRowGap,
-        _lastOffsetX      = curOffsetX,
-        _lastOffsetY      = curOffsetY,
-        _lastTopLayout    = curTopLayout,
-        _lastBottomLayout = curBottomLayout,
-        _lastTalentVer    = curTalentVer,
-    }
-    bar.frame = CreateFrame("Frame", nil, parentFrame)
-    bar.frame:SetFrameLevel(parentFrame:GetFrameLevel() + 10)
+    -- Reuse existing bar & frame if possible. Only the parent frame change
+    -- (unit-frame addon replacement) forces a fresh frame, since the existing
+    -- frame would be parented to a stale reference. All other changes (layout,
+    -- size, spec, talents) can stay with the same frame + diff icons.
+    local bar
+    if existing and existing.frame and existing._lastParentFrame == parentFrame then
+        bar = existing
+        -- Reset anchor in case the layout moved the frame to a different corner.
+        bar.frame:ClearAllPoints()
+    else
+        if existing and existing.frame then existing.frame:Hide() end
+        bar = { icons = {} }
+        bar.frame = CreateFrame("Frame", nil, parentFrame)
+        bar.frame:SetFrameLevel(parentFrame:GetFrameLevel() + 10)
+    end
+    bar.icons = bar.icons or {}
+    bar._lastParentFrame  = parentFrame
+    bar._lastSpec         = currentSpec
+    bar._lastPos          = curPos
+    bar._lastIconSize     = curIconSize
+    bar._lastSpacing      = curSpacing
+    bar._lastCounterSz    = curCounterSz
+    bar._lastDisabledVer  = curDisabledVer
+    bar._lastCatVer       = curCatVer
+    bar._lastRowGap       = curRowGap
+    bar._lastOffsetX      = curOffsetX
+    bar._lastOffsetY      = curOffsetY
+    bar._lastTopLayout    = curTopLayout
+    bar._lastBottomLayout = curBottomLayout
+    bar._lastTalentVer    = curTalentVer
 
     -- ── Multi-row layout: each category on its own configurable row ──
     local iSize   = ICON_SIZE()
@@ -2490,17 +2743,37 @@ local function BuildAttachedBar(unit, name)
 
     bar.frame:SetPoint(cfg.point, parentFrame, cfg.relPoint, cfg.ox + curOffsetX, cfg.oy + curOffsetY)
 
-    -- Helper: create and register one icon at a given anchor + offset
+    -- Hide icons for spells no longer in the spell list (diff-based update).
+    local newSet = {}
+    for _, s in ipairs(spells) do newSet[s.id] = true end
+    for sid, ico in pairs(bar.icons) do
+        if not newSet[sid] then
+            if ico._glowActive and LibButtonGlow then
+                LibButtonGlow.HideOverlayGlow(ico)
+                ico._glowActive = false
+            end
+            ico:Hide()
+            bar.icons[sid] = nil
+        end
+    end
+
+    -- Helper: place (create or reuse) one icon at a given anchor + offset.
+    -- Reuses the existing icon for the spellID so spells still in the list
+    -- don't flicker when layout/talent rebuilds fire.
     local function placeIcon(s, anchor, xOff, yOff)
-        local ico = CreateIcon(bar.frame, s.id)
+        local ico = bar.icons[s.id]
+        if not ico then
+            ico = CreateIcon(bar.frame, s.id)
+            bar.icons[s.id] = ico
+        end
         ico:SetSize(iSize, iSize)
+        ico:ClearAllPoints()
         ico:SetPoint(anchor, bar.frame, anchor, xOff, yOff)
         ico._cd         = s.cd
         ico._maxCharges = s.charges or 0
         ico._playerName = name
         ico._spellName  = s.name
         ico:Show()
-        bar.icons[s.id] = ico
     end
 
     -- Sub-layout A: COLUMNS — each category = one vertical column, growing in X.
@@ -3348,11 +3621,40 @@ function BIT.SyncCD:ScanOwnTalents()
     end
 end
 
+-- Stable fingerprint of a spell-id → bool set (sorted, comma-joined).
+-- Used by OnTalentChanged to detect real changes vs. noise events.
+local function _spellSetFingerprint(t)
+    if not t then return "" end
+    local ids = {}
+    for id in pairs(t) do ids[#ids+1] = id end
+    table.sort(ids)
+    return table.concat(ids, ",")
+end
+
 -- Bumps _ownTalentVer so RebuildWindowRow sees a change and recreates icons from the spellbook.
+--
+-- SPELLS_CHANGED fires for many reasons (glyph swap, shapeshift, macro toggle,
+-- sometimes transiently after casts). Previously we blindly bumped the version
+-- and forced a full icon teardown/rebuild every time — visible as all-icon
+-- flicker on the screen. Now we only bump + rebuild when the active talent set
+-- or the full talent list actually changed.
 function BIT.SyncCD:OnTalentChanged()
-    _ownTalentVer = _ownTalentVer + 1
+    local me = BIT.myName
+    local prevKnown, prevAll = "", ""
+    if me and self.users and self.users[me] then
+        prevKnown = _spellSetFingerprint(self.users[me].knownSpells)
+        prevAll   = _spellSetFingerprint(self.users[me].allTalentSpells)
+    end
     self:ScanOwnTalents()
-    BIT.SyncCD:Rebuild()
+    local nowKnown, nowAll = "", ""
+    if me and self.users and self.users[me] then
+        nowKnown = _spellSetFingerprint(self.users[me].knownSpells)
+        nowAll   = _spellSetFingerprint(self.users[me].allTalentSpells)
+    end
+    if prevKnown ~= nowKnown or prevAll ~= nowAll then
+        _ownTalentVer = _ownTalentVer + 1
+        BIT.SyncCD:Rebuild()
+    end
 end
 
 -- Converts a tainted secret number to a clean Lua number.
@@ -3411,6 +3713,26 @@ function BIT.SyncCD:RefreshCharges()
         local n = (unit == "player") and BIT.myName or SafeUnitName(unit)
         if n == BIT.myName then syncChargeState(bar.icons) end
     end
+end
+
+-- Lightweight update of chargeBadge style (size, anchor, offset) on existing icons
+-- without full Rebuild.  Called from settings sliders for instant feedback.
+function BIT.SyncCD:UpdateChargeBadgeStyle()
+    local chSize   = (BIT.db and BIT.db.syncCdChargeSize) or 13
+    local chAnchor = (BIT.db and BIT.db.syncCdChargeAnchor) or "BOTTOMRIGHT"
+    local chOffX   = (BIT.db and BIT.db.syncCdChargeOffX) or -1
+    local chOffY   = (BIT.db and BIT.db.syncCdChargeOffY) or 1
+    local function applyStyle(icons)
+        for _, ico in pairs(icons) do
+            if ico.chargeBadge then
+                BIT.Media:SetFont(ico.chargeBadge, chSize)
+                ico.chargeBadge:ClearAllPoints()
+                ico.chargeBadge:SetPoint(chAnchor, ico, chAnchor, chOffX, chOffY)
+            end
+        end
+    end
+    for _, row in pairs(syncRows) do applyStyle(row.icons) end
+    for _, bar in pairs(attachedBars) do applyStyle(bar.icons) end
 end
 
 function BIT.SyncCD:UpdateDisplay()
@@ -3686,23 +4008,45 @@ function BIT.SyncCD:OnPartySpellCast(name, spellID)
 
     -- spellID from UNIT_SPELLCAST_SUCCEEDED on party members is tainted
     -- (secret value) — ANY operation on it (table index, tostring, compare)
-    -- can throw "table index is secret". Wrap the entire lookup in pcall.
+    -- can throw "table index is secret". Split lookups into separate pcalls
+    -- so the string fallback runs even if the numeric lookup throws.
     local entry, cleanID
-    local ok, result = pcall(function()
-        local e = _syncSpellLookup[spellID]
-        if e then return e end
-        local s = tostring(spellID)
-        return _syncSpellLookupStr[s]
-    end)
-    if ok and result then
-        entry   = result
-        cleanID = result.id
+    local ok1, e1 = pcall(function() return _syncSpellLookup[spellID] end)
+    if ok1 and e1 then
+        entry = e1
+    else
+        local ok2, s = pcall(tostring, spellID)
+        if ok2 and s then
+            local ok3, e3 = pcall(function() return _syncSpellLookupStr[s] end)
+            if ok3 and e3 then entry = e3 end
+        end
     end
+    if entry then cleanID = entry.id end
     if not entry or not cleanID then return end
 
     -- Charge spells are tracked exclusively by AURA-MATCH for accuracy.
     -- Local detection would double-count with the aura path.
     if (entry.charges or 0) > 1 then return end
+
+    -- Feign Death (5384) for own player: the buff can be cancelled early
+    -- (damage, manual cancel) and the 30s CD only starts when the buff ENDS,
+    -- NOT when the spell is cast. At cast time we only set the glow; no CD.
+    -- Buff-end is detected by two independent paths (whichever fires first
+    -- wins; the later one is guarded by _buffActiveEnd=0):
+    --   • UNIT_AURA: observes the FD aura going from present → absent
+    --   • UNIT_FLAGS: observes UnitIsFeignDeath flipping true → false
+    -- UNIT_AURA is the more reliable signal (catches early cancels before
+    -- the FD flag ever flips, and manual /cancelaura).
+    if cleanID == 5384 and name == BIT.myName then
+        local now = GetTime()
+        if not _buffActiveEnd[name] then _buffActiveEnd[name] = {} end
+        _buffActiveEnd[name][5384] = now + (entry.buffDur or 360)
+        RefreshBuffHighlights(name)
+        if BIT.devLogMode then
+            BIT.DevLog("[FD] self cast -> glow on, CD deferred until buff end")
+        end
+        return
+    end
 
     -- Compute effective CD: apply talent reductions for known talents.
     -- knownTalents may be empty for non-addon players; in that case we use base CD.

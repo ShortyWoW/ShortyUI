@@ -65,7 +65,7 @@ local SPEC_REGISTRY = {
     [1480] = { class="DEMONHUNTER", spellID=183752, name="Disrupt", cd=15, icon=1305153 },
 
     -------------------- Druid --------------------
-    [102] = { class="DRUID", spellID=78675,  name="Solar Beam",              cd=60,
+    [102] = { class="DRUID", spellID=78675,  name="Solar Beam",              cd=45,
               icon=252188 },
     [103] = { class="DRUID", spellID=106839, name="Skull Bash",              cd=15, icon=236946 },
     [104] = { class="DRUID", spellID=106839, name="Skull Bash",              cd=15, icon=236946 },
@@ -371,7 +371,9 @@ BIT.DEFAULTS = {
     syncCdCounterSize = 14,         -- CD countdown text size
     syncCdTimeFormat  = "MMSS",     -- "SECONDS" = 90  /  "MMSS" = 1:30
     syncCdDisabled    = { [10060] = true },   -- Power Infusion: not trackable by default
-    myCustomName      = "",         -- own nickname visible to other addon users
+    -- (legacy db.myCustomName key was removed in 3.3.6 — replaced by charDb.myCustomName + db.globalCustomName below)
+    globalCustomName  = "",         -- global nickname (used for all characters when useGlobalCustomName is true)
+    useGlobalCustomName = false,    -- when true: use globalCustomName instead of the per-character one
     showCustomNames   = true,       -- display custom names set by other players
     titleOffsetY           = 3,
     -- Group Bars mode settings
@@ -396,4 +398,17 @@ BIT.DEFAULTS = {
     iconOnlyPerRow         = 7,        -- max icons per row before wrapping
     iconOnlyCounterSize    = 14,       -- CD countdown font size on icon
     iconOnlyGrowth         = "RIGHT",  -- "RIGHT" or "LEFT" — icon growth direction
+    -- Profile auto-apply toggles (per-spec and per-role override global/char profile)
+    useSpecProfile         = false,    -- auto-apply profile matching current spec on login/spec change
+    useRoleProfile         = false,    -- auto-apply profile matching current role (Tank/Healer/DPS)
+    -- Smart Misdirect (Hunter: Misdirection, Rogue: Tricks of the Trade)
+    -- Class-gated feature: the secure action buttons are only ever created on a
+    -- Hunter or Rogue. All other classes silently skip every Smart Misdirect path.
+    smartMdEnabled         = false,       -- master switch (opt-in extra feature)
+    smartMdTankMethod      = "byRole",    -- "byRole" | "roleAndMainTank" | "mainTankFirst" | "mainTankOnly"
+    smartMdPrioritizeFocus = true,        -- focus target wins over tank list
+    smartMdIncludePet      = true,        -- Hunter-only: use own pet if no player target
+    smartMdAnnounceTarget  = true,        -- print current target in chat when it changes
+    smartMdManualName      = "",          -- manual override: player name (empty = disabled)
+    smartMdManualRealm     = "",          -- manual override: realm (empty = same realm as player)
 }

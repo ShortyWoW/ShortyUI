@@ -342,7 +342,7 @@ local function BuildPageGeneral(cat)
         if frame._cnBuilt then
             -- show custom elements (may have been hidden by frame reuse on another page)
             if frame._cnLabel then frame._cnLabel:Show() end
-            if frame._cnEB    then frame._cnEB:Show(); frame._cnEB:SetText(BIT.db.myCustomName or ""); frame._cnEB:SetCursorPosition(0) end
+            if frame._cnEB    then frame._cnEB:Show(); frame._cnEB:SetText((BIT.charDb and BIT.charDb.myCustomName) or ""); frame._cnEB:SetCursorPosition(0) end
             if frame._cnHint  then frame._cnHint:Show() end
             return
         end
@@ -350,7 +350,7 @@ local function BuildPageGeneral(cat)
 
         local lbl = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         lbl:SetPoint("LEFT", frame, "LEFT", 10, 0)
-        lbl:SetText(LL("CUSTOM_NAMES_NICK", "Nickname") .. ":")
+        lbl:SetText(LL("CUSTOM_NAMES_NICK_CHAR", "Character Nickname") .. ":")
 
         local eb = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
         eb:SetSize(180, 22)
@@ -358,11 +358,11 @@ local function BuildPageGeneral(cat)
         eb:SetAutoFocus(false)
         eb:SetMaxLetters(24)
         eb:SetFontObject(ChatFontNormal)
-        eb:SetText(BIT.db.myCustomName or "")
+        eb:SetText((BIT.charDb and BIT.charDb.myCustomName) or "")
         eb:SetCursorPosition(0)
 
         local function Save(self2)
-            BIT.db.myCustomName = strtrim(self2:GetText())
+            if BIT.charDb then BIT.charDb.myCustomName = strtrim(self2:GetText()) end
             self2:ClearFocus()
             -- reset throttle so the name is sent immediately
             if BIT.Self then
@@ -379,7 +379,7 @@ local function BuildPageGeneral(cat)
         eb:SetScript("OnEnterPressed", Save)
         eb:SetScript("OnEditFocusLost", Save)
         eb:SetScript("OnEscapePressed", function(s)
-            s:SetText(BIT.db.myCustomName or "")
+            s:SetText((BIT.charDb and BIT.charDb.myCustomName) or "")
             s:ClearFocus()
         end)
 
@@ -401,6 +401,82 @@ local function BuildPageGeneral(cat)
     cnInit.GetExtent = function() return 30 end
     layout:AddInitializer(cnInit)
     InSection(cnSect, cnInit)
+
+    -- Toggle: use global nickname instead of the per-character one
+    InSection(cnSect, MakeCheckbox(cat, "BIT_useGlobalCustomName",
+        LL("CUSTOM_NAMES_USE_GLOBAL", "Use Global Nickname (overrides per-character)"),
+        function() return BIT.db.useGlobalCustomName == true end,
+        function(v)
+            BIT.db.useGlobalCustomName = v
+            if BIT.Self then
+                BIT.Self.lastHello     = 0
+                BIT.Self.lastSyncHello = 0
+                if BIT.Self.BroadcastHello     then BIT.Self:BroadcastHello()     end
+                if BIT.Self.BroadcastSyncHello then BIT.Self:BroadcastSyncHello() end
+            end
+        end))
+
+    -- Global nickname EditBox (mirrors the per-character one above)
+    local gnInit = Settings.CreateElementInitializer("SettingsListSectionHeaderTemplate",
+        { name = "" })
+    local gnOrigInit = gnInit.InitFrame
+    gnInit.InitFrame = function(self, frame)
+        if gnOrigInit then gnOrigInit(self, frame) end
+        if frame._gnBuilt then
+            if frame._gnLabel then frame._gnLabel:Show() end
+            if frame._gnEB    then frame._gnEB:Show(); frame._gnEB:SetText(BIT.db.globalCustomName or ""); frame._gnEB:SetCursorPosition(0) end
+            if frame._gnHint  then frame._gnHint:Show() end
+            return
+        end
+        frame._gnBuilt = true
+
+        local lbl = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        lbl:SetPoint("LEFT", frame, "LEFT", 10, 0)
+        lbl:SetText(LL("CUSTOM_NAMES_NICK_GLOBAL", "Global Nickname") .. ":")
+
+        local eb = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
+        eb:SetSize(180, 22)
+        eb:SetPoint("LEFT", lbl, "RIGHT", 8, 0)
+        eb:SetAutoFocus(false)
+        eb:SetMaxLetters(24)
+        eb:SetFontObject(ChatFontNormal)
+        eb:SetText(BIT.db.globalCustomName or "")
+        eb:SetCursorPosition(0)
+
+        local function Save(self2)
+            BIT.db.globalCustomName = strtrim(self2:GetText())
+            self2:ClearFocus()
+            if BIT.db.useGlobalCustomName and BIT.Self then
+                BIT.Self.lastHello     = 0
+                BIT.Self.lastSyncHello = 0
+                if BIT.Self.BroadcastHello     then BIT.Self:BroadcastHello()     end
+                if BIT.Self.BroadcastSyncHello then BIT.Self:BroadcastSyncHello() end
+            end
+        end
+        eb:SetScript("OnEnterPressed", Save)
+        eb:SetScript("OnEditFocusLost", Save)
+        eb:SetScript("OnEscapePressed", function(s)
+            s:SetText(BIT.db.globalCustomName or "")
+            s:ClearFocus()
+        end)
+
+        local hint = frame:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+        hint:SetPoint("LEFT", eb, "RIGHT", 8, 0)
+        hint:SetText("|cFF666666" .. LL("CUSTOM_NAMES_HINT_GLOBAL", "Used on every character when enabled") .. "|r")
+
+        frame._gnLabel = lbl
+        frame._gnEB    = eb
+        frame._gnHint  = hint
+
+        frame:HookScript("OnHide", function(f)
+            if f._gnLabel then f._gnLabel:Hide() end
+            if f._gnEB    then f._gnEB:Hide() end
+            if f._gnHint  then f._gnHint:Hide() end
+        end)
+    end
+    gnInit.GetExtent = function() return 30 end
+    layout:AddInitializer(gnInit)
+    InSection(cnSect, gnInit)
 end
 
 ------------------------------------------------------------

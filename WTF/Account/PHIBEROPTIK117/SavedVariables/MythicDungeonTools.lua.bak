@@ -8,12 +8,12 @@ MythicDungeonToolsDB = {
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 },
 ["global"] = {
-["latestDungeonSeen"] = 150,
 ["minimap"] = {
 ["minimapPos"] = 252.8475054978408,
 ["showInCompartment"] = true,
 ["hide"] = true,
 },
+["latestDungeonSeen"] = 150,
 ["maximized"] = false,
 ["presets"] = {
 [150] = {

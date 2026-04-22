@@ -24,11 +24,6 @@ nil,
 0,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 ["block"] = {
 ["position"] = {
 "BOTTOM",
@@ -36,6 +31,11 @@ nil,
 "BOTTOM",
 10.00003242492676,
 175.0008544921875,
+},
+},
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
 },
 },
 },

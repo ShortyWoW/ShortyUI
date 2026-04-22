@@ -1,6 +1,8 @@
+@Terciob:
+- Localizations for the Auto tab.
+
 @cont1nuity:
-- Added option to hide blizzard friendly npc helathbars separately from players.
-- Fixed a few missing options.
-- Added option to remove realm name on friendly players for blizzard default nameplates.
-- Improved aura border sizing.
+- Fixed a few bugs around stored CVars and secrets.
+- Adding public profile API for wago.
+- Re-adding missing options for classic client.
 

@@ -1,5 +1,6 @@
 
 BliZziInterruptsSavedVarsChar = {
+["myCustomName"] = "",
 ["posY"] = 307.0050964355469,
 ["posX"] = 1254.001831054688,
 ["syncCdBarsPosX"] = 792.9993896484375,

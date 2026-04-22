@@ -1,8 +1,8 @@
-## Interface: 120000
+## Interface: 120005
 ## Title: Co-Tank Frame
 ## Notes: A dedicated frame for your co-tank with debuff tracking.
 ## Author: FerrozArgentDawn
-## Version: 1.1.23
+## Version: 1.1.24
 ## X-Curse-Project-ID: 1434491
 ## SavedVariables: Co_Tank_Frame_Settings
 ## IconTexture: Interface\AddOns\Co_Tank_Frame\Media\Cotank

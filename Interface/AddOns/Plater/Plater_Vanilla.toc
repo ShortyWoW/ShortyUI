@@ -10,7 +10,7 @@
 ## OptionalDeps: Masque
 ## IconTexture-blank: 982414
 ## IconTexture: Interface\AddOns\Plater\images\cast_bar
-## Version: Plater-v638-Vanilla
+## Version: Plater-v640-Vanilla
 ## X-Curse-Project-ID: 100547
 ## X-Wago-ID: kRNLep6o
 
@@ -76,6 +76,7 @@ options/Plater_O_Search.lua
 options/Plater_O_CastBar.lua
 options/Plater_O_Advanced.lua
 options/Plater_O_BossMod.lua
+options/Plater_O_Automation.lua
 
 
 

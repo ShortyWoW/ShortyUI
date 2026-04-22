@@ -48,6 +48,8 @@ KeystonePolaris.L = L
 
 local LDB = LibStub("LibDataBroker-1.1", true)
 local LDBIcon = LibStub("LibDBIcon-1.0", true)
+-- One-shot marker used to re-enable mob percentages when the Blizzard API returned.
+local MOB_PERCENTAGES_REENABLE_MIGRATION = "3.8"
 
 local function Lerp(a, b, t)
     return a + (b - a) * t
@@ -96,8 +98,8 @@ local function BuildModulesOverviewDescription(localeTable)
     return table.concat({
         intro,
         "",
-        featureIcon .. " |cffffd100" .. mdtTitle .. "|r",
-        "   |cffcfcfcf• " .. mobPercentagesTitle .. "|r |cff9d9d9d- " .. mobPercentagesDesc .. "|r",
+        featureIcon .. " |cffffd100" .. mobPercentagesTitle .. "|r",
+        "   |cff9d9d9d" .. mobPercentagesDesc .. "|r",
         "",
         featureIcon .. " |cffffd100" .. groupReminderTitle .. "|r",
         "   |cff9d9d9d" .. groupReminderDesc .. "|r",
@@ -300,6 +302,14 @@ function KeystonePolaris:OnInitialize()
     -- Initialize the database first with AceDB
     self.db = LibStub("AceDB-3.0"):New("KeystonePolarisDB", self.defaults, "Default")
 
+    local general = self.db.profile.general
+    -- Force-enable the returning feature once per profile, then keep user choice afterwards.
+    if general.mobPercentagesMigrationVersion ~= MOB_PERCENTAGES_REENABLE_MIGRATION then
+        self.db.profile.mobPercentages = self.db.profile.mobPercentages or {}
+        self.db.profile.mobPercentages.enabled = true
+        general.mobPercentagesMigrationVersion = MOB_PERCENTAGES_REENABLE_MIGRATION
+    end
+
     -- Migrate prefixColor from general.mainDisplay to color.prefix
     local oldPrefix = self.db.profile.general.mainDisplay.prefixColor
     if oldPrefix then
@@ -380,37 +390,7 @@ function KeystonePolaris:OnInitialize()
                         name = modulesSummaryDescription,
                         fontSize = "medium",
                     },
-                    mdtIntegration = {
-                        name = L["MDT_INTEGRATION"],
-                        type = "group",
-                        order = 2,
-                        args = {
-                            mdtIntegrationHeader = {
-                                order = 0,
-                                type = "header",
-                                name = L["MDT_INTEGRATION"],
-                            },
-                            mdtWarning = {
-                                name = L["MDT_SECTION_WARNING"],
-                                type = "description",
-                                order = 1,
-                                fontSize = "medium",
-                            },
-                            -- Information about MDT integration features
-                            featuresHeader = {
-                                order = 2,
-                                type = "header",
-                                name = L["MDT_INTEGRATION_FEATURES"],
-                            },
-                            mobPercentagesInfo = {
-                                name = L["MOB_PERCENTAGES_INFO"],
-                                type = "description",
-                                order = 4,
-                                fontSize = "medium",
-                            },
-                            mobPercentages = self:GetMobPercentagesOptions(),
-                        }
-                    },
+                    mobPercentages = self:GetMobPercentagesOptions(),
                     groupReminder = self:GetGroupReminderOptions(),
                 }
             },

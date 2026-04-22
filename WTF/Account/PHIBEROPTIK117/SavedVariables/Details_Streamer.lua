@@ -1,14 +1,14 @@
 
 Details_StreamerDB = {
 ["characters"] = {
-["Callmeshorty - Illidan"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Drewishlaser - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshorty - Dalaran",
 ["Shortbowjob - Area 52"] = "Callmeshorty - Dalaran",
 ["Callmeshawte - Area 52"] = "Callmeshorty - Dalaran",
-["Shortypal - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbeef - Vashj"] = "Callmeshorty - Dalaran",
-["Drewishlaser - Dalaran"] = "Callmeshorty - Dalaran",
+["Shortypal - Dalaran"] = "Callmeshorty - Dalaran",
+["Callmeshorty - Illidan"] = "Callmeshorty - Dalaran",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -21,7 +21,10 @@ Details_StreamerDB = {
 0.5,
 },
 ["scale"] = 1,
-["arrow_anchor_y"] = 0,
+["main_frame_size"] = {
+299.9999694824219,
+500.0000610351563,
+},
 ["minimap"] = {
 ["minimapPos"] = 160,
 ["radius"] = 160,
@@ -42,7 +45,7 @@ Details_StreamerDB = {
 ["square_amount"] = 5,
 ["enabled"] = false,
 ["arrow_size"] = 10,
-["y"] = 1.52587890625e-05,
+["use_spark"] = true,
 ["row_spacement"] = 21,
 ["main_frame_color"] = {
 0,
@@ -50,14 +53,13 @@ Details_StreamerDB = {
 0,
 0.2,
 },
-["row_color"] = {
-0.1,
-0.1,
-0.1,
-0.4,
-},
+["author"] = "Terciob",
 ["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
-["use_spark"] = true,
+["font_size"] = 10,
+["y"] = 1.52587890625e-05,
+["x"] = -0.000244140625,
+["font_face"] = "Friz Quadrata TT",
+["square_size"] = 32,
 ["per_second"] = {
 ["enabled"] = false,
 ["point"] = "CENTER",
@@ -69,16 +71,14 @@ Details_StreamerDB = {
 ["update_speed"] = 0.05,
 ["attribute_type"] = 1,
 },
-["x"] = -0.000244140625,
-["font_face"] = "Friz Quadrata TT",
-["square_size"] = 32,
-["font_size"] = 10,
-["author"] = "Terciob",
-["main_frame_locked"] = false,
-["main_frame_size"] = {
-299.9999694824219,
-500.0000610351563,
+["row_color"] = {
+0.1,
+0.1,
+0.1,
+0.4,
 },
+["main_frame_locked"] = false,
+["arrow_anchor_y"] = 0,
 },
 },
 }

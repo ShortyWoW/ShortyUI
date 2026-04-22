@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/g Thanks for the runs!",
-"/g Panda, if you ever want to sit in voice chat, i can coach you through most of these mechanics",
-"/g next time we run some we can do that",
-"/cw Benzopatrol-Illidan what are your raid days?",
-"/cw Benzopatrol-Illidan Cool, you leaning any specific way? Weekend vs weekday",
+"/g the second i got in game, my PC restarted",
+"/g I did not authorize this",
+"/g I have a 2 Spire",
+"/g hello",
+"/reload",
 },
 ["ChatHistoryLog"] = {
 {

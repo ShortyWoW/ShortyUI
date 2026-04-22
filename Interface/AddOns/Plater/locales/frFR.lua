@@ -18,7 +18,7 @@ L["Hold Shift to change the sound of all casts with the audio %s to %s"] = "Main
 L["IMPORT"] = "Importer"
 L["IMPORT_CAST_COLORS"] = "Importer des couleurs"
 L["IMPORT_CAST_SOUNDS"] = "Importer des sons"
-L["OPTIONS_ALPHA"] = "Alpha"
+L["OPTIONS_ALPHA"] = "Transparence"
 L["OPTIONS_ALPHABYFRAME_ALPHAMULTIPLIER"] = "Multiplicateur de transparence."
 L["OPTIONS_ALPHABYFRAME_DEFAULT"] = "Transparence par défaut"
 L["OPTIONS_ALPHABYFRAME_DEFAULT_DESC"] = "Montant de transparence appliqué à tous les composants d'une seule plaque de nom."
@@ -59,6 +59,126 @@ L["OPTIONS_AURA_WIDTH"] = "Largeur de l'icône de l'affaiblissement"
 L["OPTIONS_AURAS_ENABLETEST"] = "Activez cette option pour cacher les auras de test affichées lors de la configuration."
 L["OPTIONS_AURAS_SORT"] = "Trier les auras"
 L["OPTIONS_AURAS_SORT_DESC"] = "Les auras sont triées par temps restant (par défaut)."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_ARENA_BG"] = "In Arena / BG"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_ARENA_BG_DESC"] = "Set 'always show nameplates' on when inside arena or battleground."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_DUNGEONS"] = "In Dungeons"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_DUNGEONS_DESC"] = "Set 'always show nameplates' on when inside dungeons."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_MAJOR_CITIES"] = "In Major Cities"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_MAJOR_CITIES_DESC"] = "Set 'always show nameplates' on when inside a major city."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_OPEN_WORLD"] = "In Open World"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_OPEN_WORLD_DESC"] = "Set 'always show nameplates' on when at any place not listed on the other options."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_RAID"] = "In Raid"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ALWAYS_SHOW_IN_RAID_DESC"] = "Set 'always show nameplates' on when inside raids."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_ARENA_BG"] = "In Arena / BG"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_ARENA_BG_DESC"] = "Show enemy nameplates when inside arena or battleground."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_DUNGEONS"] = "In Dungeons"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_DUNGEONS_DESC"] = "Show enemy nameplates when inside dungeons."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_MAJOR_CITIES"] = "In Major Cities"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_MAJOR_CITIES_DESC"] = "Show enemy nameplates when inside a major city."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_OPEN_WORLD"] = "In Open World"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_OPEN_WORLD_DESC"] = "Show enemy nameplates when at any place not listed on the other options."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_RAID"] = "In Raid"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_IN_RAID_DESC"] = "Show enemy nameplates when inside raids."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_NAMEPLATES_IC"] = "Enemy Nameplates in combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_NAMEPLATES_IC_DESC"] = "Automatically enable / disable enemy nameplates in combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_NAMEPLATES_OOC"] = "Enemy Nameplates out of combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_ENEMY_NAMEPLATES_OOC_DESC"] = "Automatically enable / disable enemy nameplates out of combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_ARENA_BG"] = "In Arena / BG"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_ARENA_BG_DESC"] = "Show friendly nameplates when inside arena or battleground."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_DUNGEONS"] = "In Dungeons"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_DUNGEONS_DESC"] = "Show friendly nameplates when inside dungeons."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_MAJOR_CITIES"] = "In Major Cities"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_MAJOR_CITIES_DESC"] = "Show friendly nameplates when inside a major city."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_OPEN_WORLD"] = "In Open World"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_OPEN_WORLD_DESC"] = "Show friendly nameplates when at any place not listed on the other options."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_RAID"] = "In Raid"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_IN_RAID_DESC"] = "Show friendly nameplates when inside raids."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_NAMEPLATES_IC"] = "Friendly Nameplates in combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_NAMEPLATES_IC_DESC"] = "Automatically enable / disable friendly nameplates in combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_NAMEPLATES_OOC"] = "Friendly Nameplates out of combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_FRIENDLY_NAMEPLATES_OOC_DESC"] = "Automatically enable / disable friendly nameplates out of combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_BLIZZARD_HEALTHBARS_IC"] = "Hide Blizzard Healthbars in combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_BLIZZARD_HEALTHBARS_IC_DESC"] = "Automatically enable / disable showing blizzard nameplate healthbars in combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_BLIZZARD_HEALTHBARS_OOC"] = "Hide Blizzard Healthbars out of combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_BLIZZARD_HEALTHBARS_OOC_DESC"] = "Automatically enable / disable showing blizzard nameplate healthbars out of combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_ENEMY_PETS"] = "Hide Enemy Pets"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_ENEMY_PETS_DESC"] = "Disable show enemy pets within a raid or a dungeon."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_ENEMY_TOTEMS"] = "Hide Enemy Totems"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_HIDE_ENEMY_TOTEMS_DESC"] = "Disable show enemy totems within a raid or a dungeon."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_SHOWNAMEPLATE_INCOMBAT"] = "Enable 'Always Show Nameplates' in combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_SHOWNAMEPLATE_INCOMBAT_DESC"] = "Automatically enable / disable the 'always show' option in combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_SHOWNAMEPLATE_OUTOFCOMBAT"] = "Enable 'Always Show Nameplates' out of combat"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_SHOWNAMEPLATE_OUTOFCOMBAT_DESC"] = "Automatically enable / disable the 'always show' option out of combat."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_ARENA_BG"] = "In Arena / BG"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_ARENA_BG_DESC"] = "Set stacking on when inside arena or battleground."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_DUNGEONS"] = "In Dungeons"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_DUNGEONS_DESC"] = "Set stacking on when inside dungeons."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_MAJOR_CITIES"] = "In Major Cities"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_MAJOR_CITIES_DESC"] = "Set stacking on when inside a major city."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_OPEN_WORLD"] = "In Open World"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_OPEN_WORLD_DESC"] = "Set stacking on when at any place not listed on the other options."
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_RAID"] = "In Raid"
+--[[Translation missing --]]
+L["OPTIONS_AUTO_STACKING_IN_RAID_DESC"] = "Set stacking on when inside raids."
 L["OPTIONS_BACKGROUND_ALWAYSSHOW"] = "Toujours afficher l'arrière-plan"
 L["OPTIONS_BACKGROUND_ALWAYSSHOW_DESC"] = "Activez un arrière-plan affichant la zone cliquable."
 L["OPTIONS_BORDER_COLOR"] = "Couleur de la bordure"
@@ -113,22 +233,22 @@ L["OPTIONS_CVAR_ENABLE_PERSONAL_BAR"] = "Barres de vie et de mana personnelles|c
 L["OPTIONS_CVAR_ENABLE_PERSONAL_BAR_DESC"] = "Affiche de mini barres de vie et de mana sous votre personnage. |cFFFF7700[*]|r |cFFa0a0a0CVar, enregistré dans le profil Plater et restauré lors du chargement du profil.|r"
 L["OPTIONS_CVAR_NAMEPLATES_ALWAYSSHOW"] = "Toujours afficher les plaques de nom|cFFFF7700*|r"
 L["OPTIONS_CVAR_NAMEPLATES_ALWAYSSHOW_DESC"] = "Affiche les plaques de nom pour toutes les unités près de vous. Si désactivé, n'afficher que les unités pertinentes lorsque vous êtes en combat. |cFFFF7700[*]|r |cFFa0a0a0CVar, enregistré dans le profil Plater et restauré lors du chargement du profil.|r"
-L["OPTIONS_ENABLED"] = "Activée"
-L["OPTIONS_ERROR_CVARMODIFY"] = "les Cvars ne peuvent pas être changés en combat."
-L["OPTIONS_ERROR_EXPORTSTRINGERROR"] = "erreur des chaines exportées"
+L["OPTIONS_ENABLED"] = "Activé"
+L["OPTIONS_ERROR_CVARMODIFY"] = "les variables de configuration ne peuvent pas être modifiées en combat"
+L["OPTIONS_ERROR_EXPORTSTRINGERROR"] = "échec de l'exportation"
 L["OPTIONS_EXECUTERANGE"] = "Portée d'exécution"
 L["OPTIONS_EXECUTERANGE_DESC"] = "Affiche un indicateur lorsque l'unité cible est dans la portée d'exécution. Si la détection ne fonctionne pas après un patch, communiquez sur Discord."
 L["OPTIONS_EXECUTERANGE_HIGH_HEALTH"] = "Portée d'exécution (soin élevé)"
 L["OPTIONS_EXECUTERANGE_HIGH_HEALTH_DESC"] = "Affiche l'indicateur d'exécution pour la partie élevée de la vie. Si la détection ne fonctionne pas après un correctif, communiquez sur Discord."
-L["OPTIONS_FONT"] = "Police de caractère"
+L["OPTIONS_FONT"] = "Police"
 L["OPTIONS_FORMAT_NUMBER"] = "Format de nombre"
 L["OPTIONS_FRIENDLY"] = "Amical"
-L["OPTIONS_GENERALSETTINGS_HEALTHBAR_ANCHOR_TITLE"] = "Apparence de la barre de santé"
-L["OPTIONS_GENERALSETTINGS_HEALTHBAR_BGCOLOR"] = "Barre de Santé Couleur de Fond et Alpha"
+L["OPTIONS_GENERALSETTINGS_HEALTHBAR_ANCHOR_TITLE"] = "Apparence de la barre de vie"
+L["OPTIONS_GENERALSETTINGS_HEALTHBAR_BGCOLOR"] = "Couleur de fond et transparence de la barre de santé"
 L["OPTIONS_GENERALSETTINGS_HEALTHBAR_BGTEXTURE"] = "Texture de fond de la barre de santé"
-L["OPTIONS_GENERALSETTINGS_HEALTHBAR_TEXTURE"] = "Texture de barre de santé"
+L["OPTIONS_GENERALSETTINGS_HEALTHBAR_TEXTURE"] = "Texture de la barre de vie"
 L["OPTIONS_GENERALSETTINGS_TRANSPARENCY_ANCHOR_TITLE"] = "La transparence est utilisée pour"
-L["OPTIONS_GENERALSETTINGS_TRANSPARENCY_RANGECHECK"] = "Vérification de la portée."
+L["OPTIONS_GENERALSETTINGS_TRANSPARENCY_RANGECHECK"] = "Vérification de la portée._"
 L["OPTIONS_GENERALSETTINGS_TRANSPARENCY_RANGECHECK_ALPHA"] = "Gamme de Transparence"
 L["OPTIONS_GENERALSETTINGS_TRANSPARENCY_RANGECHECK_SPEC_DESC"] = "Sort vérifiant la distance avec cette spécialisation."
 L["OPTIONS_HEALTHBAR"] = "Barre de vie"
@@ -252,7 +372,7 @@ L["OPTIONS_TABNAME_COMBOPOINTS"] = "Points de combo"
 L["OPTIONS_TABNAME_GENERALSETTINGS"] = "Réglages généraux"
 L["OPTIONS_TABNAME_MODDING"] = "Modding"
 L["OPTIONS_TABNAME_NPC_COLORNAME"] = "Couleurs et noms des PNJ"
-L["OPTIONS_TABNAME_NPCENEMY"] = "Ennemi Npc"
+L["OPTIONS_TABNAME_NPCENEMY"] = "Ennemi Npc_"
 L["OPTIONS_TABNAME_NPCFRIENDLY"] = "Pnj Amical"
 L["OPTIONS_TABNAME_PERSONAL"] = "Barre personnelle"
 L["OPTIONS_TABNAME_PLAYERENEMY"] = "Joueur ennemi"

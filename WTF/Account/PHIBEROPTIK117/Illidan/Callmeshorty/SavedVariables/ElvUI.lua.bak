@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/pull 10",
-"/s Diamond, T, Circle, X",
-"/lurasymbols",
 "/lh",
 "/reload",
+"/lura",
+"/simc",
+"/2 They deleted player housing because people were complaining about it so much",
 },
 ["ChatHistoryLog"] = {
 {

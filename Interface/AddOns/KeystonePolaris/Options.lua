@@ -175,6 +175,7 @@ KeystonePolaris.defaults = {
             showCompartmentIcon = true,
             showMinimapIcon = true,
             minimapAngle = 225,
+            mobPercentagesMigrationVersion = "",
             advancedOptionsEnabled = false,
             lastSeasonCheck = "",
             lastVersionCheck = "",

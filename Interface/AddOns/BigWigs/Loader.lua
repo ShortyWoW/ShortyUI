@@ -12,9 +12,9 @@ local strfind = string.find
 -- Generate our version variables
 --
 
-local BIGWIGS_VERSION = 413
+local BIGWIGS_VERSION = 414
 local CONTENT_PACK_VERSIONS = {
-	["LittleWigs"] = {12, 0, 40},
+	["LittleWigs"] = {12, 0, 41},
 	["BigWigs_Classic"] = {12, 0, 15},
 	["BigWigs_BurningCrusade"] = {12, 0, 11},
 	["BigWigs_WrathOfTheLichKing"] = {12, 0, 6},
@@ -57,7 +57,7 @@ do
 	local ALPHA = "ALPHA"
 
 	local releaseType
-	local myGitHash = "40ef815" -- The ZIP packager will replace this with the Git hash.
+	local myGitHash = "ad89ff4" -- The ZIP packager will replace this with the Git hash.
 	local releaseString
 	--[=[@alpha@
 	-- The following code will only be present in alpha ZIPs.
@@ -709,6 +709,7 @@ do
 		frame:SetBorder("HeldBagLayout")
 		frame:SetPortraitTextureSizeAndOffset(38, -5, 0)
 		frame:SetPortraitTextureRaw("Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid.tga")
+		frame.GetTitleText = nil
 
 		local text = frame:CreateFontString(nil, nil, "GameFontGreenLarge")
 		text:SetSize(380, 0)
@@ -1337,6 +1338,7 @@ do
 		BigWigs_SiegeOfZuldazar = "BigWigs",
 		FS_Core = "Abandoned", -- abandoned addon breaking the load order
 		Fake_Keystones = "Abandoned", -- abandoned addon breaking LibKeystone
+		["!Fake_Keystones"] = "Abandoned", -- abandoned addon breaking LibKeystone
 		BigWigs_Azeroth = "BigWigs_BattleForAzeroth",
 		BigWigs_BattleOfDazaralor = "BigWigs_BattleForAzeroth",
 		BigWigs_CrucibleOfStorms = "BigWigs_BattleForAzeroth",
@@ -1933,6 +1935,12 @@ do
 			end
 			bwFrame:UnregisterEvent("ZONE_CHANGED")
 			bwFrame:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
+
+			-- XXX 12.0.5
+			if public.isRetail and C_ScenarioInfo.GetUnitCriteriaProgressValues and public.currentExpansion.currentSeason[instanceID] and not BW_FEAT_M_PERCENT then
+				BW_FEAT_M_PERCENT = true
+				Popup(L.tempProgressAnnounce, true, 220)
+			end
 		else
 			if disabledZones[instanceID] then -- We have a content addon for the this zone but it is disabled in the addons menu
 				local msg = L.disabledAddOn:format(disabledZones[instanceID])

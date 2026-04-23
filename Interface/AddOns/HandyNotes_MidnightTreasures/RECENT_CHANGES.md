@@ -1,6 +1,4 @@
-## Changed in v43
+## Changed in v44
 
-* Dust 'Em Off: don't show moths you've found on other characters
-* Isle of Quel'Danas: only show the Artisan's Mettle during the intro
-* Fix typo stopping quests being labeled as "completed" in tooltips
+* TOC for 12.0.5
 

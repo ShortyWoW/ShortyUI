@@ -1,13 +1,14 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
+["version"] = 3,
 ["settings"] = {
 ["keystoneTooltip"] = true,
 ["hiddenCharacters"] = {
 },
 ["highlighting"] = {
-["versatility"] = true,
 ["mastery"] = true,
+["versatility"] = true,
 ["haste"] = true,
 ["crit"] = true,
 ["noStats"] = true,
@@ -21,7 +22,6 @@ KeystoneLootDB = {
 ["degrees"] = 195,
 },
 },
-["version"] = 3,
 ["favorites"] = {
 ["Illidan-Callmeshorty-12"] = {
 },

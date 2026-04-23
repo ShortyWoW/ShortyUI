@@ -5,50 +5,46 @@ local UF = E.UnitFrames
 
 local rad = rad
 
-function A:SetTexture_HealComm(module, obj, texture)
-	if not self.db or not self.db.enable then
-		return self.hooks[module].SetTexture_HealComm(module, obj, texture)
-	end
-
-	if not obj then
-		return self.hooks[module].SetTexture_HealComm(module, obj, texture)
-	end
-
-	-- Decide texture for all bars: WindTools override only applies to damageAbsorb later
-	local textureForAll = texture
-	if self.db.texture and self.db.texture.enable then
-		if self.db.texture.blizzardStyle then
-			textureForAll = "Interface/RaidFrame/Shield-Fill"
-		elseif self.db.texture.custom then
-			textureForAll = LSM:Fetch("statusbar", self.db.texture.custom)
-		end
-	end
-
-	-- Call original first so healingPlayer, healingOther, healAbsorb get correct texture (ElvUI's)
-	self.hooks[module].SetTexture_HealComm(module, obj, texture)
-
-	local bar = obj.damageAbsorb
-	if not bar then
+function A:UpdateStatusBarTexture(bar, texture, dbKey)
+	if not self.db[dbKey] or not self.db[dbKey].enable or not bar then
 		return
 	end
 
-	-- Override only damage absorb bar with WindTools texture when enabled
-	if textureForAll ~= texture then
-		bar:SetStatusBarTexture(textureForAll)
+	local tex
+	if self.db[dbKey].blizzardStyle then
+		tex = "Interface/RaidFrame/Shield-Fill"
+	elseif self.db[dbKey].custom then
+		tex = LSM:Fetch("statusbar", self.db[dbKey].custom)
 	end
 
+	if tex and tex ~= texture then
+		bar:SetStatusBarTexture(tex)
+	end
+end
+
+function A:SetTexture_HealComm(module, obj, texture)
+	self.hooks[module].SetTexture_HealComm(module, obj, texture)
+	if not self.db or not self.db.enable or not obj then
+		return
+	end
+
+	self:UpdateStatusBarTexture(obj.damageAbsorb, texture, "damageAbsorb")
+	self:UpdateStatusBarTexture(obj.healAbsorb, texture, "healAbsorb")
+	self:UpdateStatusBarTexture(obj.healingPlayer, texture, "healPrediction")
+	self:UpdateStatusBarTexture(obj.healingOther, texture, "healPrediction")
+
 	-- Overlay
-	if self.db.blizzardAbsorbOverlay then
-		if not bar.__shieldOverlay then
-			local overlay = bar:CreateTexture(nil, "ARTWORK", nil, 1)
-			overlay:SetAllPoints(bar:GetStatusBarTexture())
+	if self.db.blizzardAbsorbOverlay and obj.damageAbsorb then
+		if not obj.damageAbsorb.__shieldOverlay then
+			local overlay = obj.damageAbsorb:CreateTexture(nil, "ARTWORK", nil, 1)
+			overlay:SetAllPoints(obj.damageAbsorb:GetStatusBarTexture())
 			overlay:SetTexture("Interface/RaidFrame/Shield-Overlay", true, true)
 			overlay:SetHorizTile(true)
 			overlay:SetVertTile(true)
-			bar.__shieldOverlay = overlay
+			obj.damageAbsorb.__shieldOverlay = overlay
 		end
-	elseif bar.__shieldOverlay then
-		bar.__shieldOverlay:Hide()
+	elseif obj.damageAbsorb.__shieldOverlay then
+		obj.damageAbsorb.__shieldOverlay:Hide()
 	end
 
 	-- Glow

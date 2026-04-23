@@ -8,6 +8,7 @@ local pairs = pairs
 local ipairs = ipairs
 local unpack = unpack
 
+local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
@@ -24,6 +25,13 @@ local AltManaTypes = {
 	LunarPower = (E.Retail or E.Mists) and 8 or nil,
 	Maelstrom = E.Retail and 11 or nil,
 	Insanity = E.Retail and 13 or nil
+}
+
+local ManaType = { powerName = 'MANA', powerType = 0 }
+UF.ALT_POWER_INFO = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and CopyTable(_G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
+	DRUID = { [8] = CopyTable(ManaType) },		-- LunarPower
+	SHAMAN = { [11] = CopyTable(ManaType) },	-- Maelstrom
+	PRIEST = { [13] = CopyTable(ManaType) }		-- Insanity
 }
 
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
@@ -106,15 +114,26 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	end
 end
 
-function UF:ClassPower_ShouldShowAdditionalPower()
+function UF:ClassPower_ShouldShowAdditionalPower(element)
+	local displayTypes = element.displayPairs and element.displayPairs[E.myclass]
+	if not displayTypes then return end
+
 	local altPower = E.db.unitframe.altManaPowers[E.myclass]
 	if not altPower then return end
 
+	local hasAny = false
 	for name, value in pairs(altPower) do
-		if value and AltManaTypes[name] then
-			return true
+		local powerIndex = AltManaTypes[name]
+		if powerIndex then
+			displayTypes[powerIndex] = value and ManaType or nil
+
+			if value then
+				hasAny = true
+			end
 		end
 	end
+
+	return hasAny
 end
 
 function UF:Configure_ClassBar(frame)
@@ -351,14 +370,15 @@ function UF:Configure_ClassBar(frame)
 	local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
 	local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
 	for _, powerType in pairs(UF.ClassPowerTypes) do
-		if frame[powerType] then
+		local element = frame[powerType]
+		if element then
 			local enabled = frame:IsElementEnabled(powerType)
 			local additional = powerType == 'AdditionalPower'
 			local classpower = powerType == 'ClassPower'
 			if additional or classpower then
 				local special = classpower and (allowPriest or allowShaman)
 				local normal = classpower and (not (checkPriest or checkShaman) or not special)
-				local allowed = activeBar and (normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower()))
+				local allowed = activeBar and (normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower(element)))
 				if allowed and not enabled then
 					frame:EnableElement(powerType)
 				elseif enabled and not allowed then
@@ -408,6 +428,7 @@ function UF:Construct_ClassBar(frame)
 	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 
+	bars.displayPairs = UF.ALT_POWER_INFO
 	bars.RaisedElementParent = UF:CreateRaisedElement(bars)
 
 	local frameName = frame:GetName()

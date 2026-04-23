@@ -1,6 +1,7 @@
 local W, F, E, L, V, P, G = unpack((select(2, ...))) ---@type WindTools, Functions, ElvUI, LocaleTable, PrivateDB, ProfileDB, GlobalDB
 local options = W.options.advanced.args
 local C = W.Utilities.Color
+local NC = W:GetModule("NameClip") ---@class NameClip
 
 local _G = _G
 local format = format
@@ -796,8 +797,19 @@ options.reset = {
 						end)
 					end,
 				},
-				absorb = {
+				nameClip = {
 					order = 2,
+					type = "execute",
+					name = L["Name Clip"],
+					func = function()
+						E:StaticPopup_Show("WINDTOOLS_RESET_MODULE", L["Name Clip"], nil, function()
+							E.db.WT.unitFrames.nameClip = P.unitFrames.nameClip
+							NC:ProfileUpdate()
+						end)
+					end,
+				},
+				absorb = {
+					order = 3,
 					type = "execute",
 					name = L["Absorb"],
 					func = function()
@@ -807,7 +819,7 @@ options.reset = {
 					end,
 				},
 				roleIcon = {
-					order = 3,
+					order = 4,
 					type = "execute",
 					name = L["Role Icon"],
 					func = function()
@@ -817,7 +829,7 @@ options.reset = {
 					end,
 				},
 				tags = {
-					order = 4,
+					order = 5,
 					type = "execute",
 					name = L["Tags"],
 					func = function()
@@ -883,8 +895,18 @@ options.reset = {
 						end)
 					end,
 				},
-				blizzard = {
+				lossOfControl = {
 					order = 5,
+					type = "execute",
+					name = L["Loss Of Control"],
+					func = function()
+						E:StaticPopup_Show("WINDTOOLS_RESET_MODULE", L["Loss Of Control"], nil, function()
+							E.private.WT.skins.lossOfControl = V.skins.lossOfControl
+						end)
+					end,
+				},
+				blizzard = {
+					order = 6,
 					type = "execute",
 					name = L["Blizzard"],
 					func = function()
@@ -894,7 +916,7 @@ options.reset = {
 					end,
 				},
 				elvui = {
-					order = 6,
+					order = 7,
 					type = "execute",
 					name = L["ElvUI"],
 					func = function()
@@ -904,7 +926,7 @@ options.reset = {
 					end,
 				},
 				addons = {
-					order = 7,
+					order = 8,
 					type = "execute",
 					name = L["Addons"],
 					func = function()
@@ -914,7 +936,7 @@ options.reset = {
 					end,
 				},
 				libraries = {
-					order = 8,
+					order = 9,
 					type = "execute",
 					name = L["Libraries"],
 					func = function()
@@ -924,7 +946,7 @@ options.reset = {
 					end,
 				},
 				widgets = {
-					order = 9,
+					order = 10,
 					type = "execute",
 					name = L["Widgets"],
 					func = function()
@@ -934,7 +956,7 @@ options.reset = {
 					end,
 				},
 				bigWigsSkin = {
-					order = 10,
+					order = 11,
 					type = "execute",
 					name = L["BigWigs Skin"],
 					func = function()

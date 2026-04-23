@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 local C = W.Utilities.Color
 
 local A = W:GetModule("Absorb") ---@class Absorb
+local NC = W:GetModule("NameClip") ---@class NameClip
 local CT = W:GetModule("ChatText")
 
 local format = format
@@ -165,10 +166,10 @@ options.absorb = {
 			end,
 			inline = true,
 			get = function(info)
-				return E.db.WT.unitFrames.absorb.texture[info[#info]]
+				return E.db.WT.unitFrames.absorb.damageAbsorb[info[#info]]
 			end,
 			set = function(info, value)
-				E.db.WT.unitFrames.absorb.texture[info[#info]] = value
+				E.db.WT.unitFrames.absorb.damageAbsorb[info[#info]] = value
 				A:ProfileUpdate()
 			end,
 			args = {
@@ -184,7 +185,7 @@ options.absorb = {
 					name = L["Blizzard Style"],
 					desc = L["Use the texture from Blizzard Raid Frames."],
 					disabled = function()
-						return not E.db.WT.unitFrames.absorb.enable or not E.db.WT.unitFrames.absorb.texture.enable
+						return not E.db.WT.unitFrames.absorb.damageAbsorb.enable
 					end,
 				},
 				custom = {
@@ -193,9 +194,98 @@ options.absorb = {
 					name = L["Custom Texture"],
 					desc = L["The selected texture will override the ElvUI default absorb bar texture."],
 					disabled = function()
-						return not E.db.WT.unitFrames.absorb.enable
-							or not E.db.WT.unitFrames.absorb.texture.enable
-							or E.db.WT.unitFrames.absorb.texture.blizzardStyle
+						return not E.db.WT.unitFrames.absorb.damageAbsorb.enable
+							or E.db.WT.unitFrames.absorb.damageAbsorb.blizzardStyle
+					end,
+					dialogControl = "LSM30_Statusbar",
+					values = LSM:HashTable("statusbar"),
+				},
+			},
+		},
+		healAbsorbTexture = {
+			order = 4,
+			type = "group",
+			name = L["Heal Absorb"],
+			disabled = function()
+				return not E.db.WT.unitFrames.absorb.enable
+			end,
+			inline = true,
+			get = function(info)
+				return E.db.WT.unitFrames.absorb.healAbsorb[info[#info]]
+			end,
+			set = function(info, value)
+				E.db.WT.unitFrames.absorb.healAbsorb[info[#info]] = value
+				A:ProfileUpdate()
+			end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Enable the replacing of ElvUI absorb bar textures."],
+				},
+				blizzardStyle = {
+					order = 2,
+					type = "toggle",
+					name = L["Blizzard Style"],
+					desc = L["Use the texture from Blizzard Raid Frames."],
+					disabled = function()
+						return not E.db.WT.unitFrames.absorb.healAbsorb.enable
+					end,
+				},
+				custom = {
+					order = 3,
+					type = "select",
+					name = L["Custom Texture"],
+					desc = L["The selected texture will override the ElvUI default absorb bar texture."],
+					disabled = function()
+						return not E.db.WT.unitFrames.absorb.healAbsorb.enable
+							or E.db.WT.unitFrames.absorb.healAbsorb.blizzardStyle
+					end,
+					dialogControl = "LSM30_Statusbar",
+					values = LSM:HashTable("statusbar"),
+				},
+			},
+		},
+		healPredictionTexture = {
+			order = 5,
+			type = "group",
+			name = L["Heal Prediction"],
+			disabled = function()
+				return not E.db.WT.unitFrames.absorb.enable
+			end,
+			inline = true,
+			get = function(info)
+				return E.db.WT.unitFrames.absorb.healPrediction[info[#info]]
+			end,
+			set = function(info, value)
+				E.db.WT.unitFrames.absorb.healPrediction[info[#info]] = value
+				A:ProfileUpdate()
+			end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Enable the replacing of ElvUI absorb bar textures."],
+				},
+				blizzardStyle = {
+					order = 2,
+					type = "toggle",
+					name = L["Blizzard Style"],
+					desc = L["Use the texture from Blizzard Raid Frames."],
+					disabled = function()
+						return not E.db.WT.unitFrames.absorb.healPrediction.enable
+					end,
+				},
+				custom = {
+					order = 3,
+					type = "select",
+					name = L["Custom Texture"],
+					desc = L["The selected texture will override the ElvUI default absorb bar texture."],
+					disabled = function()
+						return not E.db.WT.unitFrames.absorb.healPrediction.enable
+							or E.db.WT.unitFrames.absorb.healPrediction.blizzardStyle
 					end,
 					dialogControl = "LSM30_Statusbar",
 					values = LSM:HashTable("statusbar"),
@@ -203,7 +293,7 @@ options.absorb = {
 			},
 		},
 		misc = {
-			order = 4,
+			order = 6,
 			type = "group",
 			name = L["Misc"],
 			inline = true,
@@ -214,15 +304,15 @@ options.absorb = {
 				blizzardOverAbsorbGlow = {
 					order = 1,
 					type = "toggle",
-					name = L["Blizzard Over Absorb Glow"],
-					desc = L["Add a glow in the end of health bars to indicate the over absorb."],
+					name = L["Over Absorb Glow"],
+					desc = L["Add a glow at the end of health bars to indicate that damage absorb has exceeded the unit's missing health."],
 					width = 1.5,
 				},
 				blizzardAbsorbOverlay = {
 					order = 2,
 					type = "toggle",
-					name = L["Blizzard Absorb Overlay"],
-					desc = L["Add an additional overlay to the absorb bar."],
+					name = L["Absorb Overlay"],
+					desc = L["Add an additional overlay to the damage absorb bar."],
 					width = 1.3,
 				},
 				setColor = {
@@ -237,7 +327,7 @@ options.absorb = {
 			},
 		},
 		elvui = {
-			order = 5,
+			order = 7,
 			type = "group",
 			name = L["ElvUI"],
 			inline = true,
@@ -391,6 +481,119 @@ options.roleIcon = {
 				DEFAULT = SampleStrings.DEFAULT,
 			},
 		},
+	},
+}
+
+local function GetNameClipTargetValues(unitKey)
+	local values = { ["__Name__"] = L["Name"] }
+	local unitDB = E.db.unitframe and E.db.unitframe.units and E.db.unitframe.units[unitKey]
+	if unitDB and unitDB.customTexts then
+		for name in pairs(unitDB.customTexts) do
+			values[name] = C.StringByTemplate(format("(%s) ", L["Custom Texts"]), "yellow-400") .. name
+		end
+	end
+	return values
+end
+
+local function GetNameClipUnitGroup(unitKey, order, name)
+	return {
+		order = order,
+		type = "group",
+		name = name,
+		inline = true,
+		disabled = function()
+			return not E.db.WT.unitFrames.nameClip.enable
+		end,
+		get = function(info)
+			return E.db.WT.unitFrames.nameClip[unitKey][info[#info]]
+		end,
+		set = function(info, value)
+			E.db.WT.unitFrames.nameClip[unitKey][info[#info]] = value
+			NC:ProfileUpdate()
+		end,
+		args = {
+			enable = {
+				order = 1,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			width = {
+				order = 2,
+				type = "range",
+				name = L["Width"],
+				desc = L["Set the maximum width of the name text in pixels."],
+				min = 0,
+				max = 400,
+				step = 1,
+				hidden = function()
+					return not E.db.WT.unitFrames.nameClip[unitKey].enable
+				end,
+			},
+			target = {
+				order = 3,
+				type = "select",
+				name = L["Target"],
+				width = 2,
+				hidden = function()
+					return not E.db.WT.unitFrames.nameClip[unitKey].enable
+				end,
+				values = function()
+					return GetNameClipTargetValues(unitKey)
+				end,
+			},
+		},
+	}
+end
+
+options.nameClip = {
+	order = 4,
+	type = "group",
+	name = L["Name Clip"],
+	get = function(info)
+		return E.db.WT.unitFrames.nameClip[info[#info]]
+	end,
+	set = function(info, value)
+		E.db.WT.unitFrames.nameClip[info[#info]] = value
+		NC:ProfileUpdate()
+	end,
+	args = {
+		desc = {
+			order = 1,
+			type = "group",
+			inline = true,
+			name = L["Description"],
+			args = {
+				feature = {
+					order = 1,
+					type = "description",
+					name = L["Clip name text by pixel width for ElvUI unitframes."],
+					fontSize = "medium",
+				},
+			},
+		},
+		enable = {
+			order = 2,
+			type = "toggle",
+			name = L["Enable"],
+			width = "full",
+		},
+		player = GetNameClipUnitGroup("player", 10, L["Player"]),
+		pet = GetNameClipUnitGroup("pet", 11, L["Pet"]),
+		target = GetNameClipUnitGroup("target", 12, L["Target"]),
+		targettarget = GetNameClipUnitGroup("targettarget", 13, L["Target of Target"]),
+		targettargettarget = GetNameClipUnitGroup("targettargettarget", 14, L["Target of Target of Target"]),
+		focus = GetNameClipUnitGroup("focus", 15, L["Focus"]),
+		focustarget = GetNameClipUnitGroup("focustarget", 16, L["Focus Target"]),
+		pettarget = GetNameClipUnitGroup("pettarget", 17, L["Pet Target"]),
+		party = GetNameClipUnitGroup("party", 20, L["Party"]),
+		raid1 = GetNameClipUnitGroup("raid1", 21, format("%s %d", L["Raid"], 1)),
+		raid2 = GetNameClipUnitGroup("raid2", 22, format("%s %d", L["Raid"], 2)),
+		raid3 = GetNameClipUnitGroup("raid3", 23, format("%s %d", L["Raid"], 3)),
+		raidpet = GetNameClipUnitGroup("raidpet", 24, L["Raid Pet"]),
+		arena = GetNameClipUnitGroup("arena", 25, L["Arena"]),
+		boss = GetNameClipUnitGroup("boss", 26, L["Boss"]),
+		tank = GetNameClipUnitGroup("tank", 27, L["Tank"]),
+		assist = GetNameClipUnitGroup("assist", 28, L["Assist"]),
 	},
 }
 

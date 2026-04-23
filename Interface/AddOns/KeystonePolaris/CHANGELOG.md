@@ -10,4 +10,5 @@
 
 - 🔥 _**IMPORTANT** -_ **Mob Percentages** has been re-enabled by default, and can still be disabled at any time in the addon options.
 - 🆕 _**NEW** -_ Returned **Mob Percentages**: enemy-forces contribution can once again be displayed on Mythic+ nameplates, now using Blizzard's new native API instead of **Mythic Dungeon Tools**.
+- 🛠️ _**IMPROVEMENT** -_ TOC bump for patch 12.0.5.
 - 🛠️ _**IMPROVEMENT** -_ Korean translation updated, thank you **BlueSea-jun**.

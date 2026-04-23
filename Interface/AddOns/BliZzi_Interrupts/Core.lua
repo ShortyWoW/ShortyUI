@@ -16,7 +16,7 @@
 ]]
 
 BIT = BIT or {}
-BIT.VERSION    = "3.3.6"
+BIT.VERSION    = "3.3.7"
 BIT.SyncCD      = BIT.SyncCD      or {}
 BIT.SyncCD.users = BIT.SyncCD.users or {}  -- name → {class, specID} — only HELLO senders, never touched by interrupt system
 BIT.syncCdState = BIT.syncCdState or {}
@@ -57,22 +57,79 @@ do
     end
 
     -- /bitdevdump [N] [filter]
-    -- N       = how many lines to show (default 80, 0 = all)
-    -- filter  = optional keyword; only lines containing it are shown
+    -- Named filter presets: typing /bitdevdump <alias> expands to a set of tag
+    -- substrings that are OR-matched against each buffer line.  Makes common
+    -- diagnostic dumps a one-word command.
+    -- Key is lowercase; values are the (case-sensitive) tag substrings we log.
+    local _filterPresets = {
+        kicks     = { "[USC-RAW]", "[USC-PARTY]", "[USC-SKIP]", "[USC-INT]", "[KICK-ATTR]", "[KICK-SKIP]" },
+        interrupts= { "[USC-RAW]", "[USC-PARTY]", "[USC-SKIP]", "[USC-INT]", "[KICK-ATTR]", "[KICK-SKIP]" },
+        cd        = { "[SCAN-", "[AURA-TRACK]", "[GLOW-", "[COMMIT-" },
+        synccd    = { "[SCAN-", "[AURA-TRACK]", "[GLOW-", "[COMMIT-" },
+        auras     = { "[SCAN-", "[AURA-TRACK]" },
+        glow      = { "[GLOW-", "[GLOW-SET]" },
+    }
+
+    -- /bitdevdump [N] [filter]
+    --   N       = how many lines to show (default 80, 0 = all)
+    --   filter  = either a single keyword (plain find) OR a preset alias
+    --             like "kicks" / "cd" / "auras" / "glow".  Aliases expand to
+    --             an OR'd list of tag substrings.  Case-insensitive.
+    --   Single-arg form: if the first token is not a number it is treated as
+    --   the filter — e.g. "/bitdevdump kicks" works without passing N.
     function BIT.DevLogDump(args)
         local nStr, filter = (args or ""):match("^(%S*)%s*(.-)%s*$")
-        local n = tonumber(nStr) == 0 and #_buf or (tonumber(nStr) or 80)
+        local n
+        if nStr == "" then
+            n, filter = 80, filter or ""
+        elseif tonumber(nStr) then
+            n = tonumber(nStr) == 0 and #_buf or tonumber(nStr)
+        else
+            -- First token wasn't a number → treat it as the filter,
+            -- default N to unlimited so aliases show everything.
+            filter = nStr .. (filter ~= "" and (" " .. filter) or "")
+            n      = #_buf
+        end
         if #_buf == 0 then
             print("|cffff9900BIT DevLog|r buffer is empty — use /bitdevlog to start")
             return
         end
+        -- Resolve preset alias (case-insensitive, whole-word match).
+        local aliasKey = filter:match("^%s*(%S+)%s*$")
+        local patterns
+        if aliasKey then
+            local preset = _filterPresets[aliasKey:lower()]
+            if preset then patterns = preset end
+        end
+        local filterLower = filter:lower()
+        local function lineMatches(line)
+            if filter == "" then return true end
+            -- Some buffer lines may be tainted (secret strings) when the
+            -- log captured data from party events. Any string method on a
+            -- secret value throws — wrap in pcall and skip on failure.
+            if patterns then
+                for i = 1, #patterns do
+                    local ok, hit = pcall(string.find, line, patterns[i], 1, true)
+                    if ok and hit then return true end
+                end
+                return false
+            end
+            local okL, lower = pcall(string.lower, line)
+            if not okL then return false end
+            local okF, hit = pcall(string.find, lower, filterLower, 1, true)
+            return okF and hit ~= nil
+        end
         local matched = {}
         for i = math.max(1, #_buf - n + 1), #_buf do
-            if filter == "" or _buf[i]:find(filter, 1, true) then
+            if lineMatches(_buf[i]) then
                 matched[#matched + 1] = _buf[i]
             end
         end
-        local filterNote = filter ~= "" and (" filter=|cffffd700" .. filter .. "|r") or ""
+        local filterNote = ""
+        if filter ~= "" then
+            filterNote = patterns and (" preset=|cffffd700" .. aliasKey .. "|r")
+                                  or   (" filter=|cffffd700" .. filter .. "|r")
+        end
         print("|cffff9900BIT DevLog|r === " .. #matched .. " lines" .. filterNote .. " (buffer: " .. #_buf .. ") ===")
         for _, line in ipairs(matched) do print(line) end
         print("|cffff9900BIT DevLog|r === end ===")
@@ -201,6 +258,61 @@ do
                 end
                 local num = tonumber(s)
                 return num and (BIT.SPELL_ALIASES[num] or num) or nil
+            end
+        end
+
+        return nil
+    end
+
+    ------------------------------------------------------------
+    -- BIT.Taint:ResolveNumber — generic numeric untaint
+    -- Launders a (possibly tainted) numeric value through the hidden
+    -- Slider's OnValueChanged callback so the resulting Lua-side copy
+    -- carries no taint. Unlike :Resolve, this does not filter against
+    -- BIT.ALL_INTERRUPTS — callers can use the raw number (e.g. as a
+    -- table index or for string comparisons) without extra pcalls.
+    --
+    -- Fast paths first:
+    --   1. string.format("%.0f", raw) — if the numeric primitive can
+    --      be formatted (usually works on tainted numbers in 12.x).
+    --   2. Slider trick — fallback for cases where formatting throws.
+    -- Returns an untainted integer or nil.
+    ------------------------------------------------------------
+    -- Cheap taint probe: tainted numbers throw when used as a table index.
+    local function _isClean(n)
+        if type(n) ~= "number" then return false end
+        local ok = pcall(function() local _ = ({[n]=1})[n] end)
+        return ok
+    end
+
+    function BIT.Taint:ResolveNumber(raw)
+        if raw == nil then return nil end
+
+        -- Fast path 1: maybe already a clean number
+        if type(raw) == "number" and _isClean(raw) then
+            return raw
+        end
+
+        -- Fast path 2: string.format strips taint on numeric primitives
+        -- in many 12.x builds. Output string may still be tainted, but
+        -- tonumber() on it produces a fresh (clean) number.
+        local okF, s = pcall(string.format, "%.0f", raw)
+        if okF and s then
+            local okN, num = pcall(tonumber, s)
+            if okN and num and _isClean(num) then
+                return num
+            end
+        end
+
+        -- Slider path: launder the value through C++ OnValueChanged.
+        _result = nil
+        pcall(_slider.SetValue, _slider, 0)
+        _result = nil
+        local sliderOk = pcall(_slider.SetValue, _slider, raw)
+        if sliderOk and _result and _result ~= 0 then
+            local okN, num = pcall(tonumber, _result)
+            if okN and num and _isClean(num) then
+                return num
             end
         end
 
@@ -1646,6 +1758,28 @@ _interruptFrame:RegisterEvent("UNIT_AURA")
 
 _interruptFrame:SetScript("OnEvent", function(_, event, unit, ...)
     if event == "UNIT_SPELLCAST_SUCCEEDED" then
+        -- Diagnostic (very early, before any early-returns): log every incoming
+        -- UNIT_SPELLCAST_SUCCEEDED so we can see whether the event still fires
+        -- for party units in 12.x and what args it carries.
+        if BIT.devLogMode and BIT.DevLog then
+            local castGUID, spellID = ...
+            local sidType = type(spellID)
+            local sidStr = "<tainted>"
+            local okT = pcall(function() sidStr = tostring(spellID) end)
+            if not okT then sidStr = "<tainted>" end
+            local snStr = "<nil>"
+            if spellID then
+                local okSN, sn = pcall(C_Spell.GetSpellName, spellID)
+                if okSN and sn then
+                    if issecretvalue(sn) then snStr = "<tainted-name>" else snStr = sn end
+                end
+            end
+            BIT.DevLog("[USC-RAW] unit=" .. tostring(unit)
+                .. " sidType=" .. sidType
+                .. " sid=" .. tostring(sidStr)
+                .. " getName=" .. tostring(snStr))
+        end
+
         if not unit then return end
 
         -- Own player + pet: CD handled by _playerFrame below,
@@ -1665,10 +1799,34 @@ _interruptFrame:SetScript("OnEvent", function(_, event, unit, ...)
         if not unit:find("^party") then return end
 
         local memberName, ownerUnit = ResolvePartyName(unit)
-        if not memberName then return end
+        if not memberName then
+            if BIT.devLogMode and BIT.DevLog then
+                BIT.DevLog("[USC-SKIP] unit=" .. tostring(unit) .. " ResolvePartyName returned nil")
+            end
+            return
+        end
 
-        local _, spellID = ...  -- castGUID, spellID
+        local castGUID, spellID = ...  -- castGUID, spellID
         local data, cleanID, spellName = ResolveInterruptSpell(spellID)
+
+        -- Diagnostic: emit every party UNIT_SPELLCAST_SUCCEEDED so we can see
+        -- what the 12.x event pipeline actually delivers (spellID type, name
+        -- resolvability, whether the registry fallback fires).
+        if BIT.devLogMode and BIT.DevLog then
+            local sidType = type(spellID)
+            local sidStr = "<tainted>"
+            local okT = pcall(function() sidStr = tostring(spellID) end)
+            if not okT then sidStr = "<tainted>" end
+            local snStr = (spellName and not issecretvalue(spellName)) and spellName
+                       or (spellName and "<tainted-name>")
+                       or "<nil>"
+            BIT.DevLog("[USC-PARTY] unit=" .. tostring(unit)
+                .. " name=" .. tostring(memberName)
+                .. " sidType=" .. sidType
+                .. " sid=" .. tostring(sidStr)
+                .. " resolvedName=" .. tostring(snStr)
+                .. " resolvedID=" .. (data and tostring(data.id) or "nil"))
+        end
 
         -- Store as interrupt cast signal for correlation.
         -- In Midnight (12.x), spellID from party UNIT_SPELLCAST_SUCCEEDED is tainted,
@@ -1701,9 +1859,152 @@ _interruptFrame:SetScript("OnEvent", function(_, event, unit, ...)
         end
 
     elseif event == "UNIT_SPELLCAST_INTERRUPTED" then
+        if BIT.devLogMode and BIT.DevLog then
+            BIT.DevLog("[USC-INT] unit=" .. tostring(unit))
+        end
         -- Only care about nameplate units (mobs being interrupted)
         if unit and unit:find("^nameplate") then
             PushSignal("interrupt", unit)
+
+            -- 12.0.5 heuristic for party-kick attribution.
+            -- Neither UNIT_SPELLCAST_SUCCEEDED (stripped for party) nor CLEU
+            -- (forbidden to register) can tell us who kicked. We build a short
+            -- candidate list of party members whose registered interrupt is
+            -- off cooldown, then prefer the one currently targeting the mob.
+            -- The own-player kick is handled by _playerFrame+correlation so we
+            -- skip attribution when the player clearly just kicked this mob.
+            local now = GetTime()
+            local playerKickLikely = false
+            if UnitIsUnit("playertarget", unit)
+               and BIT.Self and BIT.Self._pendingKickAt
+               and (now - (BIT.Self._pendingKickAt or 0)) < 0.3 then
+                playerKickLikely = true
+            end
+
+            if not playerKickLikely then
+                -- Mob position for distance-based filtering. UnitPosition on
+                -- nameplate units returns (x, y, z, instanceMapID). A 35y cutoff
+                -- is generous for every interrupt in the game (most are 30y).
+                local mobX, mobY, _, mobMap = UnitPosition(unit)
+                local MAX_INT_RANGE = 35
+                local function computeDist(pu)
+                    if not mobX or not mobMap then return nil end
+                    local px, py, _, pmap = UnitPosition(pu)
+                    if not px or not py or pmap ~= mobMap then return nil end
+                    local dx, dy = mobX - px, mobY - py
+                    return math.sqrt(dx * dx + dy * dy)
+                end
+
+                local candidates = {}
+                for i = 1, 4 do
+                    local pu = "party" .. i
+                    if UnitExists(pu) then
+                        local memberName = UnitName(pu)
+                        if memberName then
+                            local entry = BIT.Registry and BIT.Registry:Get(memberName)
+                            if entry and entry.spellID and entry.spellID > 0 then
+                                local isOnCD = entry.cdEnd and entry.cdEnd > now
+                                if not isOnCD then
+                                    local targetMatches = UnitIsUnit(pu .. "target", unit)
+                                    local dist = computeDist(pu)
+                                    local inRange = dist and dist <= MAX_INT_RANGE
+                                    candidates[#candidates + 1] = {
+                                        unit = pu,
+                                        name = memberName,
+                                        spellID = entry.spellID,
+                                        targetMatches = targetMatches,
+                                        dist = dist,
+                                        inRange = inRange,
+                                    }
+                                end
+                            end
+                        end
+                    end
+                end
+
+                -- Split candidates into buckets for tiered selection.
+                local targetingSet, inRangeSet = {}, {}
+                for _, c in ipairs(candidates) do
+                    if c.targetMatches then targetingSet[#targetingSet + 1] = c end
+                    -- If we couldn't get a distance at all, treat as "unknown range"
+                    -- (fall back to the full candidate list). Only filter out when
+                    -- we KNOW the candidate is too far.
+                    if c.dist == nil or c.inRange then
+                        inRangeSet[#inRangeSet + 1] = c
+                    end
+                end
+
+                -- Tiebreaker: among a set, pick the candidate closest to the mob.
+                -- Rationale: the kicker is almost always the nearest off-CD party
+                -- member — melee kickers directly on the mob, ranged kickers still
+                -- within their range with LOS. Unknown-distance candidates fall to
+                -- the back (only chosen if no one with a known distance is present).
+                local function pickClosest(set)
+                    if #set == 0 then return nil end
+                    if #set == 1 then return set[1] end
+                    local bestKnown, bestKnownDist
+                    local fallback
+                    for _, c in ipairs(set) do
+                        if c.dist then
+                            if not bestKnown or c.dist < bestKnownDist then
+                                bestKnown, bestKnownDist = c, c.dist
+                            end
+                        elseif not fallback then
+                            fallback = c
+                        end
+                    end
+                    return bestKnown or fallback
+                end
+
+                -- Winner selection (strong → weak signal):
+                --   1) Exactly one targeting candidate     → that one
+                --   2) Multiple targeting candidates       → closest of them
+                --   3) Exactly one in-range candidate      → that one
+                --   4) Multiple in-range candidates        → closest of them
+                --   5) Exactly one candidate overall       → solo off-CD
+                --   else ambiguous → skip
+                local winner, via
+                if #targetingSet == 1 then
+                    winner, via = targetingSet[1], "target"
+                elseif #targetingSet > 1 then
+                    winner, via = pickClosest(targetingSet), "target-closest"
+                elseif #inRangeSet == 1 then
+                    winner, via = inRangeSet[1], "in-range"
+                elseif #inRangeSet > 1 then
+                    winner, via = pickClosest(inRangeSet), "in-range-closest"
+                elseif #candidates == 1 then
+                    winner, via = candidates[1], "solo-offCD"
+                end
+
+                if winner then
+                    recentCasts[winner.name] = { t = now, spellID = winner.spellID }
+                    if BIT.HandlePartyCast then
+                        BIT:HandlePartyCast(winner.unit, winner.spellID, winner.name)
+                    end
+                    if BIT.devLogMode and BIT.DevLog then
+                        BIT.DevLog("[KICK-ATTR] mob=" .. tostring(unit)
+                            .. " -> " .. tostring(winner.name)
+                            .. " spell=" .. tostring(winner.spellID)
+                            .. " via=" .. via
+                            .. " dist=" .. tostring(winner.dist and string.format("%.1f", winner.dist) or "?"))
+                    end
+                elseif BIT.devLogMode and BIT.DevLog then
+                    -- Detailed per-candidate dump so the cause of a skip is visible.
+                    local parts = {}
+                    for _, c in ipairs(candidates) do
+                        parts[#parts + 1] = c.name
+                            .. "[tgt=" .. (c.targetMatches and "1" or "0")
+                            .. " dist=" .. tostring(c.dist and string.format("%.1f", c.dist) or "?")
+                            .. " inR=" .. (c.inRange and "1" or (c.dist == nil and "?" or "0"))
+                            .. "]"
+                    end
+                    BIT.DevLog("[KICK-SKIP] mob=" .. tostring(unit)
+                        .. " offCD=" .. #candidates
+                        .. " targeting=" .. #targetingSet
+                        .. " inRange=" .. #inRangeSet
+                        .. " cands={" .. table.concat(parts, ",") .. "}")
+                end
+            end
         end
 
     elseif event == "UNIT_AURA" then
@@ -1720,6 +2021,15 @@ _interruptFrame:SetScript("OnUpdate", function()
         CorrelateSignals()
     end
 end)
+
+-- NOTE: In WoW 12.0.5, UNIT_SPELLCAST_SUCCEEDED no longer fires for party members,
+-- and COMBAT_LOG_EVENT_UNFILTERED is a protected event that cannot be registered
+-- by this addon (triggers ADDON_ACTION_FORBIDDEN). Party-kick detection therefore
+-- relies on UNIT_SPELLCAST_INTERRUPTED on the mob (which still fires) combined
+-- with a roster-based heuristic: when a mob's cast is interrupted, we attribute
+-- the kick to the party member whose registered interrupt is off cooldown AND
+-- who is in range of the interrupted mob. This is handled inline in the nameplate
+-- path below — no CLEU registration is attempted.
 
 -- Back-compat: RegisterPartyWatchers is called from many places.
 -- Now a no-op since we use a single generic event frame.

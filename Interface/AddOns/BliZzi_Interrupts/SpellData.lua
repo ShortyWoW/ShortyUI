@@ -845,3 +845,53 @@ do
     end
     BIT.SyncCD._externalDefensiveSpellIds = ids
 end
+
+-- Build icon-fileID → spellID fallback lookup.
+-- In 12.x, ad.spellId on party auras is sometimes stripped to a secret value
+-- (e.g. Dispersion) even though it comes through clean for other spells
+-- (e.g. Desperate Prayer). The aura's icon fileID is never tainted and is
+-- stable per spell, so we use it as a fallback identifier. Icons shared by
+-- multiple spellIDs are marked ambiguous (→ nil) so we never false-attribute.
+-- Map is scoped per class to reduce cross-class collision risk (e.g. a Priest
+-- spell and a Warrior spell might legally share an icon ID, but within a
+-- single player's class the mapping is unique).
+do
+    local perClass = {}         -- classToken → { iconID → spellID|false }
+    local function learn(cls, rule)
+        if not rule.SpellId then return end
+        local okT, tex = pcall(C_Spell.GetSpellTexture, rule.SpellId)
+        if not okT or not tex then return end
+        if not perClass[cls] then perClass[cls] = {} end
+        local bucket = perClass[cls]
+        local existing = bucket[tex]
+        if existing == nil then
+            bucket[tex] = rule.SpellId
+        elseif existing ~= rule.SpellId then
+            -- Collision within this class → mark ambiguous
+            bucket[tex] = false
+        end
+    end
+    -- Walk spec rules; spec → class via LibSpecialization-friendly lookup is not
+    -- needed here because we learn the same icon across every class that the
+    -- spec's rules exist in (spec rules inherit class context at matching time).
+    -- For accuracy, also walk the class rules directly.
+    for specID, rules in pairs(BIT.SyncCD._rulesBySpec) do
+        -- Attribute spec rules to every class that might reach them; simplest
+        -- is to fold them into all classes their rules appear in by also being
+        -- in the byClass table. So: only walk byClass below — spec rules are
+        -- usually duplicates of class rules or subsets. Skip to avoid double-
+        -- counting as collisions when duplicates have different SpellIds.
+    end
+    for cls, rules in pairs(BIT.SyncCD._rulesByClass) do
+        for _, r in ipairs(rules) do
+            learn(cls, r)
+        end
+    end
+    -- Normalise: drop `false` sentinels into nil so table lookups return nil.
+    for cls, bucket in pairs(perClass) do
+        for tex, sid in pairs(bucket) do
+            if sid == false then bucket[tex] = nil end
+        end
+    end
+    BIT.SyncCD._spellIdByIconByClass = perClass
+end

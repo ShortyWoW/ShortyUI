@@ -14,11 +14,11 @@ local tonumber, strlower, floor, pcall = tonumber, strlower, floor, pcall
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
+local CheckInteractDistance = CheckInteractDistance
 local CreateFrame = CreateFrame
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
-local CheckInteractDistance = CheckInteractDistance
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -58,6 +58,7 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
+local UnitTokenFromGUID = UnitTokenFromGUID
 local UnitSex = UnitSex
 
 local TooltipDataType = Enum.TooltipDataType
@@ -626,11 +627,27 @@ function TT:SetUnitInfo(tt, unit, data)
 	return color
 end
 
+function TT:GetDisplayedUnit(tt)
+	if not tt.GetPrimaryTooltipData then
+		local _, unit = tt:GetUnit()
+		return unit
+	end
+
+	if not tt:IsTooltipType(TooltipDataType.Unit) then
+		return -- tooltip not a unit
+	end
+
+	local data = tt:GetPrimaryTooltipData()
+	if not data or not data.guid then return end
+
+	return UnitTokenFromGUID(data.guid)
+end
+
 function TT:GetUnitToken(tt)
 	if not tt or tt:IsForbidden() then return end
 
 	local mouseover = UnitExists('mouseover') and 'mouseover'
-	local _, unit = tt:GetUnit()
+	local unit = TT:GetDisplayedUnit(tt)
 	if unit then
 		return (E:NotSecretValue(unit) and UnitExists(unit) and unit) or mouseover or nil
 	end
@@ -638,7 +655,7 @@ function TT:GetUnitToken(tt)
 	local focus = E:GetMouseFocus()
 	local focusUnit = focus and focus.GetAttribute and focus:GetAttribute('unit')
 	if focusUnit then
-		return (E:NotSecretValue(unit) and UnitExists(focusUnit) and focusUnit) or mouseover or nil
+		return (E:NotSecretValue(focusUnit) and UnitExists(focusUnit) and focusUnit) or mouseover or nil
 	end
 end
 
@@ -932,14 +949,10 @@ function TT:ShowAuraInfo(tt, source, spellID, aura)
 		if aura and aura.unitClassFilename then
 			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
 			tt:AddDoubleLine(format(IDNumber, _G.ID, spellID), color:WrapTextInColorCode(aura.unitName or UNKNOWN))
-		elseif source then
-			if E:NotSecretValue(source) then
-				local _, className = UnitClass(source)
-				local color = E:ClassColor(className) or PRIEST_COLOR
-				tt:AddDoubleLine(format(IDNumber, _G.ID, spellID), color:WrapTextInColorCode(UnitName(source) or UNKNOWN))
-			else
-				tt:AddDoubleLine(format(IDNumber, _G.ID, spellID), UnitName(source) or UNKNOWN)
-			end
+		elseif source and E:NotSecretValue(source) then
+			local _, className = UnitClass(source)
+			local color = E:ClassColor(className) or PRIEST_COLOR
+			tt:AddDoubleLine(format(IDNumber, _G.ID, spellID), color:WrapTextInColorCode(UnitName(source) or UNKNOWN))
 		else
 			tt:AddLine(format(IDNumber, _G.ID, spellID))
 		end

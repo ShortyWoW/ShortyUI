@@ -1234,13 +1234,44 @@ P.tooltips = {
 
 ---@class ProfileDB.unitFrames
 P.unitFrames = {
+	---@class ProfileDB.unitFrames.nameClip
+	nameClip = {
+		enable = false,
+		player = { enable = false, width = 0, target = "__Name__" },
+		pet = { enable = false, width = 0, target = "__Name__" },
+		target = { enable = false, width = 0, target = "__Name__" },
+		targettarget = { enable = false, width = 0, target = "__Name__" },
+		targettargettarget = { enable = false, width = 0, target = "__Name__" },
+		focus = { enable = false, width = 0, target = "__Name__" },
+		focustarget = { enable = false, width = 0, target = "__Name__" },
+		pettarget = { enable = false, width = 0, target = "__Name__" },
+		party = { enable = false, width = 0, target = "__Name__" },
+		raid1 = { enable = false, width = 0, target = "__Name__" },
+		raid2 = { enable = false, width = 0, target = "__Name__" },
+		raid3 = { enable = false, width = 0, target = "__Name__" },
+		raidpet = { enable = false, width = 0, target = "__Name__" },
+		arena = { enable = false, width = 0, target = "__Name__" },
+		boss = { enable = false, width = 0, target = "__Name__" },
+		tank = { enable = false, width = 0, target = "__Name__" },
+		assist = { enable = false, width = 0, target = "__Name__" },
+	},
 	---@class ProfileDB.unitFrames.absorb
 	absorb = {
 		enable = false,
-		texture = {
+		damageAbsorb = {
 			enable = true,
+			blizzardStyle = false,
 			custom = E.db.unitframe.statusbar,
-			blizzardStyle = true,
+		},
+		healAbsorb = {
+			enable = false,
+			blizzardStyle = false,
+			custom = E.db.unitframe.statusbar,
+		},
+		healPrediction = {
+			enable = false,
+			blizzardStyle = false,
+			custom = E.db.unitframe.statusbar,
 		},
 		blizzardOverAbsorbGlow = true,
 		blizzardAbsorbOverlay = true,
@@ -1297,6 +1328,11 @@ P.misc = {
 			font = {
 				name = F.GetCompatibleFont("Montserrat"),
 				size = 25,
+				style = "OUTLINE",
+			},
+			systemInfoFont = {
+				name = F.GetCompatibleFont("Montserrat"),
+				size = 12,
 				style = "OUTLINE",
 			},
 		},

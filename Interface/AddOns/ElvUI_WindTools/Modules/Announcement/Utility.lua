@@ -82,6 +82,14 @@ local UtilitySpells = {
 	[462211] = UtilityType.Feast, -- 丰盛的特色寿司
 	[462212] = UtilityType.Feast, -- 丰盛的降圣白昼盛宴
 	[462213] = UtilityType.Feast, -- 丰盛的午夜舞会盛宴
+	[1240019] = UtilityType.Feast, -- 准备午夜合剂大锅
+	[1240195] = UtilityType.Feast, -- 准备午夜合剂大锅
+	[1240225] = UtilityType.Feast, -- 准备午夜药水大锅
+	[1240267] = UtilityType.Feast, -- 准备午夜药水大锅
+	[1259657] = UtilityType.Feast, -- 奎尔多雷拼盘
+	[1259658] = UtilityType.Feast, -- 哈籁恩达尔庆典大餐
+	[1278915] = UtilityType.Feast, -- 丰盛奎尔多雷拼盘
+	[1278929] = UtilityType.Feast, -- 丰盛哈籁恩达尔庆典大餐
 
 	-- Alliance
 	[10059] = UtilityType.Portal, -- 传送门：暴风城
@@ -114,6 +122,7 @@ local UtilitySpells = {
 	[344597] = UtilityType.Portal, -- 传送门：奥利波斯
 	[395289] = UtilityType.Portal, -- 传送门：瓦德拉肯
 	[446534] = UtilityType.Portal, -- 传送门：多恩诺嘉尔
+	[1259194] = UtilityType.Portal, -- 传送门：银月城
 
 	[22700] = UtilityType.Bot, -- 修理机器人74A型
 	[44389] = UtilityType.Bot, -- 战地修理机器人110G

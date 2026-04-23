@@ -1,8 +1,11 @@
 # WarpDeplete
 
-## [v5.0.2](https://github.com/happenslol/WarpDeplete/tree/v5.0.2) (2026-01-29)
-[Full Changelog](https://github.com/happenslol/WarpDeplete/commits/v5.0.2) [Previous Releases](https://github.com/happenslol/WarpDeplete/releases)
+## [v5.1.0](https://github.com/happenslol/WarpDeplete/tree/v5.1.0) (2026-04-22)
+[Full Changelog](https://github.com/happenslol/WarpDeplete/commits/v5.1.0) [Previous Releases](https://github.com/happenslol/WarpDeplete/releases)
 
+- chore: Bump version  
+- feat: Show forces count in tooltips for midnight (#149)  
+    Adds back the forces count as a fixed string in mob tooltips. Custom formatting is removed for now, since it would involve wrangling with secret values which is very error-prone.  
 - chore: Bump version  
 - fix: Add missing fonts and textures  
 - chore: Bump version  
@@ -24,8 +27,3 @@
 - fix: Fix external dependency links again (#127)  
 - fix: Fix external dependency references (#125)  
 - chore: Remove vendored dependencies and switch to automatic packaging (#124)  
-- chore: Bump version  
-- chore: Update challenge name filters and MDT integration for legion remix (#122)  
-    * Added an alert for missing MDT Legacy when on a Timerunner  
-    * Added Legion Remix affix names to the filters  
-    * Fixed the MDT alert not showing when missing MDT Legacy on a Timerunner  

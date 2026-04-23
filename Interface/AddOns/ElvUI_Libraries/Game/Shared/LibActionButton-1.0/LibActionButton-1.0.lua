@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 75 -- the real minor version is 145
+local MINOR_VERSION = 76 -- the real minor version is 145
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -10,7 +10,7 @@ local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
 local _G = _G
-local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
+local type, error, tostring, tonumber, assert, select, strsub = type, error, tostring, tonumber, assert, select, strsub
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
 
@@ -1383,8 +1383,18 @@ local function UpdateTextElement(button, element, config, defaultFont, fromRange
 	if rangeIndicator then
 		element:SetShown(button.outOfRange)
 		element:SetFont(RangeFont.font.font, RangeFont.font.size, RangeFont.font.flags)
+		element:SetShadowColor(0, 0, 0, 0)
+		element:SetShadowOffset(0, 0)
 	else
-		element:SetFont(config.font.font or defaultFont, config.font.size or 11, config.font.flags or "")
+		local opt = config.font
+		local style = opt.flags or ''
+
+		local shadow = strsub(style, 0, 6) == 'SHADOW'
+		if shadow then style = strsub(style, 7) end -- shadow isnt a real style
+
+		element:SetFont(opt.font or defaultFont, opt.size or 11, style)
+		element:SetShadowColor(0, 0, 0, shadow and (style == '' and 1 or 0.6) or 0)
+		element:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 	end
 
 	if fromRange and button.outOfRange then
@@ -1490,7 +1500,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if WoWBCC or WoWRetail then
+	if WoWRetail or WoWBCC or WoWWrath then -- hasEditMode
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 	else
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
@@ -3052,7 +3062,7 @@ end
 
 -- fallback for pre-12.0
 
-local GetActionCount = GetActionCount
+local GetActionCount = C_ActionBar.GetActionUseCount or GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
 if WoWRetail then
@@ -3108,6 +3118,20 @@ end
 local GetActionCooldownInfo = C_ActionBar and C_ActionBar.GetActionCooldown or GetActionCooldownInfoFallback
 local GetActionChargeInfo = C_ActionBar and C_ActionBar.GetActionCharges or GetActionChargeInfoFallback
 local GetActionLoCCooldownInfo = C_ActionBar and C_ActionBar.GetActionLossOfControlCooldownInfo or GetActionLoCCooldownInfoFallback
+
+-- fallbacks
+local HasAction = C_ActionBar.HasAction or HasAction
+local GetActionText = C_ActionBar.GetActionText or GetActionText
+local GetActionTexture = C_ActionBar.GetActionTexture or GetActionTexture
+local IsAttackAction = C_ActionBar.IsAttackAction or IsAttackAction
+local IsEquippedAction = C_ActionBar.IsEquippedAction or IsEquippedAction
+local IsCurrentAction = C_ActionBar.IsCurrentAction or IsCurrentAction
+local IsAutoRepeatAction = C_ActionBar.IsAutoRepeatAction or IsAutoRepeatAction
+local IsUsableAction = C_ActionBar.IsUsableAction or IsUsableAction
+local IsConsumableAction = C_ActionBar.IsConsumableAction or IsConsumableAction
+local IsStackableAction = C_ActionBar.IsStackableAction or IsStackableAction
+local IsItemAction = C_ActionBar.IsItemAction or IsItemAction
+local IsActionInRange = C_ActionBar.IsActionInRange or IsActionInRange
 
 Action.HasAction                = function(self) return HasAction(self._state_action) end
 Action.GetActionText            = function(self) return GetActionText(self._state_action) end

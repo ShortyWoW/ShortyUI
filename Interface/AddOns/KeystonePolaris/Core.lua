@@ -84,16 +84,13 @@ local function GradientText(text)
     return table.concat(out)
 end
 
-local function BuildModulesOverviewDescription(localeTable)
+local function BuildModulesOverviewDescription()
     local featureIcon = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t"
-    local intro = localeTable["MODULES_SUMMARY_INTRO"] or "Quick tour of available modules:"
-    local mdtTitle = localeTable["MDT_INTEGRATION"] or "MDT Integration"
-    local mobPercentagesTitle = localeTable["MOB_PERCENTAGES"] or "Mob Percentages"
-    local mobPercentagesDesc = localeTable["MODULES_SUMMARY_MOB_PERCENTAGES_DESC"] or
-        "Shows enemy-forces contribution directly on nameplates."
-    local groupReminderTitle = localeTable["KPL_GR_HEADER"] or "Group Reminder"
-    local groupReminderDesc = localeTable["MODULES_SUMMARY_GROUP_REMINDER_DESC"] or
-        "Displays a quick reminder popup when you join a group."
+    local intro = L["MODULES_SUMMARY_INTRO"]
+    local mobPercentagesTitle = L["MOB_PERCENTAGES"]
+    local mobPercentagesDesc = L["MODULES_SUMMARY_MOB_PERCENTAGES_DESC"]
+    local groupReminderTitle = L["KPL_GR_HEADER"]
+    local groupReminderDesc = L["MODULES_SUMMARY_GROUP_REMINDER_DESC"]
 
     return table.concat({
         intro,

@@ -381,7 +381,7 @@ end
 function UF:SetSmartPosition(frame, db)
 	if frame.isNamePlate then db = NP:PlateDB(frame) end
 
-	local position, fluid = db.smartAuraPosition
+	local position = db.smartAuraPosition
 	local buffs, debuffs = UF:GetAuraElements(frame)
 	local info = UF.SmartPosition[position]
 	if info then
@@ -397,8 +397,7 @@ function UF:SetSmartPosition(frame, db)
 			element:Point(element.initialAnchor, element.attachTo, element.anchorPoint, element.xOffset, element.yOffset)
 		end
 
-		fluid = info.fluid
-		info.func(db, buffs, debuffs, info.isFuild)
+		info.func(db, buffs, debuffs)
 	else
 		buffs.PostUpdate = nil
 		debuffs.PostUpdate = nil
@@ -409,7 +408,7 @@ function UF:SetSmartPosition(frame, db)
 		db.buffs.attachTo = 'FRAME'
 	end
 
-	return position, fluid
+	return position, info and info.fluid or nil
 end
 
 function UF:Configure_Auras(frame, which)
@@ -560,8 +559,8 @@ function UF:PostUpdateAura(unit, button)
 		local aura = bdb and bdb.sourceText and bdb.sourceText.enable and button.aura
 		if aura then
 			local text = aura.unitName or UNKNOWN
-			local length = bdb.sourceText.length
-			local shortText = length and length > 0 and utf8sub(text, 1, length)
+			local shortLen = E:NotSecretValue(text) and bdb.sourceText.length
+			local shortText = (shortLen and shortLen > 0) and utf8sub(text, 1, shortLen)
 			local classColor = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
 			button.Text:SetTextColor(classColor.r, classColor.g, classColor.b)
 			button.Text:SetText(shortText or text)

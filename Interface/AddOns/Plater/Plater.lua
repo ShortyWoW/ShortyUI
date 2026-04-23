@@ -5319,14 +5319,16 @@ function Plater.OnInit() --private --~oninit ~init
 		Plater.UpdateBaseNameplateOptions()
 		
 		--this function is declared inside 'NamePlateDriverMixin' at Blizzard_NamePlates.lua
-		hooksecurefunc (NamePlateDriverFrame, "UpdateNamePlateOptions", function()
-			Plater.UpdateSelfPlate()
-			Plater.UpdateBaseNameplateOptions()
-			Plater.UpdatePlateClickSpace()
-			C_Timer.After(0.1, function ()
-				Plater.UpdateBlizzardNameplateFonts(true)
+		if NamePlateDriverFrame and NamePlateDriverFrame.UpdateNamePlateOptions then
+			hooksecurefunc (NamePlateDriverFrame, "UpdateNamePlateOptions", function()
+				Plater.UpdateSelfPlate()
+				Plater.UpdateBaseNameplateOptions()
+				Plater.UpdatePlateClickSpace()
+				C_Timer.After(0.1, function ()
+					Plater.UpdateBlizzardNameplateFonts(true)
+				end)
 			end)
-		end)
+		end
 		
 		--this might come in useful
 		function Plater.SetNamePlatePreferredClickInsets(nameplateType, left, right, top, bottom)
@@ -6023,7 +6025,7 @@ function Plater.OnInit() --private --~oninit ~init
 						if IS_WOW_PROJECT_MIDNIGHT then
 							local targetName = UnitSpellTargetName(self.unit)
 							if targetName then
-								local targetNameShort = not issecretvalue(targetName) and UnitName(targetName)
+								local targetNameShort = Ambiguate(targetName, "none")
 								if targetNameShort then
 									targetName = targetNameShort
 								end
@@ -8762,6 +8764,7 @@ end
 		local wrap = plateConfig.actorname_text_wrap
 		if plateFrame.IsFriendlyPlayerWithoutHealthBar or plateFrame.IsNpcWithoutHealthBar then
 			maxWidth = 0
+			wrap = true
 		end
 		local name = plateFrame [MEMBER_NAME] or plateFrame.unitFrame [MEMBER_NAME] or ""
 		if IS_WOW_PROJECT_MIDNIGHT and issecretvalue(name) then

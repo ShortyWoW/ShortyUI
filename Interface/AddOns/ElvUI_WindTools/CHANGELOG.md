@@ -1,60 +1,125 @@
-# Version: 4.17
-2026/03/26 Released
+# Version: 4.18
+2026/04/23 Released
 ## ❗ Important
-- The minimum supported ElvUI version has been raised to 15.10.
-- Adapt to the changes of the Hotfix in version 12.0.1.66562.
+- Compatible with WoW 12.0.5.
+- Minimum ElvUI version required is now 15.12.
+- Updated library LibOpenRaid. Thanks to Valdemar
+- [Compatibility Check] Optimized compatibility check with mMediaTag. Thanks to Merathilis
 ## ✳️ New
-- [Advanced] - [Profiles] has a new option that allows automatically copying ElvUI private profile for new characters. Thanks to aquariuslt
-- [Prey Hunt] Added nearby minimap vignette text. Enabled by default.
+- [Mute] Added a new mute option for Obsidian Nightwing. Disabled by default.
+- [Skins] Added new independent options for [Loss of Control] skin. Enabled by default.
+- [LFG List] Added a tooltip option for filter buttons in the right panel. Enabled by default.
+- [Absorb] Added the new options to modify the textures for heal absorbs and heal predictions. Disabled by default.
+- Added new module [Unitframes] - [Name Clip] which provides the functionality of manually setting the length of name element, while being compatible with both ElvUI name element and custom texts. Thanks to Deltor
 ## 💪 Improvement
-- [LFG List] The affix display in the right panel has been adapted to the new version.
+- [Extra Item Bar] Updated the item data for the Feasts and Portals. Thanks to Dack
+- [Extra Item Bar] Updated the item data for openable items. Thanks to mcc
+- [LFG List] Optimized the abbreviation of dungeon names in Western languages to better fit the Raider.IO style.
+- [LFG List] Fixed the issue of leader score filtering and friend display error. Thanks to Dack
+- [Skins] Cleaned up World Quest Tab skins.
+- [Skins] Fixed the issue of Simple Addon Manager right side content not following frame movement quickly.
+- [Chat Text] Synchronized with ElvUI's chat module, attempting to resolve Lua errors that occur in some cases.
+- [Unit Frames] - [Tags] Optimized the issue of healabsorbs-autohide event not triggering in a timely manner.
+- [Tooltips] - [Objective Progress] Added support for more objective progress display. Thanks to Dack
 
 ------
-# 版本: 4.17
-2026/03/26 发布
+# 版本: 4.18
+2026/04/23 发布
 ## ❗ 重要
-- 最低支持的 ElvUI 版本提升到 15.10.
-- 适配版本 12.0.1.66562 中的 Hotfix 改动.
+- 兼容魔兽世界 12.0.5 版本.
+- 最低 ElvUI 支持版本提升到 15.12.
+- 更新库 LibOpenRaid. 感谢 Valdemar
+- [兼容性检查] 优化和 mMediaTag 的兼容性检查. 感谢 Merathilis
 ## ✳️ 新增
-- [高级] - [配置文件] 中新增了一个选项, 允许为新角色自动拷贝 ElvUI 角色专属配置. 感谢 aquariuslt
-- [怪物狩猎] 新增附近小地图图标监控文本. 默认开启.
+- [静音] 新增了 黑曜夜之翼 的静音选项. 默认关闭.
+- [美化外观] 新增了 [失控警报] 美化的独立选项. 默认开启.
+- [预创建队伍] 新增了右侧面板过滤按钮的提示信息选项. 默认开启.
+- [吸收] 新增了对治疗吸收盾还有治疗量预估的材质修改功能. 默认关闭.
+- 新增模块 [单位框体] - [名字裁剪] 提供了手动设定名字元素长度的功能, 同时适配 ElvUI 名字元素和自定义文字控件. 感谢 Deltor
 ## 💪 改善
-- [预组建队伍] 右侧面板中的词缀显示适配了新版本.
+- [额外物品条] 更新大餐还有传送门的物品数据. 感谢 Dack
+- [额外物品条] 更新可打开物品数据. 感谢 mcc
+- [预组建队伍] 优化了西方语系中副本名的缩写, 使其更加贴合 Raider.IO 风格.
+- [预组建队伍] 修复了队长分数过滤, 好友显示错误的问题. 感谢 Dack
+- [美化皮肤] 清理 World Quest Tab 皮肤.
+- [美化皮肤] 修复了 Simple Addon Manager 右侧内容无法快速跟随框体移动的问题.
+- [聊天文字] 同步 ElvUI 聊天模块, 尝试解决部分情况下发生的 Lua 错误.
+- [单位框体] - [标签] 优化了 healabsorbs-autohide 事件触发不及时的问题.
+- [鼠标提示] - [目标进度] 添加更多任务的进度显示支持. 感谢 Dack
 
 ------
-# 版本: 4.17
-2026/03/26 發布
+# 版本: 4.18
+2026/04/23 發布
 ## ❗ 重要
-- 最新支援的 ElvUI 版本提升到 15.10.
-- 適配版本 12.0.1.66562 中的 Hotfix 改動.
+- 適配魔獸世界 12.0.5 版本.
+- 最低 ElvUI 支援版本提升至 15.12.
+- 更新庫 LibOpenRaid. 感謝 Valdemar
+- [兼容性检查] 優化和 mMediaTag 的兼容性检查. 感謝 Merathilis
 ## ✳️ 新增
-- [高級] - [配置文件] 中新增了一個選項, 允許為新角色自動拷貝 ElvUI 角色專用設定檔. 感謝 aquariuslt
-- [怪物狩獵] 新增附近小地圖圖示監控文本. 預設開啟.
+- [靜音] 中新增了 黑曜夜翼 的靜音選項. 預設關閉.
+- [美化外觀] 新增了 [失控警報] 美化的獨立選項. 預設開啟.
+- [預組列表] 新增了右側面板過濾器按鈕的提示資訊選項. 預設開啟.
+- [吸收] 新增了對治療吸收盾還有治療量預估的材質修改功能. 預設關閉.
+- 新增模組 [單位框架] - [名字裁剪] 提供了手動設定名字元素長度的功能, 同時適配 ElvUI 名字元素和自定義文字控件. 感謝 Deltor
 ## 💪 改善
-- [預組隊伍] 右側面板中的詞綴顯示適配了新版本.
+- [額外物品條] 更新大餐還有傳送門的物品數據. 感謝 Dack
+- [額外物品條] 更新可打開物品數據. 感謝 mcc
+- [預組隊伍] 優化了西方語系中副本名的縮寫, 使其更加貼合 Raider.IO 風格.
+- [預組隊伍] 修復了隊長分數過濾, 好友顯示錯誤的問題. 感謝 Dack
+- [美化皮膚] 清理 World Quest Tab 皮肤.
+- [美化皮膚] 修復了 Simple Addon Manager 右側內容無法快速跟隨框體移動的問題.
+- [聊天文字] 同步 ElvUI 聊天模块, 嘗試解決部分情況下發生的 Lua 錯誤.
+- [單位框體] - [標籤] 優化了 healabsorbs-autohide 事件觸發不及時的問題.
+- [浮動提示] - [目標進度] 添加更多任務的進度顯示支持. 感謝 Dack
 
 ------
-# 버전: 4.17
-2026/03/26 Released
+# 버전: 4.18
+2026/04/23 Released
 ## ❗ 중요 사항
-- 최소 지원 ElvUI 버전이 15.10으로 상향되었습니다.
-- 버전 12.0.1.66562의 핫픽스 변경 사항에 적응합니다.
+- 월드 오브 워크래프트 12.0.5 버전과 호환됩니다.
+- 최소 ElvUI 지원 버전이 15.12로 상향되었습니다.
+- 라이브러리 LibOpenRaid가 업데이트되었습니다. Valdemar에게 감사드립니다.
+- [호환성 검사] mMediaTag와의 호환성 검사가 최적화되었습니다. Merathilis에게 감사드립니다.
 ## ✳️ 신규 사항
-- [고급] - [프로필]에 새로운 옵션이 추가되어 새 캐릭터에 대해 ElvUI 개인 프로필을 자동으로 복사할 수 있습니다. aquariuslt에게 감사드립니다.
-- [먹이 사냥] 근처 미니맵 비네팅 텍스트가 추가되었습니다. 기본적으로 활성화되어 있습니다.
+- [음소거] 흑요석 밤날개표범 음소거 옵션이 추가되었습니다. 기본적으로 비활성화되어 있습니다.
+- [스킨] [제어 상실] 스킨에 대한 새로운 독립 옵션이 추가되었습니다. 기본적으로 활성화되어 있습니다.
+- [파티 찾기 목록] 오른쪽 패널의 필터 버튼에 대한 툴팁 옵션이 추가되었습니다. 기본적으로 활성화되어 있습니다.
+- [흡수] 치유 흡수 및 치유 예측에 대한 텍스처를 수정하는 새로운 옵션이 추가되었습니다. 기본적으로 비활성화되어 있습니다.
+- 새로운 모듈 [유닛 프레임] - [이름 클립]이 추가되어 이름 요소의 길이를 수동으로 설정하는 기능을 제공하며, ElvUI 이름 요소와 사용자 정의 텍스트 모두와 호환됩니다. Deltor에게 감사드립니다.
 ## 💪 개선 사항
-- [파티 찾기 목록] 오른쪽 패널의 접두사 표시가 새 버전에 맞게 조정되었습니다.
+- [추가 아이템 바] 잔치와 포탈에 대한 아이템 데이터를 업데이트했습니다. Dack에게 감사드립니다.
+- [추가 아이템 바] 열 수 있는 아이템에 대한 아이템 데이터를 업데이트했습니다. mcc에게 감사드립니다.
+- [파티 찾기 목록] Raider.IO 스타일에 더 잘 맞도록 서양 언어의 던전 이름 약어를 최적화했습니다.
+- [파티 찾기 목록] 리더 점수 필터링 및 친구 표시 오류 문제를 수정했습니다. Dack에게 감사드립니다.
+- [스킨] World Quest Tab 스킨을 정리했습니다.
+- [스킨] Simple Addon Manager의 오른쪽 콘텐츠가 프레임의 움직임을 빠르게 따라가지 못하는 문제를 수정했습니다.
+- [채팅 텍스트] ElvUI의 채팅 모듈과 동기화하여 일부 경우에 발생하는 Lua 오류를 해결하려고 시도했습니다.
+- [유닛 프레임] - [태그] healabsorbs-autohide 이벤트가 적시에 트리거되지 않는 문제를 최적화했습니다.
+- [툴팁] - [목표 진도] 더 많은 목표 진도 표시를 지원합니다. Dack에게 감사드립니다.
 
 ------
-# Версия: 4.17
-2026/03/26 Релиз
+# Версия: 4.18
+2026/04/23 Релиз
 ## ❗ Важные
-- Минимальная поддерживаемая версия ElvUI повышена до 15.10.
-- Адаптация к изменениям срочных исправлений в версии 12.0.1.66562.
+- Совместимо с World of Warcraft 12.0.5.
+- Минимальная требуемая версия ElvUI теперь 15.12.
+- Обновлена библиотека LibOpenRaid. Спасибо Valdemar
+- [Проверка совместимости] Оптимизирована проверка совместимости с mMediaTag. Спасибо Merathilis
 ## ✳️ Новые
-- [Расширенные] - [Профили] появилась новая опция, которая позволяет автоматически копировать личный профиль ElvUI для новых персонажей. Спасибо aquariuslt
-- [Охота на добычу] Добавлен текст в мини-карту рядом с виньеткой. Включено по умолчанию.
+- [Отключение звуков] Добавлена новая опция отключения звука для Обсидианового ночного крыла. Отключено по умолчанию.
+- [Скины] Добавлены новые независимые опции для скина [Потеря контроля]. Включено по умолчанию.
+- [Поиск группы] Добавлена опция подсказки для кнопок фильтров на правой панели. Включено по умолчанию.
+- [Поглощение] Добавлены новые опции для изменения текстур поглощения лечения и предсказания лечения. Отключено по умолчанию.
+- Добавлен новый модуль [Юнит-фреймы] - [Обрезка имени], который предоставляет функциональность ручной настройки длины элемента имени, при этом совместим с элементом имени ElvUI и пользовательскими текстами. Спасибо Deltor
 ## 💪 Улучшения
-- [Список LFG] Отображение аффиксов в правой панели было адаптировано к новой версии.
+- [Дополнительная панель предметов] Обновлены данные предметов для праздников и порталов. Спасибо Dack
+- [Дополнительная панель предметов] Обновлены данные предметов для открываемых предметов. Спасибо mcc
+- [Поиск группы] Оптимизировано сокращение названий подземелий в западных языках, чтобы лучше соответствовать стилю Raider.IO.
+- [Поиск группы] Исправлена проблема с фильтрацией очков лидера и ошибкой отображения друзей. Спасибо Dack
+- [Скины] Очищены скины World Quest Tab.
+- [Скины] Исправлена проблема, из-за которой содержимое на правой стороне Simple Addon Manager не могло быстро следовать за движением рамки.
+- [Текст чата] Синхронизировано с модулем чата ElvUI, попытка решить ошибки Lua, которые возникают в некоторых случаях.
+- [Юнит-фреймы] - [Теги] Оптимизирована проблема с тем, что событие healabsorbs-autohide не срабатывает своевременно.
+- [Тултипы] - [Цельный прогресс] Добавлена поддержка отображения целевого прогресса. Спасибо Dack
 
 ------

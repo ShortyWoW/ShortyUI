@@ -6,19 +6,13 @@ local C = W.Utilities.Color
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local next = next
-local pairs = pairs
 local strfind = strfind
 local unpack = unpack
 
-local C_AddOns_GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
-local function isUnofficialVersion()
-	return C_AddOns_GetAddOnMetadata("WorldQuestTab", "IconAtlas") ~= "Worldquest-icon"
-end
-
 -- Modified from ElvUI WorldMap skin
-local function reskinTab(tab)
+local function ReskinTab(tab)
 	tab:CreateBackdrop()
 	tab:Size(30, 40)
 
@@ -52,7 +46,7 @@ local function reskinTab(tab)
 	end
 end
 
-local function reskinContainer(container)
+local function ReskinContainer(container)
 	container.BorderFrame:Hide()
 	container.Background:Hide()
 	container:CreateBackdrop("Transparent")
@@ -60,8 +54,8 @@ local function reskinContainer(container)
 	S:Proxy("HandleTrimScrollBar", container.ScrollBar)
 end
 
-local function reskinQuestContainer(container)
-	reskinContainer(container)
+local function ReskinQuestContainer(container)
+	ReskinContainer(container)
 	S:Proxy("HandleDropDownBox", _G.FML) -- Monitor the name "FML"
 	S:Proxy(
 		"HandleButton",
@@ -81,18 +75,18 @@ local function reskinQuestContainer(container)
 	)
 end
 
-local function reskinWhatsNew(container)
-	reskinContainer(container)
+local function ReskinWhatsNew(container)
+	ReskinContainer(container)
 
 	container.CloseButton:Size(20)
 	S:Proxy("HandleCloseButton", container.CloseButton)
 end
 
-local function reskinSettings(container)
-	reskinContainer(container)
+local function ReskinSettings(container)
+	ReskinContainer(container)
 end
 
-local function reskinFlightMapContainer(frame)
+local function ReskinFlightMapContainer(frame)
 	frame:StripTextures()
 	frame:SetTemplate("Transparent")
 	S:CreateShadow(frame)
@@ -113,7 +107,7 @@ local function reskinFlightMapContainer(frame)
 	end
 end
 
-local function settingsCategory(frame)
+local function ReskinSettingsCategory(frame)
 	if frame.ExpandIcon then
 		S:Proxy("HandleButton", frame, true, nil, nil, true)
 		frame.Highlight:SetAlpha(0)
@@ -147,35 +141,35 @@ local function settingsCategory(frame)
 	end
 end
 
-local function settingsCheckbox(frame)
+local function ReskinSettingsCheckbox(frame)
 	S:Proxy("HandleCheckBox", frame.CheckBox)
 end
 
-local function settingsSlider(frame)
+local function ReskinSettingsSlider(frame)
 	S:Proxy("HandleStepSlider", frame.SliderWithSteppers)
 	S:Proxy("HandleNextPrevButton", frame.SliderWithSteppers.Back, "left")
 	S:Proxy("HandleNextPrevButton", frame.SliderWithSteppers.Forward, "right")
 	S:Proxy("HandleEditBox", frame.TextBox)
 end
 
-local function settingsColor(frame)
+local function ReskinSettingsColor(frame)
 	S:Proxy("HandleButton", frame.Picker)
 	S:Proxy("HandleButton", frame.ResetButton)
 end
 
-local function settingsDropDown(frame)
+local function ReskinSettingsDropDown(frame)
 	S:Proxy("HandleDropDownBox", frame.Dropdown, frame:GetWidth())
 end
 
-local function settingsButton(frame)
+local function ReskinSettingsButton(frame)
 	S:Proxy("HandleButton", frame.Button)
 end
 
-local function settingsTextInput(frame)
+local function ReskinSettingsTextInput(frame)
 	S:Proxy("HandleEditBox", frame.TextBox)
 end
 
-local function listButton(button)
+local function ReskinListButton(button)
 	local QualityBg = button and button.QualityBg
 	QualityBg:SetTexture(E.media.blankTex)
 	QualityBg:SetVertexColor(C.ExtractRGBFromTemplate("neutral-500"))
@@ -197,15 +191,13 @@ local function listButton(button)
 end
 
 function S:WorldQuestTab()
-	if not E.private.WT.skins.enable or not E.private.WT.skins.addons.worldQuestTab or isUnofficialVersion() then
+	if not E.private.WT.skins.enable or not E.private.WT.skins.addons.worldQuestTab then
 		return
 	end
 
-	self:DisableAddOnSkin("WorldQuestTab")
-
 	local tab = _G.WQT_QuestMapTab
 	if tab then
-		reskinTab(tab)
+		ReskinTab(tab)
 		F.InternalizeMethod(tab, "SetPoint")
 		hooksecurefunc(tab, "SetPoint", function()
 			F.Move(tab, 0, -2)
@@ -213,22 +205,22 @@ function S:WorldQuestTab()
 	end
 
 	if _G.WQT_ListContainer then
-		reskinQuestContainer(_G.WQT_ListContainer)
+		ReskinQuestContainer(_G.WQT_ListContainer)
 	end
 
 	if _G.WQT_WhatsNewFrame then
-		reskinWhatsNew(_G.WQT_WhatsNewFrame)
+		ReskinWhatsNew(_G.WQT_WhatsNewFrame)
 	end
 
 	if _G.WQT_SettingsFrame then
-		reskinSettings(_G.WQT_SettingsFrame)
+		ReskinSettings(_G.WQT_SettingsFrame)
 	end
 
 	if _G.WQT_FlightMapContainer then
-		reskinFlightMapContainer(_G.WQT_FlightMapContainer)
+		ReskinFlightMapContainer(_G.WQT_FlightMapContainer)
 	end
 
-	S:ReskinCustomGameTooltips(_G.WQT_GameTooltip, _G.WQT_ShoppingTooltip1, _G.WQT_ShoppingTooltip2)
+	self:ReskinCustomGameTooltips(_G.WQT_GameTooltip, _G.WQT_ShoppingTooltip1, _G.WQT_ShoppingTooltip2)
 
 	-- Block the "WQT anti-error" line
 	self:RawHook(_G.WQT_GameTooltip, "AddLine", function(tt, text, ...)
@@ -242,33 +234,27 @@ end
 
 S:AddCallbackForAddon("WorldQuestTab")
 
-if isUnofficialVersion() then
-	F.TaskManager:AfterLogin(function()
-		E.private.WT.skins.addons.worldQuestTab = false
-	end)
-else
-	local isLoaded, isFinished = C_AddOns_IsAddOnLoaded("WorldQuestTab")
-	if isLoaded and isFinished then
-		local function wrap(func)
-			return function(...)
-				local args = { ... }
-				F.TaskManager:AfterLogin(function()
-					if not E.private.WT.skins.enable or not E.private.WT.skins.addons.worldQuestTab then
-						return
-					end
-					func(unpack(args))
-				end)
-			end
+local isLoaded, isFinished = C_AddOns_IsAddOnLoaded("WorldQuestTab")
+if isLoaded and isFinished then
+	local function wrap(func)
+		return function(...)
+			local args = { ... }
+			F.TaskManager:AfterLogin(function()
+				if not E.private.WT.skins.enable or not E.private.WT.skins.addons.worldQuestTab then
+					return
+				end
+				func(unpack(args))
+			end)
 		end
-
-		S:TryPostHook("WQT_SettingsCategoryMixin", "Init", wrap(settingsCategory))
-		S:TryPostHook("WQT_SettingsCheckboxMixin", "Init", wrap(settingsCheckbox))
-		S:TryPostHook("WQT_SettingsSliderMixin", "Init", wrap(settingsSlider))
-		S:TryPostHook("WQT_SettingsColorMixin", "Init", wrap(settingsColor))
-		S:TryPostHook("WQT_SettingsDropDownMixin", "Init", wrap(settingsDropDown))
-		S:TryPostHook("WQT_SettingsButtonMixin", "Init", wrap(settingsButton))
-		S:TryPostHook("WQT_SettingsConfirmButtonMixin", "Init", wrap(settingsButton))
-		S:TryPostHook("WQT_SettingsTextInputMixin", "Init", wrap(settingsTextInput))
-		S:TryPostHook("WQT_ListButtonMixin", "Update", wrap(listButton))
 	end
+
+	S:TryPostHook("WQT_SettingsCategoryMixin", "Init", wrap(ReskinSettingsCategory))
+	S:TryPostHook("WQT_SettingsCheckboxMixin", "Init", wrap(ReskinSettingsCheckbox))
+	S:TryPostHook("WQT_SettingsSliderMixin", "Init", wrap(ReskinSettingsSlider))
+	S:TryPostHook("WQT_SettingsColorMixin", "Init", wrap(ReskinSettingsColor))
+	S:TryPostHook("WQT_SettingsDropDownMixin", "Init", wrap(ReskinSettingsDropDown))
+	S:TryPostHook("WQT_SettingsButtonMixin", "Init", wrap(ReskinSettingsButton))
+	S:TryPostHook("WQT_SettingsConfirmButtonMixin", "Init", wrap(ReskinSettingsButton))
+	S:TryPostHook("WQT_SettingsTextInputMixin", "Init", wrap(ReskinSettingsTextInput))
+	S:TryPostHook("WQT_ListButtonMixin", "Update", wrap(ReskinListButton))
 end

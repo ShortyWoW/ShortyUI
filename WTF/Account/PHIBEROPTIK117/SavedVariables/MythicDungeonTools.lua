@@ -9,11 +9,7 @@ MythicDungeonToolsDB = {
 },
 ["global"] = {
 ["scale"] = 1.4,
-["minimap"] = {
-["minimapPos"] = 252.8475054978408,
-["showInCompartment"] = true,
-["hide"] = true,
-},
+["latestDungeonSeen"] = 150,
 ["maximized"] = false,
 ["presets"] = {
 [150] = {
@@ -39,6 +35,10 @@ MythicDungeonToolsDB = {
 },
 },
 ["version"] = 607,
-["latestDungeonSeen"] = 150,
+["minimap"] = {
+["minimapPos"] = 252.8475054978408,
+["showInCompartment"] = true,
+["hide"] = true,
+},
 },
 }

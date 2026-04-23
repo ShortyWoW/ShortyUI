@@ -175,6 +175,45 @@ local function SafeUnitName(unit)
     return ok2 and clean or nil
 end
 
+-- ── Safe spell-ID extraction for aura tables ────────────────────────
+-- Aura records returned by C_UnitAuras in 12.x carry their `spellId`
+-- field as a "secret" primitive. `string.format("%.0f", s)` alone is
+-- insufficient — if the format call throws, we never record a spell
+-- ID, and the downstream SpellId gate in MatchRule / FindGlowOnAuraAppear
+-- rejects every candidate rule (classic false negative for spells like
+-- Unending Resolve on party members).
+--
+-- Order of attempts:
+--   1. Already-clean check (rare: own player's auras are untainted).
+--   2. string.format + tonumber — works on many builds.
+--   3. BIT.Taint:ResolveNumber — hidden-Slider OnValueChanged laundry.
+--
+-- Returns an untainted integer spell ID or nil.
+local function ExtractAuraSpellId(adSpellId)
+    if adSpellId == nil then return nil end
+    -- Already clean?
+    if type(adSpellId) == "number" then
+        local ok = pcall(function() local _ = ({[adSpellId]=1})[adSpellId] end)
+        if ok then return adSpellId end
+    end
+    -- Format path
+    local okF, s = pcall(string.format, "%.0f", adSpellId)
+    if okF and s then
+        local okN, num = pcall(tonumber, s)
+        if okN and num then
+            local ok2 = pcall(function() local _ = ({[num]=1})[num] end)
+            if ok2 then return num end
+        end
+    end
+    -- Laundry path via hidden Slider
+    if BIT.Taint and BIT.Taint.ResolveNumber then
+        local n = BIT.Taint:ResolveNumber(adSpellId)
+        if n then return n end
+    end
+    return nil
+end
+BIT.SyncCD._ExtractAuraSpellId = ExtractAuraSpellId
+
 local function IsSpellEnabled(sid)
     -- notTrackable spells (e.g. Power Infusion) are always hidden from the tracker
     local entry = _syncSpellLookup[sid]
@@ -425,11 +464,15 @@ local function MatchRule(unit, auraTypes, measuredDur, evidence, activeCooldowns
     local function tryRuleList(ruleList)
         if not ruleList then return end
         for _, rule in ipairs(ruleList) do
-            -- SpellId gate (strict): require the buff's spellId to be known AND match the rule.
-            -- Missing spellId would otherwise let rules match on AuraTypes+Evidence+Duration alone,
-            -- causing cross-spell false attributions when two defensives share those properties.
-            if (not buffSpellId) or rule.SpellId ~= buffSpellId then
-                -- skip: buff spellId missing or doesn't match this rule
+            -- SpellId gate: when the buff's spellId is known, require exact match.
+            -- When it is unknown (tainted in 12.x, even after laundry), we fall
+            -- back to full flag-signature matching: AuraTypes + RaidInCombat +
+            -- Evidence + Duration + Talents still constrain the rule set within
+            -- this candidate's class/spec/race. This avoids the false-negative
+            -- case where party defensives (e.g. Unending Resolve) never fire
+            -- glow/CD because the strict SpellId gate rejects every rule.
+            if buffSpellId and rule.SpellId ~= buffSpellId then
+                -- skip: buff spellId known and doesn't match this rule
             -- RaidInCombat gate: skip player-defensive rules for boss-applied M+ buffs
             elseif rule.RaidInCombatExclude and isRaidInCombat then
                 -- skip: aura is RAID_IN_COMBAT (boss buff), not a player defensive
@@ -442,7 +485,30 @@ local function MatchRule(unit, auraTypes, measuredDur, evidence, activeCooldowns
                 -- Aura type check
                 if AuraTypeMatchesRule(auraTypes, rule) then
                     -- Evidence check
-                    if EvidenceMatchesReq(rule.RequiresEvidence, evidence) then
+                    -- 12.0.5 self-cast relaxation: party UNIT_SPELLCAST_SUCCEEDED is
+                    -- stripped, so Cast evidence cannot exist for party members.
+                    -- For self-cast (non-external) rules, treat Buff presence as a
+                    -- substitute for the missing Cast slot — works for both string
+                    -- ("Cast") and table ({"Cast","UnitFlags"}, …) requirements.
+                    local evidenceOK = EvidenceMatchesReq(rule.RequiresEvidence, evidence)
+                    if not evidenceOK
+                       and not rule.ExternalDefensive
+                       and evidence and evidence.Buff
+                       and (buffSpellId == rule.SpellId or not buffSpellId) then
+                        local reqNeedsCast = rule.RequiresEvidence == "Cast"
+                        if not reqNeedsCast and type(rule.RequiresEvidence) == "table" then
+                            for _, k in ipairs(rule.RequiresEvidence) do
+                                if k == "Cast" then reqNeedsCast = true; break end
+                            end
+                        end
+                        if reqNeedsCast then
+                            local relaxedEv = {}
+                            for k, v in pairs(evidence) do relaxedEv[k] = v end
+                            relaxedEv.Cast = true
+                            evidenceOK = EvidenceMatchesReq(rule.RequiresEvidence, relaxedEv)
+                        end
+                    end
+                    if evidenceOK then
                         -- Duration check: apply talent-modified buffDur
                         local expectedDur = rule.BuffDuration
                         -- Apply talent duration modifiers if available
@@ -615,11 +681,17 @@ local function FindGlowOnAuraAppear(unit, tracked)
             if not ruleList then return nil end
             for _, rule in ipairs(ruleList) do
                 if (rule.BuffDuration or 0) > 0 then
-                    -- SpellId gate (strict): the buff's spellId must be known AND match the rule.
-                    -- A missing spellId (tainted/unavailable in WoW 12.x) would otherwise let any
-                    -- rule match on AuraTypes+Evidence alone, causing cross-spell false glows
-                    -- (e.g. Hunter SotF aura attributed to DH Blur rule when evidence aligns).
-                    if (not tracked.SpellId) or rule.SpellId ~= tracked.SpellId then
+                    -- SpellId gate: when the buff's spellId was successfully
+                    -- extracted from Blizzard's aura data, require an exact
+                    -- match. When it is unknown (tainted primitive in 12.x
+                    -- that could not be laundered), we fall through to the
+                    -- full flag-signature check below. That is still safe
+                    -- within this candidate's class/spec — we only risk
+                    -- picking the wrong one among same-flag sibling rules,
+                    -- which is a far better failure mode than missing the
+                    -- glow entirely (Unending Resolve, Survival of the Fittest,
+                    -- Blessing of Freedom …).
+                    if tracked.SpellId and rule.SpellId ~= tracked.SpellId then
                         if BIT.devLogMode then
                             BIT.DevLog("[GLOW-MISS] " .. tostring(cName) .. " SpellId gate: buff="
                                 .. tostring(tracked.SpellId) .. " rule=" .. tostring(rule.SpellId))
@@ -643,6 +715,102 @@ local function FindGlowOnAuraAppear(unit, tracked)
                                 .. " rule.Imp=" .. tostring(rule.Important))
                         end
                     elseif not EvidenceMatchesReq(rule.RequiresEvidence, cEvidence) then
+                        -- 12.0.5 relaxation: UNIT_SPELLCAST_SUCCEEDED no longer fires
+                        -- for party members, so the Cast evidence source is dead for
+                        -- them. For self-cast defensives the aura itself is proof of
+                        -- the cast — when all of the following hold we accept Buff
+                        -- evidence as satisfying a Cast requirement:
+                        --   • rule requires exactly "Cast" (not a table of evidence)
+                        --   • we have Buff evidence
+                        --   • we couldn't extract a concrete SpellId to disambiguate
+                        --   • the rule is not an ExternalDefensive (buff holder != caster)
+                        --   • this candidate is the aura holder (self-cast attribution,
+                        --     not a matched external cast)
+                        -- Two self-cast relaxation modes:
+                        --   1) Exact match — tracked.SpellId == rule.SpellId. No ambiguity
+                        --      about which spell the aura represents, Buff is sufficient.
+                        --   2) Ambiguous — SpellId stripped entirely. Fall back to
+                        --      flag-signature + duration gate to pick the right rule.
+                        -- The rule's RequiresEvidence can be a string ("Cast") or a
+                        -- table ({"Cast","UnitFlags"}, {"Cast","Debuff"}, …). In both
+                        -- forms we substitute the aura's Buff presence for the missing
+                        -- Cast slot, then re-evaluate the whole requirement.
+                        local exactMatch = tracked.SpellId
+                                       and tracked.SpellId == rule.SpellId
+                        local ambiguous  = not tracked.SpellId
+                        local reqNeedsCast =
+                            rule.RequiresEvidence == "Cast"
+                            or (type(rule.RequiresEvidence) == "table"
+                                and (function()
+                                    for _, k in ipairs(rule.RequiresEvidence) do
+                                        if k == "Cast" then return true end
+                                    end
+                                    return false
+                                end)())
+                        local isSelfCastRelax =
+                            reqNeedsCast
+                            and not rule.ExternalDefensive
+                            and cEvidence and cEvidence.Buff
+                            and UnitIsUnit(candidateUnit, unit)
+                            and (exactMatch or ambiguous)
+                        if isSelfCastRelax then
+                            -- Rebuild the evidence check with Cast substituted in, then
+                            -- confirm all other required items are still satisfied.
+                            local relaxedEv = {}
+                            if cEvidence then
+                                for k, v in pairs(cEvidence) do relaxedEv[k] = v end
+                            end
+                            relaxedEv.Cast = true
+                            if not EvidenceMatchesReq(rule.RequiresEvidence, relaxedEv) then
+                                -- Other required evidence is still missing — skip relax.
+                                isSelfCastRelax = false
+                                if BIT.devLogMode then
+                                    BIT.DevLog("[GLOW-SELF-RELAX-SKIP] " .. tostring(cName)
+                                        .. " spell=" .. tostring(rule.SpellId)
+                                        .. " req=table (other items missing beyond Cast)")
+                                end
+                            end
+                        end
+                        if isSelfCastRelax then
+                            -- Duration gate (only needed in the ambiguous case; exact
+                            -- SpellId match is already unambiguous). Apply any known
+                            -- talent duration mods to the rule's nominal BuffDuration
+                            -- and compare against the observed aura duration. A
+                            -- generous 1.5s tolerance absorbs server-side rounding,
+                            -- client refresh jitter, and unknown talent mods.
+                            local durOK = true
+                            if ambiguous then
+                                local obs = tracked.BuffDuration
+                                if obs and obs > 0 and rule.BuffDuration and rule.BuffDuration > 0 then
+                                    local expected = rule.BuffDuration
+                                    if rule._durationMods then
+                                        for talentID, amt in pairs(rule._durationMods) do
+                                            if knownTalents[talentID] then
+                                                expected = expected + amt
+                                            end
+                                        end
+                                    end
+                                    durOK = math.abs(obs - expected) <= 1.5
+                                end
+                            end
+                            if durOK then
+                                if BIT.devLogMode then
+                                    BIT.DevLog("[GLOW-SELF-RELAX] " .. tostring(cName)
+                                        .. " spell=" .. tostring(rule.SpellId)
+                                        .. " types=" .. AuraTypesSignature(tracked.AuraTypes)
+                                        .. " obsDur=" .. tostring(obs)
+                                        .. " ruleDur=" .. tostring(rule.BuffDuration)
+                                        .. " accepting Buff as Cast (party USS stripped in 12.x)")
+                                end
+                                return rule
+                            elseif BIT.devLogMode then
+                                BIT.DevLog("[GLOW-SELF-RELAX-SKIP] " .. tostring(cName)
+                                    .. " spell=" .. tostring(rule.SpellId)
+                                    .. " obsDur=" .. tostring(obs)
+                                    .. " ruleDur=" .. tostring(rule.BuffDuration)
+                                    .. " (duration mismatch)")
+                            end
+                        end
                         if BIT.devLogMode then
                             local evParts = {}
                             if cEvidence then
@@ -1569,6 +1737,7 @@ do
                 -- Also track spellId per aura instance for unambiguous rule matching.
                 local defensiveAids    = {}
                 local aidToSpellId     = {}  -- auraInstanceID → spellId (from Blizzard aura data)
+                local aidToDuration    = {}  -- auraInstanceID → buff duration (untainted in 12.x)
                 -- Remap table: some spells apply a buff with a different spell ID than the cast.
                 -- e.g. Blur cast=198589 applies buff=212800. Without remapping the SpellId gate
                 -- in MatchRule would reject the rule (212800 ≠ 198589).
@@ -1577,67 +1746,167 @@ do
                 -- Boss-applied M+ buffs are typically RAIDINCOMBAT; player defensives (Barkskin,
                 -- Ironbark …) are not. Used in checkList to prevent false positives.
                 local aidToIsRIC = {}
-                local ok1, bigAuras = pcall(C_UnitAuras.GetUnitAuras, unit, "HELPFUL|BIG_DEFENSIVE")
-                if ok1 and bigAuras then
-                    for _, ad in ipairs(bigAuras) do
+                -- Single-pass HELPFUL scan: fetch every buff via GetUnitAuras(unit,"HELPFUL")
+                -- and classify each instance via IsAuraFilteredOutByInstanceID per filter.
+                -- Rationale: the combined filter strings "HELPFUL|BIG_DEFENSIVE" etc. return
+                -- empty arrays on party units in 12.x. The plain "HELPFUL" query still works,
+                -- and the per-instance filter tests below use taint-safe boolean returns.
+                local hasBig, hasExt, hasImp = {}, {}, {}
+                local ok1, helpAuras = pcall(C_UnitAuras.GetUnitAuras, unit, "HELPFUL")
+                local helpCount = 0
+                local unclassifiedForDump = nil  -- accumulated only when devLogMode is on
+                if BIT.devLogMode then unclassifiedForDump = {} end
+                if ok1 and helpAuras then
+                    for _, ad in ipairs(helpAuras) do
                         if ad and ad.auraInstanceID then
-                            defensiveAids[ad.auraInstanceID] = true
-                            if ad.spellId then
-                                local okS, ss = pcall(string.format, "%.0f", ad.spellId)
-                                local sid = okS and tonumber(ss)
-                                if sid then aidToSpellId[ad.auraInstanceID] = buffIdRemap[sid] or sid end
-                            end
-                            -- RAIDINCOMBAT flag: boss-applied M+ buffs have RIC=true; player
-                            -- defensives (Barkskin, Ironbark …) have RIC=false.  Not tainted.
-                            if not aidToIsRIC[ad.auraInstanceID] then
-                                local okR, ric = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID,
-                                                       unit, ad.auraInstanceID, "HELPFUL|RAID_IN_COMBAT")
-                                if okR then aidToIsRIC[ad.auraInstanceID] = (ric == false) end
-                            end
-                            if BIT.devLogMode then
-                                local rawId = ad.spellId or "?"
-                                local mapped = aidToSpellId[ad.auraInstanceID] or "?"
-                                BIT.DevLog("[SCAN-BIG] " .. tostring(name) .. " aid=" .. ad.auraInstanceID
-                                    .. " rawId=" .. rawId .. " mapped=" .. mapped
-                                    .. " ric=" .. tostring(aidToIsRIC[ad.auraInstanceID]))
+                            local aid = ad.auraInstanceID
+                            helpCount = helpCount + 1
+                            -- Classify via per-filter boolean probes (untainted results).
+                            local okB, bigOut = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID, unit, aid, "HELPFUL|BIG_DEFENSIVE")
+                            local okE, extOut = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID, unit, aid, "HELPFUL|EXTERNAL_DEFENSIVE")
+                            local okI, impOut = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID, unit, aid, "HELPFUL|IMPORTANT")
+                            local isBig = okB and (bigOut == false)
+                            local isExt = okE and (extOut == false)
+                            local isImp = okI and (impOut == false)
+                            if isBig or isExt or isImp then
+                                if isBig then hasBig[aid] = true end
+                                if isExt then hasExt[aid] = true end
+                                if isImp then hasImp[aid] = true end
+                                if isBig or isExt then defensiveAids[aid] = true end
+                                if ad.spellId and not aidToSpellId[aid] then
+                                    local sid = ExtractAuraSpellId(ad.spellId)
+                                    if sid then aidToSpellId[aid] = buffIdRemap[sid] or sid end
+                                end
+                                -- Icon-fileID fallback for stripped spellIds: look up the
+                                -- aura's icon against the per-class map built in SpellData.
+                                -- Only applied when direct extraction failed to avoid
+                                -- overriding a good SpellId with an icon-based guess.
+                                -- ad.icon can also be a secret value in 12.x — indexing
+                                -- a table with it throws — so we first launder it through
+                                -- the same ResolveNumber path used for spellId.
+                                if not aidToSpellId[aid] and ad.icon ~= nil then
+                                    local cleanIcon
+                                    local okG = pcall(function() cleanIcon = ({[ad.icon]=1})[ad.icon] and ad.icon end)
+                                    local laundered = false
+                                    if not (okG and cleanIcon) and BIT.Taint and BIT.Taint.ResolveNumber then
+                                        cleanIcon = BIT.Taint:ResolveNumber(ad.icon)
+                                        laundered = true
+                                    end
+                                    if cleanIcon then
+                                        local okC, classToken = pcall(UnitClassBase or UnitClass, unit)
+                                        if okC and classToken and BIT.SyncCD._spellIdByIconByClass then
+                                            local bucket = BIT.SyncCD._spellIdByIconByClass[classToken]
+                                            local guess = bucket and bucket[cleanIcon]
+                                            if guess then
+                                                aidToSpellId[aid] = buffIdRemap[guess] or guess
+                                                if BIT.devLogMode then
+                                                    BIT.DevLog("[SCAN-ICON-LOOKUP] " .. tostring(name)
+                                                        .. " aid=" .. aid
+                                                        .. " icon=" .. tostring(cleanIcon)
+                                                        .. " laundered=" .. tostring(laundered)
+                                                        .. " -> spellId=" .. guess
+                                                        .. " (class=" .. classToken .. ")")
+                                                end
+                                            elseif BIT.devLogMode then
+                                                BIT.DevLog("[SCAN-ICON-MISS] " .. tostring(name)
+                                                    .. " aid=" .. aid
+                                                    .. " icon=" .. tostring(cleanIcon)
+                                                    .. " class=" .. tostring(classToken)
+                                                    .. " bucketSize=" .. (bucket and "set" or "nil"))
+                                            end
+                                        end
+                                    elseif BIT.devLogMode then
+                                        BIT.DevLog("[SCAN-ICON-FAIL] " .. tostring(name)
+                                            .. " aid=" .. aid
+                                            .. " could not extract clean icon fileID")
+                                    end
+                                end
+                                -- Capture aura duration for downstream disambiguation
+                                -- when SpellId is stripped. ad.duration can be tainted
+                                -- in 12.x — comparisons throw on secret numbers — so
+                                -- everything here is pcall-wrapped. ResolveNumber tries
+                                -- the slider laundry to recover a usable value; if that
+                                -- fails too we simply skip duration (no false match).
+                                if not aidToDuration[aid] and ad.duration ~= nil then
+                                    local cleanDur
+                                    local okG, isPos = pcall(function() return ad.duration > 0 end)
+                                    if okG and isPos then
+                                        cleanDur = ad.duration
+                                    elseif BIT.Taint and BIT.Taint.ResolveNumber then
+                                        cleanDur = BIT.Taint:ResolveNumber(ad.duration)
+                                        if cleanDur and cleanDur <= 0 then cleanDur = nil end
+                                    end
+                                    if cleanDur then aidToDuration[aid] = cleanDur end
+                                end
+                                if aidToIsRIC[aid] == nil then
+                                    local okR, ric = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID,
+                                                           unit, aid, "HELPFUL|RAID_IN_COMBAT")
+                                    if okR then aidToIsRIC[aid] = (ric == false) end
+                                end
+                                if BIT.devLogMode then
+                                    local tag = (isExt and "EXT") or (isBig and "BIG") or "IMP"
+                                    local rawId = ad.spellId or "?"
+                                    local mapped = aidToSpellId[aid] or "?"
+                                    BIT.DevLog("[SCAN-" .. tag .. "] " .. tostring(name) .. " aid=" .. aid
+                                        .. " rawId=" .. tostring(rawId) .. " mapped=" .. tostring(mapped)
+                                        .. " B=" .. tostring(isBig) .. " E=" .. tostring(isExt)
+                                        .. " I=" .. tostring(isImp)
+                                        .. " ric=" .. tostring(aidToIsRIC[aid]))
+                                end
+                            elseif unclassifiedForDump then
+                                -- Keep a lightweight record for the "nothing found"
+                                -- dump below. Use safe stringifiers because duration,
+                                -- icon and spellId may all be tainted secret numbers.
+                                local function safeStr(v)
+                                    if v == nil then return "nil" end
+                                    local ok, s = pcall(tostring, v)
+                                    if ok and s and not issecretvalue(s) then return s end
+                                    return "<taint>"
+                                end
+                                unclassifiedForDump[#unclassifiedForDump + 1] = {
+                                    aid = aid,
+                                    icon = safeStr(ad.icon),
+                                    dur = safeStr(ad.duration),
+                                    rawId = safeStr(ad.spellId),
+                                }
                             end
                         end
                     end
                 end
-                local ok2, extAuras = pcall(C_UnitAuras.GetUnitAuras, unit, "HELPFUL|EXTERNAL_DEFENSIVE")
-                if ok2 and extAuras then
-                    for _, ad in ipairs(extAuras) do
-                        if ad and ad.auraInstanceID then
-                            defensiveAids[ad.auraInstanceID] = true
-                            if ad.spellId and not aidToSpellId[ad.auraInstanceID] then
-                                local okS, ss = pcall(string.format, "%.0f", ad.spellId)
-                                local sid = okS and tonumber(ss)
-                                if sid then aidToSpellId[ad.auraInstanceID] = buffIdRemap[sid] or sid end
-                            end
-                            if not aidToIsRIC[ad.auraInstanceID] then
-                                local okR, ric = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID,
-                                                       unit, ad.auraInstanceID, "HELPFUL|RAID_IN_COMBAT")
-                                if okR then aidToIsRIC[ad.auraInstanceID] = (ric == false) end
-                            end
-                            if BIT.devLogMode then
-                                local rawId = ad.spellId or "?"
-                                local mapped = aidToSpellId[ad.auraInstanceID] or "?"
-                                BIT.DevLog("[SCAN-EXT] " .. tostring(name) .. " aid=" .. ad.auraInstanceID
-                                    .. " rawId=" .. rawId .. " mapped=" .. mapped
-                                    .. " ric=" .. tostring(aidToIsRIC[ad.auraInstanceID]))
-                            end
+                -- Diagnostic: if no defensive aura classified on this unit but the HELPFUL
+                -- list was non-empty, dump every aura's filter-flag signature once. This
+                -- reveals cases where Blizzard strips BIG/EXT/IMP flags on party targets
+                -- (e.g. Shield Wall silently dropping through the filter probes in 12.x).
+                if BIT.devLogMode and unclassifiedForDump and next(unclassifiedForDump) ~= nil
+                   and not next(defensiveAids) and not next(hasImp) then
+                    BIT.DevLog("[SCAN-DUMP] " .. tostring(name) .. " HELPFUL=" .. helpCount
+                        .. " no classified defensives — enumerating all HELPFUL:")
+                    for _, e in ipairs(unclassifiedForDump) do
+                        local aid = e.aid
+                        local function probe(filter)
+                            local ok, out = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID, unit, aid, filter)
+                            if not ok then return "?" end
+                            return (out == false) and "1" or "0"
                         end
+                        local flagStr =
+                            "I=" .. probe("HELPFUL|IMPORTANT") ..
+                            " B=" .. probe("HELPFUL|BIG_DEFENSIVE") ..
+                            " E=" .. probe("HELPFUL|EXTERNAL_DEFENSIVE") ..
+                            " R=" .. probe("HELPFUL|RAID") ..
+                            " Ric=" .. probe("HELPFUL|RAID_IN_COMBAT") ..
+                            " Np=" .. probe("HELPFUL|INCLUDE_NAME_PLATE_ONLY") ..
+                            " C=" .. probe("HELPFUL|CANCELABLE")
+                        BIT.DevLog("[SCAN-DUMP]   aid=" .. aid
+                            .. " icon=" .. tostring(e.icon)
+                            .. " dur=" .. tostring(e.dur)
+                            .. " rawId=" .. tostring(e.rawId)
+                            .. " " .. flagStr)
                     end
                 end
 
                 -- 2) Classify each defensive: EXTERNAL_DEFENSIVE wins over BIG_DEFENSIVE.
                 for aid in pairs(defensiveAids) do
-                    local isExt = false
-                    local okF, filtered = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID, unit, aid, "HELPFUL|EXTERNAL_DEFENSIVE")
-                    if okF and filtered == false then
-                        isExt = true
-                    end
-                    local auraType = isExt and "EXTERNAL_DEFENSIVE" or "BIG_DEFENSIVE"
+                    local auraType = hasExt[aid] and "EXTERNAL_DEFENSIVE" or "BIG_DEFENSIVE"
                     currentIds[aid] = { [auraType] = true }
                 end
 
@@ -1682,34 +1951,15 @@ do
                     end
                 end
 
-                -- 3) IMPORTANT can co-exist with either primary type.
-                local ok3, impAuras = pcall(C_UnitAuras.GetUnitAuras, unit, "HELPFUL|IMPORTANT")
-                if ok3 and impAuras then
-                    for _, ad in ipairs(impAuras) do
-                        if ad and ad.auraInstanceID then
-                            if currentIds[ad.auraInstanceID] then
-                                currentIds[ad.auraInstanceID]["IMPORTANT"] = true
-                            else
-                                currentIds[ad.auraInstanceID] = { IMPORTANT = true }
-                            end
-                            if ad.spellId and not aidToSpellId[ad.auraInstanceID] then
-                                local okS, ss = pcall(string.format, "%.0f", ad.spellId)
-                                local sid = okS and tonumber(ss)
-                                if sid then aidToSpellId[ad.auraInstanceID] = buffIdRemap[sid] or sid end
-                            end
-                            if not aidToIsRIC[ad.auraInstanceID] then
-                                local okR, ric = pcall(C_UnitAuras.IsAuraFilteredOutByInstanceID,
-                                                       unit, ad.auraInstanceID, "HELPFUL|RAID_IN_COMBAT")
-                                if okR then aidToIsRIC[ad.auraInstanceID] = (ric == false) end
-                            end
-                            if BIT.devLogMode then
-                                local rawId = ad.spellId or "?"
-                                local mapped = aidToSpellId[ad.auraInstanceID] or "?"
-                                BIT.DevLog("[SCAN-IMP] " .. tostring(name) .. " aid=" .. ad.auraInstanceID
-                                    .. " rawId=" .. rawId .. " mapped=" .. mapped
-                                    .. " ric=" .. tostring(aidToIsRIC[ad.auraInstanceID]))
-                            end
-                        end
+                -- 3) IMPORTANT can co-exist with either primary type. The per-aura filter
+                -- probes in step 1 already populated hasImp — just fold those flags into
+                -- currentIds here (covers IMPORTANT-only auras like Zephyr that are not
+                -- BIG/EXTERNAL).
+                for aid in pairs(hasImp) do
+                    if currentIds[aid] then
+                        currentIds[aid]["IMPORTANT"] = true
+                    else
+                        currentIds[aid] = { IMPORTANT = true }
                     end
                 end
 
@@ -1782,6 +2032,11 @@ do
                             -- Boss-applied M+ buffs are typically RIC; player defensives are not.
                             -- Rules with RaidInCombatExclude=true are skipped when RIC=true.
                             IsRaidInCombat = aidToIsRIC[aid],
+                            -- BuffDuration: duration value from the aura data. Not tainted
+                            -- in 12.x, so available even when SpellId was stripped. Used
+                            -- by FindGlowOnAuraAppear to disambiguate among same-signature
+                            -- rules in a class/spec when SpellId is unknown.
+                            BuffDuration = aidToDuration[aid],
                             Evidence     = evidence,
                             CastSnapshot = SnapshotCastTimes(),
                         }
@@ -4019,6 +4274,16 @@ function BIT.SyncCD:OnPartySpellCast(name, spellID)
         if ok2 and s then
             local ok3, e3 = pcall(function() return _syncSpellLookupStr[s] end)
             if ok3 and e3 then entry = e3 end
+        end
+    end
+    -- Last-resort laundry: push the tainted primitive through the hidden
+    -- Slider so Lua-side gets a fresh untainted integer. Required in 12.x
+    -- builds where neither direct index nor tostring succeed (party members
+    -- cast spells like Unending Resolve 104773).
+    if not entry and BIT.Taint and BIT.Taint.ResolveNumber then
+        local cleanNum = BIT.Taint:ResolveNumber(spellID)
+        if cleanNum then
+            entry = _syncSpellLookup[cleanNum]
         end
     end
     if entry then cleanID = entry.id end

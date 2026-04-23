@@ -321,10 +321,13 @@ do
 	end
 
 	local function SetupZoomReset()
-		if M.db.resetZoom.enable and not isResetting then
+		if isResetting then return end
+
+		local db = M.db.resetZoom
+		if db and db.enable then
 			isResetting = true
 
-			E:Delay(M.db.resetZoom.time, ResetZoom)
+			E:Delay(db.time, ResetZoom)
 		end
 	end
 
@@ -828,7 +831,7 @@ function M:Initialize()
 		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
 	}
 
-	if E.Retail or E.TBC then
+	if E.hasEditMode then
 		tinsert(killFrames, Minimap.ZoomIn)
 		tinsert(killFrames, Minimap.ZoomOut)
 

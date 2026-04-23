@@ -256,7 +256,7 @@ function NP:Construct_StackingBounds(nameplate)
 	return element
 end
 
-function NP:Construct_RaisedELement(nameplate)
+function NP:Construct_RaisedElement(nameplate)
 	local element = CreateFrame('Frame', '$parent_RaisedElement', nameplate)
 	element:EnableMouse(false)
 	element:SetFrameLevel(10)
@@ -294,7 +294,7 @@ function NP:StyleTargetPlate(nameplate)
 	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 
 	nameplate.StackingBounds = NP:Construct_StackingBounds(nameplate)
-	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
+	nameplate.RaisedElement = NP:Construct_RaisedElement(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
 	NP:Construct_ClassPowerTwo(nameplate)
@@ -338,7 +338,7 @@ function NP:StylePlate(nameplate)
 	nameplate.blizzAuras = { BuffList = {}, DebuffList = {}, CrowdControlList = {} }
 
 	nameplate.StackingBounds = NP:Construct_StackingBounds(nameplate)
-	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
+	nameplate.RaisedElement = NP:Construct_RaisedElement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate)
 	nameplate.Health.Text.frequentUpdates = .1
@@ -373,17 +373,19 @@ end
 
 do
 	local elements = {
-		'QuestIcons',
-		'Highlight',
-		'Portrait',
-		'PVPRole'
+		-- on the raised element
+		QuestIcons = true,
+		Portrait = true,
+		PVPRole = true,
+		-- on the nameplate itself
+		Highlight = false
 	}
 
 	function NP:ReparentNotNameonly(nameplate, parent)
-		for _, name in next, elements do
+		for name, raised in next, elements do
 			local element = nameplate[name]
 			if element then
-				element:SetParent(parent or (name == 'QuestIcons' and nameplate.RaisedElement) or nameplate)
+				element:SetParent(parent or (raised and nameplate.RaisedElement) or nameplate)
 			end
 		end
 	end
@@ -391,32 +393,34 @@ end
 
 do
 	local elements = {
-		'Health',
-		'HealthPrediction',
-		'Power',
-		'ClassificationIndicator',
-		'Castbar',
-		'ThreatIndicator',
-		'TargetIndicator',
-		'ClassPower',
-		'PvPIndicator',
-		'PvPClassificationIndicator',
-		'Auras_',
-		'Buffs_',
-		'Debuffs_'
+		-- on the raised element
+		ClassificationIndicator = true,
+		PvPIndicator = true,
+		PvPClassificationIndicator = true,
+		ThreatIndicator = true,
+		-- on the nameplate itself
+		Health = false,
+		HealthPrediction = false,
+		Power = false,
+		Castbar = false,
+		TargetIndicator = false,
+		ClassPower = false,
+		Auras_ = false,
+		Buffs_ = false,
+		Debuffs_ = false
 	}
 
 	if E.myclass == 'DEATHKNIGHT' then
-		tinsert(elements, 'Runes')
+		elements.Runes = false
 	elseif E.myclass == 'MONK' then
-		tinsert(elements, 'Stagger')
+		elements.Stagger = false
 	end
 
 	function NP:ReparentElements(nameplate, parent)
-		for _, name in next, elements do
+		for name, raised in next, elements do
 			local element = nameplate[name]
 			if element then
-				element:SetParent(parent or nameplate)
+				element:SetParent(parent or (raised and nameplate.RaisedElement) or nameplate)
 			end
 		end
 	end
@@ -1059,8 +1063,8 @@ function NP:UpdateColors()
 	NP.Colors.selection[13] = E:SetColorTable(NP.Colors.selection[13], NP.db.colors.selection[13])
 end
 
-function NP:SetStatusBarColor(bar, r, g, b)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+function NP:SetStatusBarColor(bar, r, g, b, a)
+	bar:GetStatusBarTexture():SetVertexColor(r, g, b, a)
 
 	if bar.bg then
 		bar.bg:SetVertexColor(r, g, b, NP.multiplier)

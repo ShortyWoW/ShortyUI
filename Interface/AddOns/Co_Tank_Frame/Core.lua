@@ -457,6 +457,7 @@ function Co_Tank_Frame_Mixin:AttachPrivateAnchors()
             parent = self.anchorFrames[i],
             showCountdownFrame = false, -- sweep + default centered text
             showCountdownNumbers = false,--default centered text
+            isContainer = false,
             durationAnchor = { -- custom text without sweep, shifted up
                 point = "BOTTOM",
                 relativeTo = self.anchorFrames[i],

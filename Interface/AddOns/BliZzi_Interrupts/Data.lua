@@ -89,7 +89,7 @@ local SPEC_REGISTRY = {
     -------------------- Monk --------------------
     [268] = { class="MONK", spellID=116705, name="Spear Hand Strike",        cd=15, icon=608940  },
     [269] = { class="MONK", spellID=116705, name="Spear Hand Strike",        cd=15, icon=608940  },
-    [270] = { class="MONK", spellID=116705, name="Spear Hand Strike",        cd=15, icon=608940  },
+    [270] = { class="MONK", noKick=true }, -- Mistweaver has no interrupt
 
     -------------------- Paladin --------------------
     [65]  = { class="PALADIN", noKick=true },

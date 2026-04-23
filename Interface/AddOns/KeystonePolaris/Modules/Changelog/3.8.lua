@@ -75,9 +75,11 @@ KeystonePolaris.Changelog[3800] = {
         ["zhCN"] = {},
         ["zhTW"] = {},
         ["enUS"] = {
+            "TOC bump for patch 12.0.5.",
             "Korean translation updated, thank you [BlueSea-jun].",
         },
         ["frFR"] = {
+            "Mise à jour du TOC pour le patch 12.0.5.",
             "Traduction coréenne mise à jour, merci à [BlueSea-jun].",
         },
         ["koKR"] = {},

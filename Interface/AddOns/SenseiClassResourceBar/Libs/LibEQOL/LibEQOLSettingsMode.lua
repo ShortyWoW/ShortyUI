@@ -1,4 +1,4 @@
-local MODULE_MAJOR, MINOR = "LibEQOLSettingsMode-1.0", 22000001
+local MODULE_MAJOR, MINOR = "LibEQOLSettingsMode-1.0", 23000001
 local LibStub = _G.LibStub
 assert(LibStub, MODULE_MAJOR .. " requires LibStub")
 
@@ -638,7 +638,7 @@ function lib:CreateInput(cat, data)
 	)
 
 	local initializer = Settings.CreateControlInitializer(
-		"LibEQOLa5db86f_InputControlTemplate",
+		"LibEQOL1652fd2_InputControlTemplate",
 		setting,
 		nil,
 		data.desc
@@ -798,7 +798,7 @@ function lib:CreateScrollDropdown(cat, data)
 		return container:GetData()
 	end
 
-	local initializer = Settings.CreateElementInitializer("LibEQOLa5db86f_ScrollDropdownTemplate", {
+	local initializer = Settings.CreateElementInitializer("LibEQOL1652fd2_ScrollDropdownTemplate", {
 		label = data.name or data.text or data.key,
 		optionsFunc = optionsFunc,
 		generator = data.generator,
@@ -831,7 +831,7 @@ function lib:CreateSoundDropdown(cat, data)
 		data.set,
 		data
 		)
-		local initializer = Settings.CreateElementInitializer("LibEQOLa5db86f_SoundDropdownTemplate", {
+		local initializer = Settings.CreateElementInitializer("LibEQOL1652fd2_SoundDropdownTemplate", {
 			setting = setting,
 			options = data.values or data.options,
 			optionfunc = data.optionfunc,
@@ -1095,7 +1095,7 @@ end
 
 function lib:CreateColorOverrides(cat, data)
 	assert(cat and data and data.entries, "category and entries required")
-	local initializer = Settings.CreateElementInitializer("LibEQOLa5db86f_ColorOverridesPanelNoHead", {
+	local initializer = Settings.CreateElementInitializer("LibEQOL1652fd2_ColorOverridesPanelNoHead", {
 		categoryID = cat:GetID(),
 		entries = data.entries,
 		getColor = data.getColor,
@@ -1164,7 +1164,7 @@ function lib:CreateMultiDropdown(cat, data)
 		function() end,
 		data
 	)
-	local initializer = Settings.CreateElementInitializer("LibEQOLa5db86f_MultiDropdownTemplate", {
+	local initializer = Settings.CreateElementInitializer("LibEQOL1652fd2_MultiDropdownTemplate", {
 		label = data.name or data.text or data.key,
 		tooltip = data.desc or data.cbDesc or data.tooltip,
 		options = data.values,
@@ -1337,7 +1337,7 @@ function lib:CreateText(cat, text, extra)
 	local data = normalizeNameData(text, extra)
 	local name = data.name or data.text
 	local init = Settings.CreateElementInitializer(
-		"LibEQOLa5db86f_SettingsListSectionHintTemplate",
+		"LibEQOL1652fd2_SettingsListSectionHintTemplate",
 		{ name = name }
 	)
 	addSearchTags(init, data.searchtags or name, name)

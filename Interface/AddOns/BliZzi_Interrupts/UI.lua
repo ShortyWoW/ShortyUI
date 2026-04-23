@@ -636,18 +636,29 @@ end
 -- Display update (called every 0.1s)
 ------------------------------------------------------------
 
+-- Match a bar by its owner name. Prefers the explicit _ownerName we stamp
+-- during ShowBar (raw character name), falls back to the display-stripped
+-- _lastName for forward-compat. Without this we'd miss the own bar whenever
+-- the player has a custom display name set (own name differs from UnitName).
+local function MatchBarByOwner(bar, playerName)
+    if not bar then return false end
+    if bar._ownerName then
+        return bar._ownerName == playerName
+    end
+    if not bar._lastName then return false end
+    local stripped = bar._lastName:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
+    return stripped == playerName
+end
+
 -- hide CD text while waiting for kick outcome
 function BIT.UI:SetPendingKickColor(playerName)
     for i = 1, 7 do
         local bar = bars[i]
-        if bar and bar._lastName then
-            local stripped = bar._lastName:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
-            if stripped == playerName then
-                bar._failedKick   = false
-                bar._successKick  = false
-                bar._pendingColor = true
-                break
-            end
+        if MatchBarByOwner(bar, playerName) then
+            bar._failedKick   = false
+            bar._successKick  = false
+            bar._pendingColor = true
+            break
         end
     end
 end
@@ -655,14 +666,11 @@ function BIT.UI:FlashFailedKick(playerName)
     if not BIT.db.showFailedKick then return end
     for i = 1, 7 do
         local bar = bars[i]
-        if bar and bar._lastName then
-            local stripped = bar._lastName:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
-            if stripped == playerName then
-                bar._failedKick   = true
-                bar._successKick  = false
-                bar._pendingColor = false
-                break
-            end
+        if MatchBarByOwner(bar, playerName) then
+            bar._failedKick   = true
+            bar._successKick  = false
+            bar._pendingColor = false
+            break
         end
     end
     if BIT.db.soundEnabled and (not BIT.db.soundOwnKickOnly or playerName == BIT.myName) then
@@ -675,14 +683,11 @@ function BIT.UI:MarkSuccessKick(playerName)
     if not BIT.db.showFailedKick then return end
     for i = 1, 7 do
         local bar = bars[i]
-        if bar and bar._lastName then
-            local stripped = bar._lastName:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
-            if stripped == playerName then
-                bar._successKick  = true
-                bar._failedKick   = false
-                bar._pendingColor = false
-                break
-            end
+        if MatchBarByOwner(bar, playerName) then
+            bar._successKick  = true
+            bar._failedKick   = false
+            bar._pendingColor = false
+            break
         end
     end
     if BIT.db.soundEnabled and (not BIT.db.soundOwnKickOnly or playerName == BIT.myName) then
@@ -901,9 +906,10 @@ function BIT.UI:UpdateDisplay()
 
     local iconOnly = IsIconOnlyMode()
 
-    local function ShowBar(bar, icon, nameStr, class, cdEnd, baseCd, isPetSpell, spellID)
+    local function ShowBar(bar, icon, nameStr, class, cdEnd, baseCd, isPetSpell, spellID, ownerName)
         bar:Show()
         bar._class      = class
+        bar._ownerName  = ownerName  -- raw character name for FlashFailedKick/MarkSuccessKick matching
         if bar._lastIcon ~= icon then
             bar.icon:SetTexture(icon)
             bar._lastIcon = icon
@@ -941,7 +947,7 @@ function BIT.UI:UpdateDisplay()
                 and C_SpellBook.IsSpellInSpellBook(BIT.mySpellID, Enum.SpellBookSpellBank.Pet))
             ShowBar(bar, mySpellData.icon, nameStr, BIT.myClass,
                 BIT.myKickCdEnd, BIT.myBaseCd or mySpellData.cd,
-                isPet and true or false, BIT.mySpellID)
+                isPet and true or false, BIT.mySpellID, BIT.myName)
             ApplyRotBorder(bar, BIT.myName)
             barIdx = barIdx + 1
         end
@@ -953,7 +959,7 @@ function BIT.UI:UpdateDisplay()
                 local bar     = bars[barIdx]
                 local nameStr = "|cFFFFFFFF" .. BIT.GetDisplayName(BIT.myName or "?") .. "|r"
                 ShowBar(bar, ekIcon or ekData.icon, nameStr, BIT.myClass,
-                    ekInfo.cdEnd, ekInfo.baseCd, nil, ekKey)
+                    ekInfo.cdEnd, ekInfo.baseCd, nil, ekKey, BIT.myName)
                 barIdx = barIdx + 1
             end
         end
@@ -991,7 +997,7 @@ function BIT.UI:UpdateDisplay()
             local bar     = bars[barIdx]
             local nameStr = "|cFFFFFFFF" .. BIT.GetDisplayName(name) .. "|r"
             ShowBar(bar, data.icon, nameStr, info.class,
-                info.cdEnd, info.baseCd or data.cd, nil, info.spellID)
+                info.cdEnd, info.baseCd or data.cd, nil, info.spellID, name)
             ApplyRotBorder(bar, name)
             barIdx = barIdx + 1
             if info.extraKicks then
@@ -1002,7 +1008,7 @@ function BIT.UI:UpdateDisplay()
                     if ekIcon or ekData then
                         local ebar = bars[barIdx]
                         ShowBar(ebar, ekIcon or ekData.icon, nameStr, info.class,
-                            ek.cdEnd, ek.baseCd, nil, ek.spellID)
+                            ek.cdEnd, ek.baseCd, nil, ek.spellID, name)
                         barIdx = barIdx + 1
                     end
                 end
@@ -1019,6 +1025,7 @@ function BIT.UI:UpdateDisplay()
             bar:Hide()
             bar._lastIcon  = nil
             bar._lastName  = nil
+            bar._ownerName = nil
             bar._lastCdSec = nil
             bar._cdVisible = nil
         end

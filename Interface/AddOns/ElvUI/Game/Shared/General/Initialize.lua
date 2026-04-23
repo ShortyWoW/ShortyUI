@@ -144,7 +144,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.10, '15.10-git', nil, true
+		return 15.12, '15.12-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -376,6 +376,12 @@ do
 	frame:SetScript('OnUpdate', TrackRate)
 	frame:SetScript('OnEvent', ResetRate)
 	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+end
+
+function E:CanFlagSlug(outline)
+	if not E.Retail or not E.global.general.fontSlug then return end
+
+	return not outline or (not strfind(outline, 'SHADOW') and not strfind(outline, 'MONOCHROME') and not strfind(outline, 'THICKOUTLINE'))
 end
 
 function E:SetCVar(cvar, value, ...)

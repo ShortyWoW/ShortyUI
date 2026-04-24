@@ -359,6 +359,16 @@ BIT.DEFAULTS = {
     showFailedKick    = true,
     showWelcome       = true,
     showSyncCDs       = true,
+    -- Interrupt tracker display mode
+    interruptDisplayMode           = "BARS",  -- "BARS" = classic window, "ATTACHED" = icons at unit frames
+    interruptAttachPos             = "RIGHT", -- "LEFT" | "RIGHT" | "TOP" | "BOTTOM"
+    interruptAttachOffsetX         = 0,
+    interruptAttachOffsetY         = 0,
+    interruptAttachIconSize        = 32,
+    interruptAttachCounterSize     = 14,
+    interruptAttachDesaturateOnCD  = true,
+    interruptAttachShowOwn         = true,    -- also show own icon on player frame
+    interruptAttachFrameProvider   = "AUTO",  -- reuses SyncCD provider detection: AUTO/BLIZZARD/ELVUI/CELL/GRID2/DANDERS
     syncCdModeGroup      = "ATTACH",   -- mode when in a party/group: "WINDOW", "ATTACH", "BARS"
     syncCdModeRaid       = "BARS",     -- mode when in a raid: "WINDOW", "ATTACH", "BARS"
     syncCdWindowCompact  = true,       -- Standalone Window: true = no background/title, just name+icons
@@ -392,12 +402,7 @@ BIT.DEFAULTS = {
     minimapButton          = true,     -- show minimap button
     minimapPos             = 225,      -- angle in degrees around minimap
     -- Icon Only mode (interrupt tracker)
-    iconOnlyMode           = false,    -- show only icons with CD counter, no bars/names
-    iconOnlySize           = 36,       -- icon size in Icon Only mode
-    iconOnlySpacing        = 4,        -- gap between icons in Icon Only mode
-    iconOnlyPerRow         = 7,        -- max icons per row before wrapping
-    iconOnlyCounterSize    = 14,       -- CD countdown font size on icon
-    iconOnlyGrowth         = "RIGHT",  -- "RIGHT" or "LEFT" — icon growth direction
+    -- (Icon Only Mode was removed in 3.3.8 — replaced by "Attached to Unit Frames".)
     -- Profile auto-apply toggles (per-spec and per-role override global/char profile)
     useSpecProfile         = false,    -- auto-apply profile matching current spec on login/spec change
     useRoleProfile         = false,    -- auto-apply profile matching current role (Tank/Healer/DPS)

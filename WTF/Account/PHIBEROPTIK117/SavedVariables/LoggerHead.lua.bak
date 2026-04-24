@@ -17,39 +17,60 @@ LoggerHeadDB = {
 ["Default"] = {
 ["log"] = {
 ["party"] = {
-["Magisters' Terrace"] = {
+["Azjol-Nerub"] = {
+false,
+},
+["Drak'Tharon Keep"] = {
+false,
+},
+["The Stonecore"] = {
+[24] = false,
+},
+["Maisara Caverns"] = {
+true,
+true,
+[23] = true,
+},
+["End Time"] = {
+[24] = true,
+},
+["Utgarde Keep"] = {
+false,
+},
+["Maraudon"] = {
+},
+["Temple of the Jade Serpent"] = {
+[24] = true,
+},
+["Stratholme"] = {
+false,
+},
+["Seat of the Triumvirate"] = {
+[8] = true,
+[2] = true,
+[23] = true,
+},
+["Windrunner Spire"] = {
 true,
 true,
 [23] = true,
 [8] = true,
 },
-["Azjol-Nerub"] = {
-false,
-},
-["Darkflame Cleft"] = {
-true,
-},
-["Scholomance"] = {
-},
-["Drak'Tharon Keep"] = {
-false,
-},
-["Lost City of the Tol'vir"] = {
+["Stormstout Brewery"] = {
 [24] = false,
 },
 ["The Vortex Pinnacle"] = {
 [24] = false,
 },
-["Upper Blackrock Spire"] = {
+["Lost City of the Tol'vir"] = {
+[24] = false,
+},
+["Gundrak"] = {
+false,
 },
 ["Pit of Saron"] = {
 [23] = true,
 [8] = true,
-},
-["Voidscar Arena"] = {
-true,
-true,
-[23] = true,
 },
 ["Throne of the Tides"] = {
 [24] = false,
@@ -62,42 +83,9 @@ true,
 [23] = true,
 [8] = true,
 },
-["Maisara Caverns"] = {
-true,
-true,
-[23] = true,
+["Upper Blackrock Spire"] = {
 },
-["Windrunner Spire"] = {
-true,
-true,
-[23] = true,
-[8] = true,
-},
-["End Time"] = {
-[24] = true,
-},
-["Utgarde Keep"] = {
-false,
-},
-["Blackrock Caverns"] = {
-[24] = false,
-},
-["Maraudon"] = {
-},
-["Den of Nalorakk"] = {
-true,
-true,
-[23] = true,
-},
-["Seat of the Triumvirate"] = {
-[8] = true,
-[2] = true,
-[23] = true,
-},
-["Gundrak"] = {
-false,
-},
-["Stratholme"] = {
+["Utgarde Pinnacle"] = {
 false,
 },
 ["The Blinding Vale"] = {
@@ -105,7 +93,29 @@ true,
 true,
 [23] = true,
 },
-["Utgarde Pinnacle"] = {
+["Shado-Pan Monastery"] = {
+[24] = false,
+},
+["Den of Nalorakk"] = {
+true,
+true,
+[23] = true,
+},
+["Voidscar Arena"] = {
+true,
+true,
+[23] = true,
+},
+["Blackrock Caverns"] = {
+[24] = false,
+},
+["Scholomance"] = {
+[24] = false,
+},
+["Darkflame Cleft"] = {
+true,
+},
+["The Nexus"] = {
 false,
 },
 ["Halls of Stone"] = {
@@ -114,8 +124,11 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["The Nexus"] = {
-false,
+["Magisters' Terrace"] = {
+true,
+true,
+[23] = true,
+[8] = true,
 },
 ["Lower Blackrock Spire"] = {
 false,
@@ -123,7 +136,7 @@ false,
 ["Blackrock Depths"] = {
 false,
 },
-["The Stonecore"] = {
+["Mogu'shan Palace"] = {
 [24] = false,
 },
 ["Murder Row"] = {

@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Precisionbtw-Area52 oh my god i bought them but didn't get them out of my mailbox lolol",
-"/cw Precisionbtw-Area52 1 sec",
-"/cw Precisionbtw-Area52 oh ffs... it says it failed to cancel",
 "/cw Precisionbtw-Area52 resent",
 "/cw Precisionbtw-Area52 Ty friendo",
+"/g if you need dps i'm down",
+"/g I'll tank a key if ya need one",
+"/g Sure",
 },
 ["ChatHistoryLog"] = {
 {

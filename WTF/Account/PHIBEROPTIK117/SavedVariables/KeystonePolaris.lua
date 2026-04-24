@@ -20,6 +20,16 @@ KeystonePolarisDB = {
 ["hide"] = true,
 },
 },
+["groupReminder"] = {
+["lastReminder"] = {
+["teleportSpellUnknown"] = true,
+["comment"] = "",
+["zone"] = "Skyreach (Mythic Keystone)",
+["roleText"] = "Damage",
+["groupName"] = "|Kk4|k",
+["playstyleText"] = "Relaxed",
+},
+},
 ["lastSeasonCheck"] = "2026-03-26",
 },
 },

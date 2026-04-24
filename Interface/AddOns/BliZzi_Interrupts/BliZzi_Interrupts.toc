@@ -2,7 +2,7 @@
 ## X-Min-Interface: 120000
 ## Title: |cff0091edBliZzi|r|cffffa300Interrupts|r
 ## Author: BliZzi1337
-## Version: 3.3.7
+## Version: 3.3.9
 ## DefaultState: Enabled
 ## Category: Combat
 ## IconTexture: Interface\AddOns\BliZzi_Interrupts\Media\icon

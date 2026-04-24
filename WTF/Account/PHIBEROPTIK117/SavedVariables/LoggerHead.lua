@@ -23,6 +23,10 @@ false,
 ["Drak'Tharon Keep"] = {
 false,
 },
+["Skyreach"] = {
+[23] = true,
+[8] = true,
+},
 ["The Stonecore"] = {
 [24] = false,
 },

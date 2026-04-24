@@ -1223,6 +1223,15 @@ local function GetPartyUnitFrame(unit)
     return finder(unit)
 end
 
+-- Exposed so other modules (e.g. BIT.UI.AttachedInterrupts) can resolve the
+-- same unit → unit-frame mapping without duplicating provider-detection code.
+-- Accepts an optional providerOverride so the caller can use its own setting.
+function BIT.SyncCD:GetPartyUnitFrame(unit, providerOverride)
+    local provider = providerOverride or (BIT.db and BIT.db.syncCdFrameProvider) or "AUTO"
+    local finder   = PROVIDER_FINDERS[provider] or FindAuto
+    return finder(unit)
+end
+
 ------------------------------------------------------------
 -- Detect available frame addons (for settings UI + first-run popup)
 ------------------------------------------------------------

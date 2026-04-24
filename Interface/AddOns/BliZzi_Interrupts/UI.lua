@@ -95,8 +95,12 @@ local function GetBarLayout()
 end
 
 -- Icon Only mode: returns true when the tracker should use compact icon grid
+-- Icon Only Mode was removed in 3.3.8 — the feature conflicted with the new
+-- Attached-to-Unit-Frames display and caused overlap confusion. The stub
+-- always returns false so the remaining code paths that branch on
+-- iconOnly stay dormant without needing line-by-line deletion.
 local function IsIconOnlyMode()
-    return BIT.db and BIT.db.iconOnlyMode
+    return false
 end
 
 ------------------------------------------------------------
@@ -120,8 +124,23 @@ function BIT.UI:CheckZoneVisibility(force)
         local settingsOpen = BIT_SettingsFrame and BIT_SettingsFrame:IsShown()
         local shouldShow = settingsOpen
             or (shouldShowByZone and (not db.hideOutOfCombat or BIT.inCombat))
-        local targetAlpha = shouldShow and (db.alpha or 1.0) or 0
-        FadeFrame(mainFrame, targetAlpha, 0.4)
+
+        -- Attached-display mode: hide the classic bars window entirely and
+        -- drive per-member icons instead.  Settings panel still previews the
+        -- bars if the user opens it with mode=ATTACHED (so they can switch
+        -- back and see the result).
+        if db.interruptDisplayMode == "ATTACHED" and not settingsOpen then
+            FadeFrame(mainFrame, 0, 0.2)
+        else
+            local targetAlpha = shouldShow and (db.alpha or 1.0) or 0
+            FadeFrame(mainFrame, targetAlpha, 0.4)
+        end
+    end
+
+    -- Rebuild attached icons on zone transitions — party frames can change
+    -- (e.g. entering/leaving an instance), so the anchor may have moved.
+    if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+        BIT.UI.AttachedInterrupts:Rebuild()
     end
 end
 
@@ -630,6 +649,12 @@ function BIT.UI:ApplyBorderToAll()
             self:ApplyBorderToFrame(bars[i])
         end
     end
+    -- Keep attached interrupt icons in sync with border-style changes.
+    -- _aiFrames is declared later in this file; guarded so load-order
+    -- quirks don't break this call if the module isn't ready yet.
+    if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts._ApplyBorderToAll then
+        BIT.UI.AttachedInterrupts:_ApplyBorderToAll()
+    end
 end
 
 ------------------------------------------------------------
@@ -709,6 +734,12 @@ local _restoShamanEntries = {}
 function BIT.UI:UpdateDisplay()
     if not BIT.ready or not shouldShowByZone then return end
     if BIT.db.hideOutOfCombat and not BIT.inCombat and not BIT.testMode then return end
+
+    -- Attached-icon mode runs on every tick and early-outs when disabled.
+    -- It's independent of the bar rendering below.
+    if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Tick then
+        BIT.UI.AttachedInterrupts:Tick()
+    end
 
     local db  = BIT.db
     local now = GetTime()
@@ -1680,4 +1711,311 @@ function BIT.UI:ShowRotationPanel()
 
     BuildRotationPanel()
     if rotationPanel:IsShown() then rotationPanel:Hide() else rotationPanel:Show() end
+end
+
+------------------------------------------------------------
+-- Attached Interrupt Icons
+--   Alternative display mode for the interrupt tracker. When active, the
+--   main bars window is hidden and each party member gets their own
+--   interrupt-spell icon attached next to their unit frame.
+--   The Blizzard/ElvUI/Cell/Grid2/Danders frame provider detection is
+--   shared with SyncCD (via BIT.SyncCD:GetPartyUnitFrame).
+------------------------------------------------------------
+BIT.UI.AttachedInterrupts = BIT.UI.AttachedInterrupts or {}
+local AI = BIT.UI.AttachedInterrupts
+local _aiFrames = {}  -- unit → { frame, icon, cooldown, text, _parent, memberName, spellID, baseCd, _lastCdEnd }
+
+local AI_POS = {
+    RIGHT  = { point = "LEFT",   relPoint = "RIGHT",  ox =  4, oy =  0 },
+    LEFT   = { point = "RIGHT",  relPoint = "LEFT",   ox = -4, oy =  0 },
+    TOP    = { point = "BOTTOM", relPoint = "TOP",    ox =  0, oy =  4 },
+    BOTTOM = { point = "TOP",    relPoint = "BOTTOM", ox =  0, oy = -4 },
+}
+
+local function AI_GetParent(unit)
+    if BIT.SyncCD and BIT.SyncCD.GetPartyUnitFrame then
+        local provider = BIT.db and BIT.db.interruptAttachFrameProvider or "AUTO"
+        return BIT.SyncCD:GetPartyUnitFrame(unit, provider)
+    end
+    return nil
+end
+
+local function AI_HideUnit(unit)
+    local ctx = _aiFrames[unit]
+    if ctx and ctx.frame then ctx.frame:Hide() end
+end
+
+local function AI_HideAll()
+    for unit in pairs(_aiFrames) do AI_HideUnit(unit) end
+end
+
+-- Pick the interrupt spell + icon for a member. Uses BIT.Self for the local
+-- player (the local player is NOT in BIT.Registry — that table only contains
+-- party members). Returns: spellID, cd, texture
+local function AI_ResolveSpell(memberName, unit)
+    if unit == "player" then
+        local sid = BIT.Self and BIT.Self.spellID
+        if sid and sid > 0 then
+            local data = BIT.ALL_INTERRUPTS and BIT.ALL_INTERRUPTS[sid]
+            local tex  = data and data.icon
+                         or (C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(sid))
+            local cd   = (BIT.Self and BIT.Self.cachedCd) or (BIT.Self and BIT.Self.baseCd)
+                         or (data and data.cd) or 15
+            return sid, cd, tex
+        end
+        -- Secondary fallback: class default (should rarely be needed after FindInterrupt runs).
+        local _, cls = UnitClass("player")
+        local def = cls and BIT.CLASS_INTERRUPTS and BIT.CLASS_INTERRUPTS[cls]
+        if def and def.id then
+            local data = BIT.ALL_INTERRUPTS and BIT.ALL_INTERRUPTS[def.id]
+            local tex  = data and data.icon
+                         or (C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(def.id))
+            return def.id, def.cd or 15, tex
+        end
+        return nil
+    end
+    local entry = BIT.Registry and BIT.Registry:Get(memberName)
+    if entry and entry.spellID and entry.spellID > 0 then
+        local data = BIT.ALL_INTERRUPTS and BIT.ALL_INTERRUPTS[entry.spellID]
+        local tex  = data and data.icon
+                     or (C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(entry.spellID))
+        local cd   = entry.baseCd or (data and data.cd) or 15
+        return entry.spellID, cd, tex
+    end
+    return nil
+end
+
+-- Resolve the current cdEnd for an attached-icon context.
+-- • Own player: BIT.Self.kickCdEnd (main kick) or extraKicks[spellID].cdEnd,
+--   falling back to C_Spell.GetSpellCooldown for talent CDR accuracy.
+-- • Party member: Registry entry's cdEnd (set by HandlePartyCast).
+local function AI_ResolveCdEnd(ctx, unit, now)
+    if unit == "player" then
+        local self_ = BIT.Self
+        if not self_ then return 0 end
+        local cdEnd = 0
+        if self_.extraKicks and self_.extraKicks[ctx.spellID]
+           and self_.extraKicks[ctx.spellID].cdEnd then
+            cdEnd = self_.extraKicks[ctx.spellID].cdEnd
+        elseif self_.spellID == ctx.spellID and self_.kickCdEnd then
+            cdEnd = self_.kickCdEnd
+        end
+        -- Refine with the live API — catches talent CDR (Seasoned Soldier,
+        -- Coldthirst, etc.) that shortens the CD after the start time.
+        -- Every access + compare on the returned struct is pcall-wrapped
+        -- because the fields can be tainted secret numbers in 12.x.
+        local okC, apiEnd = pcall(function()
+            local info = C_Spell.GetSpellCooldown(ctx.spellID)
+            if not info then return nil end
+            local st, du = info.startTime, info.duration
+            if not st or not du then return nil end
+            if du <= 0 then return nil end
+            return st + du
+        end)
+        if okC and apiEnd then
+            local okCmp = pcall(function()
+                if apiEnd > now then
+                    if cdEnd == 0 or apiEnd < cdEnd then cdEnd = apiEnd end
+                end
+            end)
+            -- If the compare itself threw (tainted apiEnd), silently fall back
+            -- to the already-computed cdEnd from Self.kickCdEnd.
+            if not okCmp then apiEnd = nil end
+        end
+        return cdEnd
+    end
+    local entry = BIT.Registry and BIT.Registry:Get(ctx.memberName)
+    return (entry and entry.cdEnd) or 0
+end
+
+local function AI_BuildOrUpdateIcon(unit, memberName)
+    local parent = AI_GetParent(unit)
+    if not parent then
+        AI_HideUnit(unit)
+        return
+    end
+    local spellID, baseCd, tex = AI_ResolveSpell(memberName, unit)
+    if not spellID or not tex then
+        AI_HideUnit(unit)
+        return
+    end
+
+    local db   = BIT.db
+    local size = db.interruptAttachIconSize or 32
+    local pos  = db.interruptAttachPos or "RIGHT"
+    local ox   = db.interruptAttachOffsetX or 0
+    local oy   = db.interruptAttachOffsetY or 0
+    local cSz  = db.interruptAttachCounterSize or 14
+    local cfg  = AI_POS[pos] or AI_POS.RIGHT
+
+    local ctx = _aiFrames[unit]
+    local needsNewFrame = not (ctx and ctx.frame and ctx._parent == parent)
+    if needsNewFrame then
+        if ctx and ctx.frame then
+            ctx.frame:Hide()
+            ctx.frame:SetParent(nil)
+        end
+        ctx = { _parent = parent }
+        local f = CreateFrame("Frame", nil, parent, "BackdropTemplate")
+        f:SetFrameLevel((parent:GetFrameLevel() or 1) + 10)
+        f.icon = f:CreateTexture(nil, "ARTWORK")
+        f.icon:SetAllPoints(f)
+        f.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        -- Cooldown swipe overlay (Blizzard cooldown frame handles the sweep)
+        f.cooldown = CreateFrame("Cooldown", nil, f, "CooldownFrameTemplate")
+        f.cooldown:SetAllPoints(f)
+        f.cooldown:SetDrawEdge(false)
+        f.cooldown:SetDrawBling(false)
+        f.cooldown:SetHideCountdownNumbers(true)  -- we draw our own text
+        -- Border overlay (renders above cooldown swipe so it stays visible)
+        local bo = CreateFrame("Frame", nil, f, "BackdropTemplate")
+        bo:SetAllPoints(f)
+        bo:SetFrameLevel(f:GetFrameLevel() + 5)
+        bo:EnableMouse(false)
+        f.iconBorderOverlay = bo
+        f.borderOverlay     = bo  -- alias so ApplyBorderToFrame works
+        -- Counter text (above everything)
+        f.text = f:CreateFontString(nil, "OVERLAY")
+        f.text:SetPoint("CENTER", f, "CENTER", 0, 0)
+        ctx.frame    = f
+        _aiFrames[unit] = ctx
+    end
+
+    local f = ctx.frame
+    f:SetSize(size, size)
+    f:ClearAllPoints()
+    f:SetPoint(cfg.point, parent, cfg.relPoint, cfg.ox + ox, cfg.oy + oy)
+    f.icon:SetTexture(tex)
+    -- Apply the same border style as the main bars.  ApplyBorderToFrame
+    -- calls ApplyBackdrop on f.borderOverlay AND f.iconBorderOverlay — we
+    -- aliased them to the same frame above, so a single backdrop draws.
+    if BIT.UI.ApplyBorderToFrame then
+        BIT.UI:ApplyBorderToFrame(f)
+    end
+
+    if BIT.Media and BIT.Media.SetFont then
+        BIT.Media:SetFont(f.text, cSz)
+    else
+        f.text:SetFont(STANDARD_TEXT_FONT, cSz, "OUTLINE")
+    end
+    f.text:SetTextColor(1, 1, 1)
+
+    ctx.memberName = memberName
+    ctx.spellID    = spellID
+    ctx.baseCd     = baseCd
+    ctx._lastCdEnd = nil  -- force a fresh swipe on the next tick
+    f:Show()
+end
+
+-- Called when party composition, settings or the display mode changes.
+function AI:Rebuild()
+    if not BIT.db or BIT.db.interruptDisplayMode ~= "ATTACHED" then
+        AI_HideAll()
+        return
+    end
+    -- Own icon is controlled by the "Show Own Icon on Player Frame" toggle
+    -- in the Attached Display section.
+    if BIT.db.interruptAttachShowOwn and BIT.myName then
+        AI_BuildOrUpdateIcon("player", BIT.myName)
+    else
+        AI_HideUnit("player")
+    end
+    -- Solo Mode: only the own icon is drawn, party members are skipped.
+    -- Mirror the behaviour of AddPartyBars() in the classic bars renderer.
+    if BIT.db.soloMode then
+        for i = 1, 4 do AI_HideUnit("party" .. i) end
+        return
+    end
+    for i = 1, 4 do
+        local u = "party" .. i
+        if UnitExists(u) then
+            local n = UnitName(u)
+            if n then AI_BuildOrUpdateIcon(u, n) end
+        else
+            AI_HideUnit(u)
+        end
+    end
+end
+
+-- Cheap tick (called from the 10Hz update loop). Only touches frames that
+-- are currently shown. Skips instantly when not in ATTACHED mode.
+function AI:Tick()
+    if not BIT.db or BIT.db.interruptDisplayMode ~= "ATTACHED" then return end
+    local now   = GetTime()
+    local desat = BIT.db.interruptAttachDesaturateOnCD and true or false
+    for unit, ctx in pairs(_aiFrames) do
+        local f = ctx.frame
+        if f and f:IsShown() then
+            local cdEnd = AI_ResolveCdEnd(ctx, unit, now)
+            if cdEnd and cdEnd > now then
+                local rem = cdEnd - now
+                f.text:SetText(tostring(math.floor(rem + 0.5)))
+                f.icon:SetDesaturated(desat)
+                if ctx._lastCdEnd ~= cdEnd then
+                    ctx._lastCdEnd = cdEnd
+                    -- Derive the swipe start time. For party: use Registry's
+                    -- lastKickAt; for self: cdEnd - baseCd; as a final fallback
+                    -- trust the base CD. All numeric comparisons are wrapped
+                    -- because durations/timestamps from the Blizzard APIs can
+                    -- be secret values in 12.x (comparison throws).
+                    local baseCd = ctx.baseCd or 15
+                    if unit ~= "player" then
+                        local entry = BIT.Registry and BIT.Registry:Get(ctx.memberName)
+                        if entry and entry.lastKickAt then
+                            local okD, derived = pcall(function()
+                                local v = cdEnd - entry.lastKickAt
+                                return v > 0 and v or nil
+                            end)
+                            if okD and derived then baseCd = derived end
+                        end
+                    else
+                        -- For own player, prefer the live API's duration. Fields
+                        -- on the returned SpellCooldownInfo can be tainted too,
+                        -- so every read + compare is pcall-guarded.
+                        local okC, info = pcall(C_Spell.GetSpellCooldown, ctx.spellID)
+                        if okC and info then
+                            local okDur, dur = pcall(function()
+                                local d = info.duration
+                                return (d and d > 0) and d or nil
+                            end)
+                            if okDur and dur then baseCd = dur end
+                        end
+                    end
+                    local okCmp, isNeg = pcall(function() return baseCd <= 0 end)
+                    if not okCmp or isNeg then baseCd = ctx.baseCd or 15 end
+                    -- SetCooldown may propagate taint; wrap to keep the tick loop alive.
+                    pcall(function()
+                        f.cooldown:SetCooldown(cdEnd - baseCd, baseCd)
+                    end)
+                end
+            else
+                if ctx._lastCdEnd ~= 0 then
+                    ctx._lastCdEnd = 0
+                    f.cooldown:Clear()
+                end
+                f.text:SetText("")
+                f.icon:SetDesaturated(false)
+            end
+        end
+    end
+end
+
+-- Called from the main UI rebuild path to ensure the standalone bars window
+-- is hidden when we're in ATTACHED mode (and visible otherwise).
+function AI:ApplyModeToMainFrame(frame)
+    if not frame then return end
+    if BIT.db and BIT.db.interruptDisplayMode == "ATTACHED" then
+        frame:Hide()
+    end
+end
+
+-- Reapply border style to every attached icon. Hooked into BIT.UI:ApplyBorderToAll
+-- so border changes from the Size & Font settings page propagate here too.
+function AI:_ApplyBorderToAll()
+    if not BIT.UI.ApplyBorderToFrame then return end
+    for _, ctx in pairs(_aiFrames) do
+        if ctx.frame then
+            BIT.UI:ApplyBorderToFrame(ctx.frame)
+        end
+    end
 end

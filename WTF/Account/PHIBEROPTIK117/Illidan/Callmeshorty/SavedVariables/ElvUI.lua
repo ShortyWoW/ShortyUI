@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/key",
 "/2 LF rc |cnIQ4:|Hitem:244570::::::::90:581::13:1:3524:5:40:3999:38:4:47:232875:49:245786:50:-2147480303:::::|h[Silvermoon Agent's Coat |A:Professions-ChatIcon-Quality-Tier1:17:15::1|a]|h|r r5",
 "/cw Moneyflowz-Illidan sent",
 "/cw Moneyflowz-Illidan ty fam",
 "/simc",
+"/keys",
 },
 ["ChatHistoryLog"] = {
 {

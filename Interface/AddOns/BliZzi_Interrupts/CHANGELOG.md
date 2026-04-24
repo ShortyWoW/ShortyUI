@@ -1,3 +1,38 @@
+# BliZzi Interrupts 3.3.9
+
+## Display mode cleanup & settings restructure
+- **Icon Only Mode removed.** The compact horizontal icon strip conflicted visually and behaviourally with the new *Attached to Unit Frames* mode introduced in 3.3.8. The attached display is a strictly better replacement — each player gets their own icon at their unit frame, with cooldown sweep and counter text.
+- **Settings page reorganized.** All display-scoped options now live under *Interrupts → Display Mode*, and the section adapts to the selected mode:
+  - **Bars / Window** mode shows: Lock Position, Grow Upward, Icon Position, Bar Fill Mode, Sort Order.
+  - **Attached to Unit Frames** mode shows: the full *Attached Display* block (Frame Provider, Attach Position, Offset X/Y, Icon Size, Counter Text Size, Desaturate on Cooldown, Show Own Icon on Player Frame).
+  - Options not relevant to the current mode collapse to zero height — no empty sections, no clutter.
+- **Live preview.** Switching the Display Mode dropdown re-layouts the settings page immediately; no `/reload` required to see mode-specific options appear or disappear.
+
+## Solo Mode + Attached display
+- **Solo Mode now respects Attached mode.** Previously Solo Mode only hid party bars in the classic window — attached party icons stayed visible. Both renderers now honor the toggle identically, and flipping Solo Mode updates the attached icons live.
+
+## Internal
+- `LayoutWidgets` now supports `_dynamic` section headers, so hiding a section also collapses all its children to zero height without needing a page rebuild. Used by the new Display Mode grouping above.
+
+---
+
+# BliZzi Interrupts 3.3.8
+
+## New display mode: Attached to Unit Frames
+- **Interrupt tracker can now attach icons directly to party unit frames** instead of showing a standalone bars window. Each party member gets exactly one icon — their class/spec interrupt spell — anchored next to their frame, with a cooldown sweep and countdown text.
+- Shared frame-provider detection with Party CDs: Blizzard, ElvUI, Cell, Grid2 and Danders/D4 are auto-detected (or can be pinned explicitly).
+- Settings under *Interrupts → Attached Display*:
+  - Display Mode: `Bars / Window` (classic) or `Attached to Unit Frames`
+  - Attach Position: Left / Right / Top / Bottom
+  - Offset X / Y (-100 to 100 px)
+  - Icon Size (12–64 px)
+  - Counter Text Size (6–28 px)
+  - Desaturate on Cooldown (toggle)
+  - Show Own Icon on Player Frame (toggle)
+- The classic bars window is hidden automatically while Attached Mode is active; switching back brings it right back. Settings panel always previews the bars window when open so layout tweaks stay visible.
+
+---
+
 # BliZzi Interrupts 3.3.7
 
 ## WoW 12.0.5 compatibility

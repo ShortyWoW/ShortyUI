@@ -16,7 +16,7 @@
 ]]
 
 BIT = BIT or {}
-BIT.VERSION    = "3.3.7"
+BIT.VERSION    = "3.3.9"
 BIT.SyncCD      = BIT.SyncCD      or {}
 BIT.SyncCD.users = BIT.SyncCD.users or {}  -- name → {class, specID} — only HELLO senders, never touched by interrupt system
 BIT.syncCdState = BIT.syncCdState or {}
@@ -2629,6 +2629,9 @@ eventHandlers["GROUP_ROSTER_UPDATE"] = function()
     BIT:CleanPartyList()
     BIT:RegisterPartyWatchers()
     BIT:AutoRegisterPartyByClass()
+    if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+        BIT.UI.AttachedInterrupts:Rebuild()
+    end
     C_Timer.After(1, function()
         -- Retry watcher registration: UnitExists may have been false on the
         -- immediate call above (WoW hasn't populated the unit data yet).
@@ -2637,6 +2640,9 @@ eventHandlers["GROUP_ROSTER_UPDATE"] = function()
         BIT.Self:BroadcastHello()
         BIT.Self:BroadcastSyncHello()
         if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end
+        if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+            BIT.UI.AttachedInterrupts:Rebuild()
+        end
     end)
     C_Timer.After(3, function()
         -- Second retry for slow-loading instances/phasing
@@ -2725,6 +2731,10 @@ eventHandlers["PLAYER_ENTERING_WORLD"] = function()
     C_Timer.After(4,  function() if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end end)
     C_Timer.After(8,  function() if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end end)
     C_Timer.After(15, function() if BIT.SyncCD and BIT.SyncCD.Rebuild then BIT.SyncCD:Rebuild() end end)
+    -- Same staggered cadence for attached-interrupt icons — unit-frame addons
+    -- often create their frames 1-3 seconds after login/zone transition.
+    C_Timer.After(1, function() if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then BIT.UI.AttachedInterrupts:Rebuild() end end)
+    C_Timer.After(4, function() if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then BIT.UI.AttachedInterrupts:Rebuild() end end)
     -- Smart Misdirect: zone transitions / instance boundaries change unit tokens.
     if BIT.SmartMisdirect and BIT.SmartMisdirect.QueueUpdate then
         C_Timer.After(2, function() BIT.SmartMisdirect:QueueUpdate() end)

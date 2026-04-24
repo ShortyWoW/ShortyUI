@@ -3,15 +3,15 @@ KeystoneLootDB = {
 ["currentSeason"] = 16,
 ["settings"] = {
 ["keystoneTooltip"] = true,
-["favoriteTooltip"] = true,
-["hiddenCharacters"] = {
-},
 ["highlighting"] = {
 ["versatility"] = true,
 ["mastery"] = true,
 ["haste"] = true,
 ["crit"] = true,
 ["noStats"] = true,
+},
+["favoriteTooltip"] = true,
+["hiddenCharacters"] = {
 },
 ["lootReminder"] = {
 ["dungeons"] = true,

@@ -1092,15 +1092,25 @@ local function LayoutWidgets(widgetList)
     local currentSection = nil
     for _, w in ipairs(widgetList) do
         if w._stateKey then
-            -- section header — always show
+            -- Section header. Supports `_dynamic` + `_update` the same way
+            -- child widgets do: if the update callback hid the header,
+            -- children of this section are collapsed to zero height too.
             currentSection = w
-            w:ClearAllPoints()
-            w:SetPoint("TOPLEFT", contentChild, "TOPLEFT", CONTENT_PAD, y)
-            w:Show()
-            y = y - SECTION_H - 2
+            if w._dynamic and not w:IsShown() then
+                -- Entire section hidden — no layout slot, no gap.
+            else
+                w:ClearAllPoints()
+                w:SetPoint("TOPLEFT", contentChild, "TOPLEFT", CONTENT_PAD, y)
+                w:Show()
+                y = y - SECTION_H - 2
+            end
         elseif currentSection then
             -- child of a section
-            if currentSection._expanded then
+            local sectionHidden = currentSection._dynamic and not currentSection:IsShown()
+            if sectionHidden then
+                -- Parent section is hidden → hide child entirely, no gap.
+                w:Hide()
+            elseif currentSection._expanded then
                 if w._dynamic and not w:IsShown() then
                     -- conditional widget hidden by _update — skip, no gap
                 else
@@ -1231,66 +1241,220 @@ local function BuildInterrupts()
         function(v) if v then BIT:StartTestMode() else BIT:StopTestMode() end end)
     w[#w+1] = CreateToggle(p, LS("SEC_SOLO_MODE", "Solo Mode") .. " |cFF888888(" .. LS("SEC_SOLO_MODE_HINT", "only your own interrupt is tracked") .. ")|r",
         function() return BIT.db.soloMode end,
-        function(v) BIT.db.soloMode = v end)
-    w[#w+1] = CreateToggle(p, LS("CB_LOCK_POSITION", "Lock Position"),
-        function() return BIT.db.locked end,
-        function(v) BIT.db.locked = v end)
-    w[#w+1] = CreateToggle(p, LS("CB_GROW_UPWARD", "Grow Upward"),
-        function() return BIT.db.growUpward end,
-        function(v) BIT.db.growUpward = v end)
+        function(v)
+            BIT.db.soloMode = v
+            if BIT.UI.UpdateDisplay then BIT.UI:UpdateDisplay() end
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end)
     w[#w+1] = CreateToggle(p, LS("CB_HIDE_OUT_OF_COMBAT", "Hide Out of Combat"),
         function() return BIT.db.hideOutOfCombat end,
         function(v) BIT.db.hideOutOfCombat = v end)
     w[#w+1] = CreateToggle(p, LS("ROT_ENABLE", "Enable Kick Rotation"),
         function() return BIT.db.rotationEnabled end,
         function(v) BIT.db.rotationEnabled = v end)
-    w[#w+1] = CreateDropdown(p, LS("SEC_ICON_POSITION", "Icon Position"),
-        { { value = "LEFT", label = "Left" },
-          { value = "RIGHT", label = "Right" } },
-        function() return BIT.db.iconSide or "LEFT" end,
-        function(v) BIT.db.iconSide = v end)
-    w[#w+1] = CreateDropdown(p, LS("SEC_BAR_FILL", "Bar Fill Mode"),
-        { { value = "DRAIN", label = "Drain" },
-          { value = "FILL",  label = "Fill" } },
-        function() return BIT.db.barFillMode or "DRAIN" end,
-        function(v) BIT.db.barFillMode = v end)
-    w[#w+1] = CreateDropdown(p, LS("SEC_SORT_ORDER", "Sort Order"),
-        { { value = "NONE",    label = "None" },
-          { value = "CD_ASC",  label = "CD Ascending" },
-          { value = "CD_DESC", label = "CD Descending" } },
-        function() return BIT.db.sortMode or "NONE" end,
-        function(v) BIT.db.sortMode = v end)
     w[#w+1] = CreateSlider(p, LS("SL_OPACITY", "Opacity"), 10, 100, 5,
         function() return (BIT.db.alpha or 1) * 100 end,
         function(v) BIT.db.alpha = v / 100 end,
         function(v) return math.floor(v) .. "%" end)
 
-    -- Icon Only Mode
-    w[#w+1] = CreateSectionHeader(p, "Icon Only Mode", "sui_int_icononly")
-    w[#w+1] = CreateToggle(p, "Icon Only Mode",
-        function() return BIT.db.iconOnlyMode end,
-        function(v) BIT.db.iconOnlyMode = v end)
-    w[#w+1] = CreateSlider(p, "Icon Size", 16, 64, 1,
-        function() return BIT.db.iconOnlySize or 36 end,
-        function(v) BIT.db.iconOnlySize = v end,
-        function(v) return math.floor(v) .. "px" end)
-    w[#w+1] = CreateSlider(p, "Icon Spacing", 0, 16, 1,
-        function() return BIT.db.iconOnlySpacing or 4 end,
-        function(v) BIT.db.iconOnlySpacing = v end,
-        function(v) return math.floor(v) .. "px" end)
-    w[#w+1] = CreateSlider(p, "Icons Per Row", 1, 7, 1,
-        function() return BIT.db.iconOnlyPerRow or 7 end,
-        function(v) BIT.db.iconOnlyPerRow = v end,
-        function(v) return math.floor(v) end)
-    w[#w+1] = CreateSlider(p, "Counter Font Size", 8, 28, 1,
-        function() return BIT.db.iconOnlyCounterSize or 14 end,
-        function(v) BIT.db.iconOnlyCounterSize = v end,
-        function(v) return math.floor(v) .. "px" end)
-    w[#w+1] = CreateDropdown(p, "Growth Direction",
-        { { value = "RIGHT", label = "Left → Right" },
-          { value = "LEFT",  label = "Right → Left" } },
-        function() return BIT.db.iconOnlyGrowth or "RIGHT" end,
-        function(v) BIT.db.iconOnlyGrowth = v end)
+    -- Display mode selector + mode-scoped bar-window options
+    w[#w+1] = CreateSectionHeader(p, "Display Mode", "sui_int_displaymode")
+
+    -- Forward declarations so the dropdown setter can re-evaluate the
+    -- mode-scoped widgets on change and trigger a page re-layout.
+    local lockToggle, growToggle, iconPosDD, barFillDD, sortDD
+    local function _syncBarsOnlyVisibility()
+        local bars = (BIT.db.interruptDisplayMode or "BARS") == "BARS"
+        local setVis = function(wd)
+            if not wd then return end
+            if bars then wd:Show() else wd:Hide() end
+        end
+        setVis(lockToggle)
+        setVis(growToggle)
+        setVis(iconPosDD)
+        setVis(barFillDD)
+        setVis(sortDD)
+        if pages and pages[activePage] and pages[activePage].layout then
+            pages[activePage].layout()
+        end
+    end
+
+    -- Forward declaration: the Attached-Display sync closure is defined
+    -- later in this function (after the section is built). Calling it via
+    -- a local upvalue that gets assigned before the first layout pass.
+    local _syncAttachedVisibility = function() end  -- replaced below
+
+    w[#w+1] = CreateDropdown(p, "Display Mode",
+        { { value = "BARS",     label = "Bars / Window" },
+          { value = "ATTACHED", label = "Attached to Unit Frames" } },
+        function() return BIT.db.interruptDisplayMode or "BARS" end,
+        function(v)
+            BIT.db.interruptDisplayMode = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+            if BIT.UI.CheckZoneVisibility then BIT.UI:CheckZoneVisibility(true) end
+            _syncBarsOnlyVisibility()
+            _syncAttachedVisibility()
+        end)
+
+    -- Bars/Window-only options: Lock Position + Grow Upward. These belong
+    -- to the classic bars renderer and make no sense for the attached
+    -- per-member icons, so they are hidden when mode is "ATTACHED".
+    lockToggle = CreateToggle(p, LS("CB_LOCK_POSITION", "Lock Position"),
+        function() return BIT.db.locked end,
+        function(v) BIT.db.locked = v end)
+    lockToggle._dynamic = true
+    lockToggle._update  = _syncBarsOnlyVisibility
+    w[#w+1] = lockToggle
+
+    growToggle = CreateToggle(p, LS("CB_GROW_UPWARD", "Grow Upward"),
+        function() return BIT.db.growUpward end,
+        function(v) BIT.db.growUpward = v end)
+    growToggle._dynamic = true
+    growToggle._update  = _syncBarsOnlyVisibility
+    w[#w+1] = growToggle
+
+    iconPosDD = CreateDropdown(p, LS("SEC_ICON_POSITION", "Icon Position"),
+        { { value = "LEFT",  label = "Left" },
+          { value = "RIGHT", label = "Right" } },
+        function() return BIT.db.iconSide or "LEFT" end,
+        function(v) BIT.db.iconSide = v end)
+    iconPosDD._dynamic = true
+    iconPosDD._update  = _syncBarsOnlyVisibility
+    w[#w+1] = iconPosDD
+
+    barFillDD = CreateDropdown(p, LS("SEC_BAR_FILL", "Bar Fill Mode"),
+        { { value = "DRAIN", label = "Drain" },
+          { value = "FILL",  label = "Fill" } },
+        function() return BIT.db.barFillMode or "DRAIN" end,
+        function(v) BIT.db.barFillMode = v end)
+    barFillDD._dynamic = true
+    barFillDD._update  = _syncBarsOnlyVisibility
+    w[#w+1] = barFillDD
+
+    sortDD = CreateDropdown(p, LS("SEC_SORT_ORDER", "Sort Order"),
+        { { value = "NONE",    label = "None" },
+          { value = "CD_ASC",  label = "CD Ascending" },
+          { value = "CD_DESC", label = "CD Descending" } },
+        function() return BIT.db.sortMode or "NONE" end,
+        function(v) BIT.db.sortMode = v end)
+    sortDD._dynamic = true
+    sortDD._update  = _syncBarsOnlyVisibility
+    w[#w+1] = sortDD
+
+    -- Apply initial visibility right after creation so the first layout
+    -- pass already honors the current display mode.
+    _syncBarsOnlyVisibility()
+
+    -- Attached Display section. Every widget (including the section header)
+    -- is marked _dynamic so the whole block collapses to zero height when
+    -- the user is in Bars/Window mode. `_syncAttachedOnlyVisibility` owns
+    -- the show/hide logic and is invoked by the Display Mode dropdown via
+    -- the forward-declared `_syncAttachedVisibility` upvalue above.
+    local attachedWidgets = {}  -- collect references for the visibility updater
+    local function _syncAttachedOnlyVisibility()
+        local attached = (BIT.db.interruptDisplayMode or "BARS") == "ATTACHED"
+        for _, wd in ipairs(attachedWidgets) do
+            if attached then wd:Show() else wd:Hide() end
+        end
+        if pages and pages[activePage] and pages[activePage].layout then
+            pages[activePage].layout()
+        end
+    end
+    _syncAttachedVisibility = _syncAttachedOnlyVisibility  -- wire forward-decl
+
+    -- Helper: register a widget into both the page widget list and the
+    -- local attachedWidgets group, stamping it as _dynamic with the right
+    -- _update callback so a full page re-layout respects its visibility.
+    local function registerAttached(wd)
+        wd._dynamic = true
+        wd._update  = _syncAttachedOnlyVisibility
+        attachedWidgets[#attachedWidgets + 1] = wd
+        w[#w + 1] = wd
+    end
+
+    registerAttached(CreateSectionHeader(p, "Attached Display", "sui_int_attached"))
+    -- Frame Provider (reuses the SyncCD provider-detection list)
+    local attachProviderOpts = (BIT.SyncCD and BIT.SyncCD.GetAvailableProviders)
+        and BIT.SyncCD:GetAvailableProviders()
+        or  { { value = "AUTO", label = "Auto Detect" }, { value = "BLIZZARD", label = "Blizzard" } }
+    registerAttached(CreateDropdown(p, "Attach to Frames",
+        attachProviderOpts,
+        function() return BIT.db.interruptAttachFrameProvider or "AUTO" end,
+        function(v)
+            BIT.db.interruptAttachFrameProvider = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end))
+    registerAttached(CreateDropdown(p, "Attach Position",
+        { { value = "LEFT",   label = "Left" },
+          { value = "RIGHT",  label = "Right" },
+          { value = "TOP",    label = "Top" },
+          { value = "BOTTOM", label = "Bottom" } },
+        function() return BIT.db.interruptAttachPos or "RIGHT" end,
+        function(v)
+            BIT.db.interruptAttachPos = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end))
+    registerAttached(CreateSlider(p, "Offset X", -100, 100, 1,
+        function() return BIT.db.interruptAttachOffsetX or 0 end,
+        function(v)
+            BIT.db.interruptAttachOffsetX = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end,
+        function(v) return math.floor(v) .. "px" end))
+    registerAttached(CreateSlider(p, "Offset Y", -100, 100, 1,
+        function() return BIT.db.interruptAttachOffsetY or 0 end,
+        function(v)
+            BIT.db.interruptAttachOffsetY = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end,
+        function(v) return math.floor(v) .. "px" end))
+    registerAttached(CreateSlider(p, "Icon Size", 12, 64, 1,
+        function() return BIT.db.interruptAttachIconSize or 32 end,
+        function(v)
+            BIT.db.interruptAttachIconSize = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end,
+        function(v) return math.floor(v) .. "px" end))
+    registerAttached(CreateSlider(p, "Counter Text Size", 6, 28, 1,
+        function() return BIT.db.interruptAttachCounterSize or 14 end,
+        function(v)
+            BIT.db.interruptAttachCounterSize = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end,
+        function(v) return math.floor(v) .. "px" end))
+    registerAttached(CreateToggle(p, "Desaturate on Cooldown",
+        function() return BIT.db.interruptAttachDesaturateOnCD ~= false end,
+        function(v) BIT.db.interruptAttachDesaturateOnCD = v end))
+    registerAttached(CreateToggle(p, "Show Own Icon on Player Frame",
+        function() return BIT.db.interruptAttachShowOwn ~= false end,
+        function(v)
+            BIT.db.interruptAttachShowOwn = v
+            if BIT.UI.AttachedInterrupts and BIT.UI.AttachedInterrupts.Rebuild then
+                BIT.UI.AttachedInterrupts:Rebuild()
+            end
+        end))
+
+    -- Apply initial visibility so the first layout pass respects the mode.
+    _syncAttachedOnlyVisibility()
+
+    -- (Icon Only Mode was removed in 3.3.8 — use the new "Attached to Unit
+    --  Frames" display mode above for a compact per-player layout.)
 
     -- Visibility
     w[#w+1] = CreateSectionHeader(p, "Visibility", "sui_int_vis")

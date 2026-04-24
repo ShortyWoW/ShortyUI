@@ -501,6 +501,15 @@ local function CreateSectionHeader(parent, label, stateKey)
             BIT.db.sectionExpanded[f._stateKey] = f._expanded
         end
         UpdateArrow()
+        -- When re-expanding, run every `_update` callback first so that
+        -- `_dynamic` widgets reclaim their correct visibility. Collapsing
+        -- hides children via `w:Hide()`, which wipes the state that the
+        -- _update closures normally maintain — without this pass, those
+        -- widgets would stay hidden in `IsShown()` terms and the layout
+        -- would continue skipping them.
+        if f._expanded and pages[activePage] and pages[activePage].refresh then
+            pages[activePage].refresh()
+        end
         if pages[activePage] and pages[activePage].layout then
             pages[activePage].layout()
         end
@@ -1349,11 +1358,12 @@ local function BuildInterrupts()
     -- pass already honors the current display mode.
     _syncBarsOnlyVisibility()
 
-    -- Attached Display section. Every widget (including the section header)
-    -- is marked _dynamic so the whole block collapses to zero height when
-    -- the user is in Bars/Window mode. `_syncAttachedOnlyVisibility` owns
-    -- the show/hide logic and is invoked by the Display Mode dropdown via
-    -- the forward-declared `_syncAttachedVisibility` upvalue above.
+    -- Attached-mode widgets. All of these live directly under the existing
+    -- "Display Mode" section header (no separate section of their own), are
+    -- marked _dynamic, and hide away when the user is in Bars/Window mode.
+    -- `_syncAttachedOnlyVisibility` owns the show/hide logic and is invoked
+    -- by the Display Mode dropdown via the forward-declared
+    -- `_syncAttachedVisibility` upvalue above.
     local attachedWidgets = {}  -- collect references for the visibility updater
     local function _syncAttachedOnlyVisibility()
         local attached = (BIT.db.interruptDisplayMode or "BARS") == "ATTACHED"
@@ -1376,7 +1386,9 @@ local function BuildInterrupts()
         w[#w + 1] = wd
     end
 
-    registerAttached(CreateSectionHeader(p, "Attached Display", "sui_int_attached"))
+    -- All attached-display widgets live directly under the "Display Mode"
+    -- section (no separate "Attached Display" header). They appear only
+    -- when the Display Mode dropdown is set to "Attached to Unit Frames".
     -- Frame Provider (reuses the SyncCD provider-detection list)
     local attachProviderOpts = (BIT.SyncCD and BIT.SyncCD.GetAvailableProviders)
         and BIT.SyncCD:GetAvailableProviders()
@@ -1704,6 +1716,36 @@ local function BuildColors()
         function() return BIT.db.titleColorG or 0.867 end,
         function() return BIT.db.titleColorB or 0.867 end,
         function(r, g, b) BIT.db.titleColorR = r; BIT.db.titleColorG = g; BIT.db.titleColorB = b end)
+
+    -- ── Name Color ───────────────────────────────────────────
+    -- Controls the player-name text color in the interrupt tracker bars.
+    -- The color picker is hidden while the Use-Class-Colors toggle is on,
+    -- since the per-class color wins in that mode.
+    w[#w+1] = CreateSectionHeader(p, "Name Color", "sui_col_name")
+    w[#w+1] = CreateToggle(p, "Use Class Colors (Names)",
+        function() return BIT.db.nameColorUseClass end,
+        function(v)
+            BIT.db.nameColorUseClass = v
+            if pages[activePage] and pages[activePage].refresh then pages[activePage].refresh() end
+            if pages[activePage] and pages[activePage].layout  then pages[activePage].layout()  end
+            if BIT.UI.UpdateDisplay then BIT.UI:UpdateDisplay() end
+        end)
+    local nameSwatch = CreateColorSwatch(p, "Name Color",
+        function() return BIT.db.nameColorR or 1.0 end,
+        function() return BIT.db.nameColorG or 1.0 end,
+        function() return BIT.db.nameColorB or 1.0 end,
+        function(r, g, b)
+            BIT.db.nameColorR = r
+            BIT.db.nameColorG = g
+            BIT.db.nameColorB = b
+            if BIT.UI.UpdateDisplay then BIT.UI:UpdateDisplay() end
+        end)
+    nameSwatch._dynamic = true
+    nameSwatch._update  = function()
+        if BIT.db.nameColorUseClass then nameSwatch:Hide() else nameSwatch:Show() end
+    end
+    nameSwatch._update()
+    w[#w+1] = nameSwatch
 
     w[#w+1] = CreateSectionHeader(p, "Background Color", "sui_col_bg")
     w[#w+1] = CreateColorSwatch(p, "Background Color",
@@ -2837,6 +2879,13 @@ function BIT.SettingsUI:ShowPage(name)
             if w._update then w._update() end
         end
     end
+
+    -- Run every widget's `_update` callback now that `page.layout` exists.
+    -- This is essential for `_dynamic` widgets whose visibility depends on
+    -- other settings (e.g. mode-scoped options in the Interrupts page):
+    -- their `_update` closures call `page.layout()` internally, and that
+    -- closure only has a layout to invoke after this function is assigned.
+    page.refresh()
     page.layout()
 
     contentScroll:SetVerticalScroll(0)

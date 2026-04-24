@@ -23,12 +23,22 @@ local BUILTIN_FONTS = {
 }
 
 -- Built-in WoW border textures (always available)
+-- Built-in WoW border textures. Only paths that work as Blizzard
+-- backdrop `edgeFile` (8-direction sliced edge textures) are kept.
+-- Each entry has a `minSize` — the minimum edgeSize at which the texture
+-- still reads correctly. Below that the texture collapses to a dark
+-- smear, so BIT.UI.ApplyBorderToFrame bumps the effective edgeSize up
+-- to this value when drawing.
+-- "Solid" uses the flat white texture so users can get a plain coloured
+-- border whose look is driven entirely by the Border Color picker.
 local BUILTIN_BORDERS = {
-    { name = "None",              path = nil                                                   },
-    { name = "Tooltip",           path = "Interface\\Tooltips\\UI-Tooltip-Border"             },
-    { name = "Glow",              path = "Interface\\Glues\\Components\\GlueMenu-Border"      },
-    { name = "Dialog",            path = "Interface\\DialogFrame\\UI-DialogBox-Border"        },
-    { name = "Achievement",       path = "Interface\\AchievementFrame\\UI-Achievement-Border" },
+    { name = "None",             path = nil,                                                       minSize = 0  },
+    { name = "Solid",            path = "Interface\\BUTTONS\\WHITE8X8",                            minSize = 1  },
+    { name = "Tooltip (thin)",   path = "Interface\\Tooltips\\UI-Tooltip-Border",                  minSize = 8  },
+    { name = "Dialog (wooden)",  path = "Interface\\DialogFrame\\UI-DialogBox-Border",             minSize = 16 },
+    { name = "Achievement Wood", path = "Interface\\AchievementFrame\\UI-Achievement-WoodBorder",  minSize = 16 },
+    { name = "Achievement Gold", path = "Interface\\AchievementFrame\\UI-Achievement-Border",      minSize = 14 },
+    { name = "Tutorial",         path = "Interface\\TutorialFrame\\TutorialFrameBorder",           minSize = 12 },
 }
 
 -- Built-in WoW sounds (always available, no addon needed)
@@ -173,7 +183,7 @@ function BIT.Media:GetAvailableBorders()
     local seen = {}
 
     -- "None" always first
-    table.insert(out, { name = "None", path = nil })
+    table.insert(out, { name = "None", path = nil, minSize = 0 })
     seen["None"] = true
 
     local lsm = GetLSM()
@@ -185,7 +195,8 @@ function BIT.Media:GetAvailableBorders()
                 local path = lsm:Fetch("border", name)
                 if path and not seen[name] then
                     seen[name] = true
-                    table.insert(out, { name = name, path = path })
+                    -- LSM entries have no minSize; conservative default.
+                    table.insert(out, { name = name, path = path, minSize = 8 })
                 end
             end
         end
@@ -195,11 +206,24 @@ function BIT.Media:GetAvailableBorders()
     for _, e in ipairs(BUILTIN_BORDERS) do
         if e.path and not seen[e.name] then
             seen[e.name] = true
-            table.insert(out, { name = e.name, path = e.path })
+            table.insert(out, { name = e.name, path = e.path, minSize = e.minSize or 8 })
         end
     end
 
     return out
+end
+
+-- Returns the minimum edgeSize that keeps the named border texture readable.
+-- ApplyBorderToFrame uses this to bump small user-picked sizes up internally
+-- so decorative textures (Dialog, Achievement …) don't collapse into a black
+-- smear when the user has their Border Size slider at a low value.
+function BIT.Media:GetBorderMinSize(name)
+    if not name or name == "None" then return 0 end
+    for _, e in ipairs(BUILTIN_BORDERS) do
+        if e.name == name then return e.minSize or 1 end
+    end
+    -- LSM / unknown name — conservative default that handles most cases.
+    return 8
 end
 
 

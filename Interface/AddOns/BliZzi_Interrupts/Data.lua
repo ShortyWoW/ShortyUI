@@ -301,6 +301,11 @@ BIT.DEFAULTS = {
     titleColorR       = 1,
     titleColorG       = 1,
     titleColorB       = 1,
+    -- Player-name text color in the interrupt tracker bars
+    nameColorUseClass = false,  -- true = use the player's class color
+    nameColorR        = 1.0,
+    nameColorG        = 1.0,
+    nameColorB        = 1.0,
     alpha             = 1.0,
     nameFontSize      = 0,
     readyFontSize     = 0,

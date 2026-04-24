@@ -103,6 +103,26 @@ local function IsIconOnlyMode()
     return false
 end
 
+-- Build the "|cFFrrggbb" prefix used to color player names in the tracker.
+-- Chooses between the class color (when the user enabled that toggle) and
+-- the custom color picker value. Falls back to white on any lookup miss.
+local function NameColorCode(class)
+    local db = BIT.db or {}
+    local r, g, b = 1, 1, 1
+    if db.nameColorUseClass and class and BIT.CLASS_COLORS and BIT.CLASS_COLORS[class] then
+        local c = BIT.CLASS_COLORS[class]
+        r, g, b = c[1] or 1, c[2] or 1, c[3] or 1
+    else
+        r = db.nameColorR or 1
+        g = db.nameColorG or 1
+        b = db.nameColorB or 1
+    end
+    return string.format("|cFF%02X%02X%02X",
+        math.floor(r * 255 + 0.5),
+        math.floor(g * 255 + 0.5),
+        math.floor(b * 255 + 0.5))
+end
+
 ------------------------------------------------------------
 -- Zone visibility
 ------------------------------------------------------------
@@ -495,7 +515,9 @@ function BIT.UI:RebuildBars()
             f.iconOnlyCdText = icoCd
         end
 
-        -- Border overlays: above StatusBar but below content/text (sb+10, content is sb+20)
+        -- Single outer border wraps the whole bar (icon + bar column).
+        -- Icon and bar are treated as one unit; no separate icon border
+        -- (see ApplyBorderToFrame where iconBorderOverlay is cleared).
         local borderOverlay = CreateFrame("Frame", nil, f, "BackdropTemplate")
         borderOverlay:SetAllPoints(f)
         borderOverlay:SetFrameLevel(sb:GetFrameLevel() + 10)
@@ -506,11 +528,11 @@ function BIT.UI:RebuildBars()
         if iconOnly then
             iconBorderOverlay:SetAllPoints(f)
         elseif iconRight then
-            iconBorderOverlay:SetPoint("TOPLEFT",     f, "TOPRIGHT",    -iconS - 1, 0)
-            iconBorderOverlay:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT",  0,         0)
+            iconBorderOverlay:SetPoint("TOPLEFT",     f, "TOPRIGHT",    -iconS, 0)
+            iconBorderOverlay:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT",  0,     0)
         else
-            iconBorderOverlay:SetPoint("TOPLEFT",     f, "TOPLEFT",    0,         0)
-            iconBorderOverlay:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", iconS + 1, 0)
+            iconBorderOverlay:SetPoint("TOPLEFT",     f, "TOPLEFT",    0,     0)
+            iconBorderOverlay:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT", iconS, 0)
         end
         iconBorderOverlay:SetFrameLevel(sb:GetFrameLevel() + 11)
         iconBorderOverlay:EnableMouse(false)
@@ -535,9 +557,16 @@ function BIT.UI:RebuildBars()
         rotLine:Hide()
         f.rotLine = rotLine
 
+        -- Store layout geometry on the bar so ApplyBarContentInset can
+        -- re-position the inner elements whenever the border style changes
+        -- (without rebuilding the whole bar).
+        f._iconS     = iconS
+        f._iconRight = iconRight
+
         bars[i] = f
 
-        -- Apply border if set
+        -- Apply border and reposition inner content with border-aware insets.
+        -- ApplyBorderToFrame now cascades into ApplyBarContentInset internally.
         BIT.UI:ApplyBorderToFrame(f)
     end
 
@@ -638,9 +667,96 @@ function BIT.UI:ApplyBorderToFrame(f)
     local g    = db.borderColorG or 1
     local b    = db.borderColorB or 1
     local a    = db.borderColorA or 1
-    -- Use dedicated overlay frames so border always renders above StatusBar
-    ApplyBackdrop(f.borderOverlay,     path, size, r, g, b, a)
-    ApplyBackdrop(f.iconBorderOverlay, path, size, r, g, b, a)
+    -- The slider directly controls how far the border extends. Decorative
+    -- textures may smear at very small sizes, but the user can simply pick
+    -- a larger size — we don't silently override the slider anymore, since
+    -- that made the visual footprint around the bar feel bloated.
+
+    -- Draw the border strictly OUTSIDE the bar. Blizzard's backdrop
+    -- edgeFile is drawn inward from the backdrop frame's own edges,
+    -- which would eat pixels off the bar content. Expanding the
+    -- overlay outward by `size` makes the border's inner rim land
+    -- exactly at the bar's outer edge — so the bar + icon stay full
+    -- size and the border sits around them like a picture frame.
+    local bo = f.borderOverlay
+    if bo then
+        bo:ClearAllPoints()
+        if path and path ~= "" then
+            bo:SetPoint("TOPLEFT",     f, "TOPLEFT",     -size,  size)
+            bo:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT",  size, -size)
+        else
+            bo:SetAllPoints(f)
+        end
+    end
+    ApplyBackdrop(bo, path, size, r, g, b, a)
+
+    -- Keep the legacy icon border empty — the bar uses a single unified
+    -- border, not a separate one for the icon.
+    if f.iconBorderOverlay then
+        ApplyBackdrop(f.iconBorderOverlay, nil, 0, 0, 0, 0, 0)
+    end
+
+    -- With the outside-the-frame approach no content inset is needed;
+    -- pin the effective size to 0 so ApplyBarContentInset keeps
+    -- icon/bar flush with the frame edges (full content visible).
+    f._effectiveBorderSize = 0
+    if f._iconS and BIT.UI.ApplyBarContentInset then
+        BIT.UI:ApplyBarContentInset(f)
+    end
+end
+
+-- Pull the bar's inner elements away from the outer border edges so a
+-- border with rounded corners has visual breathing room.
+-- Both icon and bar columns are inset on the outer edges; only the seam
+-- between them (at `iconS`) stays flush because that's a straight line
+-- inside the border, no rounded-corner concerns.
+-- Called at bar creation and again whenever the border style changes.
+function BIT.UI:ApplyBarContentInset(bar)
+    local db = BIT.db
+    local iconS     = bar._iconS
+    local iconRight = bar._iconRight
+    if not iconS then return end
+    -- Border is drawn outside the frame (see ApplyBorderToFrame), so
+    -- content can extend flush to f's edges — no inset needed. The
+    -- effective-size field stamped by ApplyBorderToFrame is zero in
+    -- this mode; use it directly for future-proof compatibility if we
+    -- ever switch back to an inward-drawn border.
+    local I = bar._effectiveBorderSize or 0
+
+    local function setCol(w)
+        if not w then return end
+        w:ClearAllPoints()
+        if iconRight then
+            -- icon on the right — outer side is right, inner seam is left
+            w:SetPoint("TOPLEFT",     bar, "TOPRIGHT",    -iconS, -I)
+            w:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -I,      I)
+        else
+            -- icon on the left — outer side is left, inner seam is right
+            w:SetPoint("TOPLEFT",     bar, "TOPLEFT",     I,     -I)
+            w:SetPoint("BOTTOMRIGHT", bar, "BOTTOMLEFT",  iconS,  I)
+        end
+    end
+    local function setBar(w)
+        if not w then return end
+        w:ClearAllPoints()
+        if iconRight then
+            -- bar on the left — outer side is left, inner seam is right
+            w:SetPoint("TOPLEFT",     bar, "TOPLEFT",      I,      -I)
+            w:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -iconS,   I)
+        else
+            -- bar on the right — outer side is right, inner seam is left
+            w:SetPoint("TOPLEFT",     bar, "TOPLEFT",      iconS,  -I)
+            w:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -I,       I)
+        end
+    end
+    setCol(bar.icon)
+    setCol(bar.iconBg)
+    setCol(bar.iconBorderFrame)
+    setCol(bar.iconBtn)
+    setBar(bar.barBgSolid)
+    setBar(bar.barBg)
+    setBar(bar.cdBar)
+    setBar(bar.contentFrame)
 end
 
 function BIT.UI:ApplyBorderToAll()
@@ -972,7 +1088,7 @@ function BIT.UI:UpdateDisplay()
         local mySpellData = BIT.mySpellID and BIT.ALL_INTERRUPTS[BIT.mySpellID]
         if mySpellData then
             local bar     = bars[barIdx]
-            local nameStr = "|cFFFFFFFF" .. BIT.GetDisplayName(BIT.myName or "?") .. "|r"
+            local nameStr = NameColorCode(BIT.myClass) .. BIT.GetDisplayName(BIT.myName or "?") .. "|r"
             local isPet   = BIT.myIsPetSpell or (BIT.mySpellID
                 and not C_SpellBook.IsSpellInSpellBook(BIT.mySpellID, Enum.SpellBookSpellBank.Player)
                 and C_SpellBook.IsSpellInSpellBook(BIT.mySpellID, Enum.SpellBookSpellBank.Pet))
@@ -988,7 +1104,7 @@ function BIT.UI:UpdateDisplay()
             local ekIcon = ekInfo.icon or (ekData and ekData.icon)
             if ekIcon or ekData then
                 local bar     = bars[barIdx]
-                local nameStr = "|cFFFFFFFF" .. BIT.GetDisplayName(BIT.myName or "?") .. "|r"
+                local nameStr = NameColorCode(BIT.myClass) .. BIT.GetDisplayName(BIT.myName or "?") .. "|r"
                 ShowBar(bar, ekIcon or ekData.icon, nameStr, BIT.myClass,
                     ekInfo.cdEnd, ekInfo.baseCd, nil, ekKey, BIT.myName)
                 barIdx = barIdx + 1
@@ -1026,7 +1142,7 @@ function BIT.UI:UpdateDisplay()
             if barIdx > 7 then break end
             local name, info, data = entry.name, entry.info, entry.data
             local bar     = bars[barIdx]
-            local nameStr = "|cFFFFFFFF" .. BIT.GetDisplayName(name) .. "|r"
+            local nameStr = NameColorCode(info.class) .. BIT.GetDisplayName(name) .. "|r"
             ShowBar(bar, data.icon, nameStr, info.class,
                 info.cdEnd, info.baseCd or data.cd, nil, info.spellID, name)
             ApplyRotBorder(bar, name)

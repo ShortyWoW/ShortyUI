@@ -1,3 +1,29 @@
+# BliZzi Interrupts 3.3.10
+
+## Border rendering fixed
+- **The bar border now wraps the bar cleanly from the outside** instead of being drawn inward and eating pixels off the icon and bar content. Previous builds used Blizzard's default backdrop which draws the edge texture inside the frame — at larger border sizes this made the bar look squished and the icon look chopped.
+- **Icon and bar keep their full size.** The border overlay now extends outward around the frame so nothing inside gets compressed.
+- **Built-in border selection refreshed.** The old list had a couple of textures that Blizzard's backdrop system can't render correctly (they collapsed into plain dark rectangles, making every option look identical). The list now only contains edge textures that actually work, plus a clean `Solid` option:
+  - `Solid` — flat colored border, fully driven by the Border Color picker
+  - `Tooltip (thin)` — classic thin tooltip rim
+  - `Dialog (wooden)` — heavy wooden dialog-box frame
+  - `Achievement Wood` — ornate achievement wood border
+  - `Achievement Gold` — gold filigree achievement border
+  - `Tutorial` — dotted tutorial frame
+- **Border size slider is respected 1:1.** Pick the thickness you want; nothing is silently clamped.
+
+## Settings page fixed
+- **Interrupts page shows mode-correct options from the first open.** Previously, the first time you opened the Interrupts tab only the Display Mode dropdown was visible — you had to change the dropdown once for the other mode-specific options (Lock Position, Grow Upward, Icon Position, Bar Fill Direction, Sort Order for Bars; or the attached-display options for Attached mode) to appear. They now render immediately with the correct set for your current mode.
+- **Collapsing and re-expanding the Display Mode section restores the correct options.** Before, re-opening a collapsed section would leave the mode-specific widgets hidden until you flipped the dropdown; now the section's visibility rules are re-applied when you expand it.
+- **Attached Display is part of the Display Mode section.** No separate second section header — Bars options and Attached options both live under Display Mode and swap automatically based on the selected mode.
+
+## New: Name color
+- **Player-name color is now customizable.** Under *Colors → Name Color* you can either set a custom RGB color for the player names in the interrupt tracker bars, or enable *Use Class Colors (Names)* so each name takes the color of that player's class (Mage blue, Hunter green, …).
+- The color picker hides itself while class colors are active — only the relevant control is visible at any time.
+- Changes apply live, no `/reload` needed.
+
+---
+
 # BliZzi Interrupts 3.3.9
 
 ## Display mode cleanup & settings restructure

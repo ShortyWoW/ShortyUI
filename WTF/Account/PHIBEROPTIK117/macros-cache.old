@@ -1,20 +1,11 @@
 VER 3 0000000000000060 "Abandon Quests" "134400"
 /run for i=1,C_QuestLog.GetNumQuestLogEntries() do C_QuestLog.SetSelectedQuest(C_QuestLog.GetInfo(i).questID); C_QuestLog.SetAbandonQuest(); C_QuestLog.AbandonQuest() end;
 END
-VER 3 0000000000000074 "Addon Test" "132276"
-/sct start 15 2
-END
 VER 3 0000000000000064 "AFK Level" "134400"
 #showtooltip
 /target Volatile Spore
 /cast Drain Life
 /run local f=CreateFrame("Frame")f:RegisterEvent("PLAYER_CAMPING")f:SetScript("OnEvent", function() local p=StaticPopup_Visible("CAMP")_G[p.."Button1"]:Click()end)
-END
-VER 3 000000000000006D "Cloak" "134331"
-/run GenericTraitUI_LoadUI()GenericTraitFrame:SetSystemID(29)GenericTraitFrame:SetTreeID(1115)ToggleFrame(GenericTraitFrame)
-END
-VER 3 000000000000006F "Hide Objectives" "132156"
-/run local t=ObjectiveTrackerFrame if t:IsShown()then t:Hide()else t:Show()end
 END
 VER 3 000000000000005D "Lust" "134400"
 #showtooltip
@@ -35,6 +26,24 @@ END
 VER 3 0000000000000071 "Reset Instances" "4548871"
 /script ResetInstances();
 END
+VER 3 0000000000000076 "sfalls:circle" "7736246"
+/raid sfalls:circle
+END
+VER 3 000000000000007B "sfalls:clear" "7736246"
+/raid sfalls:clear
+END
+VER 3 0000000000000078 "sfalls:cross" "7736246"
+/raid sfalls:cross
+END
+VER 3 0000000000000077 "sfalls:diamond" "7736246"
+/raid sfalls:diamond
+END
+VER 3 000000000000007A "sfalls:t" "7736246"
+/raid sfalls:t
+END
+VER 3 0000000000000079 "sfalls:triangle" "7736246"
+/raid sfalls:triangle
+END
 VER 3 0000000000000065 "Swap Blaster" "134400"
 #showtooltip
 /cast [@mouseover] Swapblaster
@@ -50,4 +59,8 @@ END
 VER 3 0000000000000056 "Weapon" "134400"
 #showtooltip
 /use 16
+END
+VER 3 0000000000000075 "WM Skull" "134400"
+#showtooltip
+/castsequence reset=10 /wm [@cursor] 1, /wm [@cursor] 2, /wm [@cursor] 3, /wm [@cursor] 4, /wm [@cursor] 5, /wm [@cursor] 6, /wm [@cursor] 7, /wm [@cursor] 8
 END

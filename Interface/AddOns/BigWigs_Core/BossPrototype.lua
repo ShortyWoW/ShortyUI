@@ -454,15 +454,24 @@ end
 do
 	local AddPrivateAuraAppliedSound = C_UnitAuras.AddPrivateAuraAppliedSound
 	local RemovePrivateAuraAppliedSound = C_UnitAuras.RemovePrivateAuraAppliedSound
-	local InCombatLockdown = InCombatLockdown
+	local InChatMessagingLockdown = C_ChatInfo.InChatMessagingLockdown or function() end
+	local modulesNeedingUpdated = {}
+	local frame = CreateFrame("Frame")
+	frame:SetScript("OnEvent", function(self, event, restrictionType, state)
+		if restrictionType == 5 and state == 0 then
+			self:UnregisterEvent(event)
+			for module in next, modulesNeedingUpdated do
+				module:RegisterPrivateAuraSounds()
+			end
+			modulesNeedingUpdated = {}
+		end
+	end)
 	function boss:RegisterPrivateAuraSounds()
 		if not self:HasPrivateAuraSounds() then return end
 
-		if InCombatLockdown() then
-			self:RegisterEvent("PLAYER_REGEN_ENABLED", function(event)
-				self:UnregisterEvent(event)
-				self:RegisterPrivateAuraSounds()
-			end)
+		if InChatMessagingLockdown() then
+			modulesNeedingUpdated[self] = true
+			frame:RegisterEvent("ADDON_RESTRICTION_STATE_CHANGED")
 			return
 		end
 
@@ -812,15 +821,40 @@ end
 -- @section localization
 --
 
---- Get the current localization strings.
--- @return keyed table of localized strings
-function boss:GetLocale()
-	if not self.localization then
-		self.localization = {}
+do
+	local moduleLocaleList = {}
+	--- Get the current localization strings.
+	-- @return keyed table of localized strings
+	function boss:GetLocale()
+		if moduleLocaleList[self] then
+			return moduleLocaleList[self]
+		else -- DEPRECATED fallback
+			if not self.localization then
+				self.localization = {}
+			end
+			return self.localization
+		end
 	end
-	return self.localization
+	boss.NewLocale = boss.GetLocale -- DEPRECATED
+
+	local tfreeze = table.freeze or function() end
+	--- Set the default locale table.
+	-- @param localeTable the default locale table
+	function boss:SetDefaultLocale(localeTable)
+		if moduleLocaleList[self] then
+			error(("Module %q already has a default locale set."):format(self.moduleName))
+			return
+		end
+		local otherLocaleTable = BigWigsAPI.GetBossModuleLocale(self.moduleName)
+		if otherLocaleTable then
+			for key, value in next, otherLocaleTable do
+				localeTable[key] = value
+			end
+		end
+		tfreeze(localeTable)
+		moduleLocaleList[self] = localeTable
+	end
 end
-boss.NewLocale = boss.GetLocale
 
 do
 	local SetSpellRename = BigWigsAPI.SetSpellRename

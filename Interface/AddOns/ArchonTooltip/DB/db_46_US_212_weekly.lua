@@ -1,0 +1,368 @@
+local V2_TAG_NUMBER = 4
+
+---@param v2Rankings ProviderProfileV2Rankings
+---@return ProviderProfileSpec
+local function convertRankingsToV1Format(v2Rankings, difficultyId, sizeId)
+	---@type ProviderProfileSpec
+	local v1Rankings = {}
+	v1Rankings.progress = v2Rankings.progressKilled
+	v1Rankings.total = v2Rankings.progressPossible
+	v1Rankings.average = v2Rankings.bestAverage
+	v1Rankings.spec = v2Rankings.spec
+	v1Rankings.asp = v2Rankings.allStarPoints
+	v1Rankings.rank = v2Rankings.allStarRank
+	v1Rankings.difficulty = difficultyId
+	v1Rankings.size = sizeId
+
+	v1Rankings.encounters = {}
+	for id, encounter in pairs(v2Rankings.encountersById) do
+		v1Rankings.encounters[id] = {
+			kills = encounter.kills,
+			best = encounter.best,
+		}
+	end
+
+	return v1Rankings
+end
+
+---Convert a v2 profile to a v1 profile
+---@param v2 ProviderProfileV2
+---@return ProviderProfile
+local function convertToV1Format(v2)
+	---@type ProviderProfile
+	local v1 = {}
+	v1.subscriber = v2.isSubscriber
+	v1.perSpec = {}
+
+	if v2.summary ~= nil then
+		v1.progress = v2.summary.progressKilled
+		v1.total = v2.summary.progressPossible
+		v1.totalKillCount = v2.summary.totalKills
+		v1.difficulty = v2.summary.difficultyId
+		v1.size = v2.summary.sizeId
+	else
+		local bestSection = v2.sections[1]
+		v1.progress = bestSection.anySpecRankings.progressKilled
+		v1.total = bestSection.anySpecRankings.progressPossible
+		v1.average = bestSection.anySpecRankings.bestAverage
+		v1.totalKillCount = bestSection.totalKills
+		v1.difficulty = bestSection.difficultyId
+		v1.size = bestSection.sizeId
+		v1.anySpec = convertRankingsToV1Format(bestSection.anySpecRankings, bestSection.difficultyId, bestSection.sizeId)
+		for i, rankings in pairs(bestSection.perSpecRankings) do
+			v1.perSpec[i] = convertRankingsToV1Format(rankings, bestSection.difficultyId, bestSection.sizeId)
+		end
+		v1.encounters = v1.anySpec.encounters
+	end
+
+	if v2.mainCharacter ~= nil then
+		v1.mainCharacter = {}
+		v1.mainCharacter.spec = v2.mainCharacter.spec
+		v1.mainCharacter.average = v2.mainCharacter.bestAverage
+		v1.mainCharacter.difficulty = v2.mainCharacter.difficultyId
+		v1.mainCharacter.size = v2.mainCharacter.sizeId
+		v1.mainCharacter.progress = v2.mainCharacter.progressKilled
+		v1.mainCharacter.total = v2.mainCharacter.progressPossible
+		v1.mainCharacter.totalKillCount = v2.mainCharacter.totalKills
+	end
+
+	return v1
+end
+
+---Parse a single set of rankings from `state`
+---@param decoder BitDecoder
+---@param state ParseState
+---@param lookup table<number, string>
+---@return ProviderProfileV2Rankings
+local function parseRankings(decoder, state, lookup)
+	---@type ProviderProfileV2Rankings
+	local result = {}
+	result.spec = decoder.decodeString(state, lookup)
+	result.progressKilled = decoder.decodeInteger(state, 1)
+	result.progressPossible = decoder.decodeInteger(state, 1)
+	result.bestAverage = decoder.decodePercentileFixed(state)
+	result.allStarRank = decoder.decodeInteger(state, 3)
+	result.allStarPoints = decoder.decodeInteger(state, 2)
+
+	local encounterCount = decoder.decodeInteger(state, 1)
+	result.encountersById = {}
+	for i = 1, encounterCount do
+		local id = decoder.decodeInteger(state, 4)
+		local kills = decoder.decodeInteger(state, 2)
+		local best = decoder.decodeInteger(state, 1)
+		local isHidden = decoder.decodeBoolean(state)
+
+		result.encountersById[id] = { kills = kills, best = best, isHidden = isHidden }
+	end
+
+	return result
+end
+
+---Parse a binary-encoded data string into a provider profile
+---@param decoder BitDecoder
+---@param content string
+---@param lookup table<number, string>
+---@param formatVersion number
+---@return ProviderProfile|ProviderProfileV2|nil
+local function parse(decoder, content, lookup, formatVersion) -- luacheck: ignore 211
+	-- For backwards compatibility. The existing addon will leave this as nil
+	-- so we know to use the old format. The new addon will specify this as 2.
+	formatVersion = formatVersion or 1
+	if formatVersion > 2 then
+		return nil
+	end
+
+	---@type ParseState
+	local state = { content = content, position = 1 }
+
+	local tag = decoder.decodeInteger(state, 1)
+	if tag ~= V2_TAG_NUMBER then
+		return nil
+	end
+
+	---@type ProviderProfileV2
+	local result = {}
+	result.isSubscriber = decoder.decodeBoolean(state)
+	result.summary = nil
+	result.sections = {}
+	result.progressOnly = false
+	result.mainCharacter = nil
+
+	local sectionsCount = decoder.decodeInteger(state, 1)
+	if sectionsCount == 0 then
+		---@type ProviderProfileV2Summary
+		local summary = {}
+		summary.zoneId = decoder.decodeInteger(state, 2)
+		summary.difficultyId = decoder.decodeInteger(state, 1)
+		summary.sizeId = decoder.decodeInteger(state, 1)
+		summary.progressKilled = decoder.decodeInteger(state, 1)
+		summary.progressPossible = decoder.decodeInteger(state, 1)
+		summary.totalKills = decoder.decodeInteger(state, 2)
+
+		result.summary = summary
+	else
+		for i = 1, sectionsCount do
+			---@type ProviderProfileV2Section
+			local section = {}
+			section.zoneId = decoder.decodeInteger(state, 2)
+			section.difficultyId = decoder.decodeInteger(state, 1)
+			section.sizeId = decoder.decodeInteger(state, 1)
+			section.partitionId = decoder.decodeInteger(state, 1) - 128
+			section.totalKills = decoder.decodeInteger(state, 2)
+
+			local specCount = decoder.decodeInteger(state, 1)
+			section.anySpecRankings = parseRankings(decoder, state, lookup)
+
+			section.perSpecRankings = {}
+			for j = 1, specCount - 1 do
+				local specRankings = parseRankings(decoder, state, lookup)
+				table.insert(section.perSpecRankings, specRankings)
+			end
+
+			table.insert(result.sections, section)
+		end
+	end
+
+	local hasMainCharacter = decoder.decodeBoolean(state)
+	if hasMainCharacter then
+		---@type ProviderProfileV2MainCharacter
+		local mainCharacter = {}
+		mainCharacter.zoneId = decoder.decodeInteger(state, 2)
+		mainCharacter.difficultyId = decoder.decodeInteger(state, 1)
+		mainCharacter.sizeId = decoder.decodeInteger(state, 1)
+		mainCharacter.progressKilled = decoder.decodeInteger(state, 1)
+		mainCharacter.progressPossible = decoder.decodeInteger(state, 1)
+		mainCharacter.totalKills = decoder.decodeInteger(state, 2)
+		mainCharacter.spec = decoder.decodeString(state, lookup)
+		mainCharacter.bestAverage = decoder.decodePercentileFixed(state)
+
+		result.mainCharacter = mainCharacter
+	end
+
+	local progressOnly = decoder.decodeBoolean(state)
+	result.progressOnly = progressOnly
+
+	if formatVersion == 1 then
+		return convertToV1Format(result)
+	end
+
+	return result
+end
+--- the utf8 global is not available, so we polyfill utf8.offset so we can correctly find prefixes of utf8 strings
+---@param str string
+---@param index number
+---@return number|nil
+local function Utf8Offset(str, index)
+	local len = #str
+
+	if index <= 0 or index > len then
+		return nil -- Out of bounds
+	end
+
+	-- Move forward to the nth character
+	local count = 0
+	for i = 1, len do
+		local byte = string.byte(str, i)
+		local isContinuationByte = byte >= 128 and byte < 192
+		if not isContinuationByte then
+			count = count + 1
+			if count == index then
+				return i
+			end
+		end
+	end
+
+	return nil -- If the nth character is not found
+end
+
+---@param table table<string, string> raw data table with character name prefixes as keys
+---@param length number the number of complete characters to include in the prefix
+---@return fun(characterName: string):string|nil getChunk function to retrieve a character chunk by prefix using a complete character name
+local function getChunkLookup(table, length)
+	return function(characterName)
+		local startOfNextCharacter = Utf8Offset(characterName, length + 1)
+
+		local prefix
+		if startOfNextCharacter == nil then
+			prefix = characterName
+		else
+			prefix = string.sub(characterName, 1, startOfNextCharacter - 1)
+		end
+
+		return table[prefix]
+	end
+end
+
+local lookup = {'Paladin-Retribution','Unknown-Unknown','Priest-Discipline','Priest-Holy','Paladin-Holy','Druid-Restoration','Priest-Shadow','DeathKnight-Blood','Warrior-Protection','DeathKnight-Unholy','DemonHunter-Devourer','DemonHunter-Havoc','Evoker-Preservation','Hunter-Marksmanship','Warlock-Destruction','Monk-Brewmaster','Monk-Mistweaver','Monk-Windwalker','DeathKnight-Frost','Hunter-BeastMastery','Warrior-Arms','Mage-Frost',}
+local provider = {region='US',realm='Terokkar',name='US',type='weekly',zone=46,date='2026-04-24',data={Ab='Abuna:BAABLgAECn8UAAIBAAYJjhGbigBlAQABAAYJjhGbigBlAQAAAA==.',
+Ae='Aestia:BAAALgADCggJCwAAAA==.',
+Al='Alfarin:BAAALgAECgEJAQAAAA==.Aljern:BAAALgADCgEJAgAAAA==.Alpha:BAAALgAECgYJBwAAAA==.',
+Am='Ammogal:BAAALgADCgcJBwAAAA==.',
+An='Andyson:BAAALgAECgMJAwAAAA==.Antandra:BAAALgAECgUJDQAAAA==.Anwen:BAAALgAECggJEAAAAA==.',
+Ar='Arawen:BAAALgAECgQJBgABLgAECggJEAACAAAAAA==.',
+Av='Aválánche:BAAALgADCgEJAQAAAA==.',
+Ay='Ayanea:BAABLgAECn8WAAMDAAcJBSNeCgCTAgADAAcJmiFeCgCTAgAEAAIJvCReWwDGAAAAAA==.Aysá:BAAALgADCgMJBQAAAA==.',
+Ba='Baberaham:BAAALgAECgQJBgAAAA==.Baiford:BAABLgAECn8UAAMFAAYJkxDySgBMAQAFAAYJkxDySgBMAQABAAMJ8wvUOAC1AAAAAA==.Baldie:BAAALgADCgEJAQAAAA==.Batteries:BAAALgADCgkJIwAAAA==.',
+Be='Bearitto:BAABLgAECn8dAAIGAAcJuB5rJAAoAgAGAAcJuB5rJAAoAgAAAA==.',
+Bi='Bigpony:BAAALgADCgYJCAAAAA==.',
+Bo='Bobsan:BAAALgADCgUJCQAAAA==.',
+Br='Breyvarian:BAAALgADCgUJBQAAAA==.Broland:BAAALgAECgYJCgAAAA==.',
+Bu='Burningvoker:BAAALgADCgYJBgAAAA==.',
+Ca='Caitycat:BAAALgAECgYJDgAAAA==.Calliopê:BAAALgAECgQJBwAAAA==.Candycane:BAAALgADCgQJBAAAAA==.Casseopea:BAAALgADCgMJAwABLgADCggJEgACAAAAAA==.Catherinn:BAAALgAECgUJBQAAAA==.Cattlock:BAAALgAECgIJAgAAAA==.',
+Ch='Chaltin:BAAALgAECgMJAwAAAA==.Chillhunt:BAAALgADCgIJAgAAAA==.',
+Co='Coldhand:BAAALgAECgYJBgAAAA==.Colë:BAAALgAECgYJEQAAAA==.',
+['Cæ']='Cærus:BAAALgAECgYJBgABLgAFFAUJDQAHABMYAA==.',
+Da='Daedrina:BAAALgADCgMJAwAAAA==.Dalkrim:BAABLgAECn8UAAIIAAYJaCDUEAD9AQAIAAYJaCDUEAD9AQAAAA==.',
+De='Debboi:BAAALgADCgUJBQAAAA==.Derrick:BAAALgAECgUJCwAAAA==.Desol:BAAALgADCgEJAQAAAA==.Destrya:BAABLgAECn8WAAIJAAcJACC/AQAkAgAJAAcJACC/AQAkAgAAAA==.',
+Di='Dibbsette:BAABLgAECn8ZAAMDAAYJMhwGGADdAQADAAYJMhwGGADdAQAHAAYJUw1BDAAuAQAAAA==.',
+Do='Douber:BAAALgADCgYJCAAAAA==.',
+Ds='Dshiznit:BAAALgAECgEJAQABLgAECgQJBwACAAAAAA==.',
+Dw='Dwamli:BAAALgAECgMJCAAAAA==.',
+Dy='Dynamitedave:BAAALgAECgQJBQAAAA==.',
+['Dø']='Dømino:BAAALgAECgMJBAAAAA==.',
+Eb='Ebolabeef:BAABLgAECn8VAAIKAAcJXCNTCAD5AQAKAAcJXCNTCAD5AQAAAA==.',
+Ei='Eirlys:BAAALgAECgYJBgAAAA==.',
+El='Elky:BAAALgADCggJFAABLgAECgEJAQACAAAAAA==.Elìyon:BAABLgAECn8YAAMLAAgJEgjUYQB8AQALAAgJEgjUYQB8AQAMAAEJoQEkfQAiAAAAAA==.',
+Es='Espyvon:BAAALgADCgQJBAAAAA==.',
+Et='Eternshot:BAAALgADCgEJAQAAAA==.Eternsword:BAAALgADCgYJBgAAAA==.',
+Ev='Evelanara:BAAALgADCgUJBQAAAA==.Evelinnia:BAAALgADCgMJAwAAAA==.Evilmurkii:BAAALgAECgEJAwABLgAECgYJEAACAAAAAA==.Evilssoul:BAAALgAECgQJBAAAAA==.',
+Fe='Feltsmer:BAAALgADCgYJCQAAAA==.Fenira:BAAALgADCgUJBQAAAA==.',
+Fo='Foscora:BAAALgAECgEJAQAAAA==.',
+Fr='Frushy:BAAALgADCgcJBwAAAA==.',
+Fu='Fugu:BAAALgADCggJEQAAAA==.',
+Ga='Gannicûs:BAAALgADCgYJCAAAAA==.Garlando:BAAALgAECgEJAQAAAA==.',
+Go='Goatmommy:BAAALgAECgIJAgAAAA==.Goph:BAAALgADCgMJBQAAAA==.Goremnar:BAAALgADCgYJBgAAAA==.',
+Gr='Grimmfury:BAAALgADCggJFQAAAA==.Grolgor:BAAALgADCgIJAgAAAA==.Grïffïth:BAACLgAFFH8UAAMBAAYJgB5eAwC/AQABAAUJoBxeAwC/AQAFAAEJuwC0HABGAAAuAAQKfyYAAwEACQl4IRUPABUDAAEACQl4IRUPABUDAAUABglLD2VHAFoBAAAA.',
+Gu='Gunjir:BAAALgAECgIJBAAAAA==.',
+Gw='Gwyneira:BAAALgADCgkJGQABLgAECgYJBgACAAAAAA==.',
+Ha='Haranbush:BAAALgADCgYJBgAAAA==.',
+Hi='Hipidipi:BAAALgADCgUJBQAAAA==.',
+Hu='Hucklebeary:BAAALgAECgIJAgAAAA==.Hugcubs:BAAALgADCgUJBQAAAA==.',
+['Hí']='Hítgirl:BAAALgAECgQJCAAAAA==.',
+Ic='Icylilith:BAAALgADCgYJCQAAAA==.',
+Im='Imugi:BAABLgAECn8UAAINAAYJHga0CADgAAANAAYJHga0CADgAAAAAA==.',
+Is='Issavanos:BAAALgAECgYJEAAAAA==.',
+Ja='Jazmane:BAAALgADCgYJBgAAAA==.',
+Je='Jenhoney:BAAALgADCggJEgAAAA==.Jes:BAAALgADCgEJAQAAAA==.',
+Jo='Josh:BAAALgAECgYJCQABLgAFFAQJBwAOAHsNAA==.',
+Ka='Kaliya:BAAALgAECgQJCQAAAA==.',
+Ke='Kevdog:BAABLgAECn8UAAIPAAYJrxGaAwAyAQAPAAYJrxGaAwAyAQAAAA==.',
+Kh='Khelemarth:BAAALgAECgEJAQAAAA==.',
+Ki='Kire:BAAALgAECgYJCQAAAA==.Kirohan:BAAALgADCgcJCQAAAA==.',
+Ko='Koldov:BAAALgADCgcJDAAAAA==.Kosmik:BAAALgADCgcJCgAAAA==.',
+Kr='Krimzin:BAAALgADCgEJAQABLgAFFAIJBQABAFAWAA==.',
+Ku='Kuiu:BAAALgADCgEJAQAAAA==.Kulnurayne:BAAALgADCgcJDAAAAA==.Kuna:BAAALgAECgIJAgAAAA==.Kushta:BAABLgAECn8YAAIBAAgJix0JGQDTAgABAAgJix0JGQDTAgAAAA==.',
+La='Lackjaw:BAABLgAECn8ZAAIPAAgJTg74EQC8AQAPAAgJTg74EQC8AQAAAA==.Landrick:BAABLgAECn8kAAIIAAgJgBpcAgD1AQAIAAgJgBpcAgD1AQAAAA==.Lanejack:BAAALgADCgMJAwAAAA==.Lava:BAAALgAECgYJDQAAAA==.',
+Lg='Lgang:BAAALgAECgYJEgAAAA==.',
+Li='Lifeblõõm:BAAALgAECgYJDQAAAA==.Lilium:BAAALgAECgYJBgAAAA==.',
+Ll='Llau:BAAALgAECgcJEQAAAA==.',
+Lo='Losia:BAAALgADCggJFQAAAA==.Loveinvain:BAAALgAECgMJAgAAAA==.',
+Lu='Lunabun:BAAALgADCgcJEwAAAA==.Luniana:BAAALgADCgEJAQAAAA==.',
+Ma='Malorn:BAABLgAECn8XAAQQAAgJkA7jQwAzAQAQAAYJ7Q7jQwAzAQARAAEJJg4aHwA4AAASAAIJlgs5fAA0AAAAAA==.Manaaddict:BAAALgAECgYJBgAAAA==.',
+Mi='Midníght:BAAALgAECgEJAQAAAA==.',
+Mo='Moltencarl:BAAALgAECgEJAgAAAA==.',
+Ni='Niege:BAAALgADCgkJEAAAAA==.Niiso:BAAALgADCgkJEQAAAA==.Nivina:BAAALgADCgcJBwAAAA==.',
+Nk='Nkagnyto:BAAALgAECgQJCQAAAA==.Nkanue:BAAALgADCgIJAgABLgAECgQJCQACAAAAAA==.',
+No='Noonstalker:BAAALgAECgUJCAAAAA==.',
+Or='Orintaar:BAAALgADCgMJAwAAAA==.Ormac:BAAALgAECgYJCwAAAA==.Ororoe:BAABLgAECn8bAAMQAAgJJhprFABrAgAQAAgJJhprFABrAgASAAYJngxrDAAKAQAAAA==.',
+Pa='Palapo:BAAALgADCggJFAAAAA==.Panrocktar:BAAALgADCgEJAQAAAA==.Paudrig:BAAALgADCgYJBgAAAA==.',
+Pe='Perfect:BAAALgAECgQJBgAAAA==.',
+Ph='Phagetouched:BAAALgAECgUJAwAAAA==.Phaydre:BAAALgAECgYJCwABLgAFFAMJBQANAF0OAA==.',
+Pi='Picklenick:BAAALgAECgYJEwAAAA==.',
+Po='Ponytree:BAAALgAECgcJDwAAAA==.Porani:BAAALgADCgYJEQAAAA==.',
+Pr='Prismo:BAAALgAECgcJDAAAAA==.',
+Pw='Pwnbuggy:BAABLgAECn8WAAIKAAgJ9BAEJAAJAQAKAAgJ9BAEJAAJAQAAAA==.',
+Qa='Qartoga:BAAALgADCgEJAQABLgAECgIJAgACAAAAAA==.',
+Ql='Qlue:BAAALgADCgcJBwAAAA==.',
+Ra='Rabin:BAAALgADCgIJAgAAAA==.Racistgreen:BAAALgAECgIJAgAAAA==.Rafikibull:BAAALgAECgIJBQAAAA==.Raindrop:BAABLgAECn8VAAIGAAcJdBeLPQCuAQAGAAcJdBeLPQCuAQAAAA==.Ramah:BAAALgADCggJFQAAAA==.Ramen:BAAALgADCgEJAQAAAA==.',
+Re='Reignstorm:BAABLgAECn8UAAITAAYJsQv6CQAzAQATAAYJsQv6CQAzAQAAAA==.Reivax:BAABLgAECn8ZAAIUAAgJ1A4iLgD6AQAUAAgJ1A4iLgD6AQAAAA==.Rethelm:BAAALgAECgUJDQAAAA==.Retreats:BAAALgADCgUJBQAAAA==.Retsella:BAAALgADCgkJGwAAAA==.Reveum:BAABLgAECn8kAAMJAAgJYQn4BgAqAQAJAAgJYQn4BgAqAQAVAAQJfgaVKgCeAAAAAA==.Revân:BAAALgADCgMJAwAAAA==.',
+Rh='Rhaegár:BAAALgADCgkJDwAAAA==.',
+Ro='Rogl:BAACLgAFFH8IAAIGAAQJxiOfBAA9AQAGAAQJxiOfBAA9AQAuAAQKfx0AAgYABwkbIFIcAFoCAAYABwkbIFIcAFoCAAAA.Rosgard:BAAALgADCggJCAAAAA==.',
+Ru='Ruhll:BAAALgADCgcJCQAAAA==.Rustychi:BAAALgAECgMJAwAAAA==.',
+['Rá']='Rámpapi:BAAALgAECgIJAgAAAA==.',
+Sa='Sammaile:BAAALgAECgYJCwAAAA==.Sarahsmith:BAAALgAECgQJBwAAAA==.Saucypeach:BAAALgAECgYJDAAAAA==.',
+Sc='Scamander:BAAALgAECggJEQAAAA==.',
+Se='Seifer:BAAALgADCgkJJQAAAA==.Semnickmonk:BAAALgAECgMJBAAAAA==.Senjosaku:BAAALgAECgUJBgABLgAECggJJgAWAFofAA==.Serigo:BAAALgAECgEJAwAAAA==.Serral:BAAALgAECgQJDgAAAA==.',
+Sm='Smoochy:BAAALgAECgEJAQAAAA==.',
+So='Solysz:BAAALgAECgYJEwAAAA==.Sophietheone:BAAALgADCgIJAgAAAA==.Soß:BAACLgAFFH8HAAIWAAMJqyHUJAAhAQAWAAMJqyHUJAAhAQAuAAQKfx4AAhYABwnNIaRSAEACABYABwnNIaRSAEACAAAA.',
+Sp='Spongébob:BAAALgAECgEJAQAAAA==.Spork:BAAALgADCgYJDAABLgAECgEJAQACAAAAAA==.',
+St='Stimcheck:BAAALgADCgcJBwABLgADCggJCAACAAAAAA==.Stmary:BAAALgADCgQJBAAAAA==.',
+Su='Subzéro:BAAALgAECgQJCAAAAA==.',
+Sw='Sweetwhisper:BAAALgAECgYJCwAAAA==.',
+Sy='Sylitae:BAAALgADCgQJCQAAAA==.',
+['Så']='Såbëtha:BAAALgADCgMJBQAAAA==.',
+Ta='Tazzen:BAAALgAECgQJBQAAAA==.',
+Te='Teletern:BAAALgADCgMJBAAAAA==.Tempeststørm:BAAALgADCgEJAQAAAA==.',
+Th='Thaunelian:BAAALgADCgMJAwABLgAECggJFwAQAJAOAA==.Thoristain:BAAALgAECgQJBwAAAA==.Thrain:BAABLgAECn8WAAIBAAgJ5QcUNwC8AAABAAgJ5QcUNwC8AAAAAA==.Threefive:BAAALgAECgQJBQAAAA==.',
+To='Tokhan:BAAALgAECgYJEQAAAA==.Totemíc:BAAALgAECgEJAQAAAA==.',
+Va='Vaqine:BAAALgADCgkJCwABLgAECgEJAQACAAAAAA==.',
+Ve='Velarion:BAAALgAECgEJAQAAAA==.Veryundead:BAABLgAECn8cAAIPAAcJ2g1MGACIAQAPAAcJ2g1MGACIAQAAAA==.',
+Vo='Void:BAAALgAECgQJCgAAAA==.Voidmara:BAAALgAECgEJAQAAAA==.Voíd:BAAALgAECgEJAQAAAA==.',
+Vr='Vrylykos:BAAALgADCgkJGwAAAA==.',
+Wa='Waddlez:BAAALgADCgEJAQAAAA==.Wardawg:BAAALgADCgEJAQABLgAECgcJFgADAAUjAA==.',
+We='Wendrin:BAAALgADCggJCAAAAA==.',
+Wh='White:BAAALgADCgcJBwAAAA==.',
+Xa='Xanarine:BAAALgAECgYJEgAAAA==.',
+Xe='Xeeva:BAAALgAECgQJCQAAAA==.',
+Xu='Xuralxia:BAAALgAECgEJBAAAAA==.',
+Zi='Zink:BAAALgADCgEJAgAAAA==.Ziyad:BAAALgAECgYJDwAAAA==.',
+Zy='Zyn:BAAALgADCggJFQAAAA==.',
+['Zè']='Zèró:BAAALgAECgQJBwAAAA==.',
+['Ðü']='Ðüß:BAAALgADCgIJAgABLgADCgkJEQACAAAAAA==.',
+['Ön']='Öna:BAABLgAECn8cAAIUAAcJ8RTpNwDOAQAUAAcJ8RTpNwDOAQAAAA==.',
+},}
+provider.parse = parse
+
+local rawData = provider.data
+provider.data = {}
+provider.getChunk = getChunkLookup(rawData, 2)
+
+setmetatable(provider.data, {
+	__index = function(table, key)
+		provider.getChunk(key)
+	end,
+})
+
+if _G["ArchonTooltip"] and ArchonTooltip.AddProviderV2 then
+	ArchonTooltip.AddProviderV2(lookup, provider)
+end

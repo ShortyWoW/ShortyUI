@@ -4,6 +4,7 @@ TomTomDB = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
+["Shortybear - Illidan"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
@@ -12,6 +13,7 @@ TomTomDB = {
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
+["Drewis24EEA3 - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -47,6 +49,7 @@ TomTomWaypointsM = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
@@ -55,6 +58,7 @@ TomTomWaypointsM = {
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -62,6 +66,8 @@ TomTomWaypointsM = {
 ["Callmeshorty - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
+},
+["Shortybear - Illidan"] = {
 },
 ["Shortypal - Dalaran"] = {
 },
@@ -78,6 +84,8 @@ TomTomWaypointsM = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortbeef - Vashj"] = {
+},
+["Drewis24EEA3 - Illidan"] = {
 },
 },
 }

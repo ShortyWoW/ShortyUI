@@ -4,6 +4,7 @@ LoggerHeadDB = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
+["Shortybear - Illidan"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
@@ -12,6 +13,7 @@ LoggerHeadDB = {
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
+["Drewis24EEA3 - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -23,6 +25,10 @@ false,
 ["Drak'Tharon Keep"] = {
 false,
 },
+["Skyreach"] = {
+[23] = true,
+[8] = true,
+},
 ["The Stonecore"] = {
 [24] = false,
 },
@@ -30,6 +36,7 @@ false,
 true,
 true,
 [23] = true,
+[8] = true,
 },
 ["End Time"] = {
 [24] = true,
@@ -82,6 +89,9 @@ true,
 true,
 [23] = true,
 [8] = true,
+},
+["Gate of the Setting Sun"] = {
+[24] = false,
 },
 ["Upper Blackrock Spire"] = {
 },
@@ -195,11 +205,13 @@ true,
 },
 ["The Dreamrift"] = {
 [14] = true,
+[16] = true,
 [15] = true,
 [17] = false,
 },
 ["Icecrown Citadel"] = {
 [3] = false,
+[5] = false,
 },
 ["The Voidspire"] = {
 [14] = true,

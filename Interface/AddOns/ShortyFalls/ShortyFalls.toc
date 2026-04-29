@@ -1,8 +1,8 @@
-## Interface: 120000
+## Interface: 120001, 120005
 ## Title: ShortyFalls
 ## Notes: 5-box raid marker order helper
 ## Author: Shorty
-## Version: 0.2.0
+## Version: 1.2.0
 ## SavedVariables: ShortyFallsDB
 
 ShortyFalls.lua

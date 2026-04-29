@@ -2,14 +2,18 @@
 KeystonePercentageHelperDB = nil
 KeystonePolarisDB = {
 ["profileKeys"] = {
+["Drewishlaser - Dalaran"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
-["Callmeshawte - Area 52"] = "Default",
-["Shortbeef - Vashj"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
+["Callmeshawte - Area 52"] = "Default",
+["Shortybear - Illidan"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+["Drewis24EEA3 - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
+["lastSeasonCheck"] = "2026-03-26",
 ["general"] = {
 ["mobPercentagesMigrationVersion"] = "3.8",
 ["showMinimapIcon"] = false,
@@ -20,17 +24,6 @@ KeystonePolarisDB = {
 ["hide"] = true,
 },
 },
-["groupReminder"] = {
-["lastReminder"] = {
-["teleportSpellUnknown"] = true,
-["comment"] = "",
-["zone"] = "Skyreach (Mythic Keystone)",
-["roleText"] = "Damage",
-["groupName"] = "|Kk4|k",
-["playstyleText"] = "Relaxed",
-},
-},
-["lastSeasonCheck"] = "2026-03-26",
 },
 },
 }

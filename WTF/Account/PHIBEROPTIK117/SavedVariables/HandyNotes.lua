@@ -4,6 +4,7 @@ HandyNotesDB = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
@@ -12,6 +13,7 @@ HandyNotesDB = {
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -19,6 +21,8 @@ HandyNotesDB = {
 ["Callmeshorty - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
+},
+["Shortybear - Illidan"] = {
 },
 ["Shortypal - Dalaran"] = {
 },
@@ -35,6 +39,8 @@ HandyNotesDB = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortbeef - Vashj"] = {
+},
+["Drewis24EEA3 - Illidan"] = {
 },
 },
 }
@@ -43,6 +49,7 @@ HandyNotes_HandyNotesDB = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
@@ -51,6 +58,7 @@ HandyNotes_HandyNotesDB = {
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -58,6 +66,8 @@ HandyNotes_HandyNotesDB = {
 ["Callmeshorty - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
+},
+["Shortybear - Illidan"] = {
 },
 ["Shortypal - Dalaran"] = {
 },
@@ -74,6 +84,8 @@ HandyNotes_HandyNotesDB = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortbeef - Vashj"] = {
+},
+["Drewis24EEA3 - Illidan"] = {
 },
 },
 }

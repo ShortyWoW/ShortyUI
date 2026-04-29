@@ -2,6 +2,7 @@
 LoggerHeadDB = {
 ["profileKeys"] = {
 ["Shortyaddons - Dalaran"] = "Default",
+["Shortybooste - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {

@@ -84,7 +84,7 @@ ShortyINT_Debug: disabled
 BigWigs_TheWarWithin: enabled
 ShortyTicTac: enabled
 ShortyTalents: enabled
-ShortyFalls: disabled
+ShortyFalls: enabled
 BigWigs_VoiceGCP: enabled
 RaiderIO: enabled
 !Swatter: disabled
@@ -117,3 +117,4 @@ RaiderIO_DB_US_R: enabled
 RaiderIO_DB_US_F: enabled
 Syndicator: enabled
 TomTom: enabled
+LuraTilyHelper: disabled

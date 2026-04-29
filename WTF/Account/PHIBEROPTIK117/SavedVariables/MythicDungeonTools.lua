@@ -1,11 +1,14 @@
 
 MythicDungeonToolsDB = {
 ["profileKeys"] = {
+["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
-["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
-["Shortbeef - Vashj"] = "Shortbeef - Vashj",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
+["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
 ["global"] = {
 ["scale"] = 1.4,

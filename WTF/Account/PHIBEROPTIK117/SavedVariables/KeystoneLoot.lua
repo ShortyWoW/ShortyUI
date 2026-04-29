@@ -4,7 +4,6 @@ KeystoneLootDB = {
 ["version"] = 3,
 ["settings"] = {
 ["keystoneTooltip"] = true,
-["favoriteTooltip"] = true,
 ["hiddenCharacters"] = {
 },
 ["highlighting"] = {
@@ -14,6 +13,7 @@ KeystoneLootDB = {
 ["crit"] = true,
 ["noStats"] = true,
 },
+["favoriteTooltip"] = true,
 ["lootReminder"] = {
 ["dungeons"] = true,
 },
@@ -27,7 +27,11 @@ KeystoneLootDB = {
 },
 ["Dalaran-Callmeshorty-12"] = {
 },
+["Illidan-Shortybear-11"] = {
+},
 ["Area 52-Callmeshawte-9"] = {
+},
+["Dalaran-Drewishlaser-11"] = {
 },
 ["Area 52-Shortbowjob-3"] = {
 },

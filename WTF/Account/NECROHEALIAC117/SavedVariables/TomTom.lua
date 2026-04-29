@@ -2,6 +2,7 @@
 TomTomDB = {
 ["profileKeys"] = {
 ["Shortyaddons - Dalaran"] = "Default",
+["Shortybooste - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -14,6 +15,11 @@ nil,
 0,
 },
 },
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
+},
+},
 ["block"] = {
 ["position"] = {
 "CENTER",
@@ -23,11 +29,6 @@ nil,
 -100,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 },
 },
 }
@@ -35,9 +36,12 @@ TomTomWaypoints = nil
 TomTomWaypointsM = {
 ["profileKeys"] = {
 ["Shortyaddons - Dalaran"] = "Shortyaddons - Dalaran",
+["Shortybooste - Illidan"] = "Shortybooste - Illidan",
 },
 ["profiles"] = {
 ["Shortyaddons - Dalaran"] = {
+},
+["Shortybooste - Illidan"] = {
 },
 },
 }

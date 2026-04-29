@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Precisionbtw-Area52 resent",
 "/cw Precisionbtw-Area52 Ty friendo",
 "/g if you need dps i'm down",
 "/g I'll tank a key if ya need one",
 "/g Sure",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

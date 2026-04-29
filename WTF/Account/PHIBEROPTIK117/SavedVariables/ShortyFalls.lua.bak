@@ -1,9 +1,18 @@
 
 ShortyFallsDB = {
-["locked"] = true,
+["debugMode"] = true,
+["sequence"] = {
+},
+["assign"] = {
+},
 ["used"] = {
 },
 ["debug"] = true,
-["assign"] = {
+["locked"] = false,
+["pos"] = {
+["y"] = 237.0033569335938,
+["relPoint"] = "BOTTOMLEFT",
+["point"] = "BOTTOMLEFT",
+["x"] = 93.00180053710938,
 },
 }

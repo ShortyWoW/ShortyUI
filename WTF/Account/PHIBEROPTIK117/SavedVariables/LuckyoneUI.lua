@@ -12,11 +12,13 @@ LuckyoneDB = {
 ["Rndylikehoof - Dalaran"] = "Default",
 ["Shortbreath - Area 52"] = "Default",
 ["Randuhrr - Dalaran"] = "Default",
+["Drewis24EEA3 - Illidan"] = "Default",
 ["Chugmonk - Mal'Ganis"] = "Default",
 ["Randysmells - Dalaran"] = "Default",
 ["Udderstorm - Mal'Ganis"] = "Default",
 ["Medimilk - Mal'Ganis"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
+["Shortybear - Illidan"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortonheals - Area 52"] = "Default",
 ["Callmeshorte - Area 52"] = "Default",
@@ -26,7 +28,7 @@ LuckyoneDB = {
 ["Lildotnrg - Stormrage"] = "Default",
 },
 ["global"] = {
-["install_version"] = 4.07,
+["install_version"] = 4.1,
 ["DebugDisabledAddOns"] = {
 },
 },

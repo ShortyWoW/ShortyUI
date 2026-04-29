@@ -1,22 +1,5 @@
 
 WarpDepleteDB = {
-["profileKeys"] = {
-["Fibear - Area 52"] = "Default",
-["Fiberoptic - Area 52"] = "Default",
-["Absoloot - Stormrage"] = "Default",
-["Fiber - Area 52"] = "Default",
-["Catfive - Area 52"] = "Default",
-["Réfreshing - Area 52"] = "Default",
-["Phiberoptik - Bleeding Hollow"] = "Default",
-["Shortyaddons - Dalaran"] = "Luckyone 4.03",
-["Fiberoptic - Bleeding Hollow"] = "Default",
-["Phiberoptik - Azgalor"] = "Default",
-["Azurê - Area 52"] = "Default",
-["Phiber - Area 52"] = "Default",
-["Addontestur - Stormrage"] = "Default",
-["Locknlol - Area 52"] = "Default",
-["Absolusion - Stormrage"] = "Default",
-},
 ["global"] = {
 ["splits"] = {
 [503] = {
@@ -55,6 +38,23 @@ nil,
 },
 },
 },
+},
+["profileKeys"] = {
+["Fibear - Area 52"] = "Default",
+["Fiberoptic - Area 52"] = "Default",
+["Absoloot - Stormrage"] = "Default",
+["Fiberoptic - Bleeding Hollow"] = "Default",
+["Catfive - Area 52"] = "Default",
+["Réfreshing - Area 52"] = "Default",
+["Phiber - Area 52"] = "Default",
+["Shortyaddons - Dalaran"] = "Luckyone 4.03",
+["Fiber - Area 52"] = "Default",
+["Phiberoptik - Azgalor"] = "Default",
+["Azurê - Area 52"] = "Default",
+["Phiberoptik - Bleeding Hollow"] = "Default",
+["Addontestur - Stormrage"] = "Default",
+["Locknlol - Area 52"] = "Default",
+["Absolusion - Stormrage"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {

@@ -1,14 +1,15 @@
 
 Details_StreamerDB = {
 ["characters"] = {
-["Callmeshorty - Illidan"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Callmeshorty - Illidan"] = "Callmeshorty - Dalaran",
+["Shortybear - Illidan"] = "Callmeshorty - Dalaran",
+["Shortypal - Dalaran"] = "Callmeshorty - Dalaran",
+["Drewishlaser - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshorty - Dalaran",
 ["Shortbowjob - Area 52"] = "Callmeshorty - Dalaran",
 ["Callmeshawte - Area 52"] = "Callmeshorty - Dalaran",
-["Shortypal - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbeef - Vashj"] = "Callmeshorty - Dalaran",
-["Drewishlaser - Dalaran"] = "Callmeshorty - Dalaran",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {

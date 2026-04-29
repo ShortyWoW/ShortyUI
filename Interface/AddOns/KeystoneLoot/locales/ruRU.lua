@@ -51,14 +51,16 @@ L["No character selected."] = "Персонаж не выбран.";
 L["No valid items found."] = "Допустимые предметы не найдены.";
 
 -- icon_button.lua / favorites.lua
-L["Set Favorite"] = "Установить избранное";
+L["Set Favorite"] = "Добавить в избранное";
 L["Nice to have"] = "Желательно";
 L["Must have"] = "Обязательно";
+L["Best in Slot"] = "БиС";
 
 -- loot_reminder_frame.lua
 L["Correct loot specialization set?"] = "Правильная установка специализации для добычи?";
 L["+1 item dropping for all specs."] = "+1 предмет выпадает для всех специализаций.";
 L["+%d items dropping for all specs."] = "+%d предметов выпадает для всех специализаций.";
+L["%s has a smaller loot pool than %s"] = "%s имеет меньший набор добычи, чем %s";
 
 -- minimap_button.lua
 L["Left click: Open overview"] = "ЛКМ: Открыть окно KeystoneLoot";

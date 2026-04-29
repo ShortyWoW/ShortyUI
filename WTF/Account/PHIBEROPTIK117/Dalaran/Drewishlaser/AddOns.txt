@@ -56,3 +56,5 @@ RaiderIO_DB_CN_F: disabled
 LittleWigs_TheWarWithin: enabled
 BigWigs_TheDreamrift: enabled
 BigWigs_MarchOnQuelDanas: enabled
+PatchWerk: disabled
+!PatchWerk: disabled

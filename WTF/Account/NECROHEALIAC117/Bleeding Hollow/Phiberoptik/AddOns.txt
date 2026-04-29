@@ -33,3 +33,8 @@ ElvUI_RatioMinimapAuras: disabled
 kExtraBossFrames: disabled
 LittleWigs_Shadowlands: enabled
 BigWigs_TheWarWithin: enabled
+!Swatter: disabled
+!ImprovedErrorFrame: disabled
+RaiderIO_DB_CN_R: disabled
+RaiderIO_DB_CN_M: disabled
+RaiderIO_DB_CN_F: disabled

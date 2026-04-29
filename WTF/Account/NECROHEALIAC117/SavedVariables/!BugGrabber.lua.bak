@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
-["session"] = 96,
 ["lastSanitation"] = 3,
+["session"] = 97,
 ["errors"] = {
 {
 ["message"] = "[ADDON_ACTION_FORBIDDEN] AddOn 'ShortyInterrupt' tried to call the protected function 'Frame:RegisterEvent()'.",

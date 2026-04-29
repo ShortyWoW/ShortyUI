@@ -1,6 +1,15 @@
 VER 3 0000000000000095 "AAP_MACRO" "INV_MISC_QUESTIONMARK"
 /script print('no button yet')
 END
+VER 3 0000000000000097 "Abandon Quests" "134400"
+/run for i=1,C_QuestLog.GetNumQuestLogEntries() do C_QuestLog.SetSelectedQuest(C_QuestLog.GetInfo(i).questID); C_QuestLog.SetAbandonQuest(); C_QuestLog.AbandonQuest() end;
+END
+VER 3 0000000000000098 "AFK Level" "INV_Misc_QuestionMark"
+#showtooltip
+/target Volatile Spore
+/cast Drain Life
+/run local f=CreateFrame("Frame")f:RegisterEvent("PLAYER_CAMPING")f:SetScript("OnEvent", function() local p=StaticPopup_Visible("CAMP")_G[p.."Button1"]:Click()end)
+END
 VER 3 0000000000000084 "ALANI MOUNT" "Ability_Mount_Drake_Twilight."
 /2 WTS |cffa335ee|Hitem:90655:0:0:0:0:0:0:0:100:0:0:0|h[Reins of the Thundering Ruby Cloud Serpent]|h|r PST Offer - My |cffa335ee|Hitem:86546:0:0:0:0:0:0:0:100:0:0:0|h[Sky Crystal]|h|r. Your gold.
 END
@@ -10,11 +19,27 @@ VER 3 0000000000000093 "Bones" "INV_MISC_QUESTIONMARK"
 /script CompleteQuest()
 /script GetQuestReward()
 END
+VER 3 0000000000000099 "Cloak" "134331"
+/run GenericTraitUI_LoadUI()GenericTraitFrame:SetSystemID(29)GenericTraitFrame:SetTreeID(1115)ToggleFrame(GenericTraitFrame)
+END
 VER 3 000000000000008B "Golden Girls" "INV_PET_BATTLEPETTRAINING"
 /s They told me that it wasn't possible, but with some hard work and determination, I have successfully masterbated to a Golden Girls marathon. Betty White made it challenging, but I overcame all obsticals.
 END
 VER 3 0000000000000096 "Guild" "INV_MISC_QUESTIONMARK"
 /2 210 Resto Shaman, 2/10M AOTC Heroic LF raiding guild, pst.
+END
+VER 3 000000000000009A "Hide Objectives" "132156"
+/run local t=ObjectiveTrackerFrame if t:IsShown()then t:Hide()else t:Show()end
+END
+VER 3 000000000000009B "Inspect" "134400"
+/run if CanInspect("target") then NotifyInspect("target"); C_Timer.After(0.6,function() print("specID:", GetInspectSpecialization("target")) if ClearInspectPlayer then ClearInspectPlayer() end end) else print("Can't inspect target") end
+END
+VER 3 000000000000009C "kneel" "413580"
+/kneel
+END
+VER 3 000000000000009D "Lust" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [known:32182] Heroism; [known:290583] Bloodlust; [known:80353] Time Warp; [known:390386] Fury of the Aspects; [known:264667] Primal Rage; [known:2825] Bloodlust
 END
 VER 3 0000000000000091 "Macro 3" "INV_MISC_QUESTIONMARK"
 #showtooltip Flawless Draenethyst Sphere
@@ -34,10 +59,22 @@ VER 3 0000000000000092 "Macro 4" "INV_MISC_QUESTIONMARK"
 /script SelectGossipOption(1)
 /script AcceptQuest()
 END
+VER 3 000000000000009E "Mail" "443375"
+/use Katy's Stampwhistle
+END
 VER 3 000000000000007C "Mail Delete" "ACHIEVEMENT_GUILDPERK_GMAIL"
 /click MailItem1Button
 /click OpenMailAttachmentButton1
 /click OpenMailDeleteButton
+END
+VER 3 000000000000009F "Mount" "4200126"
+#show
+/stopmacro [flying]
+/cast [known:783] Travel Form
+/cast G-99 Breakneck
+/cast Renewed Proto-Drake
+/cast [flyable] Invincible; Grand Expedition Yak
+/dismount
 END
 VER 3 0000000000000085 "Open Treasures" "INV_MISC_QUESTIONMARK"
 #show
@@ -47,8 +84,15 @@ VER 3 0000000000000072 "PvP Trinket" "INV_MISC_QUESTIONMARK"
 #show
 /use 13
 END
+VER 3 00000000000000A0 "Reset Instances" "4548871"
+/script ResetInstances();
+END
 VER 3 0000000000000067 "Skull" "ABILITY_CREATURE_CURSED_05"
 /run SetRaidTarget("mouseover",8)
+END
+VER 3 00000000000000A1 "Swap Blaster" "INV_Misc_QuestionMark"
+#showtooltip
+/cast [@mouseover] Swapblaster
 END
 VER 3 0000000000000090 "Target Rare" "133712"
 /tar Clack the
@@ -97,6 +141,18 @@ VER 3 000000000000007D "Toys" "INV_MISC_QUESTIONMARK"
 /use Gamon's Braid
 /use Elixir of Giant Growth
 END
+VER 3 00000000000000A2 "Trinket 1" "INV_Misc_QuestionMark"
+#showtooltip
+/use 13
+END
+VER 3 00000000000000A3 "Trinket 2" "INV_Misc_QuestionMark"
+#showtooltip
+/use 14
+END
 VER 3 0000000000000082 "Vendor Greys" "ACHIEVEMENT_GUILDPERK_MOBILEBANKING"
 /run for bag=0,4,1 do for slot=1,GetContainerNumSlots(bag),1 do local name=GetContainerItemLink(bag,slot) if name and string.find(name,"ff9d9d9d") then DEFAULT_CHAT_FRAME:AddMessage("- Selling "..name) UseContainerItem(bag,slot) end end end 
+END
+VER 3 00000000000000A4 "Weapon" "INV_Misc_QuestionMark"
+#showtooltip
+/use 16
 END

@@ -12,11 +12,13 @@ SimulationCraftDB = {
 ["Rndylikehoof - Dalaran"] = "Rndylikehoof - Dalaran",
 ["Shortbreath - Area 52"] = "Shortbreath - Area 52",
 ["Randuhrr - Dalaran"] = "Randuhrr - Dalaran",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
 ["Randysmells - Dalaran"] = "Randysmells - Dalaran",
 ["Udderstorm - Mal'Ganis"] = "Udderstorm - Mal'Ganis",
 ["Medimilk - Mal'Ganis"] = "Medimilk - Mal'Ganis",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortonheals - Area 52"] = "Shortonheals - Area 52",
 ["Callmeshorte - Area 52"] = "Callmeshorte - Area 52",
@@ -51,6 +53,8 @@ SimulationCraftDB = {
 },
 ["Randuhrr - Dalaran"] = {
 },
+["Drewis24EEA3 - Illidan"] = {
+},
 ["Chugmonk - Mal'Ganis"] = {
 },
 ["Randysmells - Dalaran"] = {
@@ -60,6 +64,11 @@ SimulationCraftDB = {
 ["Medimilk - Mal'Ganis"] = {
 },
 ["Drewishlazer - Dalaran"] = {
+["minimap"] = {
+["hide"] = true,
+},
+},
+["Shortybear - Illidan"] = {
 ["minimap"] = {
 ["hide"] = true,
 },

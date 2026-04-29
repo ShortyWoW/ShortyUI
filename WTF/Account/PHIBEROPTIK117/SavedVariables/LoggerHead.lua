@@ -4,6 +4,7 @@ LoggerHeadDB = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
+["Shortybear - Illidan"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
@@ -12,6 +13,7 @@ LoggerHeadDB = {
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
+["Drewis24EEA3 - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -34,6 +36,7 @@ false,
 true,
 true,
 [23] = true,
+[8] = true,
 },
 ["End Time"] = {
 [24] = true,
@@ -87,10 +90,14 @@ true,
 [23] = true,
 [8] = true,
 },
-["Upper Blackrock Spire"] = {
+["Gate of the Setting Sun"] = {
+[24] = false,
 },
 ["Mogu'shan Palace"] = {
 [24] = false,
+},
+["Utgarde Pinnacle"] = {
+false,
 },
 ["The Blinding Vale"] = {
 true,
@@ -105,11 +112,6 @@ true,
 true,
 [23] = true,
 },
-["Voidscar Arena"] = {
-true,
-true,
-[23] = true,
-},
 ["Lower Blackrock Spire"] = {
 false,
 },
@@ -118,6 +120,9 @@ true,
 true,
 [23] = true,
 [8] = true,
+},
+["Scholomance"] = {
+[24] = false,
 },
 ["Darkflame Cleft"] = {
 true,
@@ -131,17 +136,18 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["Scholomance"] = {
-[24] = false,
-},
 ["Blackrock Caverns"] = {
 [24] = false,
+},
+["Voidscar Arena"] = {
+true,
+true,
+[23] = true,
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Utgarde Pinnacle"] = {
-false,
+["Upper Blackrock Spire"] = {
 },
 ["Murder Row"] = {
 true,
@@ -202,11 +208,13 @@ true,
 },
 ["The Dreamrift"] = {
 [14] = true,
+[16] = true,
 [15] = true,
 [17] = false,
 },
 ["Icecrown Citadel"] = {
 [3] = false,
+[5] = false,
 },
 ["Molten Core"] = {
 [9] = false,

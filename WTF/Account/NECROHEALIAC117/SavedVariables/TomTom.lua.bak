@@ -14,11 +14,6 @@ nil,
 0,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 ["block"] = {
 ["position"] = {
 "CENTER",
@@ -26,6 +21,11 @@ nil,
 "CENTER",
 0,
 -100,
+},
+},
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
 },
 },
 },

@@ -188,26 +188,12 @@ true,
 },
 },
 ["raid"] = {
-["Firelands"] = {
-[24] = true,
-},
-["March on Quel'Danas"] = {
-[14] = true,
-[15] = true,
-[17] = true,
+["Mogu'shan Vaults"] = {
+[5] = false,
 },
 ["Liberation of Undermine"] = {
 [14] = true,
 [16] = true,
-},
-["Molten Core"] = {
-[9] = false,
-},
-["The Dreamrift"] = {
-[14] = true,
-[16] = true,
-[15] = true,
-[17] = false,
 },
 ["Icecrown Citadel"] = {
 [3] = false,
@@ -221,6 +207,23 @@ true,
 ["Manaforge Omega"] = {
 [16] = true,
 [15] = false,
+},
+["March on Quel'Danas"] = {
+[14] = true,
+[15] = true,
+[17] = true,
+},
+["The Dreamrift"] = {
+[14] = true,
+[16] = true,
+[15] = true,
+[17] = false,
+},
+["Molten Core"] = {
+[9] = false,
+},
+["Firelands"] = {
+[24] = true,
 },
 },
 },

@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/raid . /sfalls macro",
-"/reload",
-"/invite Shortybooste",
+"/sfalls lock",
+"/g Hello friends.",
 "/sfalls clear",
-"/raid test",
+"/invite Shortyaddons-Dalaran",
+"/reload",
 },
 ["ChatHistoryLog"] = {
 {

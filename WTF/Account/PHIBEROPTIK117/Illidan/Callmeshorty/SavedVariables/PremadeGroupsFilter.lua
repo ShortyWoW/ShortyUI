@@ -48,7 +48,7 @@ PremadeGroupsFilterState = {
 },
 ["version"] = 8,
 ["c3f5"] = {
-["enabled"] = false,
+["enabled"] = true,
 ["raid"] = {
 ["difficulty"] = {
 ["act"] = true,

@@ -12,11 +12,4 @@ Anchor: CENTER
 X: 0
 Y: 0
 W: 388
-H: 250
-Frame: RARESCANNER_BUTTON
-FrameLevel: 200
-Anchor: BOTTOM
-X: 0
-Y: 128
-W: 200
-H: 50
+H: 210

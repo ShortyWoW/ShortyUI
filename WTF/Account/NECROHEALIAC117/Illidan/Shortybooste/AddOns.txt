@@ -4,11 +4,11 @@ BadBoy_CCleaner: disabled
 BadBoy_Levels: disabled
 Baganator: disabled
 BigWigs: disabled
-BigWigs_Core: disabled
+BigWigs_Core: enabled
 BigWigs_MarchOnQuelDanas: disabled
 BigWigs_MidnightWorld: disabled
-BigWigs_Options: disabled
-BigWigs_Plugins: disabled
+BigWigs_Options: enabled
+BigWigs_Plugins: enabled
 BigWigs_TheDreamrift: disabled
 BigWigs_TheVoidspire: disabled
 BigWigs_TheWarWithin: disabled

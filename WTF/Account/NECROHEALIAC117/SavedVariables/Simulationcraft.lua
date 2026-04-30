@@ -4,12 +4,12 @@ SimulationCraftDB = {
 ["Fibear - Area 52"] = "Fibear - Area 52",
 ["Fiberoptic - Area 52"] = "Fiberoptic - Area 52",
 ["Absoloot - Stormrage"] = "Absoloot - Stormrage",
-["Fiber - Area 52"] = "Fiber - Area 52",
+["Fiberoptic - Bleeding Hollow"] = "Fiberoptic - Bleeding Hollow",
 ["Catfive - Area 52"] = "Catfive - Area 52",
 ["Réfreshing - Area 52"] = "Réfreshing - Area 52",
 ["Shortybooste - Illidan"] = "Shortybooste - Illidan",
 ["Shortyaddons - Dalaran"] = "Shortyaddons - Dalaran",
-["Fiberoptic - Bleeding Hollow"] = "Fiberoptic - Bleeding Hollow",
+["Fiber - Area 52"] = "Fiber - Area 52",
 ["Phiberoptik - Azgalor"] = "Phiberoptik - Azgalor",
 ["Azurê - Area 52"] = "Azurê - Area 52",
 ["Phiber - Area 52"] = "Phiber - Area 52",
@@ -24,7 +24,7 @@ SimulationCraftDB = {
 },
 ["Absoloot - Stormrage"] = {
 },
-["Fiber - Area 52"] = {
+["Fiberoptic - Bleeding Hollow"] = {
 },
 ["Catfive - Area 52"] = {
 },
@@ -37,7 +37,7 @@ SimulationCraftDB = {
 ["hide"] = true,
 },
 },
-["Fiberoptic - Bleeding Hollow"] = {
+["Fiber - Area 52"] = {
 },
 ["Phiberoptik - Azgalor"] = {
 },

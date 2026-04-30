@@ -1,6 +1,7 @@
 
 Details_StreamerDB = {
 ["characters"] = {
+["Shortyaddons - Dalaran"] = "Shortybooste - Illidan",
 ["Shortybooste - Illidan"] = "Shortybooste - Illidan",
 },
 ["profiles"] = {
@@ -59,7 +60,7 @@ Details_StreamerDB = {
 ["point"] = "CENTER",
 ["scale"] = 1,
 ["font_shadow"] = true,
-["y"] = -0.000213623046875,
+["y"] = -0.000244140625,
 ["x"] = -0.00048828125,
 ["update_speed"] = 0.05,
 ["size"] = 32,

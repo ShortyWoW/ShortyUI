@@ -4,70 +4,21 @@ BigWigs3DB = {
 ["Fibear - Area 52"] = "Default",
 ["Fiberoptic - Area 52"] = "Default",
 ["Absoloot - Stormrage"] = "Default",
-["Phiberoptik - Bleeding Hollow"] = "Default",
-["Fiber - Area 52"] = "Default",
+["Fiberoptic - Bleeding Hollow"] = "Default",
+["Phiber - Area 52"] = "Default",
 ["Catfive - Area 52"] = "Default",
 ["Réfreshing - Area 52"] = "Default",
 ["Shortybooste - Illidan"] = "Default",
 ["Shortyaddons - Dalaran"] = "Luckyone Main",
-["Fiberoptic - Bleeding Hollow"] = "Default",
+["Fiber - Area 52"] = "Default",
 ["Phiberoptik - Azgalor"] = "Default",
 ["Azurê - Area 52"] = "Default",
-["Phiber - Area 52"] = "Default",
+["Phiberoptik - Bleeding Hollow"] = "Default",
 ["Addontestur - Stormrage"] = "Default",
 ["Locknlol - Area 52"] = "Default",
 ["Absolusion - Stormrage"] = "Default",
 },
 ["namespaces"] = {
-["BigWigs_Plugins_Colors"] = {
-["profiles"] = {
-["Luckyone Main"] = {
-["barBackground"] = {
-["BigWigs_Plugins_Colors"] = {
-["default"] = {
-0.05098039656877518,
-0.05098039656877518,
-0.05098039656877518,
-0.699999988079071,
-},
-},
-},
-},
-},
-},
-["BigWigs_Plugins_BossBlock"] = {
-["global"] = {
-["tableNeedsCopied"] = false,
-},
-},
-["BigWigs_Plugins_Bars"] = {
-["profiles"] = {
-["Luckyone Main"] = {
-["outline"] = "OUTLINE",
-["normalWidth"] = 239,
-["visibleBarLimit"] = 6,
-["normalPosition"] = {
-nil,
-nil,
-10,
--36,
-"ElvUF_Player",
-},
-["spacing"] = 3,
-["fontSizeEmph"] = 10,
-["fontName"] = "Expressway",
-["expHeight"] = 18,
-["emphasizeRestart"] = false,
-["texture"] = "Minimalist",
-["visibleBarLimitEmph"] = 6,
-["expWidth"] = 239,
-["barStyle"] = "ElvUI",
-["emphasizeTime"] = 8,
-["emphasizeMultiplier"] = 1,
-["emphasizeMove"] = false,
-},
-},
-},
 ["BigWigs_Plugins_PrivateAuras"] = {
 ["global"] = {
 ["showHelpTip"] = false,
@@ -77,14 +28,12 @@ nil,
 ["profiles"] = {
 ["Luckyone Main"] = {
 ["disabled"] = false,
-["durationAlign"] = "CENTER",
+["lock"] = true,
+["cooldownEdge"] = false,
 ["fontName"] = "Expressway",
 ["textXPositionDuration"] = 1,
 ["textYPositionDuration"] = 1,
 ["textXPositionCharges"] = 1,
-["lock"] = true,
-["cooldownEdge"] = false,
-["chargesAlign"] = "CENTER",
 ["position"] = {
 "BOTTOMRIGHT",
 "BOTTOMRIGHT",
@@ -92,45 +41,8 @@ nil,
 0,
 "LeftChatPanel",
 },
-},
-},
-},
-["BigWigs_Plugins_Messages"] = {
-["profiles"] = {
-["Luckyone Main"] = {
-["outline"] = "OUTLINE",
-["fontSize"] = 16,
-["emphPosition"] = {
-"TOP",
-"TOP",
-nil,
--465,
-},
-["emphOutline"] = "OUTLINE",
-["fontName"] = "Expressway",
-["emphFontName"] = "Expressway",
-["emphFontSize"] = 20,
-["normalPosition"] = {
-"CENTER",
-"CENTER",
-nil,
-40,
-},
-},
-},
-},
-["MythicPlus"] = {
-["profiles"] = {
-["Luckyone Main"] = {
-["instanceKeysFontName"] = "Expressway",
-["instanceKeysPosition"] = {
-"CENTER",
-"CENTER",
--329,
-261,
-},
-["instanceKeysAlign"] = "LEFT",
-["instanceKeysFontSize"] = 14,
+["durationAlign"] = "CENTER",
+["chargesAlign"] = "CENTER",
 },
 },
 },
@@ -147,6 +59,101 @@ nil,
 -385,
 },
 },
+},
+},
+["BigWigs_Plugins_Colors"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["barBackground"] = {
+["BigWigs_Plugins_Colors"] = {
+["default"] = {
+0.05098039656877518,
+0.05098039656877518,
+0.05098039656877518,
+0.699999988079071,
+},
+},
+},
+},
+},
+},
+["BigWigs_Plugins_Bars"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["outline"] = "OUTLINE",
+["expWidth"] = 239,
+["fontName"] = "Expressway",
+["visibleBarLimitEmph"] = 6,
+["emphasizeMove"] = false,
+["visibleBarLimit"] = 6,
+["expHeight"] = 18,
+["spacing"] = 3,
+["texture"] = "Minimalist",
+["barStyle"] = "ElvUI",
+["fontSizeEmph"] = 10,
+["normalWidth"] = 239,
+["emphasizeRestart"] = false,
+["emphasizeTime"] = 8,
+["emphasizeMultiplier"] = 1,
+["normalPosition"] = {
+nil,
+nil,
+10,
+-36,
+"ElvUF_Player",
+},
+},
+},
+},
+["BigWigs_Plugins_Timeline"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["oneTimeTimelineDisable"] = true,
+},
+},
+},
+["MythicPlus"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["instanceKeysAlign"] = "LEFT",
+["instanceKeysPosition"] = {
+"CENTER",
+"CENTER",
+-329,
+261,
+},
+["instanceKeysFontSize"] = 14,
+["instanceKeysFontName"] = "Expressway",
+},
+},
+},
+["BigWigs_Plugins_Messages"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["outline"] = "OUTLINE",
+["fontSize"] = 16,
+["emphFontName"] = "Expressway",
+["emphFontSize"] = 20,
+["emphPosition"] = {
+"TOP",
+"TOP",
+nil,
+-465,
+},
+["fontName"] = "Expressway",
+["emphOutline"] = "OUTLINE",
+["normalPosition"] = {
+"CENTER",
+"CENTER",
+nil,
+40,
+},
+},
+},
+},
+["BigWigs_Plugins_BossBlock"] = {
+["global"] = {
+["tableNeedsCopied"] = false,
 },
 },
 },

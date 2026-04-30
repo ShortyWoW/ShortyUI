@@ -887,6 +887,7 @@ do
 		bwTooltip:Show()
 	end
 
+	local function SortTable(buttonA, buttonB) return buttonA.text < buttonB.text end
 	local GetRealZoneText = GetRealZoneText
 	local prevButton = nil
 	for expansionIndex = 1, #teleportList do
@@ -935,9 +936,7 @@ do
 			button.cdbar:SetColorTexture(1, 1, 1, 0.6)
 			button.cdbar:Hide()
 		end
-		table.sort(teleportButtons[expansionIndex], function(buttonA, buttonB)
-			return buttonA.text < buttonB.text
-		end)
+		table.sort(teleportButtons[expansionIndex], SortTable)
 		if expansionIndex > 1 then
 			teleportButtons[expansionIndex][1]:SetPoint("TOP", prevButton, "BOTTOM", 0, -36)
 		end
@@ -1275,90 +1274,92 @@ do
 		end)
 	end
 	-- Tab 3 Click Handler
-	tab3:SetScript("OnClick", function(self)
-		SelectTab(self)
-		DeselectTab(tab1)
-		DeselectTab(tab2)
-		DeselectTab(tab4)
-
-		local myCharactersHeader = CreateHeader()
-		myCharactersHeader:SetText(L.keystoneHeaderMyCharacters)
-		myCharactersHeader:SetPoint("TOP", scrollChild, "TOP", 0, -0)
-
-		-- Begin Display of alts
-		UpdateMyKeystone()
-
-		if BigWigs3DB.myKeystones then
-			local sortedplayerList = {}
-			for _, pData in next, BigWigs3DB.myKeystones do
-				local decoratedName = nil
-				local nameTooltip = pData.name .. " [" .. pData.realm .. "]"
-				local specID = pData.specId
-				if specID > 0 then
-					local _, specName, _, specIcon, role, classFile, className = GetSpecializationInfoByID(specID)
-					local color = C_ClassColor.GetClassColor(classFile):GenerateHexColor()
-					decoratedName = ("|T%s:16:16:0:0:64:64:4:60:4:60|t%s|c%s%s|r"):format(specIcon, roleIcons[role] or "", color, pData.name)
-					nameTooltip = ("|c%s%s|r [%s] |A:classicon-%s:16:16|a%s |T%s:16:16:0:0:64:64:4:60:4:60|t%s %s%s"):format(color, pData.name, pData.realm, classFile, className, specIcon, specName, roleIcons[role] or "", roleIcons[role] and _G[role] or "")
-				end
-				local challengeMapName, _, _, _, _, mapID = GetMapUIInfo(pData.keyMap)
-				sortedplayerList[#sortedplayerList+1] = {
-					name = pData.name, decoratedName = decoratedName, nameTooltip = nameTooltip,
-					level = pData.keyLevel, levelTooltip = L.keystoneLevelTooltip:format(pData.keyLevel),
-					map = dungeonNamesTiny[pData.keyMap] or pData.keyMap > 0 and pData.keyMap or "-", mapTooltip = L.keystoneMapTooltip:format(challengeMapName or "-"), mapID = mapID,
-					rating = pData.playerRating, ratingTooltip = L.keystoneRatingTooltip:format(pData.playerRating),
-				}
-			end
-			-- Sort list by level descending, or by name if equal level
-			table.sort(sortedplayerList, function(a, b)
-				if a.level > b.level then
-					return true
-				elseif a.level == b.level then
-					if a.rating ~= b.rating then -- If both levels are equal then sort by rating first, then sort by name
-						return a.rating > b.rating
-					else
-						return a.name < b.name
-					end
-				end
-			end)
-
-			local prevName, prevLevel, prevMap, prevRating = nil, nil, nil, nil
-			local tableSize = #sortedplayerList
-			for i = 1, tableSize do
-				local cellName, cellLevel, cellMap, cellRating = CreateCell(), CreateCell(), CreateCell(), CreateCell()
-				if i == 1 then
-					cellName:SetPoint("RIGHT", cellLevel, "LEFT", -6, 0)
-					cellLevel:SetPoint("TOPLEFT", myCharactersHeader, "CENTER", 3, -12)
-					cellMap:SetPoint("LEFT", cellLevel, "RIGHT", 6, 0)
-					cellRating:SetPoint("LEFT", cellMap, "RIGHT", 6, 0)
+	do
+		local function SortTableByLevelThenRatingThenName(a, b)
+			if a.level > b.level then
+				return true
+			elseif a.level == b.level then
+				if a.rating ~= b.rating then -- If both levels are equal then sort by rating first, then sort by name
+					return a.rating > b.rating
 				else
-					cellName:SetPoint("TOP", prevName, "BOTTOM", 0, -6)
-					cellLevel:SetPoint("TOP", prevLevel, "BOTTOM", 0, -6)
-					cellMap:SetPoint("TOP", prevMap, "BOTTOM", 0, -6)
-					cellRating:SetPoint("TOP", prevRating, "BOTTOM", 0, -6)
-				end
-				cellName:SetWidth(WIDTH_NAME)
-				cellName.text:SetText(sortedplayerList[i].decoratedName or sortedplayerList[i].name)
-				cellName.tooltip = sortedplayerList[i].nameTooltip
-				cellLevel:SetWidth(WIDTH_LEVEL)
-				cellLevel.text:SetText(sortedplayerList[i].level == -1 and hiddenIcon or sortedplayerList[i].level)
-				cellLevel.tooltip = sortedplayerList[i].levelTooltip
-				cellMap:SetWidth(WIDTH_MAP)
-				cellMap.text:SetText(sortedplayerList[i].map)
-				cellMap.tooltip = sortedplayerList[i].mapTooltip
-				cellRating:SetWidth(WIDTH_RATING)
-				cellRating.text:SetText(sortedplayerList[i].rating == -1 and "|A:timerunning-glues-icon:14:14|a" or sortedplayerList[i].rating) -- XXX temp Lemix
-				cellRating.tooltip = sortedplayerList[i].rating == -1 and L.keystoneTimerunner or sortedplayerList[i].ratingTooltip -- XXX temp Lemix
-				prevName, prevLevel, prevMap, prevRating = cellName, cellLevel, cellMap, cellRating
-
-				if i == tableSize then
-					-- Calculate scroll height
-					local contentsHeight = myCharactersHeader:GetTop() - prevName:GetBottom()
-					local newHeight = 10 + contentsHeight + 10 -- 10 top padding + content + 10 bottom padding
-					scrollChild:SetHeight(newHeight)
+					return a.name < b.name
 				end
 			end
 		end
-	end)
+		tab3:SetScript("OnClick", function(self)
+			SelectTab(self)
+			DeselectTab(tab1)
+			DeselectTab(tab2)
+			DeselectTab(tab4)
+
+			local myCharactersHeader = CreateHeader()
+			myCharactersHeader:SetText(L.keystoneHeaderMyCharacters)
+			myCharactersHeader:SetPoint("TOP", scrollChild, "TOP", 0, -0)
+
+			-- Begin Display of alts
+			UpdateMyKeystone()
+
+			if BigWigs3DB.myKeystones then
+				local sortedplayerList = {}
+				for _, pData in next, BigWigs3DB.myKeystones do
+					local decoratedName = nil
+					local nameTooltip = pData.name .. " [" .. pData.realm .. "]"
+					local specID = pData.specId
+					if specID > 0 then
+						local _, specName, _, specIcon, role, classFile, className = GetSpecializationInfoByID(specID)
+						local color = C_ClassColor.GetClassColor(classFile):GenerateHexColor()
+						decoratedName = ("|T%s:16:16:0:0:64:64:4:60:4:60|t%s|c%s%s|r"):format(specIcon, roleIcons[role] or "", color, pData.name)
+						nameTooltip = ("|c%s%s|r [%s] |A:classicon-%s:16:16|a%s |T%s:16:16:0:0:64:64:4:60:4:60|t%s %s%s"):format(color, pData.name, pData.realm, classFile, className, specIcon, specName, roleIcons[role] or "", roleIcons[role] and _G[role] or "")
+					end
+					local challengeMapName, _, _, _, _, mapID = GetMapUIInfo(pData.keyMap)
+					sortedplayerList[#sortedplayerList+1] = {
+						name = pData.name, decoratedName = decoratedName, nameTooltip = nameTooltip,
+						level = pData.keyLevel, levelTooltip = L.keystoneLevelTooltip:format(pData.keyLevel),
+						map = dungeonNamesTiny[pData.keyMap] or pData.keyMap > 0 and pData.keyMap or "-", mapTooltip = L.keystoneMapTooltip:format(challengeMapName or "-"), mapID = mapID,
+						rating = pData.playerRating, ratingTooltip = L.keystoneRatingTooltip:format(pData.playerRating),
+					}
+				end
+				table.sort(sortedplayerList, SortTableByLevelThenRatingThenName)
+
+				local prevName, prevLevel, prevMap, prevRating = nil, nil, nil, nil
+				local tableSize = #sortedplayerList
+				for i = 1, tableSize do
+					local cellName, cellLevel, cellMap, cellRating = CreateCell(), CreateCell(), CreateCell(), CreateCell()
+					if i == 1 then
+						cellName:SetPoint("RIGHT", cellLevel, "LEFT", -6, 0)
+						cellLevel:SetPoint("TOPLEFT", myCharactersHeader, "CENTER", 3, -12)
+						cellMap:SetPoint("LEFT", cellLevel, "RIGHT", 6, 0)
+						cellRating:SetPoint("LEFT", cellMap, "RIGHT", 6, 0)
+					else
+						cellName:SetPoint("TOP", prevName, "BOTTOM", 0, -6)
+						cellLevel:SetPoint("TOP", prevLevel, "BOTTOM", 0, -6)
+						cellMap:SetPoint("TOP", prevMap, "BOTTOM", 0, -6)
+						cellRating:SetPoint("TOP", prevRating, "BOTTOM", 0, -6)
+					end
+					cellName:SetWidth(WIDTH_NAME)
+					cellName.text:SetText(sortedplayerList[i].decoratedName or sortedplayerList[i].name)
+					cellName.tooltip = sortedplayerList[i].nameTooltip
+					cellLevel:SetWidth(WIDTH_LEVEL)
+					cellLevel.text:SetText(sortedplayerList[i].level == -1 and hiddenIcon or sortedplayerList[i].level)
+					cellLevel.tooltip = sortedplayerList[i].levelTooltip
+					cellMap:SetWidth(WIDTH_MAP)
+					cellMap.text:SetText(sortedplayerList[i].map)
+					cellMap.tooltip = sortedplayerList[i].mapTooltip
+					cellRating:SetWidth(WIDTH_RATING)
+					cellRating.text:SetText(sortedplayerList[i].rating == -1 and "|A:timerunning-glues-icon:14:14|a" or sortedplayerList[i].rating) -- XXX temp Lemix
+					cellRating.tooltip = sortedplayerList[i].rating == -1 and L.keystoneTimerunner or sortedplayerList[i].ratingTooltip -- XXX temp Lemix
+					prevName, prevLevel, prevMap, prevRating = cellName, cellLevel, cellMap, cellRating
+
+					if i == tableSize then
+						-- Calculate scroll height
+						local contentsHeight = myCharactersHeader:GetTop() - prevName:GetBottom()
+						local newHeight = 10 + contentsHeight + 10 -- 10 top padding + content + 10 bottom padding
+						scrollChild:SetHeight(newHeight)
+					end
+				end
+			end
+		end)
+	end
 
 	-- Tab 4 (History)
 	tab4 = CreateFrame("Button", nil, mainPanel, "PanelTabButtonTemplate")
@@ -1773,54 +1774,122 @@ do
 	challengesTeleportButton:RegisterForClicks("AnyDown", "AnyUp")
 	challengesTeleportButton:SetPropagateMouseMotion(true)
 	challengesTeleportButton:SetAttribute("type", "spell")
-	local hookedIcons = {}
-	local CL = BigWigsAPI:GetLocale("BigWigs: Common")
-
-	local function OnEnter(self)
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(CL.other:format("|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tBigWigs", CL.teleport))
-
-		if InCombatLockdown() then
-			challengesTeleportButton:EnableMouse(false)
-		else
-			challengesTeleportButton:EnableMouse(true)
-			challengesTeleportButton:ClearAllPoints()
-			challengesTeleportButton:SetParent(self)
-			challengesTeleportButton:SetAllPoints(self)
-			challengesTeleportButton:SetAttribute("spell", nil)
+	local OnEnter
+	do
+		local CL = BigWigsAPI:GetLocale("BigWigs: Common")
+		local unitTbl = {"party1", "party2", "party3", "party4"}
+		local function SortTableByScoreThenName(a, b)
+			if a[1] > b[1] then -- Dungeon score
+				return true
+			elseif a[1] == b[1] then
+				return a[2] < b[2] -- Player name
+			end
 		end
-
-		local _, _, _, _, _, mapID = GetMapUIInfo(self.mapID) -- The challenges frame icon .mapID is actually the challengeMapID, convert into mapID (instance ID)
-		for instanceID, spellID in next, teleportList[1] do
-			if instanceID == mapID then
-				local spellName = ("|cFF33FF99%s|r"):format(BigWigsLoader.GetSpellName(spellID) or "?")
-				if InCombatLockdown() then
-					GameTooltip:AddLine(spellName)
-					GameTooltip:AddLine(L.unavailableWhilstInCombat, 1, 1, 1)
-				else
-					if not BigWigsLoader.IsSpellKnownOrInSpellBook(spellID) then
-						GameTooltip:AddLine(spellName .. L.keystoneClickToTeleportNotLearned, 1, 1, 1)
-					else
-						challengesTeleportButton:SetAttribute("spell", spellID)
-						local cd = BigWigsLoader.GetSpellCooldown(spellID)
-						if cd.startTime > 0 and cd.duration > 0 then
-							local remainingSeconds = (cd.startTime + cd.duration) - GetTime()
-							local hours = math.floor(remainingSeconds / 3600)
-							remainingSeconds = remainingSeconds % 3600
-							local minutes = math.floor(remainingSeconds / 60)
-							local seconds = math.floor(remainingSeconds - (minutes*60))
-							GameTooltip:AddLine(spellName .. CL.extra:format(L.keystoneClickToTeleportCooldown, ("%02d:%02d:%02d"):format(hours, minutes, seconds)), 1, 1, 1)
+		function OnEnter(self)
+			local _, _, timeLimit, _, _, mapID = GetMapUIInfo(self.mapID) -- The challenges frame icon .mapID is actually the challengeMapID, convert into mapID (instance ID)
+			if IsInGroup() then
+				GameTooltip:AddLine(" ")
+				GameTooltip:AddLine(L.partyRatingHeader)
+				local linesToAdd = {}
+				for partyIterator = 1, 4 do
+					local unit = unitTbl[partyIterator]
+					if UnitExists(unit) then
+						local ratingTbl = C_PlayerInfo.GetPlayerMythicPlusRatingSummary(unit)
+						local classColorHex = "FF808080"
+						local _, classFile = UnitClass(unit)
+						if classFile then
+							local colorTbl = C_ClassColor.GetClassColor(classFile)
+							if colorTbl then
+								classColorHex = colorTbl:GenerateHexColor()
+							end
+						end
+						if not ratingTbl then
+							local scoreColorHex = HIGHLIGHT_FONT_COLOR:GenerateHexColor()
+							GameTooltip:AddLine()
+							local pName = BigWigsLoader.UnitName(unit) or "?"
+							linesToAdd[#linesToAdd+1] = {-1, pName, L.dungeonScoreNoDataString:format(classColorHex, pName)}
 						else
-							GameTooltip:AddLine(spellName .. L.keystoneClickToTeleportNow, 1, 1, 1)
+							for runsIterator = 1, 8 do
+								local run = ratingTbl.runs[runsIterator]
+								if run and run.challengeModeID == self.mapID then
+									local duration = run.bestRunDurationMS / 1000
+									local minutes = math.floor(duration / 60)
+									local seconds = math.floor(duration - (minutes*60))
+									local scoreColorTable = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(run.mapScore or 0) or HIGHLIGHT_FONT_COLOR
+									local scoreColorHex = scoreColorTable:GenerateHexColor()
+									local pName = BigWigsLoader.UnitName(unit) or "?"
+									linesToAdd[#linesToAdd+1] = {run.mapScore, pName, L.dungeonScoreString:format(
+										scoreColorHex, run.mapScore, -- Dungeon score
+										run.bestRunLevel, -- Dungeon level
+										duration > timeLimit and "FF4411" or "33FF99", minutes, seconds, -- Dungeon duration
+										classColorHex, pName -- Player name
+									)}
+									break
+								elseif runsIterator == 8 then
+									local scoreColorTable = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(0)
+									local scoreColorHex = scoreColorTable:GenerateHexColor()
+									local pName = BigWigsLoader.UnitName(unit) or "?"
+									linesToAdd[#linesToAdd+1] = {0, pName, L.dungeonScoreString:format(
+										scoreColorHex, 0, -- Dungeon score
+										0, -- Dungeon level
+										"FFFFFF", 0, 0, -- Dungeon duration
+										classColorHex, pName -- Player name
+									)}
+								end
+							end
 						end
 					end
 				end
-				break
+				table.sort(linesToAdd, SortTableByScoreThenName)
+				for i = 1, #linesToAdd do
+					GameTooltip:AddLine(linesToAdd[i][3])
+				end
 			end
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(L.dungeonTeleportHeader)
+
+			if InCombatLockdown() then
+				challengesTeleportButton:EnableMouse(false)
+			else
+				challengesTeleportButton:EnableMouse(true)
+				challengesTeleportButton:ClearAllPoints()
+				challengesTeleportButton:SetParent(self)
+				challengesTeleportButton:SetAllPoints(self)
+				challengesTeleportButton:SetAttribute("spell", nil)
+			end
+
+			for instanceID, spellID in next, teleportList[1] do
+				if instanceID == mapID then
+					local spellName = ("|cFF33FF99%s|r"):format(BigWigsLoader.GetSpellName(spellID) or "?")
+					if InCombatLockdown() then
+						GameTooltip:AddLine(spellName)
+						GameTooltip:AddLine(L.unavailableWhilstInCombat, 1, 1, 1)
+					else
+						if not BigWigsLoader.IsSpellKnownOrInSpellBook(spellID) then
+							GameTooltip:AddLine(spellName .. L.keystoneClickToTeleportNotLearned, 1, 1, 1)
+						else
+							challengesTeleportButton:SetAttribute("spell", spellID)
+							local cd = BigWigsLoader.GetSpellCooldown(spellID)
+							if cd.startTime > 0 and cd.duration > 0 then
+								local remainingSeconds = (cd.startTime + cd.duration) - GetTime()
+								local hours = math.floor(remainingSeconds / 3600)
+								remainingSeconds = remainingSeconds % 3600
+								local minutes = math.floor(remainingSeconds / 60)
+								local seconds = math.floor(remainingSeconds - (minutes*60))
+								GameTooltip:AddLine(spellName .. CL.extra:format(L.keystoneClickToTeleportCooldown, ("%02d:%02d:%02d"):format(hours, minutes, seconds)), 1, 1, 1)
+							else
+								GameTooltip:AddLine(spellName .. L.keystoneClickToTeleportNow, 1, 1, 1)
+							end
+						end
+					end
+					break
+				end
+			end
+			GameTooltip:Show()
 		end
-		GameTooltip:Show()
 	end
 
+	local hookedIcons = {}
 	local frame = CreateFrame("Frame")
 	frame:SetScript("OnEvent", function(self, event, addonName)
 		if event == "ADDON_LOADED" and addonName == "Blizzard_ChallengesUI" then
@@ -1837,13 +1906,12 @@ do
 							scoreFontstring:SetShadowOffset(1, -1)
 							scoreFontstring:SetShadowColor(0, 0, 0)
 							scoreFontstring:Show()
-							local dungeonNameFontstring = icon:CreateFontString(nil, nil, "GameFontNormalMed1")
+							local dungeonNameFontstring = icon:CreateFontString(nil, nil, "SystemFont_Shadow_Med1_Outline")
 							dungeonNameFontstring:SetJustifyH("CENTER")
-							dungeonNameFontstring:SetPoint("BOTTOMLEFT", icon, "TOPLEFT", 0, 2)
-							dungeonNameFontstring:SetPoint("BOTTOMRIGHT", icon, "TOPRIGHT", 0, 2)
+							dungeonNameFontstring:SetPoint("BOTTOMLEFT", icon, "TOPLEFT", 1, 1)
+							dungeonNameFontstring:SetPoint("BOTTOMRIGHT", icon, "TOPRIGHT", -1, 1)
 							dungeonNameFontstring:SetTextColor(1, 1, 1)
-							dungeonNameFontstring:SetShadowOffset(1, -1)
-							dungeonNameFontstring:SetShadowColor(0, 0, 0)
+							dungeonNameFontstring:SetWordWrap(false)
 							dungeonNameFontstring:Show()
 							hookedIcons[icon] = {scoreFontstring, dungeonNameFontstring}
 							icon:HookScript("OnEnter", OnEnter)
@@ -1853,7 +1921,7 @@ do
 						hookedIcons[icon][2]:ClearText()
 
 						-- Dungeon names as header text
-						hookedIcons[icon][2]:SetText(dungeonNamesTrimmed[icon.mapID] or "??")
+						hookedIcons[icon][2]:SetText(dungeonNamesTiny[icon.mapID] or icon.mapID)
 						hookedIcons[icon][2]:SetTextScale(1)
 						while hookedIcons[icon][2]:IsTruncated() do -- For really long single words like "MOTHERLODE!!"
 							hookedIcons[icon][2]:SetTextScale(hookedIcons[icon][2]:GetTextScale() - 0.01)

@@ -57,9 +57,7 @@ RaiderIO_Config = {
 }
 RaiderIO_LastCharacter = "us-Callmeshorty-illidan"
 RaiderIO_MissingCharacters = {
-["us-Shadowbourne-azshara"] = true,
-["us-Antimadi-onyxia"] = true,
-["us-Evmouse-illidan"] = true,
+["us-Shortyaddons-dalaran"] = true,
 }
 RaiderIO_MissingServers = {
 }

@@ -84,7 +84,7 @@ ShortyINT_Debug: disabled
 BigWigs_TheWarWithin: enabled
 ShortyTicTac: enabled
 ShortyTalents: enabled
-ShortyFalls: enabled
+ShortyFalls: disabled
 BigWigs_VoiceGCP: enabled
 RaiderIO: enabled
 !Swatter: disabled

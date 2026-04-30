@@ -188,6 +188,25 @@ true,
 },
 },
 ["raid"] = {
+["Mogu'shan Vaults"] = {
+[5] = false,
+},
+["Liberation of Undermine"] = {
+[14] = true,
+[16] = true,
+},
+["Icecrown Citadel"] = {
+[3] = false,
+[5] = false,
+},
+["Siege of Orgrimmar"] = {
+[15] = false,
+},
+["The Voidspire"] = {
+[14] = true,
+[17] = false,
+[15] = true,
+},
 ["Manaforge Omega"] = {
 [16] = true,
 [15] = false,
@@ -197,24 +216,11 @@ true,
 [15] = true,
 [17] = true,
 },
-["Liberation of Undermine"] = {
-[14] = true,
-[16] = true,
-},
-["The Voidspire"] = {
-[14] = true,
-[17] = false,
-[15] = true,
-},
 ["The Dreamrift"] = {
 [14] = true,
 [16] = true,
 [15] = true,
 [17] = false,
-},
-["Icecrown Citadel"] = {
-[3] = false,
-[5] = false,
 },
 ["Molten Core"] = {
 [9] = false,

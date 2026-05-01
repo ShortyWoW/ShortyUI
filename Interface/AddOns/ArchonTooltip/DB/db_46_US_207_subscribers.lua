@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Monk-Windwalker','Shaman-Restoration','Shaman-Elemental',}
-local provider = {region='US',realm='Stormreaver',name='US',type='subscribers',zone=46,date='2026-04-28',data={Ch='Chizu:BAEALgAECgIJAgABLgAFFAMJBwABAFsKAA==.',Kh='Kheirma:BAEBLgAECn8aAAMCAAgJ4hfjGgBBAghoDAAABAA5AGkMAAAEACMAawwAAAQATABqDAAAAwAwAGwMAAAEADMAbQwAAAEAPADqDAAABABSAG4MAAACAEwAAgAICeIX4xoAQQIIaAwAAAMAOQBpDAAAAwAjAGsMAAADAEwAagwAAAIAMABsDAAAAwAzAG0MAAABADwA6gwAAAQAUgBuDAAAAgBMAAMABQmQCAZXAOkABWgMAAABACYAaQwAAAEADwBrDAAAAQATAGoMAAABAB4AbAwAAAEADwAAAA==.',Vy='Vysualslol:BAEALgAECgYJCgAAAA==.',},}
+local lookup = {'Shaman-Restoration','Shaman-Elemental','Paladin-Retribution',}
+local provider = {region='US',realm='Stormreaver',name='US',type='subscribers',zone=46,date='2026-05-01',data={Ch='Chizu:BAEALgAECgIJAgAAAA==.',Kh='Kheirma:BAEBLgAECn8aAAMBAAgJ4hfiGgBBAghoDAAABAA5AGkMAAAEACMAawwAAAQATABqDAAAAwAwAGwMAAAEADMAbQwAAAEAPADqDAAABABSAG4MAAACAEwAAQAICeIX4hoAQQIIaAwAAAMAOQBpDAAAAwAjAGsMAAADAEwAagwAAAIAMABsDAAAAwAzAG0MAAABADwA6gwAAAQAUgBuDAAAAgBMAAIABQmQCA9XAOkABWgMAAABACYAaQwAAAEADwBrDAAAAQATAGoMAAABAB4AbAwAAAEADwAAAA==.',Vy='Vysualslol:BAEALgAECgYJCwABLgAFFAUJDgADAAEZAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

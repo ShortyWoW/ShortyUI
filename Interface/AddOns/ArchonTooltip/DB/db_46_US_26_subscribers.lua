@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DemonHunter-Devourer','DeathKnight-Blood','DeathKnight-Unholy',}
-local provider = {region='US',realm='Azshara',name='US',type='subscribers',zone=46,date='2026-04-28',data={De='Decun:BAEALgAECgIJAgABLgAECggJHgABAD8jAA==.',Ho='Hondodk:BAEBLgAECn8UAAICAAcJLyXsCACSAgdoDAAABABjAGkMAAADAGIAawwAAAMAYgBqDAAAAgBiAGwMAAACAFwA6gwAAAUAYABuDAAAAQBVAAIABwkvJewIAJICB2gMAAAEAGMAaQwAAAMAYgBrDAAAAwBiAGoMAAACAGIAbAwAAAIAXADqDAAABQBgAG4MAAABAFUAAS4ABRQFCQ4AAwCsIQA=.',},}
+local lookup = {'DeathKnight-Blood','DeathKnight-Unholy',}
+local provider = {region='US',realm='Azshara',name='US',type='subscribers',zone=46,date='2026-05-01',data={De='Decun:BAEALgAECgIJAgAAAA==.',Ho='Hondodk:BAEBLgAECn8UAAIBAAcJLyXsCACSAgdoDAAABABjAGkMAAADAGIAawwAAAMAYgBqDAAAAgBiAGwMAAACAFwA6gwAAAUAYABuDAAAAQBVAAEABwkvJewIAJICB2gMAAAEAGMAaQwAAAMAYgBrDAAAAwBiAGoMAAACAGIAbAwAAAIAXADqDAAABQBgAG4MAAABAFUAAS4ABRQFCRIAAgAPIwA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Unholy',}
-local provider = {region='US',realm='BloodFurnace',name='US',type='subscribers',zone=46,date='2026-04-28',data={Ho='Hondô:BAECLgAFFH8OAAIBAAUJrCEWCQCIAQVoDAAABQBjAGkMAAADAFoAawwAAAMAVgBqDAAAAQBQAOoMAAACAEQAAQAFCawhFgkAiAEFaAwAAAUAYwBpDAAAAwBaAGsMAAADAFYAagwAAAEAUADqDAAAAgBEAC4ABAp/JQACAQAJCT4lzgYAbAMAAQAJCT4lzgYAbAMAAAA=.',['Hò']='Hòndo:BAEALgAECgQJBAABLgAFFAUJDgABAKwhAA==.',['Hô']='Hôndo:BAEALgAECgQJCAABLgAFFAUJDgABAKwhAA==.',Ki='Kippo:BAEALgAECgIJAgAAAA==.',Ma='Mastalys:BAEALgAECgQJBQAAAQ==.',Xa='Xalcor:BAEALgAECgQJBAAAAA==.',},}
+local lookup = {'DeathKnight-Unholy','Mage-Frost',}
+local provider = {region='US',realm='BloodFurnace',name='US',type='subscribers',zone=46,date='2026-05-01',data={Ho='Hondô:BAECLgAFFH8SAAIBAAUJDyMfCQCIAQVoDAAABgBjAGkMAAADAFoAawwAAAQAXwBqDAAAAgBQAOoMAAADAEkAAQAFCQ8jHwkAiAEFaAwAAAYAYwBpDAAAAwBaAGsMAAAEAF8AagwAAAIAUADqDAAAAwBJAC4ABAp/JgACAQAJCT4lzwYAbAMAAQAJCT4lzwYAbAMAAAA=.',['Hò']='Hòndo:BAEALgAECgQJBAABLgAFFAUJEgABAA8jAA==.',['Hô']='Hôndo:BAEALgAECgQJCAABLgAFFAUJEgABAA8jAA==.',Ki='Kippo:BAEALgAECgIJAgABLgAFFAQJBwACAIYFAA==.',Ma='Mastalys:BAEALgAECgQJCAAAAQ==.',Xa='Xalcor:BAEALgAECgQJBQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

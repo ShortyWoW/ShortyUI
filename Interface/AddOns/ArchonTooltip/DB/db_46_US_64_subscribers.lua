@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Mage-Frost',}
-local provider = {region='US',realm='Deathwing',name='US',type='subscribers',zone=46,date='2026-04-28',data={Am='Amzey:BAEBLgAECn8hAAIBAAgJziDnDQA/AghoDAAABgBhAGkMAAAFAGAAawwAAAUAWgBqDAAABQBfAGwMAAAFAGEAbQwAAAEAUgDqDAAABQBeAG4MAAABABwAAQAICc4g5w0APwIIaAwAAAYAYQBpDAAABQBgAGsMAAAFAFoAagwAAAUAXwBsDAAABQBhAG0MAAABAFIA6gwAAAUAXgBuDAAAAQAcAAAA.',Xi='Xiaozhi:BAEALgAECgYJDwAAAA==.',},}
+local lookup = {'Mage-Frost','Monk-Mistweaver',}
+local provider = {region='US',realm='Deathwing',name='US',type='subscribers',zone=46,date='2026-05-01',data={Am='Amzey:BAEBLgAECn8hAAIBAAgJziD1FQAsAghoDAAABgBhAGkMAAAFAGAAawwAAAUAWgBqDAAABQBfAGwMAAAFAGEAbQwAAAEAUgDqDAAABQBeAG4MAAABABwAAQAICc4g9RUALAIIaAwAAAYAYQBpDAAABQBgAGsMAAAFAFoAagwAAAUAXwBsDAAABQBhAG0MAAABAFIA6gwAAAUAXgBuDAAAAQAcAAAA.',Bo='Bonezey:BAEALgAECgYJBgABLgAECggJIQABAM4gAA==.',Xi='Xiaozhi:BAEBLgAECn8WAAICAAcJ+yLZAwCrAgdoDAAABABeAGkMAAAEAGEAawwAAAQAXQBqDAAAAwBXAGwMAAADAFgA6gwAAAMAXQBuDAAAAQBHAAIABwn7ItkDAKsCB2gMAAAEAF4AaQwAAAQAYQBrDAAABABdAGoMAAADAFcAbAwAAAMAWADqDAAAAwBdAG4MAAABAEcAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

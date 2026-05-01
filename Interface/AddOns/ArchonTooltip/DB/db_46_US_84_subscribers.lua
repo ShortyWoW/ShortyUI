@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-BeastMastery','Unknown-Unknown',}
-local provider = {region='US',realm='EchoIsles',name='US',type='subscribers',zone=46,date='2026-04-28',data={Di='Didimissfire:BAEBLgAECn8fAAIBAAgJjQ1/NgDUAQhoDAAABQBEAGkMAAAFACsAawwAAAUAIABqDAAABAAqAGwMAAADABYAbQwAAAIACADqDAAABQAxAG4MAAACABEAAQAICY0NfzYA1AEIaAwAAAUARABpDAAABQArAGsMAAAFACAAagwAAAQAKgBsDAAAAwAWAG0MAAACAAgA6gwAAAUAMQBuDAAAAgARAAAA.',Gl='Glenlizzo:BAEALgADCgQJBAABLgAECgMJAwACAAAAAA==.Glenroyce:BAEALgAECgMJAwAAAA==.',},}
+local provider = {region='US',realm='EchoIsles',name='US',type='subscribers',zone=46,date='2026-05-01',data={Di='Didimissfire:BAEBLgAECn8mAAIBAAgJLhKjHQCuAQhoDAAABgBEAGkMAAAGACsAawwAAAYAIgBqDAAABQAqAGwMAAAEADIAbQwAAAMAJwDqDAAABQAxAG4MAAADACgAAQAICS4Sox0ArgEIaAwAAAYARABpDAAABgArAGsMAAAGACIAagwAAAUAKgBsDAAABAAyAG0MAAADACcA6gwAAAUAMQBuDAAAAwAoAAAA.',Gl='Glenlizzo:BAEALgADCgQJBAABLgAECgMJAwACAAAAAA==.Glenroyce:BAEALgAECgMJAwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Rogue-Subtlety','Rogue-Assassination',}
-local provider = {region='US',realm='Onyxia',name='US',type='subscribers',zone=46,date='2026-04-28',data={Za='Zangyaku:BAEALgAECgcJCQABLgAECgcJGQABAK0cAA==.Zanmetsu:BAEBLgAECn8ZAAMBAAcJrRyNGABDAgdoDAAABABLAGkMAAAEAFoAawwAAAQATgBqDAAABABDAGwMAAAEAFEAbQwAAAIAJwDqDAAAAwBKAAEABwmtHI0YAEMCB2gMAAAEAEsAaQwAAAQAWgBrDAAABABOAGoMAAAEAEMAbAwAAAMAUQBtDAAAAgAnAOoMAAADAEoAAgABCY4M5x4AOAABbAwAAAEAIAAAAA==.',},}
+local lookup = {'Rogue-Subtlety','Rogue-Assassination','Unknown-Unknown',}
+local provider = {region='US',realm='Onyxia',name='US',type='subscribers',zone=46,date='2026-05-01',data={Za='Zangyaku:BAEALgAECggJEQAAAA==.Zanmetsu:BAEBLgAECn8ZAAMBAAcJrRyQGABDAgdoDAAABABLAGkMAAAEAFoAawwAAAQATgBqDAAABABDAGwMAAAEAFEAbQwAAAIAJwDqDAAAAwBKAAEABwmtHJAYAEMCB2gMAAAEAEsAaQwAAAQAWgBrDAAABABOAGoMAAAEAEMAbAwAAAMAUQBtDAAAAgAnAOoMAAADAEoAAgABCY4M6R4AOAABbAwAAAEAIAABLgAECggJEQADAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

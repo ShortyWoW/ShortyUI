@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown','DemonHunter-Devourer',}
-local provider = {region='US',realm='Khadgar',name='US',type='subscribers',zone=46,date='2026-04-28',data={Ju='Justbringit:BAEALgADCgIJAgABLgAECggJEwABAAAAAA==.',Ra='Ragé:BAEALgAECggJEwAAAA==.',Sh='Shamhuntzu:BAECLgAFFH8MAAICAAQJ1w/QEQAnAQRoDAAABABIAGkMAAADACYAawwAAAIADQDqDAAAAwAlAAIABAnXD9ARACcBBGgMAAAEAEgAaQwAAAMAJgBrDAAAAgANAOoMAAADACUALgAECn8oAAICAAgJACD2EgDoAgACAAgJACD2EgDoAgAAAA==.',},}
+local lookup = {'DemonHunter-Devourer','DemonHunter-Havoc',}
+local provider = {region='US',realm='Khadgar',name='US',type='subscribers',zone=46,date='2026-05-01',data={Ju='Justbringit:BAEALgADCgIJAgABLgAECggJGgABAMwjAA==.',Ra='Ragé:BAEBLgAECn8aAAMBAAgJzCMxAwDHAghoDAAAAwBaAGkMAAADAGIAawwAAAQAXgBqDAAAAwBXAGwMAAAEAFoAbQwAAAMAWgDqDAAABABTAG4MAAACAF0AAQAICcwjMQMAxwIIaAwAAAMAWgBpDAAAAwBiAGsMAAAEAF4AagwAAAMAVwBsDAAAAwBaAG0MAAADAFoA6gwAAAQAUwBuDAAAAgBdAAIAAQlEHnhkAFIAAWwMAAABAE0AAAA=.',Sh='Shamhuntzu:BAECLgAFFH8PAAIBAAQJgw9PFgAdAQRoDAAABQBIAGkMAAAEACYAawwAAAMAFQDqDAAAAwAaAAEABAmDD08WAB0BBGgMAAAFAEgAaQwAAAQAJgBrDAAAAwAVAOoMAAADABoALgAECn8kAAIBAAgJ/x/8EgDoAgABAAgJ/x/8EgDoAgAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

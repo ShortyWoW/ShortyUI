@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Priest-Holy','Unknown-Unknown',}
-local provider = {region='US',realm='Eredar',name='US',type='subscribers',zone=46,date='2026-04-28',data={Ca='Cail:BAEALgAECgYJEgAAAA==.',Lo='Lomponic:BAEALgAECgYJEwAAAA==.',Tu='Tullen:BAEBLgAECn8UAAIBAAcJ6RHoKwCYAQdoDAAAAwA2AGkMAAAEACcAawwAAAQASgBqDAAAAgAbAGwMAAACAEwA6gwAAAMADgBuDAAAAgAiAAEABwnpEegrAJgBB2gMAAADADYAaQwAAAQAJwBrDAAABABKAGoMAAACABsAbAwAAAIATADqDAAAAwAOAG4MAAACACIAAAA=.',Za='Zark:BAEALgADCgcJBwABLgAECgYJEgACAAAAAA==.',},}
+local lookup = {'Priest-Shadow','Priest-Holy','Unknown-Unknown',}
+local provider = {region='US',realm='Eredar',name='US',type='subscribers',zone=46,date='2026-05-01',data={Ca='Cail:BAEALgAECgcJEwAAAA==.',Lo='Lomponic:BAEBLgAECn8aAAIBAAcJmhpsCgDZAQdoDAAABQBSAGkMAAAEAEIAawwAAAQASQBqDAAABABGAGwMAAAEADgAbQwAAAEAQQDqDAAABABBAAEABwmaGmwKANkBB2gMAAAFAFIAaQwAAAQAQgBrDAAABABJAGoMAAAEAEYAbAwAAAQAOABtDAAAAQBBAOoMAAAEAEEAAAA=.',Tu='Tullen:BAEBLgAECn8aAAICAAcJ3RTEEgCEAQdoDAAABABCAGkMAAAFADIAawwAAAUASgBqDAAAAwAtAGwMAAADAEwA6gwAAAQAGgBuDAAAAgAiAAIABwndFMQSAIQBB2gMAAAEAEIAaQwAAAUAMgBrDAAABQBKAGoMAAADAC0AbAwAAAMATADqDAAABAAaAG4MAAACACIAAAA=.',Za='Zark:BAEALgADCgcJBwABLgAECgcJEwADAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

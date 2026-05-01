@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Paladin-Protection','Paladin-Retribution','Paladin-Holy','Unknown-Unknown',}
-local provider = {region='US',realm='Aegwynn',name='US',type='subscribers',zone=46,date='2026-04-28',data={Cy='Cyniel:BAEBLgAECn8XAAMBAAYJpBezFQB1AQZoDAAABQBWAGkMAAAFAD0AawwAAAQAOABqDAAAAwBDAGwMAAABACEA6gwAAAUAPwABAAYJexSzFQB1AQZoDAAAAwBWAGkMAAADAD0AawwAAAIAHQBqDAAAAgBDAGwMAAABACEA6gwAAAIAMgACAAUJPxUoTgDxAAVoDAAAAgA2AGkMAAACACoAawwAAAIAOABqDAAAAQAlAOoMAAADAD8AAAA=.',Ea='Earthlyn:BAEALgAECgIJAgAAAA==.',Fr='Freyz:BAEALgAECgYJCgAAAA==.',Gw='Gwion:BAEALgAECgYJCwABLgAECggJGgADAP4VAA==.',He='Hexappeal:BAEALgADCgYJBgAAAA==.',Hu='Humbaba:BAEALgADCgMJAwABLgAECggJGgADAP4VAA==.',Ja='James:BAEALgADCgYJBgABLgAECgYJFwABAKQXAA==.',Ma='Magicmech:BAEALgADCgUJBQABLgAECggJGgADAP4VAA==.',Ra='Rayz:BAEALgADCgcJEQABLgAECgYJCgAEAAAAAA==.',Ze='Zedkick:BAEALgADCgcJGwAAAA==.',['Zí']='Zíngerdh:BAEALgAECgcJCQAAAA==.',},}
+local lookup = {'Paladin-Protection','Paladin-Retribution','Unknown-Unknown',}
+local provider = {region='US',realm='Aegwynn',name='US',type='subscribers',zone=46,date='2026-05-01',data={Cy='Cyniel:BAEBLgAECn8XAAMBAAYJpBe1FQB1AQZoDAAABQBWAGkMAAAFAD0AawwAAAQAOABqDAAAAwBDAGwMAAABACEA6gwAAAUAPwABAAYJexS1FQB1AQZoDAAAAwBWAGkMAAADAD0AawwAAAIAHQBqDAAAAgBDAGwMAAABACEA6gwAAAIAMgACAAUJPxXtqwArAQVoDAAAAgA2AGkMAAACACoAawwAAAIAOABqDAAAAQAlAOoMAAADAD8AAAA=.',Ea='Earthlyn:BAEALgAECgYJCQAAAA==.',Fr='Freyz:BAEALgAECgYJCgAAAA==.',Gw='Gwion:BAEALgAECgYJCwAAAA==.',He='Hexappeal:BAEALgADCgYJBgAAAA==.',Hu='Humbaba:BAEALgADCgMJAwABLgAECgYJCwADAAAAAA==.',Ja='James:BAEALgADCgYJBgABLgAECgYJFwABAKQXAA==.',Ma='Magicmech:BAEALgADCgUJBQABLgAECgYJCwADAAAAAA==.',Ra='Rayz:BAEALgADCgcJEQABLgAECgYJCgADAAAAAA==.',Ze='Zedkick:BAEALgADCgcJGwAAAA==.',['Zí']='Zíngerdh:BAEALgAECgcJCQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

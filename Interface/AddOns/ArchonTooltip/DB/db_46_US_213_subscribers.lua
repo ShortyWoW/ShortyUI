@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DemonHunter-Devourer',}
-local provider = {region='US',realm='Thaurissan',name='US',type='subscribers',zone=46,date='2026-04-28',data={Pu='Punprepared:BAEBLgAECn8gAAIBAAgJcyarAQAIAwhoDAAABQBjAGkMAAAFAGMAawwAAAUAYwBqDAAABABjAGwMAAAEAF8AbQwAAAIAYADqDAAABQBjAG4MAAACAGMAAQAICXMmqwEACAMIaAwAAAUAYwBpDAAABQBjAGsMAAAFAGMAagwAAAQAYwBsDAAABABfAG0MAAACAGAA6gwAAAUAYwBuDAAAAgBjAAAA.',},}
+local lookup = {'DemonHunter-Devourer','DemonHunter-Vengeance',}
+local provider = {region='US',realm='Thaurissan',name='US',type='subscribers',zone=46,date='2026-05-01',data={Pu='Punprepared:BAEBLgAECn8eAAMBAAgJnSU0BQBzAwhoDAAABQBjAGkMAAAFAGMAawwAAAUAYwBqDAAABABjAGwMAAAEAFoAbQwAAAEAYADqDAAABQBjAG4MAAABAFgAAQAICZ0lNAUAcwMIaAwAAAQAYwBpDAAABABjAGsMAAAEAGMAagwAAAMAYwBsDAAAAwBaAG0MAAABAGAA6gwAAAQAYwBuDAAAAQBYAAIABgmOGDgGAGoBBmgMAAABAFIAaQwAAAEAOwBrDAAAAQAuAGoMAAABAD8AbAwAAAEAMgDqDAAAAQBKAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

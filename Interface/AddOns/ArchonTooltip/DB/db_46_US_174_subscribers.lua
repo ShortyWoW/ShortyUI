@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown','Hunter-Marksmanship',}
-local provider = {region='US',realm="Quel'Thalas",name='US',type='subscribers',zone=46,date='2026-04-28',data={Sh='Shaolinax:BAEALgAECgUJBgAAAA==.',Sk='Skayfall:BAEALgAECgUJBQABLgAECgUJBgABAAAAAA==.',Th='Thitaniax:BAEALgADCgEJAQABLgAECgUJBgABAAAAAA==.',Xc='Xcazadora:BAECLgAFFH8FAAICAAMJOhuiBQASAQNoDAAAAgBSAGkMAAACADEA6gwAAAEATAACAAMJOhuiBQASAQNoDAAAAgBSAGkMAAACADEA6gwAAAEATAAuAAQKfxUAAgIACAmZHsMCAO0BAAIACAmZHsMCAO0BAAAA.',},}
+local lookup = {'Unknown-Unknown','Warlock-Demonology','Warlock-Destruction','Warlock-Affliction','Hunter-Marksmanship',}
+local provider = {region='US',realm="Quel'Thalas",name='US',type='subscribers',zone=46,date='2026-05-01',data={Sh='Shaolinax:BAEALgAECgYJDAAAAA==.',Sk='Skayfall:BAEALgAECgUJBQABLgAECgYJDAABAAAAAA==.',St='Starkxdh:BAEALgAECgYJCQABLgAECgkJIwACACgdAA==.Starkxwitch:BAEBLgAECn8jAAQCAAkJKB2hEwAIAgloDAAABgBUAGkMAAAFAEAAawwAAAUASQBqDAAABAA7AGwMAAAEAEUAbQwAAAIAWADqDAAABQBWAG4MAAADAFEAbwwAAAEAMAACAAkJKB2hEwAIAgloDAAABgBUAGkMAAAEAEAAawwAAAMASQBqDAAAAQA7AGwMAAAEAEUAbQwAAAIAWADqDAAABQBWAG4MAAADAFEAbwwAAAEAMAADAAIJvhvMSQCRAAJrDAAAAgBHAGoMAAADADEABAABCQIV2A4ARwABaQwAAAEANQAAAA==.',Th='Thitaniax:BAEALgAECgEJAQABLgAECgYJDAABAAAAAA==.',Xc='Xcazadora:BAECLgAFFH8JAAIFAAQJmxvxAwBlAQRoDAAAAwBSAGkMAAADAFQAawwAAAEAJwDqDAAAAgBMAAUABAmbG/EDAGUBBGgMAAADAFIAaQwAAAMAVABrDAAAAQAnAOoMAAACAEwALgAECn8dAAIFAAgJpR/kAgANAgAFAAgJpR/kAgANAgAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

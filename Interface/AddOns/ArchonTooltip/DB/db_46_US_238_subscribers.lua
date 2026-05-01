@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown','Priest-Shadow',}
-local provider = {region='US',realm='Wildhammer',name='US',type='subscribers',zone=46,date='2026-04-28',data={Al='Alextros:BAEALgAECgYJEQAAAA==.',Dr='Draxtos:BAEALgAECgYJCAABLgAECgYJEQABAAAAAA==.',Fa='Failure:BAEALgAECggJEwAAAA==.',Se='Seventhghost:BAEALgAECgIJAgABLgAFFAQJBQACAFsOAA==.',},}
+local lookup = {'Unknown-Unknown','Hunter-Survival','Priest-Shadow',}
+local provider = {region='US',realm='Wildhammer',name='US',type='subscribers',zone=46,date='2026-05-01',data={Al='Alextros:BAEALgAECgYJEQAAAA==.',Dr='Draxtos:BAEALgAECgYJCQABLgAECgYJEQABAAAAAA==.',Fa='Failure:BAEBLgAECn8WAAICAAkJbhQHDQD6AQloDAAABABLAGkMAAADAFcAawwAAAMATABqDAAAAgA8AGwMAAACADYAbQwAAAEADQDqDAAAAwA/AG4MAAADABwAbwwAAAEAEwACAAkJbhQHDQD6AQloDAAABABLAGkMAAADAFcAawwAAAMATABqDAAAAgA8AGwMAAACADYAbQwAAAEADQDqDAAAAwA/AG4MAAADABwAbwwAAAEAEwAAAA==.',Se='Seventhghost:BAEALgAECgIJAgABLgAFFAQJCAADANIPAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

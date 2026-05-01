@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warlock-Destruction','Druid-Feral',}
-local provider = {region='US',realm='Anvilmar',name='US',type='subscribers',zone=46,date='2026-04-28',data={Do='Donzilch:BAEALgAECgQJBAAAAA==.',Il='Illyríá:BAEALgAFFAIJAgABLgAECggJGgABAIQYAA==.',Wa='Waghoba:BAECLgAFFH8IAAICAAMJWxJfAgAMAQNoDAAABABPAGkMAAADACgAawwAAAEAFQACAAMJWxJfAgAMAQNoDAAABABPAGkMAAADACgAawwAAAEAFQAuAAQKfx8AAgIABwkMIiUGAJwCAAIABwkMIiUGAJwCAAAA.',},}
+local provider = {region='US',realm='Anvilmar',name='US',type='subscribers',zone=46,date='2026-05-01',data={Do='Donzilch:BAEALgAECgQJBAAAAA==.',Il='Illyríá:BAEALgAFFAIJAgABLgAECggJGgABAIQYAA==.',Wa='Waghoba:BAECLgAFFH8RAAICAAUJ2hVTAQBxAQVoDAAABgBPAGkMAAAFADcAawwAAAMAJQBqDAAAAQAVAOoMAAACADIAAgAFCdoVUwEAcQEFaAwAAAYATwBpDAAABQA3AGsMAAADACUAagwAAAEAFQDqDAAAAgAyAC4ABAp/HwACAgAHCQwiJwYAnAIAAgAHCQwiJwYAnAIAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

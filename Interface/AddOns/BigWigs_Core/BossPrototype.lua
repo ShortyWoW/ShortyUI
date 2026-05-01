@@ -804,12 +804,13 @@ function boss:Disable(isWipe)
 		end
 	end
 end
-function boss:Reboot(isWipe)
+function boss:Reboot(wipeTime, unitInfo)
 	if self:IsEnabled() then
+		local isWipe = wipeTime and true or false
 		self:Debug("Rebooting module", "isWipe:", isWipe, self:GetEncounterID())
 		if isWipe then
 			-- Devs, in 99% of cases you'll want to use OnBossWipe
-			self:SendMessage("BigWigs_OnBossWipe", self)
+			self:SendMessage("BigWigs_OnBossWipe", self, wipeTime, unitInfo)
 		end
 		self:Disable(isWipe)
 		self:Enable(isWipe)
@@ -1320,7 +1321,8 @@ do
 	local function wipeCheck(module)
 		if not IsEncounterInProgress() then
 			module:Debug(":StartWipeCheck IsEncounterInProgress() is nil, wiped", module:GetEncounterID())
-			module:Wipe()
+			local wipeTime = GetTime()
+			module:Wipe(wipeTime)
 		end
 	end
 
@@ -1617,7 +1619,8 @@ do
 			end
 
 			self:Debug(":CheckForWipe() found nothing active, rebooting module", self:GetEncounterID())
-			self:Wipe()
+			local wipeTime = GetTime()
+			self:Wipe(wipeTime)
 		end
 	end
 
@@ -1662,9 +1665,9 @@ do
 		end
 	end
 
-	function boss:Wipe()
+	function boss:Wipe(wipeTime, unitInfo)
 		if self:IsEnabled() then
-			self:Reboot(true)
+			self:Reboot(wipeTime, unitInfo)
 			if self.OnWipe then self:OnWipe() end
 		end
 	end
@@ -1759,7 +1762,7 @@ do
 		return modulesWiping[self]
 	end
 
-	function boss:EncounterEnd(_, id, name, diff, size, status)
+	function boss:EncounterEnd(_, id, name, diff, size, status, unitInfo)
 		if self:IsEncounterID(id) and self:IsEnabled() then
 			if status == 1 then
 				if self:GetJournalID() or self:GetAllowWin() then
@@ -1770,7 +1773,9 @@ do
 			elseif status == 0 then
 				modulesWiping[self] = true
 				self:SendMessage("BigWigs_StopBars", self)
-				SimpleTimer(5, function() modulesWiping[self] = nil self:Wipe() end) -- Delayed due to issues with some multi-boss encounters showing/hiding the boss frames (IEEU) rapidly whilst wiping.
+				local wipeTime = GetTime()
+				-- Delayed due to issues with some multi-boss encounters showing/hiding the boss frames (IEEU) rapidly whilst wiping.
+				SimpleTimer(5, function() modulesWiping[self] = nil self:Wipe(wipeTime, unitInfo) end)
 			end
 			self:SendMessage("BigWigs_EncounterEnd", self, id, name, diff, size, status) -- Do NOT use this for wipe detection, use BigWigs_OnBossWipe.
 		end

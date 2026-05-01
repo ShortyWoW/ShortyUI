@@ -2218,8 +2218,8 @@ do
 		local GetCriteriaInfo = C_ScenarioInfo.GetCriteriaInfo
 		local function AddPercentLine(tooltip)
 			if db.profile.progressTooltip and NamePlatePercentUtils.isActive then
-				local value, percent = GetUnitCriteriaProgressValues("mouseover")
-				if value and percent then
+				local value, _, percentString = GetUnitCriteriaProgressValues("mouseover")
+				if value then
 					if totalEnemyForcesRaw == 0 then
 						local _, _, stepCount = GetStepInfo()
 						for i = stepCount, 1, -1 do
@@ -2229,7 +2229,7 @@ do
 							end
 						end
 					end
-					tooltip:AddLine(L.progressPercentTooltipText[db.profile.progressTooltipFormat]:format(percent, value, totalEnemyForcesRaw))
+					tooltip:AddLine(L.progressPercentTooltipText[db.profile.progressTooltipFormat]:format(percentString, value, totalEnemyForcesRaw))
 				end
 			end
 
@@ -2245,7 +2245,7 @@ do
 			local SetText, SetPoint
 			do
 				local UnitIsUnit = UnitIsUnit
-				function SetText(self, unit, text)
+				function SetText(self, unit, ...)
 					self.fontString:SetFont(LibSharedMedia:Fetch("font", db.profile.progressNameplateFontName), db.profile.progressNameplateFontSize, NamePlatePercentUtils.fontFlags)
 					if UnitIsUnit("target", unit) then
 						self.fontString:SetTextColor(db.profile.progressNameplateFontColorTarget[1], db.profile.progressNameplateFontColorTarget[2], db.profile.progressNameplateFontColorTarget[3], db.profile.progressNameplateFontColorTarget[4])
@@ -2255,7 +2255,7 @@ do
 					self.fontString:SetText("99.99%")
 					local w, h = self.fontString:GetWidth(), self.fontString:GetHeight()
 					self.frame:SetSize(w, h)
-					self.fontString:SetText(text)
+					self.fontString:SetFormattedText(...)
 				end
 				function SetPoint(self, unit)
 					local nameplateFrame = GetNamePlateForUnit(unit)
@@ -2326,24 +2326,25 @@ do
 				NamePlatePercentUtils.fontFlags = progressNameplateFontFlags
 
 				for unit, text in next, activeTexts do
-					local _, percent = GetUnitCriteriaProgressValues(unit)
-					if not percent and NamePlatePercentUtils.testing then
+					local _, _, percentString = GetUnitCriteriaProgressValues(unit)
+					if not percentString and NamePlatePercentUtils.testing then
 						local numString = unit:match("%d+")
 						if numString then
 							local num = tonumber(numString)
 							if num then
 								local decimal = num > 9 and (num / 100) or (num / 10)
-								percent = 1 + decimal
+								local percent = 1 + decimal
+								percentString = tostring(percent)
 							end
 						end
 					end
-					if percent then
+					if percentString then
 						text.fontString:ClearText()
 						text.fontString:ClearAllPoints()
 						text.fontString:SetPoint("CENTER")
 						text.frame:ClearAllPoints()
 						if text:SetPoint(unit) then
-							text:SetText(unit, ("%.2f%%"):format(percent))
+							text:SetText(unit, "%s%%", percentString)
 						else
 							text:Hide(unit)
 						end
@@ -2363,14 +2364,15 @@ do
 						if UnitCanAttack("player", unit) then
 							local nameplateFrame = GetNamePlateForUnit(unit)
 							if nameplateFrame then
-								local _, percent = GetUnitCriteriaProgressValues(unit)
-								if not percent then
+								local _, _, percentString = GetUnitCriteriaProgressValues(unit)
+								if not percentString then
 									local decimal = i > 9 and (i / 100) or (i / 10)
-									percent = 1 + decimal
+									local percent = 1 + decimal
+									percentString = tostring(percent)
 								end
 								local text = GetTextObject()
 								if text:SetPoint(unit) then
-									text:SetText(unit, ("%.2f%%"):format(percent))
+									text:SetText(unit, "%s%%", percentString)
 								else
 									text:Hide(unit)
 								end
@@ -2387,11 +2389,11 @@ do
 						if UnitCanAttack("player", unit) then
 							local nameplateFrame = GetNamePlateForUnit(unit)
 							if nameplateFrame then
-								local _, percent = GetUnitCriteriaProgressValues(unit)
-								if percent then
+								local _, _, percentString = GetUnitCriteriaProgressValues(unit)
+								if percentString then
 									local text = GetTextObject()
 									if text:SetPoint(unit) then
-										text:SetText(unit, ("%.2f%%"):format(percent))
+										text:SetText(unit, "%s%%", percentString)
 									else
 										text:Hide(unit)
 									end
@@ -2410,11 +2412,11 @@ do
 		local prevUnit = nil
 		local function OnEvent(self, event, unit)
 			if event == "NAME_PLATE_UNIT_ADDED" then
-				local _, percent = GetUnitCriteriaProgressValues(unit)
-				if percent then
+				local _, _, percentString = GetUnitCriteriaProgressValues(unit)
+				if percentString then
 					local text = GetTextObject()
 					if text:SetPoint(unit) then
-						text:SetText(unit, ("%.2f%%"):format(percent))
+						text:SetText(unit, "%s%%", percentString)
 					else
 						text:Hide(unit)
 					end

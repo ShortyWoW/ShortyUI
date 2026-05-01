@@ -602,9 +602,9 @@ L.progressPercent = "Fortschritt %"
 L.progressPercentDesc = "Werkzeuge zur Berechnung des Mythisch+ Fortschritts durch das Töten der einzelnen Gegner."
 L.progressPercentTooltip = "Beim Überfahren von Gegnern mit der Maus den Fortschritt in % im Tooltip anzeigen"
 L.progressPercentTooltipText = {
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tFortschritt: %.2f%%",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tFortschritt: %.2f%% (%d)",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tFortschritt: %.2f%% (%d/%d)",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tFortschritt: %s%%",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tFortschritt: %s%% (%d)",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|tFortschritt: %s%% (%d/%d)",
 }
 L.progressPercentNameplate = "Fortschritt in % an Namensplaketten von Gegnern anzeigen"
 L.progressCurrentPull = "Aktueller Pull"

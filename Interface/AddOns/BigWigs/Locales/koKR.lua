@@ -602,9 +602,9 @@ L.progressPercent = "진행률 %"
 L.progressPercentDesc = "각 NPC를 처치할 때마다 획득할 수 있는 신화+ 진행률 수치를 계산하는 데 도움이 되는 도구입니다."
 L.progressPercentTooltip = "적 NPC 위에 마우스를 올렸을 때 툴팁에 진행률 % 표시"
 L.progressPercentTooltipText = {
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t진행률: %.2f%%",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t진행률: %.2f%% (%d)",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t진행률: %.2f%% (%d/%d)",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t진행률: %s%%",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t진행률: %s%% (%d)",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t진행률: %s%% (%d/%d)",
 }
 L.progressPercentNameplate = "적 NPC의 이름표에 진행률 % 표시"
 L.progressCurrentPull = "현재 전투"

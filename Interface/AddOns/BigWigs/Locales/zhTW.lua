@@ -602,9 +602,9 @@ L.progressPercent = "進度 %"
 L.progressPercentDesc = "計算傳奇+ 進度的工具，告訴你擊殺每個敵對目標可以提供多少進度。"
 L.progressPercentTooltip = "滑鼠指向敵方單位時，在浮動資訊提示顯示進度百分比"
 L.progressPercentTooltipText = {
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t進度：%.2f%%",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t進度：%.2f%%（%d）",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t進度：%.2f%%（%d/%d）",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t進度：%s%%",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t進度：%s%%（%d）",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t進度：%s%%（%d/%d）",
 }
 L.progressPercentNameplate = "在敵方名條顯示進度百分比"
 L.progressCurrentPull = "當前拉怪進度"

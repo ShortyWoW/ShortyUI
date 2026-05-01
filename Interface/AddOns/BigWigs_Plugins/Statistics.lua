@@ -50,7 +50,7 @@ local dontPrint = { -- Don't print a warning message for these difficulties
 }
 
 --[[
-12.0.1
+12.0.7
 1. Normal
 2. Heroic
 3. 10 Player
@@ -100,8 +100,15 @@ local dontPrint = { -- Don't print a warning message for these difficulties
 220. Story
 230. Heroic
 232. Event
+233. Mythic - Flexible-Scaling
 236. Lorewalking
 241. Lorewalking
+245. Decor Duel
+247. Decor Duel
+248. RENAME Event
+251. Decor Duel
+253. Decor Duel
+254. Naigtal
 
 5.5.3
 1. Normal
@@ -497,10 +504,10 @@ do
 		-- Raid encounters must last longer than 30 seconds to be an actual wipe worth noting
 		return 30
 	end
-	function plugin:BigWigs_OnBossWipe(_, module)
+	function plugin:BigWigs_OnBossWipe(_, module, wipeTime, unitInfo)
 		local journalID = GetModuleID(module)
 		if journalID and activeDurations[journalID] then
-			local elapsed = GetTime()-activeDurations[journalID][1]
+			local elapsed = wipeTime-activeDurations[journalID][1]
 			local difficultyText = activeDurations[journalID][2]
 
 			if elapsed > GetMinimumEncounterDuration(module) then
@@ -528,6 +535,20 @@ do
 							else
 								total = total .. L.comma .. L.healthFormat:format(healthPools[journalID].names[unit], hp*100)
 							end
+						end
+					end
+					if total ~= "" then
+						BigWigs:Print(L.healthPrint:format(total))
+					end
+				elseif unitInfo then
+					local total = ""
+					for i = 1, #unitInfo do
+						local unitTable = unitInfo[i]
+						-- unitTable.creatureID we might need to use this to filter certain units at some point?
+						if total == "" then
+							total = L.healthFormat:format(unitTable.creatureName, unitTable.remainingHealthPercent*100)
+						else
+							total = total .. L.comma .. L.healthFormat:format(unitTable.creatureName, unitTable.remainingHealthPercent*100)
 						end
 					end
 					if total ~= "" then

@@ -93,8 +93,7 @@ true,
 ["Gate of the Setting Sun"] = {
 [24] = false,
 },
-["Mogu'shan Palace"] = {
-[24] = false,
+["Upper Blackrock Spire"] = {
 },
 ["Utgarde Pinnacle"] = {
 false,
@@ -112,14 +111,13 @@ true,
 true,
 [23] = true,
 },
-["Lower Blackrock Spire"] = {
-false,
-},
-["Magisters' Terrace"] = {
+["Voidscar Arena"] = {
 true,
 true,
 [23] = true,
-[8] = true,
+},
+["Blackrock Caverns"] = {
+[24] = false,
 },
 ["Scholomance"] = {
 [24] = false,
@@ -136,18 +134,20 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["Blackrock Caverns"] = {
-[24] = false,
-},
-["Voidscar Arena"] = {
+["Magisters' Terrace"] = {
 true,
 true,
 [23] = true,
+[8] = true,
+},
+["Lower Blackrock Spire"] = {
+false,
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Upper Blackrock Spire"] = {
+["Mogu'shan Palace"] = {
+[24] = false,
 },
 ["Murder Row"] = {
 true,
@@ -177,10 +177,10 @@ true,
 ["The Darkway"] = {
 [208] = false,
 },
-["The Shadow Enclave"] = {
+["The Gulf of Memory"] = {
 [208] = true,
 },
-["The Gulf of Memory"] = {
+["The Shadow Enclave"] = {
 [208] = true,
 },
 ["Atal'Aman"] = {

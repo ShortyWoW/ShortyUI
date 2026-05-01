@@ -2,18 +2,17 @@
 KeystonePercentageHelperDB = nil
 KeystonePolarisDB = {
 ["profileKeys"] = {
+["Callmeshorty - Dalaran"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
-["Drewishlaser - Dalaran"] = "Default",
-["Callmeshorty - Illidan"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
+["Callmeshorty - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Callmeshorty - Dalaran"] = "Default",
+["Drewishlaser - Dalaran"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
-["lastSeasonCheck"] = "2026-03-26",
 ["general"] = {
 ["mobPercentagesMigrationVersion"] = "3.8",
 ["showMinimapIcon"] = false,
@@ -24,6 +23,7 @@ KeystonePolarisDB = {
 ["hide"] = true,
 },
 },
+["lastSeasonCheck"] = "2026-03-26",
 },
 },
 }

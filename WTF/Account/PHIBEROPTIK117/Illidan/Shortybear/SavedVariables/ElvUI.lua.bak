@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/g SUP FUCKERS",
 "/reload",
 "/g Glad to hear it",
 "/g I'm making tacos tonight, you're more than welcome to join me.",
 "/g bbl",
+"/calendar",
 },
 ["ChatHistoryLog"] = {
 {

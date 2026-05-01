@@ -602,9 +602,9 @@ L.progressPercent = "进度 %"
 L.progressPercentDesc = "助你精准掌握在史诗钥石地下城，击杀每只敌对目标后能提供多少进度。"
 L.progressPercentTooltip = "鼠标指向敌对NPC时，在提示信息中显示进度 %"
 L.progressPercentTooltipText = {
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t进度：%.2f%%",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t进度：%.2f%%（%d）",
-	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t进度：%.2f%%（%d/%d）",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t进度：%s%%",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t进度：%s%%（%d）",
+	"|TInterface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid:0:0|t进度：%s%%（%d/%d）",
 }
 L.progressPercentNameplate = "在敌对NPC的姓名板上显示进度 %"
 L.progressCurrentPull = "当前波次"

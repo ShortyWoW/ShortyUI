@@ -14,15 +14,15 @@ local strfind = string.find
 
 local BIGWIGS_VERSION = 414
 local CONTENT_PACK_VERSIONS = {
-	["LittleWigs"] = {12, 0, 41},
-	["BigWigs_Classic"] = {12, 0, 15},
-	["BigWigs_BurningCrusade"] = {12, 0, 11},
-	["BigWigs_WrathOfTheLichKing"] = {12, 0, 6},
-	["BigWigs_Cataclysm"] = {12, 0, 2},
-	["BigWigs_MistsOfPandaria"] = {12, 0, 4},
+	["LittleWigs"] = {12, 0, 44},
+	["BigWigs_Classic"] = {12, 0, 16},
+	["BigWigs_BurningCrusade"] = {12, 0, 12},
+	["BigWigs_WrathOfTheLichKing"] = {12, 0, 7},
+	["BigWigs_Cataclysm"] = {12, 0, 3},
+	["BigWigs_MistsOfPandaria"] = {12, 0, 5},
 	["BigWigs_WarlordsOfDraenor"] = {12, 0, 1},
 	["BigWigs_Legion"] = {12, 0, 1},
-	["BigWigs_BattleForAzeroth"] = {12, 0, 2},
+	["BigWigs_BattleForAzeroth"] = {12, 0, 3},
 	["BigWigs_Shadowlands"] = {12, 0, 2},
 	["BigWigs_Dragonflight"] = {12, 0, 4},
 	["BigWigs_TheWarWithin"] = {12, 0, 2},
@@ -57,7 +57,7 @@ do
 	local ALPHA = "ALPHA"
 
 	local releaseType
-	local myGitHash = "6fd237e" -- The ZIP packager will replace this with the Git hash.
+	local myGitHash = "3ea1bd1" -- The ZIP packager will replace this with the Git hash.
 	local releaseString
 	--[=[@alpha@
 	-- The following code will only be present in alpha ZIPs.
@@ -1619,9 +1619,9 @@ end
 --
 
 do
-	local DBMdotRevision = "20260422072640" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
-	local DBMdotDisplayVersion = "12.0.41" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
-	local DBMdotReleaseRevision = "20260422000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotRevision = "20260429043851" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
+	local DBMdotDisplayVersion = "12.0.44" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
+	local DBMdotReleaseRevision = "20260428000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
 	local protocol = 3
 	local versionPrefix = "V"
 	local PForceDisable = 24

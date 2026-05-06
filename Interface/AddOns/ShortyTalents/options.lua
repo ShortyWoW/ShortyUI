@@ -198,7 +198,7 @@ local function OpenChecklistMenu(dropdownButton, activity, specID)
       info.checked = function()
         return specDB.allowed[activity] and specDB.allowed[activity][item.configID] == true
       end
-      info.text = string.format("%s  (ID: %d)", item.name, item.configID)
+      info.text = string.format("   %s (ID: %d)", item.name, item.configID)
       info.func = function(_, _, _, checked)
         ToggleAllowed(specDB, activity, item.configID, checked)
         dropdownButton:SetText(BuildSummaryText(specDB.allowed[activity], loadouts))

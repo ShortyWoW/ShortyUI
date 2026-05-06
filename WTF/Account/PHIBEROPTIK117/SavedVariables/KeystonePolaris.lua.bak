@@ -3,11 +3,12 @@ KeystonePercentageHelperDB = nil
 KeystonePolarisDB = {
 ["profileKeys"] = {
 ["Drewis24EEA3 - Illidan"] = "Default",
-["Drewishlaser - Dalaran"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
+["Shortybear - Illidan"] = "Default",
+["Drewishlaser - Dalaran"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
-["Shortybear - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
 },

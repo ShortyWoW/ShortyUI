@@ -1208,6 +1208,7 @@ L.blizzBasicAsBars = "BigWigs 風格的計時條 + 暴雪的內建計時"
 L.blizzBasicAsBlizzTimeline = "暴雪的「首領技能」時間軸 + 暴雪的內建計時（完全使用暴雪原生）"
 L.developerMode = "開發者模式"
 L.enhancedModeWarning = "警告！\n\n停用 BigWigs 的增強計時會同步關閉 BigWigs 的其他首領戰功能，包含：\n\n計時條顏色、技能別名、技能計數、自訂音效和語音、倒數計時、計時條開關、額外訊息等等。"
+--L.blizzTimelineEnhancedWarning = "WARNING!\n\nThe Blizzard timeline doesn't support BigWigs enhanced features. You will NOT get renamed spells and you will see inaccurate timers.\n\nAre you sure you want to enable it?"
 
 -----------------------------------------------------------------------
 -- Victory.lua

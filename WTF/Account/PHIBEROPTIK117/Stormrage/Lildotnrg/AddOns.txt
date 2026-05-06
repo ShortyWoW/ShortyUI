@@ -55,3 +55,5 @@ RaiderIO_DB_CN_F: disabled
 LittleWigs_TheWarWithin: enabled
 BigWigs_TheDreamrift: enabled
 BigWigs_MarchOnQuelDanas: enabled
+ShortyFalls: enabled
+BigWigs_MidnightWorld: enabled

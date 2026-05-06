@@ -1,8 +1,8 @@
-## Interface: 120000, 120001
+## Interface: 120000, 120001, 120005, 120007
 ## Title: ShortyTalents
 ## Notes: Helps players ensure they are in the correct talent specs for various content types.
 ## Author: ShortyWoW
-## Version: 0.1.0
+## Version: 2.0.2
 ## SavedVariables: ShortyTalentsDB
 ## IconTexture: Interface\AddOns\ShortyTalents\ShortyTalents.blp
 

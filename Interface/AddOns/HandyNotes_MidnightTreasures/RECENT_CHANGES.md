@@ -1,4 +1,4 @@
-## Changed in v44
+## Changed in v45
 
-* TOC for 12.0.5
+* Avoid a potential secret-values issue when in an instance and some labels were rendered
 

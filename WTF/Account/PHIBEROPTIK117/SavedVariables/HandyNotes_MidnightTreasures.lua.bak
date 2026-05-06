@@ -15,6 +15,7 @@ HandyNotes_MidnightTreasuresDB = {
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
@@ -60,6 +61,8 @@ HandyNotes_MidnightTreasuresDB = {
 ["Shortypal - Dalaran"] = {
 },
 ["Drewishlaser - Dalaran"] = {
+},
+["Shortytest - Illidan"] = {
 },
 ["Shortbowjob - Area 52"] = {
 },

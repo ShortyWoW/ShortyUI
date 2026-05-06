@@ -2,7 +2,7 @@
 ## Title: HandyNotes: Midnight Treasures and Rares
 ## Notes: Where are the hidden treasures in Midnight?
 ## Author: Kemayo
-## Version: v44
+## Version: v45
 ## IconTexture: Interface\Icons\Ability_Spy
 ## DefaultState: enabled
 ## X-Category: Map

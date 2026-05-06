@@ -2,17 +2,17 @@
 KeystoneLootDB = {
 ["currentSeason"] = 16,
 ["settings"] = {
-["hiddenCharacters"] = {
-},
-["keystoneTooltip"] = true,
 ["favoriteTooltip"] = true,
-["wideMode"] = false,
+["keystoneTooltip"] = true,
 ["highlighting"] = {
 ["versatility"] = true,
 ["mastery"] = true,
 ["haste"] = true,
 ["crit"] = true,
 ["noStats"] = true,
+},
+["wideMode"] = false,
+["hiddenCharacters"] = {
 },
 ["lootReminder"] = {
 ["dungeons"] = true,
@@ -24,6 +24,8 @@ KeystoneLootDB = {
 },
 ["version"] = 4,
 ["favorites"] = {
+["Illidan-Shortytest-11"] = {
+},
 ["Illidan-Callmeshorty-12"] = {
 },
 ["Dalaran-Callmeshorty-12"] = {

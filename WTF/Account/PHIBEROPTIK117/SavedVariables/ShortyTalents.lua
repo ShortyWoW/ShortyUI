@@ -117,6 +117,7 @@ ShortyTalentsDB = {
 [73104413] = true,
 [79455481] = true,
 [78033587] = true,
+[82242175] = true,
 [73107914] = true,
 [73107827] = true,
 [77471231] = true,
@@ -163,16 +164,20 @@ ShortyTalentsDB = {
 [104] = {
 ["allowed"] = {
 ["Mythic+"] = {
+[82143104] = true,
 },
 ["BGs"] = {
 },
 ["Raiding"] = {
+[81643784] = true,
 },
 ["Arena"] = {
 },
 ["Delves"] = {
+[82143110] = true,
 },
 ["Dungeons"] = {
+[82143104] = true,
 },
 },
 ["raid"] = {

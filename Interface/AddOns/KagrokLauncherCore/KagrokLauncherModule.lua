@@ -1,6 +1,6 @@
 local addon_name, ns = ...
 local L = ns.L or {}
-local MODULE_VERSION = 4
+local MODULE_VERSION = 5
 
 local function T(key)
   local value = L[key]
@@ -1392,6 +1392,35 @@ local function set_row_grab_handle_state(row, active)
   end
 end
 
+local function set_row_title_link_state(row, hovered)
+  if type(row) ~= "table" or not row.title then
+    return
+  end
+
+  local can_open = row.titleButton and row.titleButton.can_open
+  if can_open then
+    if hovered then
+      row.title:SetTextColor(1.0, 0.82, 0.18)
+      if row.titleUnderline then
+        row.titleUnderline:SetColorTexture(1.0, 0.82, 0.18, 1.0)
+      end
+    else
+      row.title:SetTextColor(0.30, 0.67, 1.0)
+      if row.titleUnderline then
+        row.titleUnderline:SetColorTexture(0.30, 0.67, 1.0, 0.95)
+      end
+    end
+  else
+    row.title:SetTextColor(0.72, 0.72, 0.72)
+  end
+
+  if row.titleUnderline then
+    local underline_width = math.min(row.titleButton and (row.titleButton:GetWidth() or 0) or 0, row.title:GetStringWidth() or 0)
+    row.titleUnderline:SetWidth(math.max(0, underline_width))
+    row.titleUnderline:SetShown(can_open and underline_width > 0)
+  end
+end
+
 function shared:AcquireSettingsHubRow(panel, index)
   panel.list_rows = panel.list_rows or {}
   if panel.list_rows[index] then
@@ -1468,15 +1497,17 @@ function shared:AcquireSettingsHubRow(panel, index)
   row.titleButton:SetHeight(18)
   row.titleButton:RegisterForClicks("LeftButtonUp")
   row.titleButton:SetScript("OnEnter", function(button)
-    if button.can_open then
-      row.title:SetTextColor(1.0, 0.82, 0.18)
+    set_row_title_link_state(row, true)
+    if button.can_open and GameTooltip then
+      GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
+      GameTooltip:SetText(string.format(T("Jump to %s settings page"), button.tooltip_name or row.title:GetText() or T("this addon")), 1, 1, 1)
+      GameTooltip:Show()
     end
   end)
   row.titleButton:SetScript("OnLeave", function(button)
-    if button.can_open then
-      row.title:SetTextColor(1, 1, 1)
-    else
-      row.title:SetTextColor(0.72, 0.72, 0.72)
+    set_row_title_link_state(row, false)
+    if button.can_open and GameTooltip then
+      GameTooltip:Hide()
     end
   end)
 
@@ -1485,6 +1516,11 @@ function shared:AcquireSettingsHubRow(panel, index)
   row.title:SetPoint("RIGHT", row.titleButton, "RIGHT", 0, 0)
   row.title:SetJustifyH("LEFT")
   row.title:SetTextColor(1, 1, 1)
+
+  row.titleUnderline = row.titleButton:CreateTexture(nil, "ARTWORK")
+  row.titleUnderline:SetHeight(1)
+  row.titleUnderline:SetPoint("TOPLEFT", row.title, "BOTTOMLEFT", 0, -1)
+  row.titleUnderline:Hide()
 
   row.meta = row:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
   row.meta:SetPoint("TOPLEFT", row.titleButton, "BOTTOMLEFT", 0, -4)
@@ -1923,13 +1959,14 @@ function shared:EnsureSettingsHubPanel()
       row.title:SetText(entry.name or entry.id or T("Unknown Addon"))
       row.meta:SetText(string.format(T("Settings page: %s\nMinimap entry: %s"), entry.name or entry.id or T("Unknown Addon"), self:IsAddonHidden(entry.id) and T("Hidden") or T("Shown")))
       row.titleButton.can_open = self:GetSettingsEntry(entry.id) ~= nil
+      row.titleButton.tooltip_name = entry.name or entry.id or T("Unknown Addon")
       row.titleButton:EnableMouse(row.titleButton.can_open)
       row.titleButton:SetScript("OnClick", function()
         if row.titleButton.can_open then
           self:OpenSettings(entry.id)
         end
       end)
-      row.title:SetTextColor(row.titleButton.can_open and 1 or 0.72, row.titleButton.can_open and 1 or 0.72, row.titleButton.can_open and 1 or 0.72)
+      set_row_title_link_state(row, false)
       if self:IsLauncherOverride(entry.id) then
         row.priority:SetText(T("Launcher override"))
         row.action:SetText(T("Clear override"))

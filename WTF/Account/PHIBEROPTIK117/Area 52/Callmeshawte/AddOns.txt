@@ -58,3 +58,5 @@ PatchWerk: disabled
 !PatchWerk: disabled
 ElvUI_Options: enabled
 BigWigs_MarchOnQuelDanas: enabled
+ShortyFalls: enabled
+BigWigs_MidnightWorld: enabled

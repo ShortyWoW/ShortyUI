@@ -57,15 +57,19 @@ RaiderIO_Config = {
 }
 RaiderIO_LastCharacter = "us-Shortybear-illidan"
 RaiderIO_MissingCharacters = {
-["us-Warga-lightnings-blade"] = true,
-["us-Xerrip-illidan"] = true,
-["us-Xuuo-illidan"] = true,
-["us-Healmehplz-bloodscalp"] = true,
-["us-Warlockherup-kiljaeden"] = true,
-["us-Jzemin-illidan"] = true,
-["us-Maciota-illidan"] = true,
-["us-Shortybear-illidan"] = true,
-["us-Dragonlana-kiljaeden"] = true,
+["us-Avlx-illidan"] = true,
+["us-Nutoecow-illidan"] = true,
+["us-Artocarpus-illidan"] = true,
+["us-Garoki-illidan"] = true,
+["us-Chonck-illidan"] = true,
+["us-Callowhill-moon-guard"] = true,
+["us-Grindolain-illidan"] = true,
+["us-Garimar-illidan"] = true,
+["us-Chocoley-illidan"] = true,
+["us-Orinar-illidan"] = true,
+["us-Lexxor-blackrock"] = true,
+["us-Mascdk-illidan"] = true,
+["us-Xalkz-illidan"] = true,
 }
 RaiderIO_MissingServers = {
 }

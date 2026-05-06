@@ -60,7 +60,3 @@ VER 3 0000000000000056 "Weapon" "134400"
 #showtooltip
 /use 16
 END
-VER 3 0000000000000075 "WM Skull" "134400"
-#showtooltip
-/castsequence reset=10 /wm [@cursor] 1, /wm [@cursor] 2, /wm [@cursor] 3, /wm [@cursor] 4, /wm [@cursor] 5, /wm [@cursor] 6, /wm [@cursor] 7, /wm [@cursor] 8
-END

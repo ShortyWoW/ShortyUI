@@ -13,8 +13,7 @@ VER 3 0100000000000008 "Rebirth" "134400"
 END
 VER 3 0100000000000002 "Regrowth" "134400"
 #showtooltip
-/cancelform
-/cast [@mouseover] Regrowth
+/cast [@player] Regrowth
 END
 VER 3 0100000000000005 "Remove Corrupt" "134400"
 #showtooltip
@@ -28,6 +27,10 @@ END
 VER 3 0100000000000009 "Soothe" "134400"
 #showtooltip
 /cast [@mouseover] Soothe
+END
+VER 3 010000000000000A "Thorn shit" "134400"
+#showtooltip
+/cast [@cursor] Thorn Bloom
 END
 VER 3 0100000000000004 "Vortex" "134400"
 #showtooltip

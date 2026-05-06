@@ -313,7 +313,7 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
         frame.count:SetText("")
     end
 
-    local startTime, duration = C_Item.GetItemCooldown(itemID)
+    local startTime, duration, isCDEnabled = C_Item.GetItemCooldown(itemID)
 
     local _, spellID = C_Item.GetItemSpell(itemID)
     local customDuration = self:GetCustomActiveDuration("item", itemID)
@@ -348,14 +348,23 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
     frame.Cooldown:SetSwipeColor(unpack(GetCooldownSwipeColor()))
 
     local isOnGCD = spellID and C_Spell.GetSpellCooldown(spellID).isOnGCD
-    if not isOnGCD or frame.showGCD and cooldownRemaining > 0.03 and duration > 0 then
+    if isCDEnabled and (not isOnGCD or frame.showGCD) then
         frame.Cooldown:SetCooldown(startTime, duration)
         frame.Cooldown:SetDrawSwipe(true)
         if cooldownRemaining > 2 then
             frame.Icon:SetDesaturation(1)
         end
+        if cooldownRemaining <= 0 then
+            frame.Icon:SetDesaturation(0)
+        end
+        return true
     end
-    if duration == 0 then
+    if not isCDEnabled and cooldownRemaining > 0 and cooldownRemaining <= 0.1 then
+        -- healthstone?
+        frame.Cooldown:Clear()
+        frame.Icon:SetDesaturation(1)
+    elseif not isCDEnabled then
+        frame.Cooldown:Clear()
         frame.Icon:SetDesaturation(0)
     end
 

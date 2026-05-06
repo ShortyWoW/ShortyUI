@@ -9,11 +9,11 @@ FontMagicDB = {
 },
 ["__fmPopularFolderMigrationDone"] = true,
 ["combatTextOutlineMode"] = "NONE",
-["showExtraCombatToggles"] = false,
-["incomingOverrides"] = {
-},
-["__fmDebugCombatText"] = false,
 ["favorites"] = {
+},
+["showExtraCombatToggles"] = false,
+["__fmDebugCombatText"] = false,
+["incomingOverrides"] = {
 },
 ["floatingTextGravity"] = 0.5,
 ["floatingTextFadeDuration"] = 1,

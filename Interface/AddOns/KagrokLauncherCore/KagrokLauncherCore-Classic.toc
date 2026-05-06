@@ -1,8 +1,8 @@
-## Interface: 50501, 50502, 50503
+## Interface: 50503
 ## Title: Kagrok Launcher Core
 ## Notes: Shared launcher, settings hub, and developer info modules for Kagrok addons.
 ## Author: Kagrok
-## Version: 1.0.3
+## Version: 1.0.4
 ## SavedVariables: KagrokLauncherDB
 ## IconTexture: Interface\AddOns\KagrokLauncherCore\Media\Launcher\kagrok_full.png
 ## Category: User Interface

@@ -7,15 +7,15 @@ BAGANATOR_CONFIG = {
 ["currencies_tracked_imported"] = {
 },
 ["currencies_tracked"] = {
-["Callmeshorty-Illidan"] = {
+["Callmeshawte-Area52"] = {
 },
 ["Shortbeef-Vashj"] = {
 },
-["Callmeshawte-Area52"] = {
+["Callmeshorty-Dalaran"] = {
 },
 ["Shortybear-Illidan"] = {
 },
-["Callmeshorty-Dalaran"] = {
+["Callmeshorty-Illidan"] = {
 },
 ["Drewishlazer-Dalaran"] = {
 },
@@ -196,10 +196,10 @@ BAGANATOR_CONFIG = {
 ["character_bank_view_width"] = 14,
 ["icon_text_font_size"] = 14,
 ["bag_icon_size"] = 37,
-["setting_anchors"] = false,
+["bag_view_width"] = 12,
 ["disabled_skins"] = {
 },
-["sort_ignore_slots_count_2"] = 0,
+["setting_anchors"] = false,
 ["sort_ignore_bank_slots_count"] = 0,
 ["upgrade_plugin_ignored"] = {
 },
@@ -248,7 +248,7 @@ BAGANATOR_CONFIG = {
 ["category_section_toggled"] = {
 },
 ["show_sort_button_2"] = true,
-["bag_view_width"] = 12,
+["sort_ignore_slots_count_2"] = 0,
 ["bag_view_type"] = "category",
 ["currency_panel_position"] = {
 "RIGHT",

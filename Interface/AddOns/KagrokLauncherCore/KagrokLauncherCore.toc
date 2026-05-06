@@ -1,8 +1,8 @@
-## Interface: 110207, 120000, 120001
+## Interface: 120005, 120007
 ## Title: Kagrok Launcher Core
 ## Notes: Shared launcher, settings hub, and developer info modules for Kagrok addons.
 ## Author: Kagrok
-## Version: 1.0.3
+## Version: 1.0.4
 ## SavedVariables: KagrokLauncherDB
 ## IconTexture: Interface\AddOns\KagrokLauncherCore\Media\Launcher\kagrok_full.png
 ## Category: User Interface

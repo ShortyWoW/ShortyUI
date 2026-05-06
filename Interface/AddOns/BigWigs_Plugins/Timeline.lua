@@ -19,7 +19,7 @@ local hasCustomTimers = {}
 
 plugin.defaultDB = {
 	timersMode = "enhanced",
-	oneTimeTimelineDisable = false,
+	blizzTimeline = false,
 }
 
 local function updateProfile()
@@ -133,6 +133,20 @@ do
 						type = "toggle",
 						name = L.enableBlizzTimeline,
 						desc = L.enableBlizzTimelineDesc,
+						get = function() return db.blizzTimeline end,
+						set = function(_, value)
+							db.blizzTimeline = value
+							if value then
+								C_CVar.SetCVar("encounterTimelineEnabled", "1")
+								C_UI.Reload()
+							end
+							C_UI.Reload()
+						end,
+						confirm = function(_, value)
+							if value then
+								return L.blizzTimelineEnhancedWarning
+							end
+						end,
 						width = 2,
 						order = 1,
 					},
@@ -295,9 +309,11 @@ end
 function plugin:OnPluginEnable()
 	updateProfile()
 	self:RegisterMessage("BigWigs_ProfileUpdate", updateProfile)
-	if not db.oneTimeTimelineDisable then
-		db.oneTimeTimelineDisable = true
+	if not db.blizzTimeline then
+		local f = CreateFrame("Frame")
+		f:Hide()
 		C_CVar.SetCVar("encounterTimelineEnabled", "0")
+		EncounterTimeline:SetParent(f)
 	end
 
 	self:RegisterMessage("BigWigs_StartConfigureMode")

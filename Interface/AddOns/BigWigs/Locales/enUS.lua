@@ -311,7 +311,7 @@ L.defeat_desc = "The total amount of times you've been defeated by this boss enc
 L.victory = "Victory"
 L.victory_desc = "The total amount of times you were victorious against this boss encounter."
 L.fastest = "Fastest"
-L.fastest_desc = "The fastest victory and the date it occured on. (Year/Month/Day)"
+L.fastest_desc = "The fastest victory and the date it occurred on. (Year/Month/Day)"
 L.first = "First"
 L.first_desc = "The first time you were victorious against this boss encounter, formatted as:\n[Amount of defeats prior to first victory] - [Combat duration] - [Year/Month/Day of victory]"
 
@@ -1147,7 +1147,7 @@ L.pullKeybindingDesc = "Choose a keybinding for starting a pull timer."
 L.icons = "Icons"
 L.raidIconsDescription = "Some encounters might include elements such as bomb-type abilities targetted on a specific player, a player being chased, or a specific player might be of interest in other ways. Here you can customize which raid icons should be used to mark these players.\n\nIf an encounter only has one ability that is worth marking for, only the first icon will be used. One icon will never be used for two different abilities on the same encounter, and any given ability will always use the same icon next time.\n\n|cffff4411Note that if a player has already been marked manually, BigWigs will never change their icon.|r"
 L.primary = "Primary"
-L.primaryDesc = "The first raid target icon that a encounter script should use."
+L.primaryDesc = "The first raid target icon that an encounter script should use."
 L.secondary = "Secondary"
 L.secondaryDesc = "The second raid target icon that a encounter script should use."
 
@@ -1207,6 +1207,7 @@ L.blizzBasicAsBars = "Blizzard basic timers displayed as BigWigs bars"
 L.blizzBasicAsBlizzTimeline = "Blizzard basic timers displayed on the Blizzard timeline"
 L.developerMode = "Developer Mode"
 L.enhancedModeWarning = "WARNING!\n\nDisabling enhanced mode will disable many BigWigs features, including:\n\nBar colors, spell renames, counters, custom sound/voice, countdowns, bars on/off, extra messages, etc."
+L.blizzTimelineEnhancedWarning = "WARNING!\n\nThe Blizzard timeline doesn't support BigWigs enhanced features. You will NOT get renamed spells and you will see inaccurate timers.\n\nAre you sure you want to enable it?"
 
 -----------------------------------------------------------------------
 -- Victory.lua

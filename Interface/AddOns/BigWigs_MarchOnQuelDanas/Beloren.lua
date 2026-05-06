@@ -29,6 +29,7 @@ mod:UseCustomTimers(true)
 
 local activeBars = {}
 local backupBars = {}
+local prevAdded = 0
 
 local durationEventCount = {}
 local isIntermission = false
@@ -133,22 +134,24 @@ function mod:TimersMythic(_, eventInfo)
 	if eventInfo.source ~= 0 or self:IsWiping() then return end
 	local barInfo
 
+	local now = GetTime()
+	local timeSinceLastEvent = now - prevAdded
+	prevAdded = now
+
 	local duration = eventInfo.duration
 	local durationRounded = self:RoundNumber(duration, 0)
 
+	-- Death Drop is a standalone timer 4.4s after canceled timers, Radiant Echoes is in the middle of a block of new timers
+	if durationRounded == 6 and timeSinceLastEvent > 3 then
+		isIntermission = true
+	end
+
 	if not isIntermission then
 		if durationRounded == 6 then
-			durationEventCount[durationRounded] = (durationEventCount[durationRounded] or 0) + 1
-			if durationEventCount[durationRounded] == 1 then -- gets reset every convergence unless canceled early
-				barInfo = self:RadiantEchoes(duration)
-			else
-				barInfo = self:DeathDrop(duration)
-			end
+			barInfo = self:RadiantEchoes(duration)
 		elseif durationRounded == 8 then
 			barInfo = self:EmbersOfBeloren(duration)
-		elseif durationRounded == 10 then
-			barInfo = self:InfusedQuills(duration)
-		elseif durationRounded == 19 then
+		elseif durationRounded == 19 or durationRounded == 10 then
 			barInfo = self:InfusedQuills(duration)
 		elseif durationRounded == 16 or durationRounded == 20 then
 			barInfo = self:GuardiansEdict(duration)
@@ -158,7 +161,9 @@ function mod:TimersMythic(_, eventInfo)
 			barInfo = self:VoidlightConvergence(duration)
 		end
 	else
-		if durationRounded == 30 then
+		if durationRounded == 6 then
+			barInfo = self:DeathDrop(duration)
+		elseif durationRounded == 30 then
 			barInfo = self:Rebirth(duration)
 		end
 	end
@@ -186,20 +191,24 @@ function mod:TimersOther(_, eventInfo)
 	if eventInfo.source ~= 0 or self:IsWiping() then return end
 	local barInfo
 
+	local now = GetTime()
+	local timeSinceLastEvent = now - prevAdded
+	prevAdded = now
+
 	local duration = eventInfo.duration
 	local durationRounded = self:RoundNumber(duration, 0)
 
+	-- Death Drop is a standalone timer 4.4s after canceled timers, Radiant Echoes is in the middle of a block of new timers
+	if durationRounded == 6 and timeSinceLastEvent > 3 then
+		isIntermission = true
+	end
+
 	if not isIntermission then
 		if durationRounded == 6 then
-			durationEventCount[durationRounded] = (durationEventCount[durationRounded] or 0) + 1
-			if durationEventCount[durationRounded] == 1 then -- gets reset every convergence unless canceled early
-				barInfo = self:RadiantEchoes(duration)
-			else
-				barInfo = self:DeathDrop(duration)
-			end
+			barInfo = self:RadiantEchoes(duration)
 		elseif durationRounded == 10 then
 			durationEventCount[durationRounded] = (durationEventCount[durationRounded] or 0) + 1
-			if durationEventCount[durationRounded] == 1 then
+			if self:Easy() or durationEventCount[durationRounded] % 3 == 1 then -- resets on Death Drop
 				barInfo = self:EmbersOfBeloren(duration)
 			else
 				barInfo = self:InfusedQuills(duration)
@@ -214,7 +223,9 @@ function mod:TimersOther(_, eventInfo)
 			barInfo = self:VoidlightConvergence(duration)
 		end
 	else
-		if durationRounded == 30 then
+		if durationRounded == 6 then
+			barInfo = self:DeathDrop(duration)
+		elseif durationRounded == 30 then
 			barInfo = self:Rebirth(duration)
 		end
 	end
@@ -355,15 +366,11 @@ function mod:VoidlightConvergence(duration)
 			self:PlaySound(1242515, "long")
 		end
 	end
-	local timer = self:ScheduleTimer(function() durationEventCount = {} end, duration)
 	convergenceCount = convergenceCount + 1
 	local barText = CL.count:format(L.voidlight_convergence, convergenceCount)
 	return {
 		msg = barText,
 		key = 1242515,
-		onCanceled = function()
-			self:CancelTimer(timer)
-		end,
 	}
 end
 
@@ -374,6 +381,13 @@ function mod:DeathDrop(duration)
 
 	durationEventCount = {}
 	isIntermission = true
+
+	embersCount = 1
+	echosCount = 1
+	edictCount = 1
+	burnsCount = 1
+	quillsCount = 1
+	convergenceCount = 1
 
 	if self:ShouldShowBars() then
 		self:Message("stages", "cyan", CL.count:format(CL.intermission, phaseCount), false)
@@ -391,30 +405,22 @@ function mod:Rebirth(duration)
 	phaseCount = phaseCount + 1
 	local barText = CL.count:format(CL.stage:format(1), phaseCount)
 
-	embersCount = 1
-	echosCount = 1
-	edictCount = 1
-	burnsCount = 1
-	quillsCount = 1
-	convergenceCount = 1
-
 	return {
 		msg = barText,
 		key = "stages",
-		endTime = GetTime() + duration,
+		endTime = GetTime() + duration + 1.5, -- XXX started canceling later after the edict hotfix?
 		onFinished = function()
 			isIntermission = false
 			if self:ShouldShowBars() and not self:IsWiping() then
 				self:Message("stages", "cyan", barText, false)
 				self:PlaySound("stages", "info")
 
-				self:Bar(1242515, 6, CL.count:format(L.voidlight_convergence, convergenceCount))
+				self:Bar(1242515, 4.5, CL.count:format(L.voidlight_convergence, convergenceCount))
 			end
 		end,
 		onCanceled = function(barInfo)
 			isIntermission = false
-			local t = GetTime()
-			if t > barInfo.endTime or t - barInfo.endTime < 0.2 then
+			if math.abs(GetTime() - barInfo.endTime) < 0.1 then
 				barInfo:onFinished()
 			end
 		end

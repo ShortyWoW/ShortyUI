@@ -285,6 +285,19 @@ local function CheckTalentsNow(reason)
   end
 
   local selectedID, selectedName, isSaved, usedSaved = GetCurrentLoadout()
+
+  -- Race/12.x API guard:
+  -- GetCurrentLoadout() calls GetLastSelectedSavedConfigID() again, and Blizzard can briefly return nil
+  -- during/after TRAIT_CONFIG_UPDATED even though this function already captured or restored a valid saved ID.
+  -- If we have a valid lastSavedID here, use it as the selected saved loadout instead of falsely
+  -- treating the active internal config as Starter/Unsaved.
+  if lastSavedID and lastSavedID > 0 then
+    selectedID = lastSavedID
+    selectedName = lastSavedName or GetConfigName(lastSavedID) or "Unknown"
+    isSaved = true
+    usedSaved = true
+  end
+
   if not selectedID then
     dprint("WARNING PATH: selectedID nil -> Unknown Loadout")
     ST:Warn(activity, "Unknown Loadout", reason)

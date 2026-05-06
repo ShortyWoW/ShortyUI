@@ -12,6 +12,7 @@ TomTomDB = {
 ["Callmeshortÿ - Moon Guard"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
 },
@@ -57,6 +58,7 @@ TomTomWaypointsM = {
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
@@ -82,6 +84,8 @@ TomTomWaypointsM = {
 ["Shortbowjob - Area 52"] = {
 },
 ["Callmeshawte - Area 52"] = {
+},
+["Shortytest - Illidan"] = {
 },
 ["Shortbeef - Vashj"] = {
 },

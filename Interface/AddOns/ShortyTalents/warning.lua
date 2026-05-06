@@ -52,7 +52,7 @@ local function EnsureWarnFrame()
   WarnFrame.close:SetFrameStrata("FULLSCREEN_DIALOG")
   WarnFrame.close:SetFrameLevel(WarnFrame:GetFrameLevel() + 10)
   WarnFrame.close:SetScript("OnClick", function()
-    WarnFrame:Hide()
+    ST.HideWarning()
   end)
 
   WarnFrame:EnableMouse(true)
@@ -126,14 +126,14 @@ local function EnsureWarnFrame()
 
   WarnFrame.slideIn = WarnFrame.anim:CreateAnimation("Translation")
   WarnFrame.slideIn:SetOffset(0, -16)
-  WarnFrame.slideIn:SetDuration(25)
+  WarnFrame.slideIn:SetDuration(20)
   WarnFrame.slideIn:SetSmoothing("OUT")
 
   WarnFrame:SetAlpha(0)
 
   -- Click to dismiss
   WarnFrame:SetScript("OnMouseDown", function()
-    WarnFrame:Hide()
+    ST.HideWarning()
   end)
 
   -- OnUpdate for countdown bar
@@ -143,6 +143,17 @@ local function EnsureWarnFrame()
     local remaining = self._endAt - GetTime()
     if remaining < 0 then remaining = 0 end
     self.timerBar:SetValue(remaining)
+  end)
+
+  -- Keep state clean when hidden by any path.
+  WarnFrame:SetScript("OnHide", function(self)
+    CancelHideTimer()
+    self._endAt = nil
+    self.timerBar:SetValue(HIDE_SECONDS)
+    if self.anim then
+      self.anim:Stop()
+    end
+    self:SetAlpha(0)
   end)
 
   WarnFrame:Hide()
@@ -179,14 +190,12 @@ function ST.ShowWarning(activity, loadoutName, detail)
   WarnFrame.timerBar:SetValue(HIDE_SECONDS)
   WarnFrame._endAt = GetTime() + HIDE_SECONDS
 
-  WarnFrame:Show()
-  WarnFrame.anim:Stop()
-  WarnFrame:SetAlpha(0)
-  WarnFrame.anim:Play()
+  if WarnFrame.anim then
+    WarnFrame.anim:Stop()
+  end
 
-  WarnFrame:Show()
-  WarnFrame.anim:Stop()
   WarnFrame:SetAlpha(0)
+  WarnFrame:Show()
   WarnFrame.anim:Play()
 
   -- Alert sound (default WoW sound)

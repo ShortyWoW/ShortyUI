@@ -78,7 +78,7 @@ RaiderIO_DB_KR_F: disabled
 RaiderIO_DB_TW_F: disabled
 RareScanner: disabled
 SenseiClassResourceBar: enabled
-ShortyFalls: disabled
+ShortyFalls: enabled
 ShortyTalents: enabled
 ShortyTicTac: disabled
 Simulationcraft: enabled
@@ -111,3 +111,4 @@ RaiderIO_DB_CN_M: disabled
 RaiderIO_DB_CN_F: disabled
 PatchWerk: disabled
 !PatchWerk: disabled
+BigWigs_MidnightWorld: enabled

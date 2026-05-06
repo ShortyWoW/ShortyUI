@@ -1,8 +1,35 @@
 # WarpDeplete
 
-## [v5.1.0](https://github.com/happenslol/WarpDeplete/tree/v5.1.0) (2026-04-22)
-[Full Changelog](https://github.com/happenslol/WarpDeplete/commits/v5.1.0) [Previous Releases](https://github.com/happenslol/WarpDeplete/releases)
+## [v5.2.0](https://github.com/happenslol/WarpDeplete/tree/v5.2.0) (2026-05-04)
+[Full Changelog](https://github.com/happenslol/WarpDeplete/commits/v5.2.0) [Previous Releases](https://github.com/happenslol/WarpDeplete/releases)
 
+- chore: Bump version  
+- feat: Add fallback split levels and permanent split visibility (#147)  
+    * Add split fallback and always show option  
+    * Add split fallback and always show option  
+    * add closest proximity fallback behaviors and optimize loop logic  
+    * Translated in french  
+    * Removed translations for PR  
+    * Correction Mise en page windows  
+    * Correction Problemes espaces  
+    * Doubles espaces  
+    * Refine split records UI and visibility settings  
+    * added translations  
+    * removed icon and brackets  
+    * Added missing translations  
+    * fix: fallback split diffs not displaying during runs  
+    * fix: display fallback source key level on split references  
+    * added comments to split fallback logic  
+    * Removed french translations  
+    * Removed badges  
+    Removed all mentions of the badges system for the splits, since they added too much complexity and not so much gain   
+    Went back to the older method  
+    Kept color picker for splits  
+    * Moved splits color picker  
+    - Moved splits color picker from Display to General  
+    - Renamed "Split Reference Color" to "Split Records Color"  
+    - And changed "splitReferenceColor" key to "splitRecordsColor"  
+    * Added missing translations  
 - chore: Bump version  
 - feat: Show forces count in tooltips for midnight (#149)  
     Adds back the forces count as a fixed string in mob tooltips. Custom formatting is removed for now, since it would involve wrangling with secret values which is very error-prone.  
@@ -25,5 +52,3 @@
 - chore: Update embeds.xml (#130)  
 - fix: Fix shared media dependency url (#128)  
 - fix: Fix external dependency links again (#127)  
-- fix: Fix external dependency references (#125)  
-- chore: Remove vendored dependencies and switch to automatic packaging (#124)  

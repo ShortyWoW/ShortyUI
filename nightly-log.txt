@@ -354,3 +354,263 @@ M	nightly-log.txt
 Your branch is ahead of 'origin/main' by 2 commits.
   (use "git push" to publish your local commits)
 Already on 'main'
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/ArchonTooltip.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/ArchonTooltip_Cata.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/ArchonTooltip_Mists.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/ArchonTooltip_Vanilla.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/ArchonTooltip_Wrath.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_206_subscribers.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_206_weekly.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_222_subscribers.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_222_weekly.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_244_subscribers.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_244_weekly.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_245_subscribers.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_245_weekly.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_246_subscribers.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/DB/db_46_US_246_weekly.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltip/Tooltip.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ArchonTooltipDB_US/ArchonTooltipDB_US.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CategoryViews/Initialize.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/Core/Config.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/Core/Dialogs.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/Core/Utilities.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CustomiseDialog/Categories/ImportExport.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CustomiseDialog/Categories/Order.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CustomiseDialog/Initialize.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CustomiseDialog/Main.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/ItemViewCommon/BankViewCharacterTabsView.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/ItemViewCommon/BankViewWarbandView.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/KagrokLauncherCore/KagrokLauncherCore-Classic.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/KagrokLauncherCore/KagrokLauncherCore.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/KagrokLauncherCore/KagrokLauncherModule.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/KagrokLauncherCore/Locales/enUS.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Plumber/Initialization.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Plumber/Modules/BackpackItemTracker.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Plumber/Modules/ControlCenter/Changelog/enUS.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Plumber/Modules/RaidCheck/LocationTracker.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Plumber/Modules/StaticPopup_PartyInvite.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Plumber/Plumber.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ShortyTalents/ShortyTalents.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ShortyTalents/ShortyTalents.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ShortyTalents/options.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ShortyTalents/warning.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Simulationcraft/CHANGES.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Simulationcraft/Simulationcraft.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Simulationcraft/extras.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Area 52/Callmeshawte/layout-local.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Callmeshorty/layout-local.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/chat-cache.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/layout-local.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'nightly-log.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CustomiseDialog/ImportDialog.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/Baganator/CustomiseDialog/ImportExport.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ShortyFalls/ShortyFalls.lua', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Interface/AddOns/ShortyFalls/ShortyFalls.toc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/chat-cache.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/click-bindings-cache.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/layout-local.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/tts-cache-character.txt', LF will be replaced by CRLF the next time Git touches it
+[main 8bb9a54] Nightly push - Wed 05/06/2026
+ 399 files changed, 424519 insertions(+), 147640 deletions(-)
+ rename Interface/AddOns/Baganator/CustomiseDialog/{Categories => }/ImportDialog.lua (93%)
+ create mode 100644 Interface/AddOns/Baganator/CustomiseDialog/ImportExport.lua
+ create mode 100644 Interface/AddOns/CursorRing/Media/Social/Discord.png
+ create mode 100644 Interface/AddOns/LuckyoneUI/Profiles/Baganator.lua
+ create mode 100644 Interface/AddOns/LuckyoneUI/Profiles/MPlusTimer.lua
+ create mode 100644 Interface/AddOns/MythicDungeonTools/Modules/ExternalLinks.lua
+ create mode 100644 Interface/AddOns/MythicDungeonTools/Modules/InGameChangeLog.lua
+ create mode 100644 Interface/AddOns/MythicDungeonTools/Modules/VersionCheck.lua
+ create mode 100644 Interface/AddOns/ShortyFalls/ShortyFalls.blp
+ create mode 100644 Interface/AddOns/ShortyFalls/ShortyFalls.lua
+ create mode 100644 Interface/AddOns/ShortyFalls/ShortyFalls.toc
+ create mode 100644 Interface/AddOns/ShortyFalls/media/sym_circle.tga
+ create mode 100644 Interface/AddOns/ShortyFalls/media/sym_cross.tga
+ create mode 100644 Interface/AddOns/ShortyFalls/media/sym_diamond.tga
+ create mode 100644 Interface/AddOns/ShortyFalls/media/sym_t.tga
+ create mode 100644 Interface/AddOns/ShortyFalls/media/sym_triangle.tga
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/macros-cache.old
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/AddOns.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Baganator.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Baganator.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_ClientSavedVariables.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_ClientSavedVariables.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_Communities.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_Communities.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_DamageMeter.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_DamageMeter.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_SettingsDefinitions_Shared.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_SettingsDefinitions_Shared.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_TimeManager.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Blizzard_TimeManager.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Details.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Details.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Details_Vanguard.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Details_Vanguard.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/ElvUI.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/ElvUI.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/FontMagic.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/FontMagic.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/KeystoneLoot.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/KeystoneLoot.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Myslot.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Myslot.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Plater.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Plater.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Plumber.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/Plumber.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/PremadeGroupsFilter.lua
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/SavedVariables/PremadeGroupsFilter.lua.bak
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/cache.md5
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/chat-cache.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/click-bindings-cache.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/config-cache.old
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/config-cache.wtf
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/cooldownmanager.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/edit-mode-cache-character.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/flagged-cache-character.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/layout-local.txt
+ create mode 100644 WTF/Account/PHIBEROPTIK117/Illidan/Shortytest/tts-cache-character.txt
+^C===== Thu 05/07/2026  9:00:01.32 ===== 
+M	Interface/AddOns/Plumber/Initialization.lua
+M	Interface/AddOns/Plumber/Locales/koKR.lua
+M	Interface/AddOns/Plumber/Modules/BackpackItemTracker.lua
+M	Interface/AddOns/Plumber/Modules/GameTooltip_Core.lua
+M	Interface/AddOns/RaiderIO/CHANGELOG.md
+M	Interface/AddOns/RaiderIO/RaiderIO.toc
+M	Interface/AddOns/RaiderIO/RaiderIO_Classic.toc
+M	Interface/AddOns/RaiderIO/RaiderIO_Vanilla.toc
+M	Interface/AddOns/RaiderIO/locale/frFR.lua
+M	Interface/AddOns/RaiderIO_DB_CN_F/RaiderIO_DB_CN_F.toc
+M	Interface/AddOns/RaiderIO_DB_CN_F/RaiderIO_DB_CN_F_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_CN_F/RaiderIO_DB_CN_F_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_CN_M/RaiderIO_DB_CN_M.toc
+M	Interface/AddOns/RaiderIO_DB_CN_M/RaiderIO_DB_CN_M_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_CN_M/RaiderIO_DB_CN_M_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_CN_R/RaiderIO_DB_CN_R.toc
+M	Interface/AddOns/RaiderIO_DB_CN_R/RaiderIO_DB_CN_R_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_CN_R/RaiderIO_DB_CN_R_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_EU_F/RaiderIO_DB_EU_F.toc
+M	Interface/AddOns/RaiderIO_DB_EU_F/RaiderIO_DB_EU_F_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_EU_F/RaiderIO_DB_EU_F_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_EU_M/RaiderIO_DB_EU_M.toc
+M	Interface/AddOns/RaiderIO_DB_EU_M/RaiderIO_DB_EU_M_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_EU_M/RaiderIO_DB_EU_M_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_EU_R/RaiderIO_DB_EU_R.toc
+M	Interface/AddOns/RaiderIO_DB_EU_R/RaiderIO_DB_EU_R_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_EU_R/RaiderIO_DB_EU_R_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_KR_F/RaiderIO_DB_KR_F.toc
+M	Interface/AddOns/RaiderIO_DB_KR_F/RaiderIO_DB_KR_F_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_KR_F/RaiderIO_DB_KR_F_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_KR_M/RaiderIO_DB_KR_M.toc
+M	Interface/AddOns/RaiderIO_DB_KR_M/RaiderIO_DB_KR_M_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_KR_M/RaiderIO_DB_KR_M_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_KR_R/RaiderIO_DB_KR_R.toc
+M	Interface/AddOns/RaiderIO_DB_KR_R/RaiderIO_DB_KR_R_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_KR_R/RaiderIO_DB_KR_R_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_TW_F/RaiderIO_DB_TW_F.toc
+M	Interface/AddOns/RaiderIO_DB_TW_F/RaiderIO_DB_TW_F_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_TW_F/RaiderIO_DB_TW_F_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_TW_M/RaiderIO_DB_TW_M.toc
+M	Interface/AddOns/RaiderIO_DB_TW_M/RaiderIO_DB_TW_M_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_TW_M/RaiderIO_DB_TW_M_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_TW_R/RaiderIO_DB_TW_R.toc
+M	Interface/AddOns/RaiderIO_DB_TW_R/RaiderIO_DB_TW_R_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_TW_R/RaiderIO_DB_TW_R_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_US_F/RaiderIO_DB_US_F.toc
+M	Interface/AddOns/RaiderIO_DB_US_F/RaiderIO_DB_US_F_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_US_F/RaiderIO_DB_US_F_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_US_M/RaiderIO_DB_US_M.toc
+M	Interface/AddOns/RaiderIO_DB_US_M/RaiderIO_DB_US_M_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_US_M/RaiderIO_DB_US_M_Vanilla.toc
+M	Interface/AddOns/RaiderIO_DB_US_R/RaiderIO_DB_US_R.toc
+M	Interface/AddOns/RaiderIO_DB_US_R/RaiderIO_DB_US_R_Classic.toc
+M	Interface/AddOns/RaiderIO_DB_US_R/RaiderIO_DB_US_R_Vanilla.toc
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Details.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Details.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/ElvUI.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/KeystoneLoot.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/KeystoneLoot.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Plater.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Plater.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Plumber.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/PremadeGroupsFilter.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/PremadeGroupsFilter.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/cache.md5
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/config-cache.old
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/config-cache.wtf
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/layout-local.txt
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/!BugGrabber.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/!BugGrabber.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BadBoy.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Baganator.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Baganator.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs_MidnightRaid1VoiceAssist.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs_MidnightRaid1VoiceAssist.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Blizzard_CombatLog.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Blizzard_CombatLog.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BugSack.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BugSack.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Co_Tank_Frame.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Co_Tank_Frame.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CooldownManagerCentered.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CooldownManagerCentered.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CursorRing.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CursorRing.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details_Streamer.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details_Streamer.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ElvUI.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ElvUI.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/FontMagic.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/FontMagic.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes_MidnightTreasures.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes_MidnightTreasures.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystoneLoot.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystoneLoot.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystonePolaris.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystonePolaris.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LoggerHead.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LoggerHead.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LuckyoneUI.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LuckyoneUI.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/MythicDungeonTools.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/MythicDungeonTools.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plater.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plater.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plumber.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plumber.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/PremadeGroupsFilter.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/PremadeGroupsFilter.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/RaiderIO.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/RaiderIO.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/SenseiClassResourceBar.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/SenseiClassResourceBar.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyFalls.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyFalls.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyTalents.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyTalents.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Syndicator.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Syndicator.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/TomTom.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/TomTom.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/WarpDeplete.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/WarpDeplete.lua.bak
+M	WTF/Account/PHIBEROPTIK117/cache.md5
+M	WTF/Account/PHIBEROPTIK117/config-cache.old
+M	WTF/Account/PHIBEROPTIK117/config-cache.wtf
+M	WTF/Account/PHIBEROPTIK117/flagged-cache-account.old
+M	WTF/Account/PHIBEROPTIK117/flagged-cache-account.txt
+M	WTF/Config.wtf
+M	WTF/SavedVariables/Blizzard_Console.lua
+M	WTF/SavedVariables/Blizzard_Console.lua.bak
+M	nightly-log.txt
+Your branch is ahead of 'origin/main' by 3 commits.
+  (use "git push" to publish your local commits)
+Already on 'main'

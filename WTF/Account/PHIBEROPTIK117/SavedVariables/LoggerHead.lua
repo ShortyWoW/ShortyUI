@@ -12,9 +12,9 @@ LoggerHeadDB = {
 ["Callmeshortÿ - Moon Guard"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
-["Shortytest - Illidan"] = "Default",
-["Shortbeef - Vashj"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+["Shortytest - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -95,7 +95,8 @@ true,
 ["Gate of the Setting Sun"] = {
 [24] = false,
 },
-["Upper Blackrock Spire"] = {
+["Mogu'shan Palace"] = {
+[24] = false,
 },
 ["Utgarde Pinnacle"] = {
 false,
@@ -113,13 +114,14 @@ true,
 true,
 [23] = true,
 },
-["Voidscar Arena"] = {
+["Lower Blackrock Spire"] = {
+false,
+},
+["Magisters' Terrace"] = {
 true,
 true,
 [23] = true,
-},
-["Blackrock Caverns"] = {
-[24] = false,
+[8] = true,
 },
 ["Scholomance"] = {
 [24] = false,
@@ -136,20 +138,18 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["Magisters' Terrace"] = {
+["Blackrock Caverns"] = {
+[24] = false,
+},
+["Voidscar Arena"] = {
 true,
 true,
 [23] = true,
-[8] = true,
-},
-["Lower Blackrock Spire"] = {
-false,
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Mogu'shan Palace"] = {
-[24] = false,
+["Upper Blackrock Spire"] = {
 },
 ["Murder Row"] = {
 true,
@@ -179,10 +179,10 @@ true,
 ["The Darkway"] = {
 [208] = false,
 },
-["The Gulf of Memory"] = {
+["The Shadow Enclave"] = {
 [208] = true,
 },
-["The Shadow Enclave"] = {
+["The Gulf of Memory"] = {
 [208] = true,
 },
 ["Atal'Aman"] = {

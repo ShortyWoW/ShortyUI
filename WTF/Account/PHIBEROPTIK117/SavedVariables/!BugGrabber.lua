@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
+["session"] = 3,
 ["lastSanitation"] = 3,
-["session"] = 2,
 ["errors"] = {
 {
 ["message"] = "Interface/AddOns/Blizzard_SharedXML/LayoutFrame.lua:491: attempt to compare a secret number value (execution tainted by 'WarpDeplete')",

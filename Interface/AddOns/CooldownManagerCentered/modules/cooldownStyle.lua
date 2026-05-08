@@ -240,7 +240,7 @@ end
 local function SetButtonGlow(cdmFrame, shouldGlow)
     if shouldGlow then
         local signature = GetGlowSignature(GLOW_STYLE_PROC)
-        if cdmFrame._CMC_CustomGlowing and cdmFrame._CMC_CustomGlowSignature == signature then
+        if cdmFrame._CMC_CustomGlowing and cdmFrame._CMC_CustomGlowSignature == signature and GetButtonGlowFrame(cdmFrame) then
             return
         end
         StopAllCustomGlows(cdmFrame)
@@ -285,6 +285,9 @@ local function UpdateButtonGlowState(cdmFrame, value)
             end
             local spellID = cooldownInfo.overrideSpellID or cooldownInfo.spellID
             local cooldownDuration = C_Spell.GetSpellChargeDuration(spellID)
+            if cooldownDuration == nil then
+                return
+            end
             local alpha = cooldownDuration:EvaluateRemainingDuration(isZeroCurve)
             glow:SetAlpha(alpha)
             return

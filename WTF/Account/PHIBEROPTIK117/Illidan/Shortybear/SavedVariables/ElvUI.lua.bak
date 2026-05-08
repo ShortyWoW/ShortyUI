@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Sxarp-Illidan ty friendo! <3",
-"/g I'm 260 papa, are you proud of me papa?",
-"/g please look at me papa",
+"/g Just wanna say the jump from 75 to 500 is fucking wild",
+"/g these coins or w/e for doing the void assaults",
+"/g the field accolades",
+"/raidinfo",
 "/simc",
-"/reload",
 },
 ["ChatHistoryLog"] = {
 {

@@ -614,3 +614,110 @@ M	nightly-log.txt
 Your branch is ahead of 'origin/main' by 3 commits.
   (use "git push" to publish your local commits)
 Already on 'main'
+warning: in the working copy of 'WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/layout-local.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'nightly-log.txt', LF will be replaced by CRLF the next time Git touches it
+[main 53899c8] Nightly push - Thu 05/07/2026
+ 136 files changed, 164266 insertions(+), 125389 deletions(-)
+^C===== Fri 05/08/2026  9:00:01.32 ===== 
+M	Interface/AddOns/CooldownManagerCentered/CHANGELOG.md
+M	Interface/AddOns/CooldownManagerCentered/CooldownManagerCentered.lua
+M	Interface/AddOns/CooldownManagerCentered/CooldownManagerCentered.toc
+M	Interface/AddOns/CooldownManagerCentered/modules/Tracker/TrackerItemVisuals.lua
+M	Interface/AddOns/CooldownManagerCentered/modules/Tracker/TrackerItemsData.lua
+M	Interface/AddOns/CooldownManagerCentered/modules/cooldownStyle.lua
+M	Interface/AddOns/HandyNotes_MidnightTreasures/CHANGELOG.md
+M	Interface/AddOns/HandyNotes_MidnightTreasures/HandyNotes_MidnightTreasures.toc
+M	Interface/AddOns/HandyNotes_MidnightTreasures/RECENT_CHANGES.md
+M	Interface/AddOns/HandyNotes_MidnightTreasures/handler/handler.lua
+M	Interface/AddOns/KeystoneLoot/CHANGELOG_LATEST.md
+M	Interface/AddOns/KeystoneLoot/KeystoneLoot.toc
+M	Interface/AddOns/KeystoneLoot/ui/keystoneloot_frame/mixins/keystoneloot_frame.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Details.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Details.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/ElvUI.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/ElvUI.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/KeystoneLoot.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/KeystoneLoot.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Plater.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Plater.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/Plumber.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/PremadeGroupsFilter.lua
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/SavedVariables/PremadeGroupsFilter.lua.bak
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/cache.md5
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/config-cache.old
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/config-cache.wtf
+M	WTF/Account/PHIBEROPTIK117/Illidan/Shortybear/layout-local.txt
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/!BugGrabber.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/!BugGrabber.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BadBoy.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BadBoy.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Baganator.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Baganator.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs_MidnightRaid1VoiceAssist.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BigWigs_MidnightRaid1VoiceAssist.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Blizzard_CombatLog.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Blizzard_CombatLog.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BugSack.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/BugSack.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Co_Tank_Frame.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Co_Tank_Frame.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CooldownManagerCentered.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CooldownManagerCentered.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CursorRing.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/CursorRing.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details_Streamer.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Details_Streamer.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ElvUI.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ElvUI.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/FontMagic.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/FontMagic.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes_MidnightTreasures.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/HandyNotes_MidnightTreasures.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystoneLoot.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystoneLoot.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystonePolaris.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/KeystonePolaris.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LoggerHead.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LoggerHead.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LuckyoneUI.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/LuckyoneUI.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/MythicDungeonTools.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/MythicDungeonTools.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plater.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plater.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plumber.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Plumber.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/PremadeGroupsFilter.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/PremadeGroupsFilter.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/RaiderIO.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/RaiderIO.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/SenseiClassResourceBar.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/SenseiClassResourceBar.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyFalls.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyFalls.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyTalents.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/ShortyTalents.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Syndicator.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/Syndicator.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/TomTom.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/TomTom.lua.bak
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/WarpDeplete.lua
+M	WTF/Account/PHIBEROPTIK117/SavedVariables/WarpDeplete.lua.bak
+M	WTF/Account/PHIBEROPTIK117/cache.md5
+M	WTF/Account/PHIBEROPTIK117/config-cache.old
+M	WTF/Account/PHIBEROPTIK117/config-cache.wtf
+M	WTF/Account/PHIBEROPTIK117/flagged-cache-account.old
+M	WTF/Account/PHIBEROPTIK117/flagged-cache-account.txt
+M	WTF/Config.wtf
+M	WTF/SavedVariables/Blizzard_Console.lua
+M	WTF/SavedVariables/Blizzard_Console.lua.bak
+M	nightly-log.txt
+Your branch is ahead of 'origin/main' by 4 commits.
+  (use "git push" to publish your local commits)
+Already on 'main'

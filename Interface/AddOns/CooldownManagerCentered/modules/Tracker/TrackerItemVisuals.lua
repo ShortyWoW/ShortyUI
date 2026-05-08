@@ -348,7 +348,7 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
     frame.Cooldown:SetSwipeColor(unpack(GetCooldownSwipeColor()))
 
     local isOnGCD = spellID and C_Spell.GetSpellCooldown(spellID).isOnGCD
-    if isCDEnabled and (not isOnGCD or frame.showGCD) then
+    if isCDEnabled and (not isOnGCD or frame.showGCD or cooldownRemaining > 2) then
         frame.Cooldown:SetCooldown(startTime, duration)
         frame.Cooldown:SetDrawSwipe(true)
         if cooldownRemaining > 2 then

@@ -253,6 +253,26 @@ function addon:OnEnable()
             ns.ButtonPress:RegisterElvUICallbacks()
         end
     end
+
+    AddonCompartmentFrame:RegisterAddon({
+        text = "|cff008945Cool|r|cff1e9a4e|r|cff3faa4fdown Ma|r|cff5fb64anag|r|cff7ac243er Ce|r|cff8ccd00ntered|r",
+        icon = "Interface\\Addons\\CooldownManagerCentered\\Media\\CooldownManagerCenteredIcon",
+        notCheckable = true,
+        func = function()
+            addon:OpenSettings()
+        end,
+        funcOnEnter = function(button)
+            MenuUtil.ShowTooltip(button, function(tt)
+                if tt and tt.AddLine then
+                    tt:AddLine("Cooldown Manager Centered")
+                    tt:AddLine("Left-click: Open settings", 0.6, 0.8, 1)
+                end
+            end)
+        end,
+        funcOnLeave = function(button)
+            MenuUtil.HideTooltip(button)
+        end,
+    })
 end
 local gameVersion = select(1, GetBuildInfo())
 addon.isMidnight = gameVersion:match("^12")

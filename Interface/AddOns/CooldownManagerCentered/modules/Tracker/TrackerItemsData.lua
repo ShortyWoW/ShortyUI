@@ -114,7 +114,7 @@ local function GetWildcardSlotItemID(slotID)
     end
 
     local location = ItemLocation:CreateFromEquipmentSlot(inventorySlot)
-    if location and C_Item.DoesItemExist(location) then
+    if location:IsValid() then
         return C_Item.GetItemID(location)
     end
     return nil

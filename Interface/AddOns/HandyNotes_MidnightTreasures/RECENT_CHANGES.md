@@ -1,4 +1,4 @@
-## Changed in v45
+## Changed in v46
 
-* Avoid a potential secret-values issue when in an instance and some labels were rendered
+* ...and do that last release properly this time
 

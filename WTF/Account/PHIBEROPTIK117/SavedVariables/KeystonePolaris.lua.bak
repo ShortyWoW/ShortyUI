@@ -14,6 +14,7 @@ KeystonePolarisDB = {
 },
 ["profiles"] = {
 ["Default"] = {
+["lastSeasonCheck"] = "2026-03-26",
 ["general"] = {
 ["mobPercentagesMigrationVersion"] = "3.8",
 ["showMinimapIcon"] = false,
@@ -24,7 +25,6 @@ KeystonePolarisDB = {
 ["hide"] = true,
 },
 },
-["lastSeasonCheck"] = "2026-03-26",
 },
 },
 }

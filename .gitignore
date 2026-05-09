@@ -64,3 +64,5 @@ BlizzardError.exe
 nightly.bat
 tasklog.txt
 nightly-log.txt
+wow-git-listener.ps1
+wow-listener-log.txt

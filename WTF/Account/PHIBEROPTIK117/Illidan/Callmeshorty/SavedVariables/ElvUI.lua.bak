@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/g raid bots is telling me to upgrade something that i don't have enough crests to do",
 "/g anyone ever seen it do that before?",
 "/g rip",
 "/2 Anyone have any idea why Raidbots is telling me to upgrade an item I don't have the crests for?",
 "/g Gonna go play with the dog, bbl.",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

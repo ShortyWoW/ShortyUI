@@ -1,19 +1,20 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
+["version"] = 4,
 ["settings"] = {
+["hiddenCharacters"] = {
+},
+["keystoneTooltip"] = true,
+["favoriteTooltip"] = true,
+["wideMode"] = false,
 ["highlighting"] = {
-["versatility"] = true,
 ["mastery"] = true,
+["versatility"] = true,
 ["haste"] = true,
 ["crit"] = true,
 ["noStats"] = true,
 },
-["keystoneTooltip"] = true,
-["hiddenCharacters"] = {
-},
-["wideMode"] = false,
-["favoriteTooltip"] = true,
 ["lootReminder"] = {
 ["dungeons"] = true,
 },
@@ -22,15 +23,14 @@ KeystoneLootDB = {
 ["degrees"] = 195,
 },
 },
-["version"] = 4,
 ["favorites"] = {
-["Illidan-Shortytest-11"] = {
+["Dalaran-Drewishlaser-11"] = {
 },
 ["Illidan-Callmeshorty-12"] = {
 },
 ["Dalaran-Callmeshorty-12"] = {
 },
-["Illidan-Shortybear-11"] = {
+["Illidan-Shortytest-11"] = {
 },
 ["Area 52-Callmeshawte-9"] = {
 },
@@ -38,7 +38,7 @@ KeystoneLootDB = {
 },
 ["Area 52-Shortbowjob-3"] = {
 },
-["Dalaran-Drewishlaser-11"] = {
+["Illidan-Shortybear-11"] = {
 },
 },
 }

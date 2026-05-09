@@ -112,15 +112,19 @@ local function GetCVarInfoCompat(name)
     --  2) a single info table with fields like .value and .defaultValue
     -- This normalizes both into (value, defaultValue, ...)
     if type(C_CVar) == "table" and type(C_CVar.GetCVarInfo) == "function" then
-        local a, b, c, d, e, f, g = C_CVar.GetCVarInfo(name)
-        if type(a) == "table" then
-            return a.value, a.defaultValue, a.isStoredServerAccount, a.isStoredServerCharacter, a.isLockedFromUser, a.isSecure, a.isReadOnly
+        local ok, a, b, c, d, e, f, g = pcall(C_CVar.GetCVarInfo, name)
+        if ok then
+            if type(a) == "table" then
+                return a.value, a.defaultValue, a.isStoredServerAccount, a.isStoredServerCharacter, a.isLockedFromUser, a.isSecure, a.isReadOnly
+            end
+            return a, b, c, d, e, f, g
         end
-        return a, b, c, d, e, f, g
     end
     if type(GetCVarInfo) == "function" then
-        local a, b, c, d, e, f, g = GetCVarInfo(name)
-        return a, b, c, d, e, f, g
+        local ok, a, b, c, d, e, f, g = pcall(GetCVarInfo, name)
+        if ok then
+            return a, b, c, d, e, f, g
+        end
     end
     return nil
 end
@@ -253,102 +257,77 @@ local function RefreshConsoleCommandIndex()
     return BuildConsoleCommandIndex()
 end
 
-local function FindBestConsoleMatch(base)
-    local idx = BuildConsoleCommandIndex()
-    if type(idx) ~= "table" then return nil, nil end
-    if type(base) ~= "string" or base == "" then return nil, nil end
+_G.FontMagicConsoleResolver = _G.FontMagicConsoleResolver or {}
 
-    local lbase = base:lower()
-    local bestName, bestType, bestScore = nil, nil, nil
-
-    for name, ct in pairs(idx) do
-        if type(name) == "string" then
-            local lname = name:lower()
-            if lname == lbase then
-                return name, ct
-            end
-
-            local score = nil
-            if lname:sub(1, #lbase) == lbase then
-                -- strong match if it starts with the base
-                score = 1000 - (#name - #base)
-            else
-                local pos = lname:find(lbase, 1, true)
-                if pos then
-                    -- weaker match if it merely contains the base
-                    score = 500 - (#name - #base) - (pos - 1)
-                end
-            end
-
-            if score and (bestScore == nil or score > bestScore) then
-                bestScore = score
-                bestName = name
-                bestType = ct
-            end
-        end
+function _G.FontMagicConsoleResolver:BuildNameVariants(name)
+    local out, seen = {}, {}
+    local function add(v)
+        if type(v) ~= "string" or v == "" or seen[v] then return end
+        seen[v] = true
+        out[#out + 1] = v
     end
 
-    return bestName, bestType
+    if type(name) ~= "string" or name == "" then
+        return out
+    end
+
+    local base = name:gsub("_[vV]%d+$", "")
+    -- Prefer the newest discovered spelling for a setting family. If Blizzard
+    -- adds another suffix later, this remains useful without another hardcoded
+    -- rename pass.
+    for v = 9, 2, -1 do
+        add(base .. "_v" .. v)
+        add(base .. "_V" .. v)
+    end
+    add(base)
+    add(name)
+
+    return out
+end
+
+function _G.FontMagicConsoleResolver:TryName(name)
+    local idx = BuildConsoleCommandIndex()
+    if type(name) ~= "string" or name == "" then return nil, nil end
+
+    -- Prefer console index when available, but if the CVar API can see the name,
+    -- treat it as a CVar. The console list can misclassify real CVars as commands.
+    if idx and idx[name] ~= nil then
+        if DoesCVarExist(name) then
+            return name, 0
+        end
+        return name, idx[name]
+    end
+
+    -- Fallback: treat as CVar if the CVar API can see it.
+    if DoesCVarExist(name) then
+        return name, 0
+    end
+
+    return nil, nil
+end
+
+function _G.FontMagicConsoleResolver:ResolveBestName(name)
+    for _, candidate in ipairs(self:BuildNameVariants(name)) do
+        local n, ct = self:TryName(candidate)
+        if n then return n, ct end
+    end
+
+    return nil, nil
 end
 
 local function ResolveConsoleSetting(cvarOrCandidates)
     -- Returns: (name, commandType) where commandType is from Enum.ConsoleCommandType
-    -- (0 == CVar). For older clients without an index, commandType will be 0 when
-    -- a CVar exists and nil otherwise.
-    local idx = BuildConsoleCommandIndex()
-
-    local function tryName(name)
-        if type(name) ~= "string" then return nil, nil end
-
-        -- Prefer console index when available (covers renamed CVars and non-CVar commands)
-        -- Prefer console index when available, but if the CVar API can see the name,
--- treat it as a CVar. The console list can misclassify real CVars as non-CVar commands.
-        if idx and idx[name] ~= nil then
-            if DoesCVarExist(name) then
-                return name, 0
-            end
-            return name, idx[name]
-        end
-
-        -- Fallback: treat as CVar if the CVar API can see it.
-        if DoesCVarExist(name) then
-            return name, 0
-        end
-
-        return nil, nil
-    end
+    -- (0 == CVar). Candidate lists are ordered by alias preference, while each
+    -- alias family prefers the newest available _v# spelling on the current client.
+    BuildConsoleCommandIndex()
 
     if type(cvarOrCandidates) == "string" then
-        local n, ct = tryName(cvarOrCandidates)
-        if n then return n, ct end
-
-        local base = cvarOrCandidates:gsub("_[vV]%d+$", "")
-        local variants = {
-            cvarOrCandidates .. "_v2",
-            cvarOrCandidates .. "_V2",
-            cvarOrCandidates .. "_v3",
-            cvarOrCandidates .. "_V3",
-        }
-
-        if base ~= cvarOrCandidates then
-            table.insert(variants, base)
-            table.insert(variants, base .. "_v2")
-            table.insert(variants, base .. "_V2")
-            table.insert(variants, base .. "_v3")
-            table.insert(variants, base .. "_V3")
-        end
-
-        for _, v in ipairs(variants) do
-            n, ct = tryName(v)
-            if n then return n, ct end
-        end
-
-        return nil, nil
+        return _G.FontMagicConsoleResolver:ResolveBestName(cvarOrCandidates)
     end
 
     if type(cvarOrCandidates) == "table" then
         for _, candidate in ipairs(cvarOrCandidates) do
-            local n, ct = tryName(candidate)
+            local n, ct = _G.FontMagicConsoleResolver:ResolveBestName(candidate)
             if n then return n, ct end
         end
     end
@@ -392,21 +371,14 @@ local function ResolveConsoleSettingTargets(cvarOrCandidates)
     end
 
     local function addFrom(candidate)
-        local n, ct = ResolveConsoleSetting(candidate)
-        if n then addResolved(n, ct) end
+        for _, variant in ipairs(_G.FontMagicConsoleResolver:BuildNameVariants(candidate)) do
+            local n, ct = _G.FontMagicConsoleResolver:TryName(variant)
+            if n then addResolved(n, ct) end
+        end
     end
 
     if type(cvarOrCandidates) == "string" then
         addFrom(cvarOrCandidates)
-        local base = cvarOrCandidates:gsub("_[vV]%d+$", "")
-        if base ~= cvarOrCandidates then
-            addFrom(base)
-        else
-            addFrom(base .. "_v2")
-            addFrom(base .. "_V2")
-            addFrom(base .. "_v3")
-            addFrom(base .. "_V3")
-        end
     elseif type(cvarOrCandidates) == "table" then
         for _, candidate in ipairs(cvarOrCandidates) do
             addFrom(candidate)
@@ -427,8 +399,8 @@ end
 
 SetCVarString = function(cvar, value)
     if type(C_CVar) == "table" and type(C_CVar.SetCVar) == "function" then
-        pcall(C_CVar.SetCVar, cvar, value)
-        return
+        local ok = pcall(C_CVar.SetCVar, cvar, value)
+        if ok then return end
     end
     if type(SetCVar) == "function" then
         pcall(SetCVar, cvar, value)
@@ -456,7 +428,7 @@ end
 --]]
 do
     local originalAddCategory = InterfaceOptions_AddCategory
-    if originalAddCategory == nil and type(Settings) == "table" then
+    if originalAddCategory == nil and type(Settings) == "table" and type(Settings.RegisterCanvasLayoutCategory) == "function" then
         -- Define a shim for InterfaceOptions_AddCategory using the Settings API
         InterfaceOptions_AddCategory = function(frame)
             -- Respect missing frame inputs
@@ -468,7 +440,7 @@ do
             -- display name; we use frame.name for both as per the forums example
             --.
             local category, parentCategory
-            if frame.parent then
+            if frame.parent and type(Settings.GetCategory) == "function" and type(Settings.RegisterCanvasLayoutSubcategory) == "function" then
                 parentCategory = Settings.GetCategory(frame.parent)
                 if parentCategory then
                     local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(parentCategory, frame, frame.name, frame.name)
@@ -693,12 +665,6 @@ end
 
 local originalInfo = {}
 
--- cache Blizzard's default combat text fonts so we can revert the preview
--- when the user presses the "Default" button. these paths are populated once
--- the relevant globals become available (usually when Blizzard_CombatText loads)
-local blizzDefaultDamageFont
-local blizzDefaultCombatFont
-
 -- ---------------------------------------------------------------------------
 -- Combat text font application
 -- ---------------------------------------------------------------------------
@@ -710,12 +676,42 @@ local DEFAULT_DAMAGE_TEXT_FONT = (type(DAMAGE_TEXT_FONT) == "string" and DAMAGE_
 local DEFAULT_COMBAT_TEXT_FONT = (type(COMBAT_TEXT_FONT)  == "string" and COMBAT_TEXT_FONT)  or nil
 local DEFAULT_FONT_PATH = DEFAULT_DAMAGE_TEXT_FONT or DEFAULT_COMBAT_TEXT_FONT or "Fonts\\FRIZQT__.TTF"
 
-local function CaptureBlizzardDefaultFonts()
-    if not DEFAULT_DAMAGE_TEXT_FONT and type(DAMAGE_TEXT_FONT) == "string" then
-        DEFAULT_DAMAGE_TEXT_FONT = DAMAGE_TEXT_FONT
+_G.FontMagicCombatTextGlobalLock = _G.FontMagicCombatTextGlobalLock or {}
+
+function _G.FontMagicCombatTextGlobalLock:GetGlobalForDefaultCapture(name)
+    if type(name) ~= "string" or name == "" then return nil end
+
+    local lock = rawget(_G, "FontMagicCombatTextGlobalLock")
+    local locked = nil
+    if type(lock) == "table" then
+        local values = rawget(lock, "values")
+        locked = (type(values) == "table" and values[name]) or rawget(lock, "path")
     end
-    if not DEFAULT_COMBAT_TEXT_FONT and type(COMBAT_TEXT_FONT) == "string" then
-        DEFAULT_COMBAT_TEXT_FONT = COMBAT_TEXT_FONT
+
+    local raw = rawget(_G, name)
+    if type(raw) == "string" and raw ~= "" then
+        if type(locked) == "string" and locked ~= "" and raw == locked then
+            return nil
+        end
+        return raw
+    end
+
+    local v = _G and _G[name]
+    if type(v) ~= "string" or v == "" then return nil end
+    if type(locked) == "string" and locked ~= "" and v == locked then
+        return nil
+    end
+    return v
+end
+
+local function CaptureBlizzardDefaultFonts()
+    local damageFont = _G.FontMagicCombatTextGlobalLock:GetGlobalForDefaultCapture("DAMAGE_TEXT_FONT")
+    if not DEFAULT_DAMAGE_TEXT_FONT and damageFont then
+        DEFAULT_DAMAGE_TEXT_FONT = damageFont
+    end
+    local combatFont = _G.FontMagicCombatTextGlobalLock:GetGlobalForDefaultCapture("COMBAT_TEXT_FONT")
+    if not DEFAULT_COMBAT_TEXT_FONT and combatFont then
+        DEFAULT_COMBAT_TEXT_FONT = combatFont
     end
     if not DEFAULT_FONT_PATH or DEFAULT_FONT_PATH == "" then
         DEFAULT_FONT_PATH = DEFAULT_DAMAGE_TEXT_FONT or DEFAULT_COMBAT_TEXT_FONT or "Fonts\\FRIZQT__.TTF"
@@ -739,14 +735,11 @@ local function GetConfiguredCombatTextOutlineFlags()
 end
 
 local function GetConfiguredCombatTextCompatFlags()
-    -- NiceDamage's proven path keeps SLUG enabled for combat text when not using
-    -- MONOCHROME. This nudges Blizzard's text renderer onto the same code path
-    -- across clients without changing FontMagic's UI model.
+    -- Stay on Blizzard's normal font renderer. SLUG can make some clients switch
+    -- to a stricter glyph path after the first draw, which shows valid patched
+    -- punctuation as missing boxes.
     local outlineFlags = GetConfiguredCombatTextOutlineFlags()
-    if outlineFlags == "" then
-        return "SLUG", ""
-    end
-    return outlineFlags .. ", SLUG", outlineFlags
+    return outlineFlags, outlineFlags
 end
 
 local function IsManagedCombatTextOutlineName(name)
@@ -847,6 +840,93 @@ local function MigrateSavedFontKeys()
     FontMagicDB.__fmPopularFolderMigrationDone = true
 end
 
+_G.FontMagicCombatTextFontObjects = _G.FontMagicCombatTextFontObjects or {
+    -- Common across many clients/eras
+    { name = "CombatTextFont",        defaultSize = 25 },
+    { name = "CombatTextFontOutline", defaultSize = 25 },
+    { name = "DamageFont",            defaultSize = 25 },
+    { name = "DamageFontOutline",     defaultSize = 25 },
+    { name = "CombatTextFontNormal",  defaultSize = 25 },
+    { name = "CombatTextFontSmall",   defaultSize = 20 },
+    { name = "DamageTextFont",        defaultSize = 25 },
+    { name = "DamageTextFontOutline", defaultSize = 25 },
+
+    -- Present on some modern/Retail builds and can control outgoing damage numbers.
+    { name = "DamageNumberFont",              defaultSize = 25 },
+    { name = "CombatDamageFont",              defaultSize = 25 },
+    { name = "CombatHealingAbsorbGlowFont",   defaultSize = 25 },
+    { name = "WorldFont",                     defaultSize = 25 },
+
+    -- Classic-era floating combat text often uses these FontObjects.
+    -- SUI also rewrites these during its font bootstrap, so FontMagic must own them too.
+    { name = "SystemFont_World",              defaultSize = 25 },
+    { name = "SystemFont_World_ThickOutline", defaultSize = 25 },
+}
+
+_G.FontMagicCombatTextApplying = false
+
+function _G.FontMagicCombatTextGlobalLock:ShouldLockCombatTextFont()
+    if type(FontMagicDB) ~= "table" then return false end
+    if type(FontMagicDB.selectedFont) == "string" and FontMagicDB.selectedFont ~= "" then
+        return true
+    end
+    return FontMagicDB.combatTextOutlineTouched and true or false
+end
+
+function _G.FontMagicCombatTextGlobalLock:IsManagedGlobal(name)
+    return name == "DAMAGE_TEXT_FONT" or name == "COMBAT_TEXT_FONT"
+end
+
+function _G.FontMagicCombatTextGlobalLock:GetLockedPath(name)
+    if not self:IsManagedGlobal(name) then return nil end
+
+    local values = rawget(self, "values")
+    local path = type(values) == "table" and values[name] or rawget(self, "path")
+    if type(path) ~= "string" or path == "" then return nil end
+
+    local ok, shouldLock = pcall(self.ShouldLockCombatTextFont, self)
+    if not ok or not shouldLock then return nil end
+
+    return path
+end
+
+function _G.FontMagicCombatTextGlobalLock:OwnCombatTextFontGlobals(path)
+    if type(path) ~= "string" or path == "" then return end
+
+    self.path = path
+    self.values = self.values or {}
+    self.values.DAMAGE_TEXT_FONT = path
+    self.values.COMBAT_TEXT_FONT = path
+
+    -- Do not alter _G's metatable here. That can taint protected Blizzard UI
+    -- paths on Classic clients and block actions such as logout.
+    rawset(_G, "DAMAGE_TEXT_FONT", path)
+    rawset(_G, "COMBAT_TEXT_FONT", path)
+end
+
+function _G.FontMagicCombatTextGlobalLock:ReleaseCombatTextFontGlobals(path)
+    self.path = nil
+    if type(self.values) == "table" then
+        self.values.DAMAGE_TEXT_FONT = nil
+        self.values.COMBAT_TEXT_FONT = nil
+    end
+
+    if type(path) == "string" and path ~= "" then
+        rawset(_G, "DAMAGE_TEXT_FONT", path)
+        rawset(_G, "COMBAT_TEXT_FONT", path)
+    end
+end
+
+function _G.FontMagicCombatTextGlobalLock:SetCombatTextFontGlobals(path)
+    if type(path) ~= "string" or path == "" then return end
+
+    if self:ShouldLockCombatTextFont() then
+        self:OwnCombatTextFontGlobals(path)
+    else
+        self:ReleaseCombatTextFontGlobals(path)
+    end
+end
+
 -- by updating the globals and
 -- any common FontObjects that already exist in the current client.
 --
@@ -858,33 +938,18 @@ end
 local function ApplyCombatTextFontPath(path)
     if type(path) ~= "string" or path == "" then return end
 
+    _G.FontMagicCombatTextApplying = true
+    local okApply, applyErr = pcall(function()
+
     -- Set globals unconditionally. In some clients these may not be initialized yet
     -- when our file first runs; assigning now ensures Blizzard uses our path once
     -- combat text initializes.
-    _G.DAMAGE_TEXT_FONT = path
-    _G.COMBAT_TEXT_FONT  = path
-
-    local FONT_OBJECTS = {
-        -- Common across many clients/eras
-        { name = "CombatTextFont",        defaultSize = 25 },
-        { name = "CombatTextFontOutline", defaultSize = 25 },
-        { name = "DamageFont",            defaultSize = 25 },
-        { name = "DamageFontOutline",     defaultSize = 25 },
-        { name = "CombatTextFontNormal",  defaultSize = 25 },
-        { name = "CombatTextFontSmall",   defaultSize = 20 },
-        { name = "DamageTextFont",        defaultSize = 25 },
-        { name = "DamageTextFontOutline", defaultSize = 25 },
-
-        -- Present on some modern/Retail builds and can control outgoing damage numbers.
-        { name = "DamageNumberFont",              defaultSize = 25 },
-        { name = "CombatDamageFont",              defaultSize = 25 },
-        { name = "CombatHealingAbsorbGlowFont",   defaultSize = 25 },
-        { name = "WorldFont",                     defaultSize = 25 },
-
-        -- Classic-era floating combat text often uses these FontObjects
-        { name = "SystemFont_World",              defaultSize = 25 },
-        { name = "SystemFont_World_ThickOutline", defaultSize = 25 },
-    }
+    if _G.FontMagicCombatTextGlobalLock and type(_G.FontMagicCombatTextGlobalLock.SetCombatTextFontGlobals) == "function" then
+        _G.FontMagicCombatTextGlobalLock:SetCombatTextFontGlobals(path)
+    else
+        rawset(_G, "DAMAGE_TEXT_FONT", path)
+        rawset(_G, "COMBAT_TEXT_FONT", path)
+    end
 
     local function TrySetFontCompat(obj, fontPath, size, flags, fallbackFlags)
         if not (obj and type(obj.SetFont) == "function") then return false end
@@ -1008,7 +1073,7 @@ local function ApplyCombatTextFontPath(path)
 
     -- Best-effort: update existing FontObjects immediately. Some clients initialize
     -- these when Blizzard_CombatText loads, so we also re-apply during ADDON_LOADED.
-    for _, def in ipairs(FONT_OBJECTS) do
+    for _, def in ipairs(_G.FontMagicCombatTextFontObjects or {}) do
         local obj = _G and _G[def.name]
         TrySetFontObjectFont(def.name, obj, def.defaultSize)
     end
@@ -1066,20 +1131,23 @@ local function ApplyCombatTextFontPath(path)
             seen[f] = true
 
             if type(f.GetRegions) == "function" then
-                for _, r in ipairs({ f:GetRegions() }) do
-                    if r and type(r.GetObjectType) == "function" then
-                        local ok, typ = pcall(r.GetObjectType, r)
-                        if ok and typ == "FontString" and type(r.GetFont) == "function" and type(r.SetFont) == "function" then
-                            local ok2, _, size, flags = pcall(r.GetFont, r)
-                            if ok2 then
-                                local compatFlags, fallbackFlags = GetConfiguredCombatTextCompatFlags()
-                                if type(size) ~= "number" then size = 25 end
-                                if type(flags) ~= "string" then flags = "" end
-                                if not TrySetFontCompat(r, path, size, compatFlags, fallbackFlags) then
-                                    TrySetFontCompat(r, path, size, flags, "")
-                                end
-                                if type(r.SetSpacing) == "function" then
-                                    pcall(r.SetSpacing, r, 0)
+                local okRegions, regions = pcall(function() return { f:GetRegions() } end)
+                if okRegions and type(regions) == "table" then
+                    for _, r in ipairs(regions) do
+                        if r and type(r.GetObjectType) == "function" then
+                            local ok, typ = pcall(r.GetObjectType, r)
+                            if ok and typ == "FontString" and type(r.GetFont) == "function" and type(r.SetFont) == "function" then
+                                local ok2, _, size, flags = pcall(r.GetFont, r)
+                                if ok2 then
+                                    local compatFlags, fallbackFlags = GetConfiguredCombatTextCompatFlags()
+                                    if type(size) ~= "number" then size = 25 end
+                                    if type(flags) ~= "string" then flags = "" end
+                                    if not TrySetFontCompat(r, path, size, compatFlags, fallbackFlags) then
+                                        TrySetFontCompat(r, path, size, flags, "")
+                                    end
+                                    if type(r.SetSpacing) == "function" then
+                                        pcall(r.SetSpacing, r, 0)
+                                    end
                                 end
                             end
                         end
@@ -1088,8 +1156,11 @@ local function ApplyCombatTextFontPath(path)
             end
 
             if type(f.GetChildren) == "function" then
-                for _, child in ipairs({ f:GetChildren() }) do
-                    visit(child, depth + 1)
+                local okChildren, children = pcall(function() return { f:GetChildren() } end)
+                if okChildren and type(children) == "table" then
+                    for _, child in ipairs(children) do
+                        visit(child, depth + 1)
+                    end
                 end
             end
         end
@@ -1102,6 +1173,14 @@ local function ApplyCombatTextFontPath(path)
     ApplyToFrameFontStrings("FloatingCombatTextFrame")
     ApplyNiceDamageCompatFontObjects()
 
+    end)
+    _G.FontMagicCombatTextApplying = false
+    if not okApply and _G and _G.FontMagicCombatTextFix and type(_G.FontMagicCombatTextFix.IsDebugEnabled) == "function" then
+        local okDebug, isDebug = pcall(_G.FontMagicCombatTextFix.IsDebugEnabled, _G.FontMagicCombatTextFix)
+        if okDebug and isDebug and type(_G.FontMagicCombatTextFix.DbgLine) == "function" then
+            pcall(_G.FontMagicCombatTextFix.DbgLine, _G.FontMagicCombatTextFix, "combat font apply error: " .. tostring(applyErr))
+        end
+    end
 end
 
 -- ---------------------------------------------------------------------------
@@ -1134,8 +1213,18 @@ function _G.FontMagicCombatTextFix:GetSelectedCombatTextFontPath()
     return nil
 end
 
+function _G.FontMagicCombatTextFix:GetManagedCombatTextFontPath()
+    local selected = self:GetSelectedCombatTextFontPath()
+    if selected then return selected end
+
+    if type(FontMagicDB) == "table" and FontMagicDB.combatTextOutlineTouched then
+        return GetDefaultCombatTextFontPath()
+    end
+    return nil
+end
+
 function _G.FontMagicCombatTextFix:IsSelectedCombatTextFontApplied()
-    local want = self:GetSelectedCombatTextFontPath()
+    local want = self:GetManagedCombatTextFontPath()
     if not want then return true end
 
     local function normalize(path)
@@ -1146,13 +1235,32 @@ function _G.FontMagicCombatTextFix:IsSelectedCombatTextFontApplied()
     local wantNorm = normalize(want)
     if not wantNorm then return true end
 
-    local function objectMatches(obj)
+    local function objectMatches(name, obj)
         if not (obj and type(obj.GetFont) == "function") then return nil end
-        local ok, current = pcall(obj.GetFont, obj)
+        local ok, current, _, flags = pcall(obj.GetFont, obj)
         if not ok then return nil end
         local currentNorm = normalize(current)
         if not currentNorm then return nil end
-        return currentNorm == wantNorm
+        if currentNorm ~= wantNorm then return false end
+
+        local uflags = type(flags) == "string" and flags:upper() or ""
+        if uflags:find("SLUG", 1, true) then return false end
+
+        if IsManagedCombatTextOutlineName(name) then
+            local wantFlags = GetConfiguredCombatTextOutlineFlags()
+            local hasThick = uflags:find("THICKOUTLINE", 1, true) and true or false
+            local hasOutline = (hasThick or uflags:find("OUTLINE", 1, true)) and true or false
+
+            if wantFlags == "THICKOUTLINE" then
+                if not hasThick then return false end
+            elseif wantFlags == "OUTLINE" then
+                if hasThick or not hasOutline then return false end
+            else
+                if hasOutline then return false end
+            end
+        end
+
+        return true
     end
 
     local gDamage = normalize(_G and _G.DAMAGE_TEXT_FONT)
@@ -1171,20 +1279,31 @@ function _G.FontMagicCombatTextFix:IsSelectedCombatTextFontApplied()
 
     local known = {
         "CombatTextFont",
+        "CombatTextFontOutline",
         "DamageFont",
+        "DamageFontOutline",
         "DamageTextFont",
+        "DamageTextFontOutline",
         "DamageNumberFont",
         "CombatDamageFont",
+        "CombatHealingAbsorbGlowFont",
+        "WorldFont",
+        "SystemFont_World",
+        "SystemFont_World_ThickOutline",
     }
 
+    local sawManagedObject = false
     for _, name in ipairs(known) do
-        local matched = objectMatches(_G and _G[name])
+        local matched = objectMatches(name, _G and _G[name])
         if matched ~= nil then
-            return matched
+            if not matched then
+                return false
+            end
+            sawManagedObject = true
         end
     end
 
-    if gDamage or gCombat then
+    if sawManagedObject or gDamage or gCombat then
         return true
     end
 
@@ -1192,7 +1311,7 @@ function _G.FontMagicCombatTextFix:IsSelectedCombatTextFontApplied()
 end
 
 function _G.FontMagicCombatTextFix:MaybeRepairSelectedCombatTextFont(throttleSeconds)
-    local want = self:GetSelectedCombatTextFontPath()
+    local want = self:GetManagedCombatTextFontPath()
     if not want then return end
 
     local w = self.wrap
@@ -1385,7 +1504,11 @@ function _G.FontMagicCombatTextFix:DumpCombatTextRegions(frameName, maxFS)
         return
     end
 
-    local regions = { f:GetRegions() }
+    local okRegions, regions = pcall(function() return { f:GetRegions() } end)
+    if not okRegions or type(regions) ~= "table" then
+        self:DbgLine("CT regions: " .. tostring(frameName) .. " (GetRegions failed)")
+        return
+    end
     local found = 0
     local limit = tonumber(maxFS) or 6
     for _, r in ipairs(regions) do
@@ -1416,50 +1539,53 @@ function _G.FontMagicCombatTextFix:ZeroFontStringSpacingOnFrame(frameName)
         seenFrames[f] = true
 
         if type(f.GetRegions) == "function" then
-            for _, r in ipairs({ f:GetRegions() }) do
-                if r and type(r.GetObjectType) == "function" then
-                    local ok, typ = pcall(r.GetObjectType, r)
-                    if ok and typ == "FontString" then
-                        if type(r.GetFont) == "function" and type(r.SetFont) == "function" then
-                            local okFont, currentPath, size, flags = pcall(r.GetFont, r)
-                            if okFont and type(currentPath) == "string" and currentPath ~= "" then
-                                local compatFlags, fallbackFlags = GetConfiguredCombatTextCompatFlags()
-                                if type(size) ~= "number" then size = 25 end
-                                if type(flags) ~= "string" then flags = "" end
+            local okRegions, regions = pcall(function() return { f:GetRegions() } end)
+            if okRegions and type(regions) == "table" then
+                for _, r in ipairs(regions) do
+                    if r and type(r.GetObjectType) == "function" then
+                        local ok, typ = pcall(r.GetObjectType, r)
+                        if ok and typ == "FontString" then
+                            if type(r.GetFont) == "function" and type(r.SetFont) == "function" then
+                                local okFont, currentPath, size, flags = pcall(r.GetFont, r)
+                                if okFont and type(currentPath) == "string" and currentPath ~= "" then
+                                    local compatFlags, fallbackFlags = GetConfiguredCombatTextCompatFlags()
+                                    if type(size) ~= "number" then size = 25 end
+                                    if type(flags) ~= "string" then flags = "" end
 
-                                local wantPath = self:GetSelectedCombatTextFontPath() or currentPath
-                                local wantFlags = compatFlags
-                                if wantPath ~= currentPath or flags ~= wantFlags then
-                                    if not pcall(r.SetFont, r, wantPath, size, wantFlags) and fallbackFlags ~= wantFlags then
-                                        pcall(r.SetFont, r, wantPath, size, fallbackFlags)
+                                    local wantPath = self:GetSelectedCombatTextFontPath() or currentPath
+                                    local wantFlags = compatFlags
+                                    if wantPath ~= currentPath or flags ~= wantFlags then
+                                        if not pcall(r.SetFont, r, wantPath, size, wantFlags) and fallbackFlags ~= wantFlags then
+                                            pcall(r.SetFont, r, wantPath, size, fallbackFlags)
+                                        end
                                     end
                                 end
                             end
-                        end
 
-                        if type(r.SetSpacing) == "function" then
-                            local before = nil
-                            if self:IsDebugEnabled() and type(r.GetSpacing) == "function" then
-                                local ok2, v = pcall(r.GetSpacing, r)
-                                if ok2 then before = v end
+                            if type(r.SetSpacing) == "function" then
+                                local before = nil
+                                if self:IsDebugEnabled() and type(r.GetSpacing) == "function" then
+                                    local ok2, v = pcall(r.GetSpacing, r)
+                                    if ok2 then before = v end
+                                end
+                                pcall(r.SetSpacing, r, 0)
+                                if self:IsDebugEnabled() and before ~= nil and tonumber(before) and tonumber(before) ~= 0 then
+                                    self:DbgLine("CT spacing fix: " .. tostring(frameName) .. " FontString spacing was " .. tostring(before) .. " -> 0")
+                                end
                             end
-                            pcall(r.SetSpacing, r, 0)
-                            if self:IsDebugEnabled() and before ~= nil and tonumber(before) and tonumber(before) ~= 0 then
-                                self:DbgLine("CT spacing fix: " .. tostring(frameName) .. " FontString spacing was " .. tostring(before) .. " -> 0")
-                            end
-                        end
 
-                        -- If the *text itself* contains whitespace-like separators between digits,
-                        -- remove them. This fixes cases where the message string includes thin/NB
-                        -- spaces that look like "digit spacing".
-                        if type(r.GetText) == "function" and type(r.SetText) == "function" then
-                            local okT, txt = pcall(r.GetText, r)
-                            if okT and type(txt) == "string" and txt:match("%d") then
-                                local sanitized, changed = self:SanitizeMessage(txt)
-                                if changed and type(sanitized) == "string" and sanitized ~= txt then
-                                    pcall(r.SetText, r, sanitized)
-                                    if self:IsDebugEnabled() then
-                                        self:DbgLine("CT text sanitize: " .. self:VisibleWhitespace(txt) .. " -> " .. self:VisibleWhitespace(sanitized))
+                            -- If the *text itself* contains whitespace-like separators between digits,
+                            -- remove them. This fixes cases where the message string includes thin/NB
+                            -- spaces that look like "digit spacing".
+                            if type(r.GetText) == "function" and type(r.SetText) == "function" then
+                                local okT, txt = pcall(r.GetText, r)
+                                if okT and type(txt) == "string" and txt:match("%d") then
+                                    local sanitized, changed = self:SanitizeMessage(txt)
+                                    if changed and type(sanitized) == "string" and sanitized ~= txt then
+                                        pcall(r.SetText, r, sanitized)
+                                        if self:IsDebugEnabled() then
+                                            self:DbgLine("CT text sanitize: " .. self:VisibleWhitespace(txt) .. " -> " .. self:VisibleWhitespace(sanitized))
+                                        end
                                     end
                                 end
                             end
@@ -1470,8 +1596,11 @@ function _G.FontMagicCombatTextFix:ZeroFontStringSpacingOnFrame(frameName)
         end
 
         if type(f.GetChildren) == "function" then
-            for _, child in ipairs({ f:GetChildren() }) do
-                visit(child, depth + 1)
+            local okChildren, children = pcall(function() return { f:GetChildren() } end)
+            if okChildren and type(children) == "table" then
+                for _, child in ipairs(children) do
+                    visit(child, depth + 1)
+                end
             end
         end
     end
@@ -1524,42 +1653,45 @@ function _G.FontMagicCombatTextFix:MaybeLogDisplayedCombatText(frameName, source
         seen[f] = true
 
         if type(f.GetRegions) == "function" then
-            for _, r in ipairs({ f:GetRegions() }) do
-                if r and type(r.GetObjectType) == "function" then
-                    local ok, typ = pcall(r.GetObjectType, r)
-                    if ok and typ == "FontString" then
-                        count = count + 1
-                        if count > maxFS then return end
+            local okRegions, regions = pcall(function() return { f:GetRegions() } end)
+            if okRegions and type(regions) == "table" then
+                for _, r in ipairs(regions) do
+                    if r and type(r.GetObjectType) == "function" then
+                        local ok, typ = pcall(r.GetObjectType, r)
+                        if ok and typ == "FontString" then
+                            count = count + 1
+                            if count > maxFS then return end
 
-                        local txt = nil
-                        if type(r.GetText) == "function" then
-                            local okT, v = pcall(r.GetText, r)
-                            if okT then txt = v end
-                        end
-                        if type(txt) == "string" and txt ~= "" and txt:match("%d") then
-                            local lastTxt = w.lastFSText[r]
-                            if lastTxt ~= txt then
-                                w.lastFSText[r] = txt
+                            local txt = nil
+                            if type(r.GetText) == "function" then
+                                local okT, v = pcall(r.GetText, r)
+                                if okT then txt = v end
+                            end
+                            if type(txt) == "string" and txt ~= "" and txt:match("%d") then
+                                local lastTxt = w.lastFSText[r]
+                                if lastTxt ~= txt then
+                                    w.lastFSText[r] = txt
 
-                                local p, s, fl = nil, nil, nil
-                                if type(r.GetFont) == "function" then
-                                    local okF, a, b, c = pcall(r.GetFont, r)
-                                    if okF then p, s, fl = a, b, c end
-                                end
-                                local sp = nil
-                                if type(r.GetSpacing) == "function" then
-                                    local okS, v = pcall(r.GetSpacing, r)
-                                    if okS then sp = v end
-                                end
-                                local sc = nil
-                                if type(r.GetScale) == "function" then
-                                    local okSc, v = pcall(r.GetScale, r)
-                                    if okSc then sc = v end
-                                end
+                                    local p, s, fl = nil, nil, nil
+                                    if type(r.GetFont) == "function" then
+                                        local okF, a, b, c = pcall(r.GetFont, r)
+                                        if okF then p, s, fl = a, b, c end
+                                    end
+                                    local sp = nil
+                                    if type(r.GetSpacing) == "function" then
+                                        local okS, v = pcall(r.GetSpacing, r)
+                                        if okS then sp = v end
+                                    end
+                                    local sc = nil
+                                    if type(r.GetScale) == "function" then
+                                        local okSc, v = pcall(r.GetScale, r)
+                                        if okSc then sc = v end
+                                    end
 
-                                self:DbgLine("CT displayed[" .. tostring(source or "?") .. "] " .. tostring(frameName) .. " FS" .. tostring(count) .. " text=" .. tostring(txt))
-                                self:DbgLine("CT displayed vis=" .. self:VisibleWhitespace(txt) .. " seps=" .. self:DescribeSeparatorBytes(txt))
-                                self:DbgLine("CT displayed font=" .. tostring(p) .. " size=" .. tostring(s) .. " flags=" .. tostring(fl) .. " spacing=" .. tostring(sp) .. " scale=" .. tostring(sc))
+                                    self:DbgLine("CT displayed[" .. tostring(source or "?") .. "] " .. tostring(frameName) .. " FS" .. tostring(count) .. " text=" .. tostring(txt))
+                                    self:DbgLine("CT displayed vis=" .. self:VisibleWhitespace(txt) .. " seps=" .. self:DescribeSeparatorBytes(txt))
+                                    self:DbgLine("CT displayed font=" .. tostring(p) .. " size=" .. tostring(s) .. " flags=" .. tostring(fl) .. " spacing=" .. tostring(sp) .. " scale=" .. tostring(sc))
+                                end
                             end
                         end
                     end
@@ -1568,9 +1700,12 @@ function _G.FontMagicCombatTextFix:MaybeLogDisplayedCombatText(frameName, source
         end
 
         if type(f.GetChildren) == "function" then
-            for _, child in ipairs({ f:GetChildren() }) do
-                visit(child, depth + 1)
-                if count > maxFS then return end
+            local okChildren, children = pcall(function() return { f:GetChildren() } end)
+            if okChildren and type(children) == "table" then
+                for _, child in ipairs(children) do
+                    visit(child, depth + 1)
+                    if count > maxFS then return end
+                end
             end
         end
     end
@@ -1875,9 +2010,250 @@ local function ApplySavedCombatFont()
     ApplyCombatTextFontPath(path)
 end
 
+function _G.FontMagicCombatTextFix:HasManagedCombatTextFont()
+    if type(FontMagicDB) ~= "table" then return false end
+    if type(FontMagicDB.selectedFont) == "string" and FontMagicDB.selectedFont ~= "" then
+        return true
+    end
+    return FontMagicDB.combatTextOutlineTouched and true or false
+end
+
+function _G.FontMagicCombatTextFix:ApplySavedCombatFontNow()
+    if not self:HasManagedCombatTextFont() then return end
+    MigrateSavedFontKeys()
+    ApplySavedCombatFont()
+    if type(self.EnsureCombatTextPatches) == "function" then
+        pcall(self.EnsureCombatTextPatches, self)
+    end
+    if type(self.StartCombatTextOwnershipMonitor) == "function" then
+        pcall(self.StartCombatTextOwnershipMonitor, self)
+    end
+end
+
+function _G.FontMagicCombatTextFix:QueueSavedCombatFontApply(delay, force)
+    if not self:HasManagedCombatTextFont() then return end
+
+    self.externalHooks = self.externalHooks or {}
+    self.externalHooks.queuedApply = self.externalHooks.queuedApply or {}
+
+    local d = tonumber(delay) or 0
+    local key = tostring(d)
+    if force then
+        self.externalHooks.forceQueueId = (tonumber(self.externalHooks.forceQueueId) or 0) + 1
+        key = key .. "#" .. tostring(self.externalHooks.forceQueueId)
+    else
+        if self.externalHooks.queuedApply[key] then return end
+    end
+    self.externalHooks.queuedApply[key] = true
+
+    local fix = self
+    local function run()
+        if fix.externalHooks and fix.externalHooks.queuedApply then
+            fix.externalHooks.queuedApply[key] = nil
+        end
+        if type(fix.InstallExternalCombatFontHooks) == "function" then
+            pcall(fix.InstallExternalCombatFontHooks, fix)
+        end
+        pcall(fix.ApplySavedCombatFontNow, fix)
+    end
+
+    if type(C_Timer) == "table" and type(C_Timer.After) == "function" then
+        C_Timer.After(d, run)
+    else
+        run()
+    end
+end
+
+function _G.FontMagicCombatTextFix:QueueSavedCombatFontApplyBurst()
+    self:QueueSavedCombatFontApply(0, true)
+    self:QueueSavedCombatFontApply(0.05, true)
+    self:QueueSavedCombatFontApply(0.5, true)
+    self:QueueSavedCombatFontApply(2.0, true)
+    self:QueueSavedCombatFontApply(5.0, true)
+end
+
+function _G.FontMagicCombatTextFix:StartStartupCombatFontWatcher(seconds)
+    if not self:HasManagedCombatTextFont() then return end
+
+    self.externalHooks = self.externalHooks or {}
+
+    local duration = tonumber(seconds) or 8
+    if duration < 1 then duration = 1 end
+    if duration > 15 then duration = 15 end
+
+    if self.externalHooks.startupWatcher then
+        local active = self.externalHooks.startupWatcher
+        active.elapsed = 0
+        active.duration = math.max(tonumber(active.duration) or 0, duration)
+        if active.Show then active:Show() end
+        return
+    end
+
+    local watcher = CreateFrame("Frame")
+    watcher.elapsed = 0
+    watcher.duration = duration
+    watcher.lastApply = -1
+    watcher.fix = self
+    watcher:SetScript("OnUpdate", function(frameObj, elapsed)
+        frameObj.elapsed = (frameObj.elapsed or 0) + (tonumber(elapsed) or 0)
+        local now = frameObj.elapsed
+        if now >= (tonumber(frameObj.duration) or duration) then
+            frameObj:SetScript("OnUpdate", nil)
+            frameObj:Hide()
+            if frameObj.fix and frameObj.fix.externalHooks then
+                frameObj.fix.externalHooks.startupWatcher = nil
+            end
+            return
+        end
+
+        local last = tonumber(frameObj.lastApply) or -1
+        if last < 0 or (now - last) >= 0.25 then
+            frameObj.lastApply = now
+            pcall(frameObj.fix.ApplySavedCombatFontNow, frameObj.fix)
+        end
+    end)
+
+    self.externalHooks.startupWatcher = watcher
+end
+
+function _G.FontMagicCombatTextFix:StartCombatTextOwnershipMonitor()
+    if not self:HasManagedCombatTextFont() then return end
+
+    self.externalHooks = self.externalHooks or {}
+    if self.externalHooks.ownershipMonitor then
+        local active = self.externalHooks.ownershipMonitor
+        if active.Show then active:Show() end
+        return
+    end
+
+    local monitor = CreateFrame("Frame")
+    monitor.elapsed = 0
+    monitor.fix = self
+    monitor:SetScript("OnUpdate", function(frameObj, elapsed)
+        frameObj.elapsed = (frameObj.elapsed or 0) + (tonumber(elapsed) or 0)
+        if frameObj.elapsed < 0.75 then return end
+        frameObj.elapsed = 0
+
+        local fix = frameObj.fix
+        if not (fix and type(fix.HasManagedCombatTextFont) == "function" and fix:HasManagedCombatTextFont()) then
+            frameObj:SetScript("OnUpdate", nil)
+            frameObj:Hide()
+            if fix and fix.externalHooks then
+                fix.externalHooks.ownershipMonitor = nil
+            end
+            return
+        end
+
+        if type(fix.MaybeRepairSelectedCombatTextFont) == "function" then
+            pcall(fix.MaybeRepairSelectedCombatTextFont, fix, 0.75)
+        end
+    end)
+
+    self.externalHooks.ownershipMonitor = monitor
+end
+
+function _G.FontMagicCombatTextFix:InstallManagedCombatFontObjectHooks()
+    if type(hooksecurefunc) ~= "function" then return end
+
+    self.externalHooks = self.externalHooks or {}
+    self.externalHooks.fontObjects = self.externalHooks.fontObjects or {}
+
+    for _, def in ipairs(_G.FontMagicCombatTextFontObjects or {}) do
+        local name = def and def.name
+        local obj = name and _G and _G[name]
+        if name and obj and type(obj.SetFont) == "function" and not self.externalHooks.fontObjects[name] then
+            local fix = self
+            local ok = pcall(hooksecurefunc, obj, "SetFont", function()
+                if _G and _G.FontMagicCombatTextApplying then return end
+                if type(fix.ApplySavedCombatFontNow) == "function" then
+                    pcall(fix.ApplySavedCombatFontNow, fix)
+                elseif type(fix.QueueSavedCombatFontApply) == "function" then
+                    pcall(fix.QueueSavedCombatFontApply, fix, 0, true)
+                end
+            end)
+            if ok then
+                self.externalHooks.fontObjects[name] = true
+            end
+        end
+    end
+end
+
+function _G.FontMagicCombatTextFix:InstallExternalCombatFontHooks()
+    self.externalHooks = self.externalHooks or {}
+    self:InstallManagedCombatFontObjectHooks()
+
+    if type(hooksecurefunc) ~= "function" then return end
+
+    if not self.externalHooks.elvuiUpdateBlizzardFonts then
+        local engine = _G and _G.ElvUI
+        local E
+        if type(engine) == "table" then
+            local unpackFn = _G.unpack or (table and table.unpack)
+            if type(unpackFn) == "function" then
+                local ok, e = pcall(unpackFn, engine)
+                if ok and type(e) == "table" then E = e end
+            end
+            if not E and type(engine[1]) == "table" then
+                E = engine[1]
+            end
+        end
+        if E and type(E.UpdateBlizzardFonts) == "function" then
+            local fix = self
+            local ok = pcall(hooksecurefunc, E, "UpdateBlizzardFonts", function()
+                if _G and _G.FontMagicCombatTextApplying then return end
+                fix:QueueSavedCombatFontApply(0)
+            end)
+            if ok then
+                self.externalHooks.elvuiUpdateBlizzardFonts = true
+            end
+        end
+    end
+
+    if not self.externalHooks.suiGeneralFonts then
+        local SUI = _G and _G.SUI
+        if type(SUI) == "table" and type(SUI.GetModule) == "function" then
+            local okMod, mod = pcall(SUI.GetModule, SUI, "General.Fonts", true)
+            if okMod and mod and type(mod.OnInitialize) == "function" then
+                local fix = self
+                local okHook = pcall(hooksecurefunc, mod, "OnInitialize", function()
+                    if _G and _G.FontMagicCombatTextApplying then return end
+                    fix:QueueSavedCombatFontApply(0)
+                end)
+                if okHook then
+                    self.externalHooks.suiGeneralFonts = true
+                end
+            end
+        end
+    end
+
+    if not self.externalHooks.libSharedMediaRegister then
+        local libstub = _G and _G.LibStub
+        if type(libstub) == "function" then
+            local okLSM, lsm = pcall(libstub, "LibSharedMedia-3.0", true)
+            if okLSM and lsm and type(lsm.Register) == "function" then
+                local fix = self
+                local okHook = pcall(hooksecurefunc, lsm, "Register", function(_, mediaType)
+                    if tostring(mediaType or ""):lower() == "font" then
+                        fix:QueueSavedCombatFontApply(0)
+                    end
+                end)
+                if okHook then
+                    self.externalHooks.libSharedMediaRegister = true
+                end
+            end
+        end
+    end
+end
+
 -- Initial capture + apply as early as possible
 CaptureBlizzardDefaultFonts()
 ApplySavedCombatFont()
+if _G and _G.FontMagicCombatTextFix then
+    pcall(_G.FontMagicCombatTextFix.InstallExternalCombatFontHooks, _G.FontMagicCombatTextFix)
+    pcall(_G.FontMagicCombatTextFix.QueueSavedCombatFontApplyBurst, _G.FontMagicCombatTextFix)
+    pcall(_G.FontMagicCombatTextFix.StartStartupCombatFontWatcher, _G.FontMagicCombatTextFix, 8)
+    pcall(_G.FontMagicCombatTextFix.StartCombatTextOwnershipMonitor, _G.FontMagicCombatTextFix)
+end
 
 
 -- 2) MAIN WINDOW
@@ -1991,10 +2367,15 @@ local function GetCheckButtonLabelFS(cb)
 
     -- Fallback: scan regions for the first FontString.
     if cb.GetRegions then
-        local regions = { cb:GetRegions() }
-        for _, r in ipairs(regions) do
-            if r and r.GetObjectType and r:GetObjectType() == "FontString" then
-                return r
+        local okRegions, regions = pcall(function() return { cb:GetRegions() } end)
+        if okRegions and type(regions) == "table" then
+            for _, r in ipairs(regions) do
+                if r and r.GetObjectType then
+                    local okType, typ = pcall(r.GetObjectType, r)
+                    if okType and typ == "FontString" then
+                        return r
+                    end
+                end
             end
         end
     end
@@ -2017,9 +2398,13 @@ local function SetCheckButtonLabelColor(cb, r, g, b)
     end
 end
 
-local function CreateCheckbox(parent, label, x, y, checked, onClick)
-    _cbId = _cbId + 1
-    local cb = CreateFrame("CheckButton", addonName .. "CB" .. _cbId, parent, "UICheckButtonTemplate")
+local function CreateCheckbox(parent, label, x, y, checked, onClick, anonymous)
+    local name = nil
+    if not anonymous then
+        _cbId = _cbId + 1
+        name = addonName .. "CB" .. _cbId
+    end
+    local cb = CreateFrame("CheckButton", name, parent, "UICheckButtonTemplate")
     cb:SetPoint("TOPLEFT", x, y)
     SetCheckButtonLabel(cb, label)
 
@@ -3498,8 +3883,10 @@ local function RefreshScaleControl()
         slider:SetMinMaxValues(COMBAT_TEXT_SCALE_MIN, COMBAT_TEXT_SCALE_MAX)
         slider:SetValueStep(0.1)
         slider:SetObeyStepOnDrag(true)
-        _G[slider:GetName() .. "Low"]:SetText(string.format("%.1f", COMBAT_TEXT_SCALE_MIN))
-        _G[slider:GetName() .. "High"]:SetText(string.format("%.1f", COMBAT_TEXT_SCALE_MAX))
+        local low = _G[slider:GetName() .. "Low"]
+        local high = _G[slider:GetName() .. "High"]
+        if low and low.SetText then low:SetText(string.format("%.1f", COMBAT_TEXT_SCALE_MIN)) end
+        if high and high.SetText then high:SetText(string.format("%.1f", COMBAT_TEXT_SCALE_MAX)) end
         slider:Enable()
         scaleLabel:SetTextColor(1, 1, 1)
         local currentScale = tonumber(scaleCVarValue)
@@ -3520,8 +3907,10 @@ local function RefreshScaleControl()
     else
         slider:Disable()
         scaleLabel:SetTextColor(0.5, 0.5, 0.5)
-        _G[slider:GetName() .. "Low"]:SetText("")
-        _G[slider:GetName() .. "High"]:SetText("")
+        local low = _G[slider:GetName() .. "Low"]
+        local high = _G[slider:GetName() .. "High"]
+        if low and low.SetText then low:SetText("") end
+        if high and high.SetText then high:SetText("") end
         scaleValue:SetText("|cff888888N/A|r")
         slider:SetScript("OnValueChanged", nil)
         slider:SetScript("OnEnter", function(self)
@@ -3760,10 +4149,10 @@ local function MakeCVarCandidates(primary, ...)
         if v and v ~= "" then table.insert(t, v) end
     end
     if type(primary) == "string" then
-        table.insert(t, primary .. "_v2")
-        table.insert(t, primary .. "_V2")
-        table.insert(t, primary .. "_v3")
-        table.insert(t, primary .. "_V3")
+        for v = 9, 2, -1 do
+            table.insert(t, primary .. "_v" .. v)
+            table.insert(t, primary .. "_V" .. v)
+        end
     end
     return t
 end
@@ -4066,9 +4455,10 @@ local function ApplyCombatOverrides()
         for key, val in pairs(FontMagicDB.combatOverrides) do
             local def = DEF_BY_KEY[key]
             if def then
-                local n, ct = ResolveConsoleSetting(def.candidates)
-                if n and ct == 0 then
-                    ApplyConsoleSetting(n, ct, val and "1" or "0")
+                for _, target in ipairs(ResolveConsoleSettingTargets(def.candidates)) do
+                    if target.name and target.commandType ~= nil then
+                        ApplyConsoleSetting(target.name, target.commandType, val and "1" or "0")
+                    end
                 end
             end
         end
@@ -4076,9 +4466,10 @@ local function ApplyCombatOverrides()
 
     if type(FontMagicDB) == "table" and type(FontMagicDB.extraCombatOverrides) == "table" then
         for cvar, val in pairs(FontMagicDB.extraCombatOverrides) do
-            local n, ct = ResolveConsoleSetting(cvar)
-            if n and ct == 0 then
-                ApplyConsoleSetting(n, ct, val and "1" or "0")
+            for _, target in ipairs(ResolveConsoleSettingTargets(cvar)) do
+                if target.name and target.commandType == 0 then
+                    ApplyConsoleSetting(target.name, target.commandType, val and "1" or "0")
+                end
             end
         end
     end
@@ -4102,8 +4493,11 @@ local function VisitCombatTextFrames(root, callback)
         callback(frameObj)
 
         if type(frameObj.GetChildren) == "function" then
-            for _, child in ipairs({ frameObj:GetChildren() }) do
-                visit(child, depth + 1)
+            local okChildren, children = pcall(function() return { frameObj:GetChildren() } end)
+            if okChildren and type(children) == "table" then
+                for _, child in ipairs(children) do
+                    visit(child, depth + 1)
+                end
             end
         end
     end
@@ -4190,17 +4584,19 @@ local function GetCombatTextMasterSettingList()
     end
 
     for _, def in ipairs(COMBAT_BOOL_DEFS) do
-        local n, ct = ResolveConsoleSetting(def.candidates)
-        if n and ct ~= nil then
-            addSetting(n, ct)
+        for _, target in ipairs(ResolveConsoleSettingTargets(def.candidates)) do
+            if target.name and target.commandType ~= nil then
+                addSetting(target.name, target.commandType)
+            end
         end
     end
 
     local extras = CollectExtraBoolCombatTextCVars()
     for _, cvar in ipairs(extras) do
-        local n, ct = ResolveConsoleSetting(cvar)
-        if n and ct ~= nil then
-            addSetting(n, ct)
+        for _, target in ipairs(ResolveConsoleSettingTargets(cvar)) do
+            if target.name and target.commandType ~= nil then
+                addSetting(target.name, target.commandType)
+            end
         end
     end
 
@@ -4284,7 +4680,7 @@ end
 
 local function CaptureCombatTextMasterSnapshot()
     FontMagicDB = FontMagicDB or {}
-    local snap = { cvars = {}, incoming = {} }
+    local snap = { cvars = {}, commandTypes = {}, incoming = {} }
 
     -- Best-effort: if we can't read a setting (console-command style), store a value that
     -- will turn it back on when the user re-enables combat text.
@@ -4301,6 +4697,7 @@ local function CaptureCombatTextMasterSnapshot()
             end
 
             snap.cvars[entry.name] = val
+            snap.commandTypes[entry.name] = entry.ct
         end
     end
 
@@ -4316,9 +4713,8 @@ end
 local function ApplyCombatTextMasterDisabled()
     for _, entry in ipairs(GetCombatTextMasterSettingList()) do
         if entry and entry.name then
-            local n, ct = ResolveConsoleSetting(entry.name)
-            if n and ct ~= nil then
-                ApplyConsoleSetting(n, ct, "0")
+            if entry.ct ~= nil then
+                ApplyConsoleSetting(entry.name, entry.ct, "0")
             end
         end
     end
@@ -4338,7 +4734,24 @@ local function ApplyCombatTextMasterEnabledFromSnapshot(snap)
 
     for name, val in pairs(snap.cvars) do
         if val ~= nil then
-            local n, ct = ResolveConsoleSetting(name)
+            local n, ct = name, nil
+            if type(snap.commandTypes) == "table" then
+                ct = snap.commandTypes[name]
+                if ct ~= nil then
+                    local exactName, exactCt = _G.FontMagicConsoleResolver:TryName(name)
+                    if exactName then
+                        n, ct = exactName, exactCt
+                    else
+                        n, ct = nil, nil
+                    end
+                end
+            end
+            if ct == nil then
+                n, ct = _G.FontMagicConsoleResolver:TryName(name)
+            end
+            if not n or ct == nil then
+                n, ct = ResolveConsoleSetting(name)
+            end
             if n and ct ~= nil then
                 ApplyConsoleSetting(n, ct, tostring(val))
                 appliedAny = true
@@ -4369,22 +4782,29 @@ local function ApplyCombatTextMasterEnabledBaseline()
     do
         local gateDef = DEF_BY_KEY and DEF_BY_KEY["enableFloatingCombatText"]
         local candidates = (gateDef and gateDef.candidates) or MakeCVarCandidates("enableFloatingCombatText", "enableCombatText")
-        local gateName, gateCt = ResolveConsoleSetting(candidates)
-        if gateName and gateCt ~= nil then
-            ApplyConsoleSetting(gateName, gateCt, "1")
+        for _, target in ipairs(ResolveConsoleSettingTargets(candidates)) do
+            if target.name and target.commandType ~= nil then
+                ApplyConsoleSetting(target.name, target.commandType, "1")
+            end
         end
     end
 
     local dmgDef = DEF_BY_KEY and DEF_BY_KEY["combatDamage"]
     if dmgDef then
-        local n, ct = ResolveConsoleSetting(dmgDef.candidates)
-        if n and ct ~= nil then ApplyConsoleSetting(n, ct, "1") end
+        for _, target in ipairs(ResolveConsoleSettingTargets(dmgDef.candidates)) do
+            if target.name and target.commandType ~= nil then
+                ApplyConsoleSetting(target.name, target.commandType, "1")
+            end
+        end
     end
 
     local healDef = DEF_BY_KEY and DEF_BY_KEY["combatHealing"]
     if healDef then
-        local n, ct = ResolveConsoleSetting(healDef.candidates)
-        if n and ct ~= nil then ApplyConsoleSetting(n, ct, "1") end
+        for _, target in ipairs(ResolveConsoleSettingTargets(healDef.candidates)) do
+            if target.name and target.commandType ~= nil then
+                ApplyConsoleSetting(target.name, target.commandType, "1")
+            end
+        end
     end
 end
 
@@ -4438,6 +4858,9 @@ local function ClearCombatWidgets()
         if w and w.SetParent then w:SetParent(nil) end
     end
     combatWidgets = {}
+    if combatContent then
+        combatContent.__fmCheckboxPoolCursor = 0
+    end
 end
 
 local function AddHeader(textLine, y)
@@ -4560,9 +4983,28 @@ end
 
 local function CreateOptionCheckbox(col, y, label, checked, onClick, tip)
     local x = (col == 0) and 0 or (CB_COL_W + CHECK_COL_GAP)
-    local cb = CreateCheckbox(combatContent, label, 0, 0, checked, onClick)
+    combatContent.__fmCheckboxPool = combatContent.__fmCheckboxPool or {}
+    combatContent.__fmCheckboxPoolCursor = (combatContent.__fmCheckboxPoolCursor or 0) + 1
+
+    local poolIndex = combatContent.__fmCheckboxPoolCursor
+    local cb = combatContent.__fmCheckboxPool[poolIndex]
+    if not cb then
+        cb = CreateCheckbox(combatContent, label, 0, 0, checked, onClick, true)
+        combatContent.__fmCheckboxPool[poolIndex] = cb
+    else
+        cb:SetParent(combatContent)
+        cb:Show()
+        if cb.Enable then pcall(cb.Enable, cb) end
+        if cb.EnableMouse then cb:EnableMouse(true) end
+        SetCheckButtonLabel(cb, label)
+        cb:SetChecked(checked and true or false)
+        cb:SetScript("OnClick", onClick)
+    end
+
     cb:ClearAllPoints()
     cb:SetPoint("TOPLEFT", combatContent, "TOPLEFT", x, y)
+    cb:SetScript("OnEnter", nil)
+    cb:SetScript("OnLeave", nil)
 
     -- Constrain the label so the two checkbox columns never overlap.
     local fs = cb and (cb.__fmLabelFS or GetCheckButtonLabelFS(cb))
@@ -4670,10 +5112,17 @@ local function BuildCombatOptionsUI()
     for _, def in ipairs(COMBAT_BOOL_DEFS) do
         if def.key ~= "enableFloatingCombatText" then
             local n, ct = ResolveConsoleSetting(def.candidates)
-            if n and ct == 0 then
+            if n and ct ~= nil then
                 local override = FontMagicDB.combatOverrides and FontMagicDB.combatOverrides[def.key]
-                local live = GetLiveBoolCVar(n)
-                local checked = (override ~= nil) and (override and true or false) or (live and true or false)
+                local live = (ct == 0) and GetLiveBoolCVar(n) or nil
+                local checked
+                if override ~= nil then
+                    checked = override and true or false
+                elseif live ~= nil then
+                    checked = live and true or false
+                else
+                    checked = true
+                end
 
                 if masterOff and type(snap) == "table" and type(snap.cvars) == "table" and snap.cvars[n] ~= nil then
                     checked = (tonumber(snap.cvars[n]) == 1) and true or false
@@ -4684,7 +5133,11 @@ local function BuildCombatOptionsUI()
                     local newVal = self:GetChecked() and true or false
                     if type(FontMagicDB.combatOverrides) ~= "table" then FontMagicDB.combatOverrides = {} end
                     FontMagicDB.combatOverrides[def.key] = newVal
-                    ApplyConsoleSetting(n, ct, newVal and "1" or "0")
+                    for _, target in ipairs(ResolveConsoleSettingTargets(def.candidates)) do
+                        if target.name and target.commandType ~= nil then
+                            ApplyConsoleSetting(target.name, target.commandType, newVal and "1" or "0")
+                        end
+                    end
                 end, def.tip)
 
                 if masterOff and cb and cb.Disable then pcall(cb.Disable, cb) end
@@ -4865,7 +5318,11 @@ local function BuildCombatOptionsUI()
                         local newVal = self:GetChecked() and true or false
                         if type(FontMagicDB.extraCombatOverrides) ~= "table" then FontMagicDB.extraCombatOverrides = {} end
                         FontMagicDB.extraCombatOverrides[cvar] = newVal
-                        ApplyConsoleSetting(n, ct, newVal and "1" or "0")
+                        for _, target in ipairs(ResolveConsoleSettingTargets(cvar)) do
+                            if target.name and target.commandType == 0 then
+                                ApplyConsoleSetting(target.name, target.commandType, newVal and "1" or "0")
+                            end
+                        end
                     end, tip)
 
                     if masterOff and cb and cb.Disable then pcall(cb.Disable, cb) end
@@ -4966,6 +5423,9 @@ applyBtn:SetScript("OnClick", function()
             -- Best-effort immediate apply (helps on /reload). A relog is still the
             -- most reliable way to ensure combat text picks it up across clients.
             ApplyCombatTextFontPath(path)
+            if _G and _G.FontMagicCombatTextFix and type(_G.FontMagicCombatTextFix.StartCombatTextOwnershipMonitor) == "function" then
+                pcall(_G.FontMagicCombatTextFix.StartCombatTextOwnershipMonitor, _G.FontMagicCombatTextFix)
+            end
             print("|cFF00FF00[FontMagic]|r Combat font saved. Log out to character select and back in to apply.")
             if UIErrorsFrame and UIErrorsFrame.AddMessage then
                 UIErrorsFrame:AddMessage("FontMagic: relog to apply the new combat font.", 1, 1, 0)
@@ -5096,7 +5556,7 @@ local function ResetFontOnly()
     if UpdatePreviewHeaderText then UpdatePreviewHeaderText("Default", defaultPath, true) end
     __fmRunNextFrame(function()
         SetPreviewFont(GameFontNormalLarge or (preview and preview.GetFontObject and preview:GetFontObject()), defaultPath)
-    if UpdatePreviewHeaderText then UpdatePreviewHeaderText("Default", defaultPath, true) end
+        if UpdatePreviewHeaderText then UpdatePreviewHeaderText("Default", defaultPath, true) end
         if preview and editBox and preview.SetText and editBox.GetText then
             preview:SetText(editBox:GetText() or "")
         end
@@ -5130,14 +5590,14 @@ local function ResetCombatOptionsOnly()
     FontMagicDB.combatMasterSnapshot = nil
     FontMagicDB.combatMasterOffByFontMagic = nil
 
-    local function ResetBoolCVarToDefault(name)
+    local function ResetCVarToDefault(name, commandType)
         if not name then return end
         if not DoesCVarExist(name) then return end
 
         -- Prefer the engine reset (most accurate to this client build)
         if type(C_CVar) == "table" and type(C_CVar.ResetCVar) == "function" then
-            pcall(C_CVar.ResetCVar, name)
-            return
+            local ok = pcall(C_CVar.ResetCVar, name)
+            if ok then return end
         end
 
         -- Fallback: set to reported default
@@ -5151,72 +5611,67 @@ local function ResetCombatOptionsOnly()
             if ok then d = v end
         end
         if d ~= nil then
-            ApplyConsoleSetting(name, 0, d)
+            ApplyConsoleSetting(name, commandType or 0, d)
         end
+    end
+
+    local function ResetBoolCVarToDefault(name)
+        ResetCVarToDefault(name, 0)
     end
 
     -- Reset curated combat text toggles to their real defaults (this client).
     for _, def in ipairs(COMBAT_BOOL_DEFS) do
-        local n, ct = ResolveConsoleSetting(def.candidates)
-        if n and ct == 0 then
-            ResetBoolCVarToDefault(n)
+        for _, target in ipairs(ResolveConsoleSettingTargets(def.candidates)) do
+            if target.name and target.commandType == 0 then
+                ResetBoolCVarToDefault(target.name)
+            end
         end
     end
 
     -- Reset any additional floatingCombatText* boolean CVars we surfaced under Advanced.
     local extras = CollectExtraBoolCombatTextCVars()
     for _, cvar in ipairs(extras) do
-        local n, ct = ResolveConsoleSetting(cvar)
-        if n and ct == 0 then
-            ResetBoolCVarToDefault(n)
+        for _, target in ipairs(ResolveConsoleSettingTargets(cvar)) do
+            if target.name and target.commandType == 0 then
+                ResetBoolCVarToDefault(target.name)
+            end
         end
     end
 
     -- Reset combat text scale (slider) to its real default (if supported on this client).
     do
-        local name, ct = GetCombatTextScaleCVar()
-        if name then
-            if type(C_CVar) == "table" and type(C_CVar.ResetCVar) == "function" and ct == 0 then
-                pcall(C_CVar.ResetCVar, name)
-            else
-                local d
-                if type(C_CVar) == "table" and type(C_CVar.GetCVarDefault) == "function" then
-                    local ok, v = pcall(C_CVar.GetCVarDefault, name)
-                    if ok then d = v end
-                end
-                if d == nil and type(GetCVarDefault) == "function" then
-                    local ok, v = pcall(GetCVarDefault, name)
-                    if ok then d = v end
-                end
-                if d ~= nil then
-                    ApplyConsoleSetting(name, ct, d)
-                end
+        local scaleCandidates = {
+            "WorldTextScale_v2",
+            "WorldTextScale_V2",
+            "WorldTextScale",
+            "floatingCombatTextScale_v2",
+            "floatingCombatTextScale_V2",
+            "floatingCombatTextScale",
+        }
+
+        for _, target in ipairs(ResolveConsoleSettingTargets(scaleCandidates)) do
+            local name, ct = target.name, target.commandType
+            if name and ct == 0 then
+                ResetCVarToDefault(name, ct)
             end
         end
     end
 
     do
         local function ResetNumericCVarToDefault(candidates)
-            local name, ct = ResolveConsoleSetting(candidates)
-            if not name then return nil end
+            local bestName = ResolveCVarName(candidates)
 
-            if type(C_CVar) == "table" and type(C_CVar.ResetCVar) == "function" and ct == 0 then
-                pcall(C_CVar.ResetCVar, name)
-            else
-                local d
-                if type(C_CVar) == "table" and type(C_CVar.GetCVarDefault) == "function" then
-                    local ok, v = pcall(C_CVar.GetCVarDefault, name)
-                    if ok then d = v end
-                end
-                if d == nil and type(GetCVarDefault) == "function" then
-                    local ok, v = pcall(GetCVarDefault, name)
-                    if ok then d = v end
-                end
-                if d ~= nil then
-                    ApplyConsoleSetting(name, ct, d)
+            for _, target in ipairs(ResolveConsoleSettingTargets(candidates)) do
+                local name, ct = target.name, target.commandType
+                if name and ct == 0 then
+                    ResetCVarToDefault(name, ct)
                 end
             end
-            return tonumber(GetCVarString(name))
+
+            if bestName then
+                return tonumber(GetCVarString(bestName))
+            end
+            return nil
         end
 
         local gravityCandidates = { "WorldTextGravity_v2", "WorldTextGravity_V2", "WorldTextGravity", "floatingCombatTextGravity_v2", "floatingCombatTextGravity_V2", "floatingCombatTextGravity" }
@@ -5700,6 +6155,16 @@ eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("CVAR_UPDATE")
 
 eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
+    local fix = _G and _G.FontMagicCombatTextFix
+    if fix and type(fix.InstallExternalCombatFontHooks) == "function" then
+        pcall(fix.InstallExternalCombatFontHooks, fix)
+    end
+
+    if event == "ADDON_LOADED" and fix and type(fix.QueueSavedCombatFontApply) == "function" then
+        pcall(fix.QueueSavedCombatFontApply, fix, 0)
+        pcall(fix.QueueSavedCombatFontApply, fix, 0.05)
+    end
+
     if event == "PLAYER_LOGIN" then
         -- Build console index, register options, then apply only the saved overrides.
         RefreshConsoleCommandIndex()
@@ -5707,12 +6172,18 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
         RegisterOptionsCategory()
         CaptureBlizzardDefaultFonts()
         ApplySavedCombatFont()
+        if fix and type(fix.QueueSavedCombatFontApplyBurst) == "function" then
+            pcall(fix.QueueSavedCombatFontApplyBurst, fix)
+        end
+        if fix and type(fix.StartStartupCombatFontWatcher) == "function" then
+            pcall(fix.StartStartupCombatFontWatcher, fix, 10)
+        end
         if type(C_Timer) == "table" and type(C_Timer.After) == "function" then
             C_Timer.After(0.5, ApplySavedCombatFont)
             C_Timer.After(2.0, ApplySavedCombatFont)
         end
-        if _G and _G.FontMagicCombatTextFix and type(_G.FontMagicCombatTextFix.EnsureCombatTextPatches) == "function" then
-            pcall(_G.FontMagicCombatTextFix.EnsureCombatTextPatches, _G.FontMagicCombatTextFix)
+        if fix and type(fix.EnsureCombatTextPatches) == "function" then
+            pcall(fix.EnsureCombatTextPatches, fix)
         end
         ApplyAllSavedOverrides()
         RefreshCombatTextCVars()
@@ -5738,13 +6209,17 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
         end)
 
     elseif event == "PLAYER_ENTERING_WORLD" then
-        if arg1 or arg2 then
-            CaptureBlizzardDefaultFonts()
-            ApplySavedCombatFont()
-            if type(C_Timer) == "table" and type(C_Timer.After) == "function" then
-                C_Timer.After(0.5, ApplySavedCombatFont)
-                C_Timer.After(2.0, ApplySavedCombatFont)
-            end
+        CaptureBlizzardDefaultFonts()
+        ApplySavedCombatFont()
+        if fix and type(fix.QueueSavedCombatFontApplyBurst) == "function" then
+            pcall(fix.QueueSavedCombatFontApplyBurst, fix)
+        end
+        if fix and type(fix.StartStartupCombatFontWatcher) == "function" then
+            pcall(fix.StartStartupCombatFontWatcher, fix, 8)
+        end
+        if type(C_Timer) == "table" and type(C_Timer.After) == "function" then
+            C_Timer.After(0.5, ApplySavedCombatFont)
+            C_Timer.After(2.0, ApplySavedCombatFont)
         end
 
     elseif event == "ADDON_LOADED" then
@@ -5755,8 +6230,14 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
             MigrateSavedFontKeys()
             CaptureBlizzardDefaultFonts()
             ApplySavedCombatFont()
-            if _G and _G.FontMagicCombatTextFix and type(_G.FontMagicCombatTextFix.EnsureCombatTextPatches) == "function" then
-                pcall(_G.FontMagicCombatTextFix.EnsureCombatTextPatches, _G.FontMagicCombatTextFix)
+            if fix and type(fix.QueueSavedCombatFontApplyBurst) == "function" then
+                pcall(fix.QueueSavedCombatFontApplyBurst, fix)
+            end
+            if fix and type(fix.StartStartupCombatFontWatcher) == "function" then
+                pcall(fix.StartStartupCombatFontWatcher, fix, 8)
+            end
+            if fix and type(fix.EnsureCombatTextPatches) == "function" then
+                pcall(fix.EnsureCombatTextPatches, fix)
             end
             ApplyFloatingTextMotionSettings()
 
@@ -5778,8 +6259,11 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
                 C_Timer.After(0.5, ApplySavedCombatFont)
                 C_Timer.After(2.0, ApplySavedCombatFont)
             end
-            if _G and _G.FontMagicCombatTextFix and type(_G.FontMagicCombatTextFix.EnsureCombatTextPatches) == "function" then
-                pcall(_G.FontMagicCombatTextFix.EnsureCombatTextPatches, _G.FontMagicCombatTextFix)
+            if fix and type(fix.QueueSavedCombatFontApplyBurst) == "function" then
+                pcall(fix.QueueSavedCombatFontApplyBurst, fix)
+            end
+            if fix and type(fix.EnsureCombatTextPatches) == "function" then
+                pcall(fix.EnsureCombatTextPatches, fix)
             end
             ApplyIncomingOverrides()
             ApplyFloatingTextMotionSettings()

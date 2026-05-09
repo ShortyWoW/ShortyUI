@@ -1,15 +1,7 @@
 
 BugGrabberDB = {
+["session"] = 1,
 ["lastSanitation"] = 3,
-["session"] = 1,
 ["errors"] = {
-{
-["message"] = "...e/AddOns/Blizzard_MoneyFrame/Mainline/MoneyFrame.lua:307: attempt to perform arithmetic on a secret number value (execution tainted by 'WarpDeplete')",
-["time"] = 1778211177,
-["locals"] = "frameName=\"GameTooltipMoneyFrame1\"\nmoney=10224215\nforceShow=nil\nframe=GameTooltipMoneyFrame1 <MoneyFrame.lua:622>{\n GoldButton=GameTooltipMoneyFrame1GoldButton <MoneyFrame.xml:143>\n PrefixText=GameTooltipMoneyFrame1PrefixText <MoneyFrame.xml:215>\n small=1\n moneyIconsDirty=false\n trialErrorButton=GameTooltipMoneyFrame1TrialErrorButton <MoneyFrame.xml:85>\n CopperButton=GameTooltipMoneyFrame1CopperButton <MoneyFrame.xml:105>\n moneyType=\"STATIC\"\n staticMoney=10224215\n lastArgMoney=10224215\n vadjust=0\n info=<table>\n SuffixText=GameTooltipMoneyFrame1SuffixText <MoneyFrame.xml:220>\n SilverButton=GameTooltipMoneyFrame1SilverButton <MoneyFrame.xml:124>\n}\ninfo=<table>{\n collapse=1\n}\ngold=1022\ngoldDisplay=\"1,022\"\nsilver=42\ncopper=15\ngoldButton=GameTooltipMoneyFrame1GoldButton <MoneyFrame.xml:143>{\n Text=GameTooltipMoneyFrame1GoldButtonText <MoneyFrame.xml:154>\n}\nsilverButton=GameTooltipMoneyFrame1SilverButton <MoneyFrame.xml:124>{\n Text=GameTooltipMoneyFrame1SilverButtonText <MoneyFrame.xml:135>\n}\ncopperButton=GameTooltipMoneyFrame1CopperButton <MoneyFrame.xml:105>{\n NormalTexture=Texture <MoneyFrame.xml:110>\n Text=GameTooltipMoneyFrame1CopperButtonText <MoneyFrame.xml:116>\n}\niconWidth=13\nspacing=-4\nmaxDisplayWidth=nil\nisColorBlindModeDesired=false\nwidth=13\nshowLowerDenominations=nil\ntruncateCopper=nil\n(*temporary)=<no value>\n(*temporary)=GameTooltipMoneyFrame1GoldButton <MoneyFrame.xml:143>{\n Text=GameTooltipMoneyFrame1GoldButtonText <MoneyFrame.xml:154>\n}\n(*temporary)=<no value>\n(*temporary)=0\n(*temporary)=Texture <MoneyFrame.xml:110>\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=\"attempt to perform arithmetic on a secret number value (execution tainted by 'WarpDeplete')\"\nCOPPER_PER_SILVER=100\nSILVER_PER_GOLD=100\n",
-["stack"] = "[Interface/AddOns/Blizzard_MoneyFrame/Mainline/MoneyFrame.lua]:307: in function 'MoneyFrame_Update'\n[Interface/AddOns/Blizzard_MoneyFrame/Shared/MoneyFrame.lua]:652: in function 'SetTooltipMoney'\n[Interface/AddOns/Blizzard_FrameXMLUtil/Mainline/QuestUtils.lua]:809: in function 'QuestUtils_AddQuestRewardsToTooltip'\n[Interface/AddOns/Blizzard_GameTooltip/Mainline/GameTooltip.lua]:209: in function <...AddOns/Blizzard_GameTooltip/Mainline/GameTooltip.lua:193>\n[C]: in function 'GameTooltip_AddQuestRewardsToTooltip'\n[Interface/AddOns/Blizzard_GameTooltip/Mainline/GameTooltip.lua]:727: in function 'GameTooltip_AddQuest'\n[Interface/AddOns/Blizzard_UIPanels_Game/Mainline/WorldMapFrame.lua]:176: in function <...ns/Blizzard_UIPanels_Game/Mainline/WorldMapFrame.lua:159>\n[C]: ?\n[C]: in function 'TaskPOI_OnEnter'\n[Interface/AddOns/Blizzard_SharedMapDataProviders/WorldQuestDataProvider.lua]:421: in function <...rd_SharedMapDataProviders/WorldQuestDataProvider.lua:420>\n",
-["session"] = 1,
-["counter"] = 1,
-},
 },
 }

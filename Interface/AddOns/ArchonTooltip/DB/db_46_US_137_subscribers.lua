@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown',}
-local provider = {region='US',realm='Korialstrasz',name='US',type='subscribers',zone=46,date='2026-05-01',data={Co='Cosmicjay:BAEALgAECgYJDgAAAA==.Cosmicnova:BAEALgAECgYJBgABLgAECgYJDgABAAAAAA==.',Ez='Eztradez:BAEALgADCgcJCwABLgAECgcJDAABAAAAAA==.',Ma='Mannafest:BAEALgADCgYJBgAAAA==.',Sm='Smuurfette:BAEALgAECgcJDAAAAA==.',Sp='Spriest:BAEALgAECgUJCAABLgAECgcJDAABAAAAAA==.',},}
+local lookup = {'Shaman-Elemental','Unknown-Unknown',}
+local provider = {region='US',realm='Korialstrasz',name='US',type='subscribers',zone=46,date='2026-05-08',data={Co='Cosmicjay:BAEBLgAECn8WAAIBAAgJQR+CBgB9AghoDAAABABcAGkMAAAEAFIAawwAAAQATABqDAAAAwBRAGwMAAACAFQAbQwAAAEAUgDqDAAAAwBBAG4MAAABAEwAAQAICUEfggYAfQIIaAwAAAQAXABpDAAABABSAGsMAAAEAEwAagwAAAMAUQBsDAAAAgBUAG0MAAABAFIA6gwAAAMAQQBuDAAAAQBMAAAA.Cosmicnova:BAEALgAECgYJDAABLgAECggJFgABAEEfAA==.',Ez='Eztradez:BAEALgADCgcJCwABLgAECgcJDQACAAAAAA==.',Ma='Mannafest:BAEALgADCgYJBgAAAA==.',Sm='Smuurfette:BAEALgAECgcJDQAAAA==.',Sp='Spriest:BAEALgAECgUJCAABLgAECgcJDQACAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Hunter-Marksmanship','Hunter-Survival','Mage-Frost',}
-local provider = {region='US',realm='Dunemaul',name='US',type='subscribers',zone=46,date='2026-05-01',data={Rh='Rhordric:BAEBLgAECn8XAAMBAAgJ/RcmHgAyAghoDAAABABOAGkMAAAEADoAawwAAAMAUwBqDAAAAwAyAGwMAAACADQAbQwAAAIAKQDqDAAABAA3AG4MAAABADwAAQAICRIWJh4AMgIIaAwAAAMATgBpDAAAAwA6AGsMAAACAFMAagwAAAIAMgBsDAAAAQAyAG0MAAABAAgA6gwAAAMANwBuDAAAAQA8AAIABwnvDPUOAG8BB2gMAAABABcAaQwAAAEACABrDAAAAQAwAGoMAAABABEAbAwAAAEANABtDAAAAQApAOoMAAABABgAAAA=.',Tr='Triplenine:BAEALgAECgIJAgABLgAFFAYJEwADAKIgAA==.',},}
+local lookup = {'Hunter-Marksmanship','Hunter-Survival',}
+local provider = {region='US',realm='Dunemaul',name='US',type='subscribers',zone=46,date='2026-05-08',data={Rh='Rhordric:BAEBLgAECn8dAAMBAAgJCBn4HQA3AghoDAAABQBOAGkMAAAFAD4AawwAAAQAUwBqDAAABAA1AGwMAAADADQAbQwAAAMAOADqDAAABAA3AG4MAAABADwAAQAICRIW+B0ANwIIaAwAAAMATgBpDAAAAwA6AGsMAAACAFMAagwAAAIAMgBsDAAAAQAyAG0MAAABAAgA6gwAAAMANwBuDAAAAQA8AAIABwmCFEYQAKYBB2gMAAACADEAaQwAAAIAPgBrDAAAAgBFAGoMAAACADUAbAwAAAIANABtDAAAAgA4AOoMAAABABgAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

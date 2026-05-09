@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Unholy','Paladin-Holy',}
-local provider = {region='US',realm='Thunderhorn',name='US',type='subscribers',zone=46,date='2026-05-01',data={Fo='Foe:BAEALgAECggJEwAAAA==.',Ra='Raerlynn:BAEALgADCgMJAwAAAA==.',Sa='Saloriavis:BAEBLgAECn8dAAIBAAcJ3htyGQDwAQdoDAAABgBSAGkMAAAFAF4AawwAAAUAOwBqDAAABABKAGwMAAADADMA6gwAAAUAQABuDAAAAQBMAAEABwneG3IZAPABB2gMAAAGAFIAaQwAAAUAXgBrDAAABQA7AGoMAAAEAEoAbAwAAAMAMwDqDAAABQBAAG4MAAABAEwAAAA=.',Sg='Sgathaich:BAEBLgAECn8eAAICAAgJ3hZkJQD7AQhoDAAABgBCAGkMAAADAC4AawwAAAMAPQBqDAAABABNAGwMAAAEADcAbQwAAAMANgDqDAAABQBOAG4MAAACABsAAgAICd4WZCUA+wEIaAwAAAYAQgBpDAAAAwAuAGsMAAADAD0AagwAAAQATQBsDAAABAA3AG0MAAADADYA6gwAAAUATgBuDAAAAgAbAAAA.',St='Streakycat:BAEALgAECgEJAQAAAA==.',},}
+local lookup = {'Paladin-Holy',}
+local provider = {region='US',realm='Thunderhorn',name='US',type='subscribers',zone=46,date='2026-05-08',data={Fo='Foe:BAEALgAECggJEwAAAA==.',Ra='Raerlynn:BAEALgADCgMJAwAAAA==.',Sg='Sgathaich:BAEBLgAECn8iAAIBAAgJchctFwDUAQhoDAAABgBCAGkMAAAEADQAawwAAAQAPQBqDAAABABNAGwMAAAFADcAbQwAAAMANgDqDAAABQBOAG4MAAADACEAAQAICXIXLRcA1AEIaAwAAAYAQgBpDAAABAA0AGsMAAAEAD0AagwAAAQATQBsDAAABQA3AG0MAAADADYA6gwAAAUATgBuDAAAAwAhAAAA.',St='Streakycat:BAEALgAECgEJAQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

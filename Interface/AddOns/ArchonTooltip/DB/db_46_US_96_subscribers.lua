@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Hunter-Survival','Hunter-Marksmanship','Hunter-BeastMastery',}
-local provider = {region='US',realm='Firetree',name='US',type='subscribers',zone=46,date='2026-05-01',data={Pe='Percival:BAECLgAFFH8XAAIBAAYJHh81AAABAgZoDAAABgBgAGkMAAAFAGIAawwAAAQATABqDAAAAwBgAGwMAAACAB0A6gwAAAMAYAABAAYJHh81AAABAgZoDAAABgBgAGkMAAAFAGIAawwAAAQATABqDAAAAwBgAGwMAAACAB0A6gwAAAMAYAAuAAQKfyAABAEACQlcI0EAAMQDAAEACQlcI0EAAMQDAAIABQnNHN1MAB0BAAMAAwmVI/adAJQAAAAA.',},}
+local lookup = {'Rogue-Subtlety','Hunter-Survival','Hunter-Marksmanship','Hunter-BeastMastery',}
+local provider = {region='US',realm='Firetree',name='US',type='subscribers',zone=46,date='2026-05-08',data={De='Deleerious:BAEALgAECgQJBAABLgAFFAUJEQABAMwlAA==.',Pe='Percival:BAECLgAFFH8ZAAICAAcJ6xovAABOAgdoDAAABgBgAGkMAAAFAGIAawwAAAQATABqDAAAAwBgAGwMAAACAB0AbQwAAAEADgDqDAAABABhAAIABwnrGi8AAE4CB2gMAAAGAGAAaQwAAAUAYgBrDAAABABMAGoMAAADAGAAbAwAAAIAHQBtDAAAAQAOAOoMAAAEAGEALgAECn8gAAQCAAkJXCNAAADEAwACAAkJXCNAAADEAwADAAUJzRz2TAAdAQAEAAMJlSPxnQCUAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

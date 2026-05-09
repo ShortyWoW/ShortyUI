@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DemonHunter-Devourer','DemonHunter-Vengeance',}
-local provider = {region='US',realm='Bloodscalp',name='US',type='subscribers',zone=46,date='2026-05-01',data={Cr='Crash:BAECLgAFFH8FAAIBAAMJ8xa+IgC5AANoDAAAAwBTAGkMAAABACgA6gwAAAEAMwABAAMJ8xa+IgC5AANoDAAAAwBTAGkMAAABACgA6gwAAAEAMwAuAAQKfyUAAwEACAm8I9cVANMCAAEACAm8I9cVANMCAAIAAQkfGVwVAEsAAAAA.',Fi='Fireg:BAEALgADCgEJAQAAAA==.',},}
+local lookup = {'DemonHunter-Devourer','DemonHunter-Vengeance','Mage-Frost',}
+local provider = {region='US',realm='Bloodscalp',name='US',type='subscribers',zone=46,date='2026-05-08',data={Cr='Crash:BAECLgAFFH8IAAIBAAQJmxnJGABGAQRoDAAAAwBTAGkMAAACADEAawwAAAEATADqDAAAAgAzAAEABAmbGckYAEYBBGgMAAADAFMAaQwAAAIAMQBrDAAAAQBMAOoMAAACADMALgAECn8rAAMBAAgJ8SNuBgDDAgABAAgJ8SNuBgDDAgACAAEJHxlWGwBJAAAAAA==.',Fi='Fireg:BAEALgADCgEJAQABLgAFFAQJBQADADYLAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

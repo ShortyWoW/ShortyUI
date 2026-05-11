@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warrior-Protection',}
-local provider = {region='US',realm='Dentarg',name='US',type='subscribers',zone=46,date='2026-05-08',data={Ag='Aggathon:BAEBLgAECn8bAAIBAAgJ/wsjEgBCAQhoDAAABQA2AGkMAAAEACoAawwAAAQAHwBqDAAABAAlAGwMAAADACEAbQwAAAIADgDqDAAABAAfAG4MAAABAAYAAQAICf8LIxIAQgEIaAwAAAUANgBpDAAABAAqAGsMAAAEAB8AagwAAAQAJQBsDAAAAwAhAG0MAAACAA4A6gwAAAQAHwBuDAAAAQAGAAAA.',Gr='Griever:BAEALgAECgUJDAAAAA==.',},}
+local lookup = {'Warrior-Protection','Unknown-Unknown',}
+local provider = {region='US',realm='Dentarg',name='US',type='subscribers',zone=46,date='2026-05-10',data={Ag='Aggathon:BAEBLgAECn8bAAIBAAgJBAxkEwA4AQhoDAAABQA2AGkMAAAEACoAawwAAAQAHwBqDAAABAAlAGwMAAADACEAbQwAAAIADgDqDAAABAAgAG4MAAABAAYAAQAICQQMZBMAOAEIaAwAAAUANgBpDAAABAAqAGsMAAAEAB8AagwAAAQAJQBsDAAAAwAhAG0MAAACAA4A6gwAAAQAIABuDAAAAQAGAAAA.',Gr='Griever:BAEALgAECgUJDAAAAA==.',Sp='Splashmountn:BAEALgAECgEJAQABLgAECgYJCgACAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -23,6 +23,6 @@
 
 ## Dependencies: BigWigs
 ## LoadOnDemand: 1
-## Version: v12.0.44
+## Version: v12.0.45
 
 ## X-BigWigs-Minimum: 412

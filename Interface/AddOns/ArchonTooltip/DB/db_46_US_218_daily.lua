@@ -1,0 +1,382 @@
+local V2_TAG_NUMBER = 4
+
+---@param v2Rankings ProviderProfileV2Rankings
+---@return ProviderProfileSpec
+local function convertRankingsToV1Format(v2Rankings, difficultyId, sizeId)
+	---@type ProviderProfileSpec
+	local v1Rankings = {}
+	v1Rankings.progress = v2Rankings.progressKilled
+	v1Rankings.total = v2Rankings.progressPossible
+	v1Rankings.average = v2Rankings.bestAverage
+	v1Rankings.spec = v2Rankings.spec
+	v1Rankings.asp = v2Rankings.allStarPoints
+	v1Rankings.rank = v2Rankings.allStarRank
+	v1Rankings.difficulty = difficultyId
+	v1Rankings.size = sizeId
+
+	v1Rankings.encounters = {}
+	for id, encounter in pairs(v2Rankings.encountersById) do
+		v1Rankings.encounters[id] = {
+			kills = encounter.kills,
+			best = encounter.best,
+		}
+	end
+
+	return v1Rankings
+end
+
+---Convert a v2 profile to a v1 profile
+---@param v2 ProviderProfileV2
+---@return ProviderProfile
+local function convertToV1Format(v2)
+	---@type ProviderProfile
+	local v1 = {}
+	v1.subscriber = v2.isSubscriber
+	v1.perSpec = {}
+
+	if v2.summary ~= nil then
+		v1.progress = v2.summary.progressKilled
+		v1.total = v2.summary.progressPossible
+		v1.totalKillCount = v2.summary.totalKills
+		v1.difficulty = v2.summary.difficultyId
+		v1.size = v2.summary.sizeId
+	else
+		local bestSection = v2.sections[1]
+		v1.progress = bestSection.anySpecRankings.progressKilled
+		v1.total = bestSection.anySpecRankings.progressPossible
+		v1.average = bestSection.anySpecRankings.bestAverage
+		v1.totalKillCount = bestSection.totalKills
+		v1.difficulty = bestSection.difficultyId
+		v1.size = bestSection.sizeId
+		v1.anySpec = convertRankingsToV1Format(bestSection.anySpecRankings, bestSection.difficultyId, bestSection.sizeId)
+		for i, rankings in pairs(bestSection.perSpecRankings) do
+			v1.perSpec[i] = convertRankingsToV1Format(rankings, bestSection.difficultyId, bestSection.sizeId)
+		end
+		v1.encounters = v1.anySpec.encounters
+	end
+
+	if v2.mainCharacter ~= nil then
+		v1.mainCharacter = {}
+		v1.mainCharacter.spec = v2.mainCharacter.spec
+		v1.mainCharacter.average = v2.mainCharacter.bestAverage
+		v1.mainCharacter.difficulty = v2.mainCharacter.difficultyId
+		v1.mainCharacter.size = v2.mainCharacter.sizeId
+		v1.mainCharacter.progress = v2.mainCharacter.progressKilled
+		v1.mainCharacter.total = v2.mainCharacter.progressPossible
+		v1.mainCharacter.totalKillCount = v2.mainCharacter.totalKills
+	end
+
+	return v1
+end
+
+---Parse a single set of rankings from `state`
+---@param decoder BitDecoder
+---@param state ParseState
+---@param lookup table<number, string>
+---@return ProviderProfileV2Rankings
+local function parseRankings(decoder, state, lookup)
+	---@type ProviderProfileV2Rankings
+	local result = {}
+	result.spec = decoder.decodeString(state, lookup)
+	result.progressKilled = decoder.decodeInteger(state, 1)
+	result.progressPossible = decoder.decodeInteger(state, 1)
+	result.bestAverage = decoder.decodePercentileFixed(state)
+	result.allStarRank = decoder.decodeInteger(state, 3)
+	result.allStarPoints = decoder.decodeInteger(state, 2)
+
+	local encounterCount = decoder.decodeInteger(state, 1)
+	result.encountersById = {}
+	for i = 1, encounterCount do
+		local id = decoder.decodeInteger(state, 4)
+		local kills = decoder.decodeInteger(state, 2)
+		local best = decoder.decodeInteger(state, 1)
+		local isHidden = decoder.decodeBoolean(state)
+
+		result.encountersById[id] = { kills = kills, best = best, isHidden = isHidden }
+	end
+
+	return result
+end
+
+---Parse a binary-encoded data string into a provider profile
+---@param decoder BitDecoder
+---@param content string
+---@param lookup table<number, string>
+---@param formatVersion number
+---@return ProviderProfile|ProviderProfileV2|nil
+local function parse(decoder, content, lookup, formatVersion) -- luacheck: ignore 211
+	-- For backwards compatibility. The existing addon will leave this as nil
+	-- so we know to use the old format. The new addon will specify this as 2.
+	formatVersion = formatVersion or 1
+	if formatVersion > 2 then
+		return nil
+	end
+
+	---@type ParseState
+	local state = { content = content, position = 1 }
+
+	local tag = decoder.decodeInteger(state, 1)
+	if tag ~= V2_TAG_NUMBER then
+		return nil
+	end
+
+	---@type ProviderProfileV2
+	local result = {}
+	result.isSubscriber = decoder.decodeBoolean(state)
+	result.summary = nil
+	result.sections = {}
+	result.progressOnly = false
+	result.mainCharacter = nil
+
+	local sectionsCount = decoder.decodeInteger(state, 1)
+	if sectionsCount == 0 then
+		---@type ProviderProfileV2Summary
+		local summary = {}
+		summary.zoneId = decoder.decodeInteger(state, 2)
+		summary.difficultyId = decoder.decodeInteger(state, 1)
+		summary.sizeId = decoder.decodeInteger(state, 1)
+		summary.progressKilled = decoder.decodeInteger(state, 1)
+		summary.progressPossible = decoder.decodeInteger(state, 1)
+		summary.totalKills = decoder.decodeInteger(state, 2)
+
+		result.summary = summary
+	else
+		for i = 1, sectionsCount do
+			---@type ProviderProfileV2Section
+			local section = {}
+			section.zoneId = decoder.decodeInteger(state, 2)
+			section.difficultyId = decoder.decodeInteger(state, 1)
+			section.sizeId = decoder.decodeInteger(state, 1)
+			section.partitionId = decoder.decodeInteger(state, 1) - 128
+			section.totalKills = decoder.decodeInteger(state, 2)
+
+			local specCount = decoder.decodeInteger(state, 1)
+			section.anySpecRankings = parseRankings(decoder, state, lookup)
+
+			section.perSpecRankings = {}
+			for j = 1, specCount - 1 do
+				local specRankings = parseRankings(decoder, state, lookup)
+				table.insert(section.perSpecRankings, specRankings)
+			end
+
+			table.insert(result.sections, section)
+		end
+	end
+
+	local hasMainCharacter = decoder.decodeBoolean(state)
+	if hasMainCharacter then
+		---@type ProviderProfileV2MainCharacter
+		local mainCharacter = {}
+		mainCharacter.zoneId = decoder.decodeInteger(state, 2)
+		mainCharacter.difficultyId = decoder.decodeInteger(state, 1)
+		mainCharacter.sizeId = decoder.decodeInteger(state, 1)
+		mainCharacter.progressKilled = decoder.decodeInteger(state, 1)
+		mainCharacter.progressPossible = decoder.decodeInteger(state, 1)
+		mainCharacter.totalKills = decoder.decodeInteger(state, 2)
+		mainCharacter.spec = decoder.decodeString(state, lookup)
+		mainCharacter.bestAverage = decoder.decodePercentileFixed(state)
+
+		result.mainCharacter = mainCharacter
+	end
+
+	local progressOnly = decoder.decodeBoolean(state)
+	result.progressOnly = progressOnly
+
+	if formatVersion == 1 then
+		return convertToV1Format(result)
+	end
+
+	return result
+end
+--- the utf8 global is not available, so we polyfill utf8.offset so we can correctly find prefixes of utf8 strings
+---@param str string
+---@param index number
+---@return number|nil
+local function Utf8Offset(str, index)
+	local len = #str
+
+	if index <= 0 or index > len then
+		return nil -- Out of bounds
+	end
+
+	-- Move forward to the nth character
+	local count = 0
+	for i = 1, len do
+		local byte = string.byte(str, i)
+		local isContinuationByte = byte >= 128 and byte < 192
+		if not isContinuationByte then
+			count = count + 1
+			if count == index then
+				return i
+			end
+		end
+	end
+
+	return nil -- If the nth character is not found
+end
+
+---@param table table<string, string> raw data table with character name prefixes as keys
+---@param length number the number of complete characters to include in the prefix
+---@return fun(characterName: string):string|nil getChunk function to retrieve a character chunk by prefix using a complete character name
+local function getChunkLookup(table, length)
+	return function(characterName)
+		local startOfNextCharacter = Utf8Offset(characterName, length + 1)
+
+		local prefix
+		if startOfNextCharacter == nil then
+			prefix = characterName
+		else
+			prefix = string.sub(characterName, 1, startOfNextCharacter - 1)
+		end
+
+		return table[prefix]
+	end
+end
+
+local lookup = {'Hunter-Marksmanship','Unknown-Unknown','DeathKnight-Frost','Monk-Mistweaver','Priest-Holy','Paladin-Holy','Druid-Restoration','Druid-Balance','DemonHunter-Devourer','Warrior-Protection','Paladin-Retribution','Priest-Shadow','Warlock-Demonology','Hunter-Survival','Warlock-Destruction','Shaman-Elemental','Mage-Frost','Shaman-Restoration','DeathKnight-Unholy','DeathKnight-Blood','Priest-Discipline','Warrior-Arms','Warrior-Fury','Evoker-Preservation','Hunter-BeastMastery','Rogue-Assassination','Evoker-Augmentation','DemonHunter-Vengeance','Monk-Brewmaster','Rogue-Outlaw','Monk-Windwalker',}
+local provider = {region='US',realm='ThoriumBrotherhood',name='US',type='daily',zone=46,date='2026-05-10',data={Ab='Absolver:BAAALgADCgYJCwAAAA==.',
+Ad='Addu:BAAALgADCgYJBgAAAA==.',
+Ae='Aeralina:BAABLgAECn8VAAIBAAgJmwkCCwBJAQhoDAAAAwAVAGkMAAADABwAawwAAAMAOQBqDAAAAwAbAGwMAAADAAkAbQwAAAIAEwDqDAAAAwAeAG4MAAABAAUAAQAICZsJAgsASQEIaAwAAAMAFQBpDAAAAwAcAGsMAAADADkAagwAAAMAGwBsDAAAAwAJAG0MAAACABMA6gwAAAMAHgBuDAAAAQAFAAAA.Aerandir:BAAALgAECgYJDwABLgAFFAEJAQACAAAAAA==.Aerwyn:BAAALgAECgYJBgAAAA==.',
+Ah='Ahmyra:BAAALgAECgYJDAAAAA==.',
+Al='Alessar:BAAALgAECgYJDAAAAA==.Allysson:BAABLgAECn8cAAIDAAcJiw83CAAwAQdoDAAABgA2AGkMAAAFADUAawwAAAUANQBqDAAABAAaAGwMAAADABsAbQwAAAEAEADqDAAABAAhAAMABwmLDzcIADABB2gMAAAGADYAaQwAAAUANQBrDAAABQA1AGoMAAAEABoAbAwAAAMAGwBtDAAAAQAQAOoMAAAEACEAAAA=.Alyestra:BAAALgAECgUJCwAAAA==.',
+An='Animyst:BAACLgAFFH8FAAIEAAMJ+R0EEwANAQNoDAAAAgBHAGkMAAACAD8A6gwAAAEAXwAEAAMJ+R0EEwANAQNoDAAAAgBHAGkMAAACAD8A6gwAAAEAXwAuAAQKfzYAAgQACAkGIz4EAOsCAAQACAkGIz4EAOsCAAEuAAQKCAkqAAUAhyIA.Anipaltu:BAABLgAECn8WAAIGAAYJzR2SFQDuAQZoDAAABABaAGkMAAAEAFoAawwAAAQALwBqDAAABABIAGwMAAADAEMA6gwAAAMAWQAGAAYJzR2SFQDuAQZoDAAABABaAGkMAAAEAFoAawwAAAQALwBqDAAABABIAGwMAAADAEMA6gwAAAMAWQABLgAECggJKgAFAIciAA==.Aniron:BAAALgAECgYJDgABLgAECggJKgAFAIciAA==.Anirot:BAABLgAECn8qAAIFAAgJhyJsAwD4AghoDAAABwBjAGkMAAAHAGAAawwAAAcAWwBqDAAABgBiAGwMAAAEAF0AbQwAAAQAUQDqDAAABABVAG4MAAADAD4ABQAICYcibAMA+AIIaAwAAAcAYwBpDAAABwBgAGsMAAAHAFsAagwAAAYAYgBsDAAABABdAG0MAAAEAFEA6gwAAAQAVQBuDAAAAwA+AAAA.',
+Ap='Aphirym:BAAALgAECgEJAQAAAA==.',
+Ar='Aranta:BAABLgAECn8UAAMHAAYJRws/SwDyAAZoDAAABAAdAGkMAAAEABoAawwAAAQAFgBqDAAAAwAeAGwMAAACACcA6gwAAAMAGAAHAAYJRws/SwDyAAZoDAAAAwAdAGkMAAADABoAawwAAAMAFgBqDAAAAgAeAGwMAAABACcA6gwAAAIAGAAIAAYJ9AkxLgDoAAZoDAAAAQAiAGkMAAABACYAawwAAAEAHwBqDAAAAQAvAGwMAAABABAA6gwAAAEABgAAAA==.',
+As='Astren:BAAALgAECgEJAQAAAA==.Asynsia:BAABLgAECn8eAAIJAAgJhSC6EAD4AghoDAAABQBhAGkMAAAFAGAAawwAAAUAWABqDAAABABeAGwMAAADAFcAbQwAAAIAUADqDAAABABdAG4MAAACACYACQAICYUguhAA+AIIaAwAAAUAYQBpDAAABQBgAGsMAAAFAFgAagwAAAQAXgBsDAAAAwBXAG0MAAACAFAA6gwAAAQAXQBuDAAAAgAmAAAA.',
+Av='Avamani:BAAALgADCgkJCQAAAA==.',
+Ba='Balrogg:BAAALgADCgcJBwAAAA==.Banashain:BAAALgADCgEJAgAAAA==.Bartholomew:BAABLgAECn8gAAIEAAkJvhsoBQDOAgloDAAABQBIAGkMAAAFAEoAawwAAAUAPgBqDAAABABMAGwMAAADAFoAbQwAAAIANwDqDAAABABKAG4MAAADAEcAbwwAAAEAPQAEAAkJvhsoBQDOAgloDAAABQBIAGkMAAAFAEoAawwAAAUAPgBqDAAABABMAGwMAAADAFoAbQwAAAIANwDqDAAABABKAG4MAAADAEcAbwwAAAEAPQAAAA==.Bartno:BAAALgAECgIJAQAAAA==.',
+Be='Beefed:BAAALgADCgIJAgAAAA==.Bessie:BAAALgADCgIJAgAAAA==.',
+Bi='Bienfaiseur:BAABLgAECn8eAAIFAAgJASQcAgA0AwhoDAAABgBjAGkMAAAFAGAAawwAAAUAXwBqDAAABABiAGwMAAAEAGIAbQwAAAEAVADqDAAABABgAG4MAAABAEIABQAICQEkHAIANAMIaAwAAAYAYwBpDAAABQBgAGsMAAAFAF8AagwAAAQAYgBsDAAABABiAG0MAAABAFQA6gwAAAQAYABuDAAAAQBCAAAA.',
+Bl='Bladez:BAAALgAECgEJAQAAAA==.',
+Bo='Boombawks:BAAALgADCgUJBQABLgADCgYJAgACAAAAAA==.Boryndin:BAABLgAECn8VAAIKAAgJFBdLCwC9AQhoDAAABABHAGkMAAADAFAAawwAAAMANABqDAAAAgBAAGwMAAACADEAbQwAAAEAOgDqDAAABQBQAG4MAAABABUACgAICRQXSwsAvQEIaAwAAAQARwBpDAAAAwBQAGsMAAADADQAagwAAAIAQABsDAAAAgAxAG0MAAABADoA6gwAAAUAUABuDAAAAQAVAAAA.',
+Br='Brad:BAAALgADCgIJAgAAAA==.Breadburn:BAAALgADCggJCAAAAA==.Breezybb:BAABLgAECn8zAAILAAkJfRcqOgA6AgloDAAACABEAGkMAAAHAFQAawwAAAcATgBqDAAABAAnAGwMAAAGAEgAbQwAAAUAKADqDAAACAA3AG4MAAAEAB8AbwwAAAIAMQALAAkJfRcqOgA6AgloDAAACABEAGkMAAAHAFQAawwAAAcATgBqDAAABAAnAGwMAAAGAEgAbQwAAAUAKADqDAAACAA3AG4MAAAEAB8AbwwAAAIAMQAAAA==.',
+Ca='Camhawk:BAAALgADCgkJCQAAAA==.Catastrophe:BAAALgAECgEJAQAAAA==.',
+Ce='Cearylin:BAAALgADCgcJEwAAAA==.Cering:BAAALgAECgYJBgAAAA==.',
+Ch='Cherypoptart:BAABLgAECn8WAAIMAAcJKyKsBwBfAgdoDAAABQBgAGkMAAAEAGAAawwAAAQAWwBqDAAAAwBiAGwMAAACAFcAbQwAAAEAPADqDAAAAwBdAAwABwkrIqwHAF8CB2gMAAAFAGAAaQwAAAQAYABrDAAABABbAGoMAAADAGIAbAwAAAIAVwBtDAAAAQA8AOoMAAADAF0AAAA=.Chrismeister:BAAALgAECgMJBgAAAA==.',
+Co='Codah:BAAALgAECgEJAgAAAA==.Corbenik:BAAALgAECgIJAgABLgAECgcJGAANAPEHAA==.',
+Cr='Creel:BAAALgADCgYJBgAAAA==.Crettephal:BAEALgAECgIJAwAAAA==.',
+['Cä']='Cähira:BAAALgADCgUJBQABLgADCgYJCQACAAAAAA==.',
+Da='Daellan:BAAALgAECgMJBAAAAA==.Dainaira:BAAALgAECgYJCwAAAA==.Daisia:BAABLgAECn8WAAIOAAYJGQeMIQD/AAZoDAAABQAgAGkMAAAFABMAawwAAAUAEABqDAAAAwAbAGwMAAACAAgA6gwAAAIADgAOAAYJGQeMIQD/AAZoDAAABQAgAGkMAAAFABMAawwAAAUAEABqDAAAAwAbAGwMAAACAAgA6gwAAAIADgAAAA==.Dalarrong:BAAALgAECgIJAgAAAA==.Dasteaire:BAAALgAECgMJBgAAAA==.',
+De='Deathdealler:BAAALgAECgEJAQAAAA==.Demonicadhd:BAAALgAECgYJEwAAAA==.Demonsmind:BAABLgAECn8VAAMNAAcJBw8UaAADAQdoDAAAAwAxAGkMAAADACoAawwAAAMAJwBqDAAABAAnAGwMAAADACcA6gwAAAQAMgBuDAAAAQAIAA0ABgn0DBRoAAMBBmgMAAADADEAaQwAAAMAKgBrDAAAAwAnAGoMAAABACcA6gwAAAIAGQBuDAAAAQAIAA8AAwmqES5BALAAA2oMAAADACAAbAwAAAMAJwDqDAAAAgAyAAAA.Derien:BAABLgAECn8eAAIKAAgJ9BbmEAD6AQhoDAAABABJAGkMAAAFAFMAawwAAAUAPABqDAAABAA/AGwMAAADAC4AbQwAAAMAMQDqDAAAAwA7AG4MAAADACUACgAICfQW5hAA+gEIaAwAAAQASQBpDAAABQBTAGsMAAAFADwAagwAAAQAPwBsDAAAAwAuAG0MAAADADEA6gwAAAMAOwBuDAAAAwAlAAAA.Derienfu:BAAALgAECgYJBgAAAA==.Dezin:BAAALgADCgUJBQAAAA==.',
+Di='Dinkeldorf:BAAALgAECgMJBAABLgAECggJEAACAAAAAA==.',
+Dk='Dkerien:BAAALgAECgYJBgAAAA==.',
+Do='Donkeyteeth:BAABLgAECn8XAAIQAAgJHA1nIgBKAQhoDAAAAwAnAGkMAAADABMAawwAAAQAGgBqDAAABAAzAGwMAAAEACgAbQwAAAEAIwDqDAAAAwAqAG4MAAABAB4AEAAICRwNZyIASgEIaAwAAAMAJwBpDAAAAwATAGsMAAAEABoAagwAAAQAMwBsDAAABAAoAG0MAAABACMA6gwAAAMAKgBuDAAAAQAeAAAA.Downtownbuu:BAAALgADCgcJDAAAAA==.',
+Dr='Dracarian:BAAALgADCgMJAwAAAA==.Dracorz:BAAALgAECgUJCgAAAA==.Dru:BAAALgADCgcJBwAAAA==.Drywater:BAABLgAECn8XAAIRAAYJgQlUiwAEAQZoDAAABAARAGkMAAAFABQAawwAAAQADwBqDAAAAwAUAGwMAAAEACUA6gwAAAMAHAARAAYJgQlUiwAEAQZoDAAABAARAGkMAAAFABQAawwAAAQADwBqDAAAAwAUAGwMAAAEACUA6gwAAAMAHAAAAA==.',
+Du='Dura:BAABLgAECn8bAAISAAcJpxUDIADDAQdoDAAABQBHAGkMAAAFADUAawwAAAQAKgBqDAAABABNAGwMAAADAD4AbQwAAAEAHwDqDAAABQAwABIABwmnFQMgAMMBB2gMAAAFAEcAaQwAAAUANQBrDAAABAAqAGoMAAAEAE0AbAwAAAMAPgBtDAAAAQAfAOoMAAAFADAAAAA=.',
+El='Eldunari:BAAALgAECgQJBAAAAA==.Elfblood:BAABLgAECn8kAAIPAAgJfgpsCgA3AQhoDAAABwBHAGkMAAAGABMAawwAAAYAGABqDAAABQAbAGwMAAAFABsAbQwAAAEACQDqDAAABQATAG4MAAABAA8ADwAICX4KbAoANwEIaAwAAAcARwBpDAAABgATAGsMAAAGABgAagwAAAUAGwBsDAAABQAbAG0MAAABAAkA6gwAAAUAEwBuDAAAAQAPAAAA.Elvion:BAAALgAECgMJBQAAAA==.',
+Em='Emollama:BAABLgAECn8vAAMTAAkJmAwOLADXAQloDAAACAAgAGkMAAAIACAAawwAAAcAHQBqDAAABgAcAGwMAAAEACQAbQwAAAIAEgDqDAAABwAxAG4MAAAEACcAbwwAAAEAEgATAAkJmAwOLADXAQloDAAACAAgAGkMAAAIACAAawwAAAcAHQBqDAAABgAcAGwMAAADACQAbQwAAAIAEgDqDAAABwAxAG4MAAAEACcAbwwAAAEAEgAUAAEJJwJnTQAcAAFsDAAAAQAFAAAA.',
+En='Engine:BAAALgADCgQJBAAAAA==.',
+Er='Erilana:BAAALgAECgEJAQAAAA==.',
+Et='Etiimasi:BAAALgADCgYJBwAAAA==.',
+['Eï']='Eïr:BAAALgAECgQJCAABLgAFFAIJAgACAAAAAA==.',
+Fa='Fabulosa:BAABLgAECn8nAAQVAAgJYgzjLwAhAQhoDAAABgALAGkMAAAGABoAawwAAAUAFQBqDAAABgA3AGwMAAAEABEAbQwAAAEACQDqDAAACABAAG4MAAADAC4AFQAGCdsJ4y8AIQEGaAwAAAEABgBpDAAAAgAaAGsMAAACABUAagwAAAMANwBsDAAAAgARAOoMAAADABcADAAICZoI2ygADwEIaAwAAAIAIABpDAAAAwAZAGsMAAACABQAagwAAAMAFABsDAAAAgAaAG0MAAABAAcA6gwAAAMAJQBuDAAAAQAEAAUABQlgCiI6AJcABWgMAAADAAsAaQwAAAEABQBrDAAAAQAEAOoMAAACAEAAbgwAAAIALgAAAA==.Faith:BAAALgAECgYJDwAAAA==.',
+Fi='Finiquito:BAAALgADCgMJAwAAAA==.Finite:BAAALgADCgkJEAABLgAECgcJHgALAIgZAA==.Firebug:BAAALgAECgYJDAAAAA==.',
+Fn='Fndruid:BAAALgADCgEJAQAAAA==.Fnmage:BAAALgADCgkJFwAAAA==.',
+Fu='Furnok:BAABLgAECn8eAAMQAAgJvAyaIgBIAQhoDAAABgAwAGkMAAAFACQAawwAAAUAGABqDAAABAAlAGwMAAAEAB8AbQwAAAEAFwDqDAAABAAgAG4MAAABAB8AEAAICbwMmiIASAEIaAwAAAYAMABpDAAABAAkAGsMAAADABgAagwAAAIAJQBsDAAAAwAfAG0MAAABABcA6gwAAAQAIABuDAAAAQAfABIABAkyEEZbAKcABGkMAAABABIAawwAAAIAKgBqDAAAAgA9AGwMAAABACsAAAA=.Fuzzyshukk:BAAALgAECgQJBwAAAA==.',
+Ga='Galethia:BAAALgADCgkJGAAAAA==.Garli:BAAALgADCgMJAwAAAA==.',
+Ge='Gerkin:BAAALgADCgcJDwAAAA==.',
+Gg='Ggcthulhu:BAAALgAECgMJBAABLgAECgcJCQACAAAAAA==.',
+Gh='Ghutz:BAABLgAECn8xAAMWAAgJFBjWBwDnAQhoDAAABwA1AGkMAAAHAEUAawwAAAcARABqDAAABwBEAGwMAAAHADkAbQwAAAQANADqDAAABwBDAG4MAAADAD0AFgAICRQY1gcA5wEIaAwAAAQANQBpDAAABABFAGsMAAAEAEQAagwAAAQARABsDAAABAA5AG0MAAADADQA6gwAAAQAQwBuDAAAAwA9ABcABwmICzhIAIMBB2gMAAADABAAaQwAAAMANgBrDAAAAwAmAGoMAAADACgAbAwAAAMAJQBtDAAAAQAHAOoMAAADABYAAAA=.',
+Gl='Glitterhoof:BAAALgAECgYJDwAAAA==.Glorblariirn:BAAALgADCgYJBgAAAA==.',
+Go='Goliath:BAAALgAECgUJCwAAAA==.',
+Gr='Grimbjorne:BAAALgADCgcJBwAAAA==.Grimmbeardd:BAAALgADCgYJCgAAAA==.',
+Gu='Gumbercules:BAABLgAECn8kAAIYAAgJqxCgCgCyAQhoDAAABwA8AGkMAAAGACMAawwAAAYAGgBqDAAABQBHAGwMAAAFAEIAbQwAAAEADgDqDAAABQA9AG4MAAABAAQAGAAICasQoAoAsgEIaAwAAAcAPABpDAAABgAjAGsMAAAGABoAagwAAAUARwBsDAAABQBCAG0MAAABAA4A6gwAAAUAPQBuDAAAAQAEAAAA.',
+Ha='Hammie:BAAALgADCgkJCQAAAA==.',
+He='Hearthglen:BAABLgAECn8VAAILAAYJWg+3cQAUAQZoDAAABQA0AGkMAAAFADgAawwAAAUAKwBqDAAAAgBFAGwMAAACAAoA6gwAAAIAIQALAAYJWg+3cQAUAQZoDAAABQA0AGkMAAAFADgAawwAAAUAKwBqDAAAAgBFAGwMAAACAAoA6gwAAAIAIQAAAA==.',
+Ho='Hollet:BAAALgAECgYJEAAAAA==.Holyblasto:BAAALgADCgEJAQAAAA==.Holyshukk:BAACLgAFFH8HAAIGAAMJXhiiGADxAANoDAAAAwBMAGkMAAADAEQA6gwAAAEAKQAGAAMJXhiiGADxAANoDAAAAwBMAGkMAAADAEQA6gwAAAEAKQAuAAQKfyMAAwYACQmRIqAFABIDAAYACQmRIqAFABIDAAsAAQlCB4QbAS0AAAAA.',
+Hu='Huckk:BAAALgADCgUJBQAAAA==.',
+Hy='Hylen:BAAALgAECgcJCQAAAA==.',
+Ib='Ibrandul:BAABLgAECn8eAAILAAcJhRFLTQBpAQdoDAAABQA6AGkMAAAFAD0AawwAAAYAIwBqDAAAAwAkAGwMAAACACEA6gwAAAgALABuDAAAAQAjAAsABwmFEUtNAGkBB2gMAAAFADoAaQwAAAUAPQBrDAAABgAjAGoMAAADACQAbAwAAAIAIQDqDAAACAAsAG4MAAABACMAAAA=.',
+Ic='Icyveins:BAABLgAECn8UAAIRAAcJ8wEJtgCzAAdoDAAABQAEAGkMAAAEAAcAawwAAAQABgBqDAAAAgAKAGwMAAABAAEA6gwAAAMABABuDAAAAQAEABEABwnzAQm2ALMAB2gMAAAFAAQAaQwAAAQABwBrDAAABAAGAGoMAAACAAoAbAwAAAEAAQDqDAAAAwAEAG4MAAABAAQAAAA=.',
+Ir='Ironhuntress:BAABLgAECn8WAAIZAAYJtg15VQAQAQZoDAAABQAvAGkMAAAFACoAawwAAAUALQBqDAAAAwAkAGwMAAACABEA6gwAAAIAFwAZAAYJtg15VQAQAQZoDAAABQAvAGkMAAAFACoAawwAAAUALQBqDAAAAwAkAGwMAAACABEA6gwAAAIAFwAAAA==.',
+It='Ithro:BAABLgAECn8fAAIaAAgJlRfAAwD3AQhoDAAABQBLAGkMAAAFAEcAawwAAAUATwBqDAAAAwA5AGwMAAAEAEEAbQwAAAIAOwDqDAAABgA8AG4MAAABAAoAGgAICZUXwAMA9wEIaAwAAAUASwBpDAAABQBHAGsMAAAFAE8AagwAAAMAOQBsDAAABABBAG0MAAACADsA6gwAAAYAPABuDAAAAQAKAAAA.',
+Iy='Iyachtu:BAAALgAECgkJDwAAAA==.',
+Ja='Jarlo:BAABLgAECn8kAAIaAAgJyxJtBADTAQhoDAAABwBKAGkMAAAGAEAAawwAAAYAMQBqDAAABQBGAGwMAAAFACEAbQwAAAEAHwDqDAAABQBCAG4MAAABABEAGgAICcsSbQQA0wEIaAwAAAcASgBpDAAABgBAAGsMAAAGADEAagwAAAUARgBsDAAABQAhAG0MAAABAB8A6gwAAAUAQgBuDAAAAQARAAAA.',
+Je='Jeffeory:BAAALgAECgIJAgABLgAECggJKgALAFoZAA==.',
+Jo='Jobu:BAAALgAECgEJAQAAAA==.Jormungandr:BAABLgAECn8cAAIWAAgJKSEkBQAwAghoDAAABABXAGkMAAAEAF8AawwAAAQASgBqDAAAAwBeAGwMAAAEAFkAbQwAAAIASwDqDAAABgBhAG4MAAABAEsAFgAICSkhJAUAMAIIaAwAAAQAVwBpDAAABABfAGsMAAAEAEoAagwAAAMAXgBsDAAABABZAG0MAAACAEsA6gwAAAYAYQBuDAAAAQBLAAAA.',
+Ju='Juanhunglow:BAAALgADCgcJIwAAAA==.Judgederien:BAAALgAECgIJAgAAAA==.Jularity:BAAALgADCgYJBgAAAA==.',
+Ka='Kaeldric:BAABLgAECn8aAAMTAAcJDCLfGQA7AgdoDAAABABaAGkMAAAEAGAAawwAAAQAXQBqDAAABABdAGwMAAAEAFgAbQwAAAIAQwDqDAAABABWABMABwkMIt8ZADsCB2gMAAAEAFoAaQwAAAQAYABrDAAABABdAGoMAAAEAF0AbAwAAAQAWABtDAAAAgBDAOoMAAADAFYAFAABCf8P2zsALgAB6gwAAAEAKAAAAA==.Kaladïn:BAAALgAECgEJAQAAAA==.Kalemshai:BAAALgADCgcJCwAAAA==.Kalinea:BAABLgAECn8fAAIZAAcJRBTkWABdAQdoDAAACABLAGkMAAAGAFAAawwAAAYALgBqDAAABQBDAGwMAAADACQA6gwAAAIAMwBuDAAAAQAUABkABwlEFORYAF0BB2gMAAAIAEsAaQwAAAYAUABrDAAABgAuAGoMAAAFAEMAbAwAAAMAJADqDAAAAgAzAG4MAAABABQAAAA=.Kazuha:BAAALgAECgYJDgAAAA==.',
+Ke='Kellerun:BAAALgADCgIJAgAAAA==.Ketosis:BAAALgADCggJCgAAAA==.',
+Ko='Kope:BAABLgAECn8hAAIYAAgJ3hgLCAD0AQhoDAAABQA7AGkMAAAFAEEAawwAAAUARgBqDAAABABHAGwMAAAEAFYAbQwAAAMAMwDqDAAABABGAG4MAAADACIAGAAICd4YCwgA9AEIaAwAAAUAOwBpDAAABQBBAGsMAAAFAEYAagwAAAQARwBsDAAABABWAG0MAAADADMA6gwAAAQARgBuDAAAAwAiAAAA.',
+Kr='Kreltor:BAABLgAECn8cAAISAAcJHiIwCQCjAgdoDAAABQBTAGkMAAAFAFkAawwAAAQAUABqDAAABABZAGwMAAADAF8AbQwAAAEAWADqDAAABgBVABIABwkeIjAJAKMCB2gMAAAFAFMAaQwAAAUAWQBrDAAABABQAGoMAAAEAFkAbAwAAAMAXwBtDAAAAQBYAOoMAAAGAFUAAAA=.Kryptikz:BAAALgAECgYJCwABLgAECgYJEAACAAAAAA==.Krystoferson:BAAALgAECggJDwAAAA==.',
+La='Largar:BAAALgADCgQJBAAAAA==.',
+Le='Leerroyy:BAAALgADCgIJAgAAAA==.Leesoftpaw:BAAALgADCgYJAgAAAA==.Leianii:BAAALgAECgEJAQAAAA==.Lextali:BAAALgAECgQJBAAAAA==.',
+Lh='Lhondar:BAAALgAECgQJBAAAAA==.',
+Li='Liafail:BAABLgAECn8YAAINAAcJ8QeqgwBTAQdoDAAABQATAGkMAAAEABYAawwAAAQAEgBqDAAABAAVAGwMAAADABkAbQwAAAEACgDqDAAAAwAZAA0ABwnxB6qDAFMBB2gMAAAFABMAaQwAAAQAFgBrDAAABAASAGoMAAAEABUAbAwAAAMAGQBtDAAAAQAKAOoMAAADABkAAAA=.Lillat:BAAALgAECgUJCwAAAA==.Liryv:BAAALgADCgYJFAAAAA==.Littlepop:BAAALgADCgEJAQAAAA==.',
+Lo='Lollilock:BAAALgAECgcJBAAAAA==.',
+Lu='Luena:BAAALgAECgYJEgAAAA==.Lumbre:BAAALgADCgcJCQAAAA==.Luminara:BAAALgADCgkJCwAAAA==.Luuggork:BAAALgADCgYJBgAAAA==.',
+Ly='Lyrà:BAAALgAECgQJAwAAAA==.',
+['Lá']='Ládydèath:BAAALgAECgYJAQAAAA==.',
+['Lì']='Lìesson:BAABLgAECn8cAAILAAgJ+h5rFABhAghoDAAABABWAGkMAAAEAFkAawwAAAQAQwBqDAAAAwBjAGwMAAAEAE0AbQwAAAIASADqDAAABgBfAG4MAAABAEEACwAICfoeaxQAYQIIaAwAAAQAVgBpDAAABABZAGsMAAAEAEMAagwAAAMAYwBsDAAABABNAG0MAAACAEgA6gwAAAYAXwBuDAAAAQBBAAAA.',
+Ma='Mackaroni:BAABLgAECn8UAAIRAAYJHBF0igAFAQZoDAAABAAzAGkMAAAEACcAawwAAAQAKgBqDAAAAgBaAGwMAAABABkA6gwAAAUAPAARAAYJHBF0igAFAQZoDAAABAAzAGkMAAAEACcAawwAAAQAKgBqDAAAAgBaAGwMAAABABkA6gwAAAUAPAABLgAECggJEAACAAAAAA==.Madrel:BAAALgADCgUJBQAAAA==.Magesca:BAABLgAECn8jAAIRAAgJkRTPNQDSAQhoDAAABwBTAGkMAAAGAEgAawwAAAYAIQBqDAAAAwBGAGwMAAAEAEIAbQwAAAEAEwDqDAAABwBVAG4MAAABAAgAEQAICZEUzzUA0gEIaAwAAAcAUwBpDAAABgBIAGsMAAAGACEAagwAAAMARgBsDAAABABCAG0MAAABABMA6gwAAAcAVQBuDAAAAQAIAAAA.Makkagg:BAACLgAFFH8JAAMKAAMJoxNYDwDQAANoDAAABABGAGkMAAACACUA6gwAAAMAKwAKAAMJoxNYDwDQAANoDAAAAwBGAGkMAAACACUA6gwAAAMAKwAXAAEJAQZfJABLAAFoDAAAAQAPAC4ABAp/LQADCgAICZUgoQMAjgIACgAICZUgoQMAjgIAFwAICVYMxjkAvwEAAAA=.Malamur:BAAALgADCggJEgAAAA==.Malisea:BAABLgAECn8UAAIRAAYJUQXRnwDdAAZoDAAABAALAGkMAAAEAAwAawwAAAQACABqDAAAAgAPAGwMAAADABIA6gwAAAMAEAARAAYJUQXRnwDdAAZoDAAABAALAGkMAAAEAAwAawwAAAQACABqDAAAAgAPAGwMAAADABIA6gwAAAMAEAAAAA==.',
+Mi='Milagrosa:BAABLgAECn8bAAIbAAgJEg5gGwBuAQhoDAAABAAWAGkMAAAEADoAawwAAAQANgBqDAAAAwBDAGwMAAAEAC4AbQwAAAEADwDqDAAABgAhAG4MAAABABYAGwAICRIOYBsAbgEIaAwAAAQAFgBpDAAABAA6AGsMAAAEADYAagwAAAMAQwBsDAAABAAuAG0MAAABAA8A6gwAAAYAIQBuDAAAAQAWAAAA.Mirael:BAACLgAFFH8FAAIZAAMJJB1CIgAbAQNoDAAAAgArAGkMAAACAF4A6gwAAAEAVgAZAAMJJB1CIgAbAQNoDAAAAgArAGkMAAACAF4A6gwAAAEAVgAuAAQKfywAAhkACQnhH8EIAAcDABkACQnhH8EIAAcDAAAA.Mishuntsalot:BAAALgADCgYJCQAAAA==.',
+Mo='Molocherx:BAAALgADCgMJAwAAAA==.Mommacoo:BAAALgAECgYJDgAAAA==.',
+Mu='Mumsurprise:BAAALgAECgkJAgAAAA==.',
+My='Myrmia:BAABLgAECn8WAAIHAAYJQg3aRgAEAQZoDAAABQAoAGkMAAAFABgAawwAAAUALQBqDAAAAwAXAGwMAAACADIA6gwAAAIAEgAHAAYJQg3aRgAEAQZoDAAABQAoAGkMAAAFABgAawwAAAUALQBqDAAAAwAXAGwMAAACADIA6gwAAAIAEgAAAA==.Mystryx:BAAALgAECgUJCQAAAA==.',
+['Mà']='Màck:BAAALgAECggJEAAAAA==.',
+Na='Nade:BAAALgAECgcJBAAAAA==.Naldor:BAAALgADCgkJCQAAAA==.Nargul:BAABLgAECn8cAAINAAYJhBNcXwAXAQZoDAAABgBKAGkMAAAGADwAawwAAAUANQBqDAAAAgAiAGwMAAABABEA6gwAAAgAKwANAAYJhBNcXwAXAQZoDAAABgBKAGkMAAAGADwAawwAAAUANQBqDAAAAgAiAGwMAAABABEA6gwAAAgAKwAAAA==.Naturboom:BAAALgAECgEJAQAAAA==.',
+Ne='Nekossian:BAAALgAECgYJCwABLgAECggJKgALAFoZAA==.',
+Ni='Nickorvis:BAAALgADCgUJBQABLgAECgcJGAANAPEHAA==.',
+No='Nonae:BAEALgADCgYJBgAAAA==.Nota:BAABLgAECn8WAAILAAYJ+wbDmwDFAAZoDAAABQAQAGkMAAAFACgAawwAAAUAFQBqDAAAAwAOAGwMAAACAAIA6gwAAAIACAALAAYJ+wbDmwDFAAZoDAAABQAQAGkMAAAFACgAawwAAAUAFQBqDAAAAwAOAGwMAAACAAIA6gwAAAIACAAAAA==.',
+Oa='Oathmere:BAAALgADCgUJBQAAAA==.',
+Og='Ogrusao:BAAALgAECgcJDAAAAA==.',
+Pa='Panasaurus:BAABLgAECn8kAAIcAAgJ2xKiBwB/AQhoDAAABwAoAGkMAAAGAEEAawwAAAYANgBqDAAABQAyAGwMAAAFADcAbQwAAAEABwDqDAAABQA3AG4MAAABADoAHAAICdsSogcAfwEIaAwAAAcAKABpDAAABgBBAGsMAAAGADYAagwAAAUAMgBsDAAABQA3AG0MAAABAAcA6gwAAAUANwBuDAAAAQA6AAAA.',
+Pe='Pechuuga:BAABLgAECn8WAAIdAAcJvhmAMgCHAQdoDAAABQBMAGkMAAADACwAawwAAAMAPgBqDAAABABKAGwMAAACADgAbQwAAAEASQDqDAAABABSAB0ABwm+GYAyAIcBB2gMAAAFAEwAaQwAAAMALABrDAAAAwA+AGoMAAAEAEoAbAwAAAIAOABtDAAAAQBJAOoMAAAEAFIAAAA=.Pelli:BAABLgAECn8ZAAIMAAcJlAWCKwD9AAdoDAAABAAQAGkMAAAEABEAawwAAAQACgBqDAAABAAXAGwMAAADAA4AbQwAAAEACADqDAAABQARAAwABwmUBYIrAP0AB2gMAAAEABAAaQwAAAQAEQBrDAAABAAKAGoMAAAEABcAbAwAAAMADgBtDAAAAQAIAOoMAAAFABEAAAA=.Pendraig:BAAALgADCgUJCAAAAA==.',
+Pl='Plaza:BAAALgAECgkJCAAAAA==.',
+Qu='Quadrilio:BAAALgADCgUJBQAAAA==.Quamutei:BAAALgADCgUJBgAAAA==.',
+Ra='Raylisarri:BAAALgAECgEJAgABLgAECgQJDAACAAAAAA==.Rayst:BAAALgAECgQJEAAAAA==.Razìel:BAAALgADCgMJAgAAAA==.',
+Rh='Rhalek:BAAALgAECgUJCQABLgAECggJMQAHALUhAA==.Rheunae:BAAALgAECgQJBAAAAA==.Rhykis:BAABLgAECn8WAAIXAAYJ6x9QFADQAQZoDAAABQBhAGkMAAAFAFsAawwAAAUAPwBqDAAAAwBgAGwMAAACADsA6gwAAAIAYAAXAAYJ6x9QFADQAQZoDAAABQBhAGkMAAAFAFsAawwAAAUAPwBqDAAAAwBgAGwMAAACADsA6gwAAAIAYAAAAA==.',
+Ri='Rilis:BAAALgADCgEJAQAAAA==.Rillyn:BAABLgAECn8gAAIOAAgJaxP7CwDtAQhoDAAABQAtAGkMAAAFAD0AawwAAAUALgBqDAAABQAnAGwMAAAFAB8AbQwAAAEARwDqDAAABQAqAG4MAAABADAADgAICWsT+wsA7QEIaAwAAAUALQBpDAAABQA9AGsMAAAFAC4AagwAAAUAJwBsDAAABQAfAG0MAAABAEcA6gwAAAUAKgBuDAAAAQAwAAAA.',
+Ro='Rojei:BAAALgADCgYJBgAAAA==.Role:BAAALgADCgEJAQABLgAECggJJgAeADUYAA==.',
+Ru='Rubbin:BAAALgAECgEJAQAAAA==.',
+Sa='Salindill:BAAALgADCgMJAwAAAA==.Salline:BAAALgAECgQJDgAAAA==.Samanda:BAAALgAECgYJEwAAAA==.Samshir:BAAALgAFFAEJAQAAAA==.',
+Sc='Scorned:BAABLgAECn8hAAIJAAcJ4hDgRQAwAQdoDAAABwA/AGkMAAAGAC4AawwAAAYAIgBqDAAABQAXAGwMAAAEADMA6gwAAAQAJgBuDAAAAQAZAAkABwniEOBFADABB2gMAAAHAD8AaQwAAAYALgBrDAAABgAiAGoMAAAFABcAbAwAAAQAMwDqDAAABAAmAG4MAAABABkAAAA=.',
+Se='Sekrain:BAAALgAECgQJBAAAAA==.',
+Sh='Shamnasty:BAAALgAECgcJEwAAAA==.Shariaan:BAAALgADCgkJJwAAAA==.Shaylinn:BAAALgADCgcJHwAAAA==.Shukkvoker:BAAALgADCgQJBQABLgAFFAMJBwAGAF4YAA==.',
+Si='Siella:BAABLgAECn8bAAIFAAcJ8hODFgCoAQdoDAAABQBAAGkMAAAFAEUAawwAAAQARwBqDAAABAAfAGwMAAADAD4AbQwAAAEADQDqDAAABQArAAUABwnyE4MWAKgBB2gMAAAFAEAAaQwAAAUARQBrDAAABABHAGoMAAAEAB8AbAwAAAMAPgBtDAAAAQANAOoMAAAFACsAAAA=.Sileves:BAAALgAECgEJAQAAAA==.Sitrom:BAAALgAECgUJCwAAAA==.',
+Sn='Snayd:BAABLgAECn8XAAIRAAcJeiCOHgA8AgdoDAAABABQAGkMAAAEAFIAawwAAAQATwBqDAAAAwBhAGwMAAACAFwAbQwAAAEASADqDAAABQBbABEABwl6II4eADwCB2gMAAAEAFAAaQwAAAQAUgBrDAAABABPAGoMAAADAGEAbAwAAAIAXABtDAAAAQBIAOoMAAAFAFsAAAA=.',
+So='Sonofmums:BAAALgAECgcJBgAAAA==.Sora:BAAALgADCgIJAgABLgAECgEJAQACAAAAAA==.Soulbaine:BAAALgAECgQJCQAAAA==.',
+Sp='Spazeric:BAABLgAECn8YAAMEAAgJ5xeEFADDAQhoDAAABAA6AGkMAAAEADAAawwAAAQAPABqDAAAAwA6AGwMAAAEAE0AbQwAAAEAWwDqDAAAAwA9AG4MAAABACIABAAHCTYWhBQAwwEHaAwAAAMAOgBpDAAAAwAwAGsMAAADADwAagwAAAMAOgBsDAAABABNAOoMAAADAD0AbgwAAAEAIgAfAAQJdRPMWQCpAARoDAAAAQBBAGkMAAABAC0AawwAAAEAGwBtDAAAAQA8AAAA.Spheria:BAABLgAECn8fAAINAAgJgAPWbgDzAAhoDAAABgAGAGkMAAAFAAwAawwAAAUACABqDAAABQAPAGwMAAAFAA8AbQwAAAEABwDqDAAAAwAHAG4MAAABAAMADQAICYAD1m4A8wAIaAwAAAYABgBpDAAABQAMAGsMAAAFAAgAagwAAAUADwBsDAAABQAPAG0MAAABAAcA6gwAAAMABwBuDAAAAQADAAAA.',
+St='Stalon:BAAALgADCgYJDgAAAA==.Strangeluve:BAAALgAECgcJDAAAAA==.',
+Su='Suerte:BAAALgADCggJDQAAAA==.Suzieq:BAAALgADCgMJAwAAAA==.',
+Sy='Sysnootles:BAAALgADCgYJBwAAAA==.',
+['Sà']='Sàyori:BAAALgAECgUJBwAAAA==.',
+Ta='Tabrett:BAAALgAECgIJAgAAAA==.Tankdezoe:BAAALgAECgMJBAABLgAECgQJBQACAAAAAA==.Tarall:BAAALgADCgMJAwAAAA==.Taveres:BAAALgADCgEJAQAAAA==.Tax:BAAALgAECgQJEAAAAA==.',
+Te='Tenara:BAAALgADCgkJEgAAAA==.Tequ:BAAALgADCgcJFQAAAA==.',
+Ti='Timeshadow:BAAALgAECgQJBAAAAA==.Tinakoffee:BAAALgAECgIJAgAAAA==.Tine:BAABLgAECn8eAAIRAAgJkxhcMwDbAQhoDAAABQBWAGkMAAAFAEsAawwAAAUAPQBqDAAABAA9AGwMAAADAEUAbQwAAAIAMgDqDAAABAA+AG4MAAACACEAEQAICZMYXDMA2wEIaAwAAAUAVgBpDAAABQBLAGsMAAAFAD0AagwAAAQAPQBsDAAAAwBFAG0MAAACADIA6gwAAAQAPgBuDAAAAgAhAAAA.',
+To='Tope:BAAALgAECgYJCwAAAA==.Toray:BAAALgAECgcJDgAAAA==.',
+Tr='Triplesix:BAAALgAECgcJEgAAAA==.Trittia:BAAALgAECgYJEgAAAA==.',
+Tu='Tukk:BAAALgAECgYJCQAAAA==.Turtle:BAAALgAECgEJAwAAAA==.',
+Tw='Twigatron:BAAALgAECggJEwABLgAECgcJDAACAAAAAA==.Twigdin:BAAALgADCgMJAwAAAA==.Twigdun:BAAALgAECgMJBQAAAA==.',
+Ty='Tynk:BAAALgADCgUJBQABLgAECgQJBAACAAAAAA==.',
+Ur='Urza:BAAALgAECgUJBwAAAA==.',
+Va='Vaewind:BAAALgADCgEJAQAAAA==.Valethus:BAABLgAECn8sAAMZAAgJLBpoFgAhAghoDAAABwBeAGkMAAAHAFIAawwAAAcAUwBqDAAABgBXAGwMAAAFAEUAbQwAAAMAKADqDAAABgBDAG4MAAADAB8AGQAICSwaaBYAIQIIaAwAAAcAXgBpDAAABwBSAGsMAAAHAFMAagwAAAQAVwBsDAAABABFAG0MAAADACgA6gwAAAYAQwBuDAAAAwAfAAEAAglUCB1+AE0AAmoMAAACAAcAbAwAAAEAFQAAAA==.Valmaru:BAAALgADCgEJAQAAAA==.',
+Ve='Vesp:BAAALgAECgMJAwAAAA==.Vexxa:BAABLgAECn8QAAIJAAgJIxojYgB7AQhoDAAAAgBQAGkMAAACADgAawwAAAIAOgBqDAAAAQABAGwMAAABAEgAbQwAAAIAOwDqDAAABQBPAG4MAAABAD0ACQAICSMaI2IAewEIaAwAAAIAUABpDAAAAgA4AGsMAAACADoAagwAAAEAAQBsDAAAAQBIAG0MAAACADsA6gwAAAUATwBuDAAAAQA9AAAA.',
+Vy='Vynd:BAAALgADCgkJDgABLgABCgMJBAACAAAAAA==.',
+Wa='Walkz:BAAALgAECgYJEAAAAA==.Warrockhealz:BAAALgADCgYJBgAAAA==.',
+Wi='Wickedlight:BAABLgAECn8eAAIMAAgJGRmFCwAZAghoDAAABgBUAGkMAAAFAEwAawwAAAUATwBqDAAABAAyAGwMAAAEAEwAbQwAAAEAHADqDAAABAA9AG4MAAABACoADAAICRkZhQsAGQIIaAwAAAYAVABpDAAABQBMAGsMAAAFAE8AagwAAAQAMgBsDAAABABMAG0MAAABABwA6gwAAAQAPQBuDAAAAQAqAAAA.Wiggleston:BAAALgAECgYJCgAAAA==.Willscarlet:BAAALgAECgQJBgAAAA==.',
+Wy='Wylethia:BAAALgADCgcJCAAAAA==.',
+Xa='Xandris:BAAALgAECgEJAgABLgAFFAEJAQACAAAAAA==.',
+Yh='Yhana:BAAALgADCggJEwAAAA==.',
+Yo='Yozsh:BAAALgADCgkJGAAAAA==.',
+Za='Zarathia:BAAALgAECgUJCQAAAA==.Zaritym:BAABLgAECn8WAAMEAAYJ/hrfFAC/AQZoDAAABQA8AGkMAAAFAFAAawwAAAUATABqDAAAAwBGAGwMAAACAFMA6gwAAAIAKwAEAAYJ/hrfFAC/AQZoDAAAAwA8AGkMAAADAFAAawwAAAMATABqDAAAAgBGAGwMAAACAFMA6gwAAAIAKwAfAAQJbw9xOgChAARoDAAAAgAlAGkMAAACACoAawwAAAIAJgBqDAAAAQA3AAAA.Zarrilin:BAABLgAECn8kAAIRAAgJhRb3MQDhAQhoDAAABgA/AGkMAAAGAEAAawwAAAYARgBqDAAABQBYAGwMAAAEAFEAbQwAAAIAIgDqDAAABQA+AG4MAAACABoAEQAICYUW9zEA4QEIaAwAAAYAPwBpDAAABgBAAGsMAAAGAEYAagwAAAUAWABsDAAABABRAG0MAAACACIA6gwAAAUAPgBuDAAAAgAaAAAA.',
+Ze='Zebop:BAAALgADCgMJBgAAAA==.Zeeley:BAAALgADCgYJCgAAAA==.Zelsada:BAAALgAECgEJAQAAAA==.',
+Zi='Zibetha:BAACLgAFFH8GAAIPAAIJ3Qv+CQCbAAJoDAAAAwAtAGkMAAADAA4ADwACCd0L/gkAmwACaAwAAAMALQBpDAAAAwAOAC4ABAp/QgACDwAJCQ8aawEAeQIADwAJCQ8aawEAeQIAAAA=.',
+Zo='Zoeheals:BAAALgAECgQJBQAAAA==.',
+Zu='Zuggtmoy:BAAALgADCgkJCQAAAA==.Zulmahn:BAAALgAECgYJEQAAAA==.',
+},}
+provider.parse = parse
+
+local rawData = provider.data
+provider.data = {}
+provider.getChunk = getChunkLookup(rawData, 2)
+
+setmetatable(provider.data, {
+	__index = function(table, key)
+		provider.getChunk(key)
+	end,
+})
+
+if _G["ArchonTooltip"] and ArchonTooltip.AddProviderV2 then
+	ArchonTooltip.AddProviderV2(lookup, provider)
+end

@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Hunter-BeastMastery','Unknown-Unknown',}
-local provider = {region='US',realm='Dragonblight',name='US',type='subscribers',zone=46,date='2026-05-08',data={Al='Alivis:BAEALgADCgYJEQABLgAECgcJHAABAFciAA==.',Sa='Saintkhal:BAEALgAECgQJCAABLgAECggJEAACAAAAAA==.Saintmedicus:BAEALgAECggJEAAAAA==.',},}
+local lookup = {'Hunter-BeastMastery','Priest-Discipline','Priest-Shadow',}
+local provider = {region='US',realm='Dragonblight',name='US',type='subscribers',zone=46,date='2026-05-10',data={Al='Alivis:BAEALgAECgQJBAABLgAECgcJHQABAFciAA==.',Sa='Saintfrosty:BAEALgADCgEJAQABLgAECggJFAACAJkTAA==.Saintkhal:BAEALgAECgQJCAABLgAECggJFAACAJkTAA==.Saintmedicus:BAEBLgAECn8UAAMCAAgJmRPGHQBMAQhoDAAABQBCAGkMAAADADYAawwAAAMAOABqDAAAAgBGAGwMAAABACoAbQwAAAEAJQDqDAAABAAyAG4MAAABABYAAgAFCWQXxh0ATAEFaAwAAAUAQgBpDAAAAwA2AGsMAAADADgAagwAAAIARgDqDAAABAAyAAMAAwnVDW06AKkAA2wMAAABAC8AbQwAAAEAGwBuDAAAAQAfAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

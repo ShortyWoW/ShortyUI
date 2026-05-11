@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Blood','Druid-Guardian','Monk-Brewmaster','Monk-Windwalker',}
-local provider = {region='US',realm='Fenris',name='US',type='subscribers',zone=46,date='2026-05-08',data={Ad='Addie:BAEBLgAFFH8GAAIBAAIJ4hZwDgCDAAJqDAAABQAqAOoMAAABADoAAQACCeIWcA4AgwACagwAAAUAKgDqDAAAAQA6AAEuAAUUBwkbAAIAzCMA.',Di='Divinefistin:BAEBLgAECn8vAAMDAAkJeB3PBQCCAgloDAAABwBOAGkMAAAHAFIAawwAAAgATQBqDAAABgBMAGwMAAAHAF0AbQwAAAEAPQDqDAAABwBfAG4MAAADAB0AbwwAAAEAVAADAAkJXx3PBQCCAgloDAAABgBOAGkMAAAFAFIAawwAAAYASwBqDAAABQBMAGwMAAAGAF0AbQwAAAEAPQDqDAAABgBfAG4MAAADAB0AbwwAAAEAVAAEAAYJbB2FEQCsAQZoDAAAAQBMAGkMAAACAEYAawwAAAIATQBqDAAAAQA8AGwMAAABAFAA6gwAAAEARgAAAA==.',},}
+local lookup = {'DeathKnight-Blood','Druid-Guardian',}
+local provider = {region='US',realm='Fenris',name='US',type='subscribers',zone=46,date='2026-05-10',data={Ad='Addie:BAEBLgAFFH8GAAIBAAIJ4hZyDgCDAAJqDAAABQAqAOoMAAABADoAAQACCeIWcg4AgwACagwAAAUAKgDqDAAAAQA6AAEuAAUUBwkbAAIAzCMA.',},}
 provider.parse = parse
 
 local rawData = provider.data

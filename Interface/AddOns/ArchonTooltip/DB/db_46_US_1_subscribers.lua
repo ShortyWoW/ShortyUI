@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Paladin-Protection','Paladin-Retribution','Unknown-Unknown',}
-local provider = {region='US',realm='Aegwynn',name='US',type='subscribers',zone=46,date='2026-05-08',data={Cy='Cyniel:BAEBLgAECn8YAAMBAAYJpBe2FQB1AQZoDAAABQBWAGkMAAAFAD0AawwAAAQAOABqDAAAAwBDAGwMAAABACEA6gwAAAYAPwABAAYJexS2FQB1AQZoDAAAAwBWAGkMAAADAD0AawwAAAIAHQBqDAAAAgBDAGwMAAABACEA6gwAAAMAMgACAAUJPxWCgwDlAAVoDAAAAgA2AGkMAAACACoAawwAAAIAOABqDAAAAQAlAOoMAAADAD8AAAA=.',Ea='Earthlyn:BAEALgAECgYJCgAAAA==.',Fa='Fayze:BAEALgAECgEJAQABLgAECgYJCgADAAAAAA==.',Fr='Freyz:BAEALgAECgYJCgAAAA==.',Gw='Gwion:BAEALgAECgYJDAAAAA==.',He='Hexappeal:BAEALgADCgYJBgAAAA==.',Hu='Humbaba:BAEALgADCgMJAwABLgAECgYJDAADAAAAAA==.',Ja='James:BAEALgADCgYJBgABLgAECgYJGAABAKQXAA==.',Ma='Magicmech:BAEALgADCgUJBQABLgAECgYJDAADAAAAAA==.Makan:BAEALgADCggJCAABLgAECgYJCgADAAAAAA==.',Ra='Rayz:BAEALgADCgcJEQABLgAECgYJCgADAAAAAA==.',Ta='Tankiemctank:BAEALgAECgkJBwAAAA==.',Ze='Zedkick:BAEALgAECgEJAQAAAA==.',['Zí']='Zíngerdh:BAEALgAECgcJCQAAAA==.',},}
+local lookup = {'Paladin-Protection','Paladin-Retribution','Unknown-Unknown','Paladin-Holy',}
+local provider = {region='US',realm='Aegwynn',name='US',type='subscribers',zone=46,date='2026-05-10',data={Cy='Cyniel:BAEBLgAECn8YAAMBAAYJpBe5FQB1AQZoDAAABQBWAGkMAAAFAD0AawwAAAQAOABqDAAAAwBDAGwMAAABACEA6gwAAAYAPwABAAYJexS5FQB1AQZoDAAAAwBWAGkMAAADAD0AawwAAAIAHQBqDAAAAgBDAGwMAAABACEA6gwAAAMAMgACAAUJPxXmiwDhAAVoDAAAAgA2AGkMAAACACoAawwAAAIAOABqDAAAAQAlAOoMAAADAD8AAAA=.',Fa='Fayze:BAEALgAECgEJAQABLgAECgYJCgADAAAAAA==.',Fr='Freyz:BAEALgAECgYJCgAAAA==.',Gw='Gwion:BAEALgAECgYJDAABLgAECggJJAAEAEwYAA==.',He='Hexappeal:BAEALgADCgYJBgAAAA==.',Hu='Humbaba:BAEALgADCgMJAwABLgAECggJJAAEAEwYAA==.',Ja='James:BAEALgADCgYJBgABLgAECgYJGAABAKQXAA==.',Ma='Magicmech:BAEALgADCgUJBQABLgAECggJJAAEAEwYAA==.Makan:BAEALgADCggJCAABLgAECgYJCgADAAAAAA==.',Ra='Rayz:BAEALgADCgcJEQABLgAECgYJCgADAAAAAA==.',Ta='Tankiemctank:BAEALgAECgkJBwAAAA==.',Ze='Zedkick:BAEALgAECgEJAQAAAA==.',['Zí']='Zíngerdh:BAEALgAECgcJCQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

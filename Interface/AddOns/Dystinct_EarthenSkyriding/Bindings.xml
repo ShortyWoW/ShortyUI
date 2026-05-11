@@ -1,0 +1,14 @@
+<Bindings>
+    <Binding name="DYSES_MARK_DISCOVERED" category="Dystinct Earthen Skyriding">
+        DysES_MarkCurrentDiscovered()
+    </Binding>
+    <Binding name="DYSES_GO_PREVIOUS" category="Dystinct Earthen Skyriding">
+        DysES_GoToPreviousNode()
+    </Binding>
+    <Binding name="DYSES_NEXT_SEGMENT" category="Dystinct Earthen Skyriding">
+        DysES_NextSegment()
+    </Binding>
+    <Binding name="DYSES_PREV_SEGMENT" category="Dystinct Earthen Skyriding">
+        DysES_PreviousSegment()
+    </Binding>
+</Bindings>

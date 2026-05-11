@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Holy',}
-local provider = {region='US',realm='Thunderhorn',name='US',type='subscribers',zone=46,date='2026-05-08',data={Fo='Foe:BAEALgAECggJEwAAAA==.',Ra='Raerlynn:BAEALgADCgMJAwAAAA==.',Sg='Sgathaich:BAEBLgAECn8iAAIBAAgJchctFwDUAQhoDAAABgBCAGkMAAAEADQAawwAAAQAPQBqDAAABABNAGwMAAAFADcAbQwAAAMANgDqDAAABQBOAG4MAAADACEAAQAICXIXLRcA1AEIaAwAAAYAQgBpDAAABAA0AGsMAAAEAD0AagwAAAQATQBsDAAABQA3AG0MAAADADYA6gwAAAUATgBuDAAAAwAhAAAA.',St='Streakycat:BAEALgAECgEJAQAAAA==.',},}
+local provider = {region='US',realm='Thunderhorn',name='US',type='subscribers',zone=46,date='2026-05-10',data={Fo='Foe:BAEALgAECggJEwAAAA==.',Ra='Raerlynn:BAEALgADCgMJAwAAAA==.',Sg='Sgathaich:BAEBLgAECn8kAAIBAAgJTBhdFAD5AQhoDAAABwBUAGkMAAAEADQAawwAAAQAPQBqDAAABABNAGwMAAAFADcAbQwAAAMANgDqDAAABgBOAG4MAAADACEAAQAICUwYXRQA+QEIaAwAAAcAVABpDAAABAA0AGsMAAAEAD0AagwAAAQATQBsDAAABQA3AG0MAAADADYA6gwAAAYATgBuDAAAAwAhAAAA.',St='Streakycat:BAEALgAECgEJAQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

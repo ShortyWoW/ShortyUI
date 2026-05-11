@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Unholy',}
-local provider = {region='US',realm='ArgentDawn',name='US',type='subscribers',zone=46,date='2026-05-08',data={Ra='Ramcco:BAEALgAECgYJEQAAAA==.',Wa='Wandorf:BAEBLgAECn8eAAIBAAcJRw7ASQBeAQdoDAAABQAyAGkMAAAFADQAawwAAAUAGQBqDAAABQATAGwMAAAEABQAbQwAAAEAGADqDAAABQAtAAEABwlHDsBJAF4BB2gMAAAFADIAaQwAAAUANABrDAAABQAZAGoMAAAFABMAbAwAAAQAFABtDAAAAQAYAOoMAAAFAC0AAAA=.',},}
+local lookup = {'Priest-Shadow','DeathKnight-Unholy',}
+local provider = {region='US',realm='ArgentDawn',name='US',type='subscribers',zone=46,date='2026-05-10',data={Ra='Ramcco:BAEBLgAECn8VAAIBAAYJxxtmFwCQAQZoDAAABQBHAGkMAAAEAEMAawwAAAQAUQBqDAAAAgBTAGwMAAACAD4A6gwAAAQASQABAAYJxxtmFwCQAQZoDAAABQBHAGkMAAAEAEMAawwAAAQAUQBqDAAAAgBTAGwMAAACAD4A6gwAAAQASQAAAA==.',Wa='Wandorf:BAEBLgAECn8eAAICAAcJRw7UTQBeAQdoDAAABQAyAGkMAAAFADQAawwAAAUAGQBqDAAABQATAGwMAAAEABQAbQwAAAEAGADqDAAABQAtAAIABwlHDtRNAF4BB2gMAAAFADIAaQwAAAUANABrDAAABQAZAGoMAAAFABMAbAwAAAQAFABtDAAAAQAYAOoMAAAFAC0AAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

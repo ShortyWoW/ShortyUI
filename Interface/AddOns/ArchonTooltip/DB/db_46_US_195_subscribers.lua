@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Shadow','Warrior-Arms','Unknown-Unknown',}
-local provider = {region='US',realm='SilverHand',name='US',type='subscribers',zone=46,date='2026-05-08',data={Bo='Borodemonin:BAEALgAECgYJDgABLgAFFAMJCAABAAQlAA==.',Da='Dakra:BAEBLgAECn8fAAICAAgJshoTBQArAghoDAAABABMAGkMAAAEAE0AawwAAAUAQgBqDAAABQBbAGwMAAAEAEcAbQwAAAIALQDqDAAABABZAG4MAAADADEAAgAICbIaEwUAKwIIaAwAAAQATABpDAAABABNAGsMAAAFAEIAagwAAAUAWwBsDAAABABHAG0MAAACAC0A6gwAAAQAWQBuDAAAAwAxAAAA.',Rh='Rhintalle:BAEALgADCgIJAgABLgAECgMJBwADAAAAAA==.',Ta='Tashlaraz:BAEALgAECgMJBwAAAA==.',},}
+local provider = {region='US',realm='SilverHand',name='US',type='subscribers',zone=46,date='2026-05-10',data={Bo='Borodemonin:BAEALgAECgYJDgABLgAFFAMJCAABAAQlAA==.',Da='Dakra:BAEBLgAECn8fAAICAAgJshqdBQAlAghoDAAABABMAGkMAAAEAE0AawwAAAUAQgBqDAAABQBbAGwMAAAEAEcAbQwAAAIALQDqDAAABABZAG4MAAADADEAAgAICbIanQUAJQIIaAwAAAQATABpDAAABABNAGsMAAAFAEIAagwAAAUAWwBsDAAABABHAG0MAAACAC0A6gwAAAQAWQBuDAAAAwAxAAAA.',Rh='Rhintalle:BAEALgADCgUJBwABLgAECgMJBwADAAAAAA==.',Ta='Tashlaraz:BAEALgAECgMJBwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

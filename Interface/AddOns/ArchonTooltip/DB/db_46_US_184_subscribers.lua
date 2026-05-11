@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Blood','Warlock-Affliction','Unknown-Unknown',}
-local provider = {region='US',realm='ScarletCrusade',name='US',type='subscribers',zone=46,date='2026-05-08',data={Ak='Akinira:BAEBLgAECn80AAIBAAkJOx5WBAB2AgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwABAAkJOx5WBAB2AgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwAAAA==.',Ma='Magdalene:BAEALgAECgQJBQABLgAFFAQJCQACAB4MAA==.',Ra='Ramhadin:BAEALgAECgMJBAABLgAECgYJEQADAAAAAA==.',},}
+local lookup = {'DeathKnight-Blood','Warlock-Affliction','Priest-Shadow',}
+local provider = {region='US',realm='ScarletCrusade',name='US',type='subscribers',zone=46,date='2026-05-10',data={Ak='Akinira:BAEBLgAECn80AAIBAAkJOx7RBAB0AgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwABAAkJOx7RBAB0AgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwAAAA==.',Ma='Magdalene:BAEALgAECgQJBQABLgAFFAQJCQACAB4MAA==.',Ra='Ramhadin:BAEALgAECgMJBAABLgAECgYJFQADAMcbAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

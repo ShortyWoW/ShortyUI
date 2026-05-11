@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DemonHunter-Devourer',}
-local provider = {region='US',realm='Lethon',name='US',type='subscribers',zone=46,date='2026-05-08',data={Cr='Crash:BAEALgAECgEJAQABLgAFFAQJCAABAJ8ZAA==.',},}
+local provider = {region='US',realm='Lethon',name='US',type='subscribers',zone=46,date='2026-05-10',data={Cr='Crash:BAEALgAECgEJAQABLgAFFAQJCwABAJ8ZAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

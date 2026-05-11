@@ -9,18 +9,20 @@ SimulationCraftDB = {
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Rndylikehoof - Dalaran"] = "Rndylikehoof - Dalaran",
+["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
 ["Shortbreath - Area 52"] = "Shortbreath - Area 52",
 ["Randuhrr - Dalaran"] = "Randuhrr - Dalaran",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
-["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
-["Randysmells - Dalaran"] = "Randysmells - Dalaran",
 ["Shortonheals - Area 52"] = "Shortonheals - Area 52",
+["Randysmells - Dalaran"] = "Randysmells - Dalaran",
 ["Udderstorm - Mal'Ganis"] = "Udderstorm - Mal'Ganis",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Medimilk - Mal'Ganis"] = "Medimilk - Mal'Ganis",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
-["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshorte - Area 52"] = "Callmeshorte - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
@@ -48,7 +50,11 @@ SimulationCraftDB = {
 },
 ["Shortbowjob - Area 52"] = {
 },
+["Shortlight - Illidan"] = {
+},
 ["Rndylikehoof - Dalaran"] = {
+},
+["Chugmonk - Mal'Ganis"] = {
 },
 ["Shortbreath - Area 52"] = {
 },
@@ -56,13 +62,16 @@ SimulationCraftDB = {
 },
 ["Drewis24EEA3 - Illidan"] = {
 },
-["Chugmonk - Mal'Ganis"] = {
+["Shortonheals - Area 52"] = {
 },
 ["Randysmells - Dalaran"] = {
 },
-["Shortonheals - Area 52"] = {
-},
 ["Udderstorm - Mal'Ganis"] = {
+},
+["Shortybear - Illidan"] = {
+["minimap"] = {
+["hide"] = true,
+},
 },
 ["Medimilk - Mal'Ganis"] = {
 },
@@ -71,15 +80,12 @@ SimulationCraftDB = {
 ["hide"] = true,
 },
 },
-["Shortybear - Illidan"] = {
-["minimap"] = {
-["hide"] = true,
-},
-},
 ["Callmeshorty - Illidan"] = {
 ["minimap"] = {
 ["hide"] = true,
 },
+},
+["Shortlite - Illidan"] = {
 },
 ["Shortytest - Illidan"] = {
 },

@@ -138,7 +138,6 @@ do
 							db.blizzTimeline = value
 							if value then
 								C_CVar.SetCVar("encounterTimelineEnabled", "1")
-								C_UI.Reload()
 							end
 							C_UI.Reload()
 						end,

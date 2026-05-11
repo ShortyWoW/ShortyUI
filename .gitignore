@@ -5,6 +5,16 @@ OLD*/
 Errors/
 GPUCache/
 
+# Blizzard cache noise
+*/cache.md5
+*/layout-local.txt
+*/chat-cache.txt
+*/config-cache.*
+*/bindings-cache.*
+*/edit-mode-cache-*
+*/flagged-cache-*
+*/tts-cache-*
+
 # Logs folder containing files we don't want to back up.
 Logs/BlizzardBrowser
 Logs/AccountData.log
@@ -37,6 +47,7 @@ Logs/
 Screenshots/
 
 # RaiderIO updates their Database every day, we do NOT want to store this 135mb+ file.
+Interface/AddOns/RaiderIO_*
 Interface/AddOns/RaiderIO/db
 Interface/AddOns/RaiderIO/db/*
 Interface/AddOns/guess/
@@ -49,6 +60,11 @@ Interface/AddOns/guess/
 
 # DLL Files
 *.dll
+
+# Temporary / cache junk
+*.tmp
+*.log
+*.old
 
 # EXE Files
 Wow.exe

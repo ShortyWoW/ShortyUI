@@ -418,7 +418,7 @@ BigWigs:AddColors("Ranjit", {
 	[153757] = "yellow",
 	[156793] = "orange",
 	[165731] = {"blue","yellow"},
-	[1252690] = "red",
+	[1252690] = {"blue","red"},
 	[1258152] = "red",
 })
 

@@ -1,7 +1,9 @@
 
 TomTomDB = {
 ["profileKeys"] = {
+["Shortytest - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortybear - Illidan"] = "Default",
@@ -9,27 +11,22 @@ TomTomDB = {
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
-["Callmeshortÿ - Moon Guard"] = "Default",
+["Shortlite - Illidan"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
-["Shortytest - Illidan"] = "Default",
-["Shortbeef - Vashj"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+["Callmeshortÿ - Moon Guard"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
 ["arrow"] = {
 ["position"] = {
-"TOP",
+"CENTER",
 nil,
-"TOP",
-2.999109745025635,
-0,
-},
-},
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
+"CENTER",
+28.99972915649414,
+123.0002899169922,
 },
 },
 ["block"] = {
@@ -41,13 +38,20 @@ nil,
 175.0008544921875,
 },
 },
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
+},
+},
 },
 },
 }
 TomTomWaypoints = nil
 TomTomWaypointsM = {
 ["profileKeys"] = {
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
@@ -55,15 +59,19 @@ TomTomWaypointsM = {
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
-["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
-["Shortbeef - Vashj"] = "Shortbeef - Vashj",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
+["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 },
 ["profiles"] = {
+["Shortytest - Illidan"] = {
+},
 ["Callmeshorty - Dalaran"] = {
+},
+["Shortlight - Illidan"] = {
 },
 ["Callmeshorty - Illidan"] = {
 },
@@ -79,17 +87,47 @@ TomTomWaypointsM = {
 },
 ["Drewishlaser - Dalaran"] = {
 },
-["Callmeshortÿ - Moon Guard"] = {
+["Shortlite - Illidan"] = {
+[862] = {
+["862:511200000:477800000:Old Merchant Road"] = {
+862,
+0.5112,
+0.4778,
+["arrivaldistance"] = 15,
+["crazy"] = true,
+["persistent"] = true,
+["minimap"] = true,
+["cleardistance"] = 0,
+["title"] = "Old Merchant Road",
+["from"] = "Dystinct Earthen Skyriding",
+["callbacks"] = {
+["distance"] = {
+[15] = nil --[[ skipped inline function ]],
+},
+["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+},
+["world"] = true,
+},
+},
 },
 ["Shortbowjob - Area 52"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },
-["Shortytest - Illidan"] = {
+["Drewis24EEA3 - Illidan"] = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Drewis24EEA3 - Illidan"] = {
+["Callmeshortÿ - Moon Guard"] = {
 },
 },
 }

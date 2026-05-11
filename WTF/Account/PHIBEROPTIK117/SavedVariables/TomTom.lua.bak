@@ -1,7 +1,9 @@
 
 TomTomDB = {
 ["profileKeys"] = {
+["Shortlite - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortybear - Illidan"] = "Default",
@@ -10,7 +12,7 @@ TomTomDB = {
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
 ["Callmeshortÿ - Moon Guard"] = "Default",
-["Shortbowjob - Area 52"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
@@ -27,6 +29,11 @@ nil,
 0,
 },
 },
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
+},
+},
 ["block"] = {
 ["position"] = {
 "BOTTOM",
@@ -36,18 +43,15 @@ nil,
 175.0008544921875,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 },
 },
 }
 TomTomWaypoints = nil
 TomTomWaypointsM = {
 ["profileKeys"] = {
+["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
@@ -56,14 +60,18 @@ TomTomWaypointsM = {
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 },
 ["profiles"] = {
+["Shortlite - Illidan"] = {
+},
 ["Callmeshorty - Dalaran"] = {
+},
+["Shortbowjob - Area 52"] = {
 },
 ["Callmeshorty - Illidan"] = {
 },
@@ -81,7 +89,7 @@ TomTomWaypointsM = {
 },
 ["Callmeshortÿ - Moon Guard"] = {
 },
-["Shortbowjob - Area 52"] = {
+["Shortlight - Illidan"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },

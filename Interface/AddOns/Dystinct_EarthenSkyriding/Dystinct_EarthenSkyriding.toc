@@ -1,0 +1,51 @@
+## Interface: 120000, 120001
+## Title: Dystinct Earthen Skyriding
+## Notes: For leveling through exploration experience
+## Author: Dyst
+## Version: 2.8.0
+## SavedVariables: PersistentData
+## Dependencies: 
+## OptionalDeps: TomTom, LibStub, LibBabble-SubZone-3.0
+## IconTexture: Interface\Icons\ability_dragonriding_upwardflap01
+## X-Embeds: LibBabble-SubZone-3.0
+
+Libs\LibSerialize.lua
+Libs\LibDeflate.lua
+
+Dystinct_EarthenSkyriding.xml
+Dystinct_EarthenSkyriding.lua
+
+Util\Default.lua
+Util\Dropdown.lua
+Util\Discovery.lua
+Util\ProcessRoutes.lua
+Util\FrameHelpers.lua
+Util\Triggers.lua
+Util\Waypoints.lua
+Util\Minimap.lua
+Util\WorldMapOverlay.lua
+Util\MinimapOverlay.lua
+Util\ImportExport.lua
+Util\Migration.lua
+
+Core\Main.lua
+Core\Announcement.lua
+Core\Log.lua
+Core\LogSelection.lua
+Core\LogViewer.lua
+Core\LogExport.lua
+Core\Note.lua
+Core\Routes.lua
+Core\RoutesDelete.lua
+Core\RoutesSegment.lua
+Core\RoutesSelection.lua
+Core\RoutesViewer.lua
+Core\RoutesExport.lua
+Core\RoutesConditional.lua
+Core\RoutesWaypoint.lua
+Core\Segment.lua
+Core\Settings.lua
+Core\GuidesData.lua
+Core\ReadmeData.lua
+Core\Guides.lua
+Core\Changelog.lua

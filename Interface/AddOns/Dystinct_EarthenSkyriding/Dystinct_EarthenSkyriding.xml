@@ -1,0 +1,238 @@
+ <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="DysES_Frame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true" inherits="ButtonFrameTemplateMinimizable">
+        <Size x="600" y="550"/>
+        <Anchors>
+        <Anchor point="CENTER"/>
+        </Anchors>
+        <Frames>
+            <Frame parentKey="PortraitOverlay" frameLevel="300" setAllPoints="true">
+                <Layers>
+                    <Layer level="BACKGROUND" textureSubLevel="1">
+                        <Texture parentKey="Portrait" file="Interface/Icons/ability_dragonriding_upwardflap01">
+                            <Size x="60" y="60"/>
+                            <Anchors>
+                                <Anchor point="TOPLEFT" x="-5" y="8" />
+                            </Anchors>
+                        </Texture>
+                        <MaskTexture parentKey="CircleMask" file="Interface\CharacterFrame\TempPortraitAlphaMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.Portrait"/>
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Portrait"/>
+                        </Anchors>
+                        <MaskedTextures>
+                            <MaskedTexture childKey="Portrait"/>
+                        </MaskedTextures>
+                        </MaskTexture>
+                    </Layer>
+                </Layers>
+            </Frame>
+
+            <Frame parentKey="SettingsFrame" frameLevel="300" setAllPoints="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-22" />
+                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="SegmentFrame" frameLevel="300" setAllPoints="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-22" />
+                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="RoutesFrame" frameLevel="300" setAllPoints="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-22" />
+                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="LogFrame" frameLevel="300" setAllPoints="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="5" y="-22" />
+                        <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                    </Anchors>
+            </Frame>
+            <Frame parentKey="GuidesFrame" frameLevel="300" setAllPoints="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-22" />
+                    <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+            </Frame>
+            
+            <Frame parentKey="SettingsTab" frameLevel="300" setAllPoints="true">
+                <Size x="32" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="-200" />
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture file="Interface\SpellBook\SpellBook-SkillLineTab">
+                        <Size x="64" y="64"/>
+                        <Anchors>
+                            <Anchor point="LEFT" x="0" y="-5" relativeKey="$parent" />
+                        </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="2">
+                        <Texture parentKey="Icon" file="Interface/Icons\inv_10_engineering_manufacturedparts_gear_frost">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="3">
+                        <Texture parentKey="Highlight" file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+            
+            <Frame parentKey="SegmentTab" frameLevel="299" setAllPoints="true">
+                <Size x="32" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="-50" />
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture file="Interface\SpellBook\SpellBook-SkillLineTab">
+                        <Size x="64" y="64"/>
+                        <Anchors>
+                            <Anchor point="LEFT" x="0" y="-5" relativeKey="$parent" />
+                        </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="1">
+                        <Texture parentKey="Icon" file="Interface/Icons\misc_arrowlup">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="3">
+                        <Texture parentKey="Highlight" file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+            
+            <Frame parentKey="RoutesTab" frameLevel="300" setAllPoints="true">
+                <Size x="32" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="-100" />
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture file="Interface\SpellBook\SpellBook-SkillLineTab">
+                        <Size x="64" y="64"/>
+                        <Anchors>
+                            <Anchor point="LEFT" x="0" y="-5" relativeKey="$parent" />
+                        </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="1">
+                        <Texture parentKey="Icon" file="Interface/Icons\inv_misc_map02">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="3">
+                        <Texture parentKey="Highlight" file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+            
+            <Frame parentKey="LogTab" frameLevel="300" setAllPoints="true">
+                <Size x="32" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="-150" />
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture file="Interface\SpellBook\SpellBook-SkillLineTab">
+                        <Size x="64" y="64"/>
+                        <Anchors>
+                            <Anchor point="LEFT" x="0" y="-5" relativeKey="$parent" />
+                        </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="1">
+                        <Texture parentKey="Icon" file="Interface/Icons\inv_misc_pocketwatch_02">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="3">
+                        <Texture parentKey="Highlight" file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+
+            <Frame parentKey="GuidesTab" frameLevel="300" setAllPoints="true">
+                <Size x="32" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="-250" />
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture file="Interface\SpellBook\SpellBook-SkillLineTab">
+                        <Size x="64" y="64"/>
+                        <Anchors>
+                            <Anchor point="LEFT" x="0" y="-5" relativeKey="$parent" />
+                        </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="1">
+                        <Texture parentKey="Icon" file="Interface/Icons/inv_misc_book_09">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="ARTWORK" textureSubLevel="3">
+                        <Texture parentKey="Highlight" file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD">
+                            <TexCoords left="0.0725" right="0.9275" top="0.0725" bottom="0.9275"/>
+                            <Size x="34" y="34"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeKey="$parent" relativePoint="CENTER" x="2.5" y="0" />
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+    </Frame>
+ </Ui>

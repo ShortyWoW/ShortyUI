@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Discipline','Priest-Holy',}
-local provider = {region='US',realm='ShadowCouncil',name='US',type='subscribers',zone=46,date='2026-05-08',data={Re='Reldarus:BAEBLgAECn8fAAMBAAgJ9SGgAgAdAwhoDAAABQBQAGkMAAAFAFsAawwAAAUAWQBqDAAAAwBgAGwMAAADAFUAbQwAAAIAWwDqDAAABQBTAG4MAAADAE0AAQAICfUhoAIAHQMIaAwAAAMAUABpDAAAAwBbAGsMAAADAFkAagwAAAMAYABsDAAAAwBVAG0MAAACAFsA6gwAAAIAUwBuDAAAAwBNAAIABAn6GvhEACUBBGgMAAACACQAaQwAAAIATwBrDAAAAgBOAOoMAAADAFEAAAA=.',},}
+local provider = {region='US',realm='ShadowCouncil',name='US',type='subscribers',zone=46,date='2026-05-10',data={Re='Reldarus:BAEBLgAECn8fAAMBAAgJ9SHZAgAbAwhoDAAABQBQAGkMAAAFAFsAawwAAAUAWQBqDAAAAwBgAGwMAAADAFUAbQwAAAIAWwDqDAAABQBTAG4MAAADAE0AAQAICfUh2QIAGwMIaAwAAAMAUABpDAAAAwBbAGsMAAADAFkAagwAAAMAYABsDAAAAwBVAG0MAAACAFsA6gwAAAIAUwBuDAAAAwBNAAIABAn6Gv1EACUBBGgMAAACACQAaQwAAAIATwBrDAAAAgBOAOoMAAADAFEAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

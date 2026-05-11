@@ -62,6 +62,13 @@ X: 16
 Y: -116
 W: 338
 H: 496
+Frame: CommunitiesFrame
+FrameLevel: 1
+Anchor: TOPLEFT
+X: 16
+Y: -116
+W: 814
+H: 426
 Frame: FriendsFrame
 FrameLevel: 1
 Anchor: TOPLEFT
@@ -76,10 +83,3 @@ X: -4
 Y: 130
 W: 268
 H: 94
-Frame: CommunitiesFrame
-FrameLevel: 1
-Anchor: TOPLEFT
-X: 16
-Y: -116
-W: 814
-H: 426

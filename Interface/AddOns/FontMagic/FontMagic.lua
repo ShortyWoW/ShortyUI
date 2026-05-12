@@ -1078,10 +1078,10 @@ local function ApplyCombatTextFontPath(path)
         TrySetFontObjectFont(def.name, obj, def.defaultSize)
     end
 
-    local function ApplyNiceDamageCompatFontObjects()
-        -- NiceDamage reliably drives outline changes through this narrower set of
-        -- Blizzard combat-text font objects. Re-apply them here as a compatibility
-        -- pass without replacing FontMagic's wider cross-version coverage.
+    local function ApplyNarrowCombatTextFontObjects()
+        -- Some clients and UI addons drive outline/font changes through this
+        -- narrower set of Blizzard combat-text FontObjects. Re-apply them here
+        -- without replacing FontMagic's wider cross-version coverage.
         local compatFlags, fallbackFlags = GetConfiguredCombatTextCompatFlags()
         local targets = {
             { name = "CombatTextFont",  defaultSize = 16 },
@@ -1171,7 +1171,7 @@ local function ApplyCombatTextFontPath(path)
     ApplyToFrameFontStrings("CombatText")
     ApplyToFrameFontStrings("CombatTextFrame")
     ApplyToFrameFontStrings("FloatingCombatTextFrame")
-    ApplyNiceDamageCompatFontObjects()
+    ApplyNarrowCombatTextFontObjects()
 
     end)
     _G.FontMagicCombatTextApplying = false

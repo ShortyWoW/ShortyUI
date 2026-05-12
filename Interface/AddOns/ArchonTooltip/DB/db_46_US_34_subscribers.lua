@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Mage-Frost','Paladin-Holy','Paladin-Retribution',}
-local provider = {region='US',realm='BlackwaterRaiders',name='US',type='subscribers',zone=46,date='2026-05-10',data={De='Delicious:BAEALgAFFAIJAgABLgAFFAYJFAABACYRAA==.',Ph='Phreeq:BAEALgAECgYJCgABLgAECgYJFAACAJYPAA==.Phrequency:BAEBLgAECn8UAAMCAAYJlg9lKgBHAQZoDAAABAAgAGkMAAAEAC4AawwAAAQAEwBqDAAAAgAgAGwMAAABACcA6gwAAAUARgACAAYJlg9lKgBHAQZoDAAAAQAgAGkMAAABAC4AawwAAAEAEwBqDAAAAgAgAGwMAAABACcA6gwAAAQARgADAAQJzRPeoQC6AARoDAAAAwAxAGkMAAADAC0AawwAAAMAPgDqDAAAAQAtAAAA.',},}
+local provider = {region='US',realm='BlackwaterRaiders',name='US',type='subscribers',zone=46,date='2026-05-11',data={De='Delicious:BAEALgAFFAIJAgABLgAFFAYJFAABACYRAA==.',El='Elenestern:BAEALgAECggJEwAAAA==.',Ph='Phreeq:BAEALgAECgYJCgABLgAECgYJFAACAJYPAA==.Phrequency:BAEBLgAECn8UAAMCAAYJlg82LAA+AQZoDAAABAAgAGkMAAAEAC4AawwAAAQAEwBqDAAAAgAgAGwMAAABACcA6gwAAAUARgACAAYJlg82LAA+AQZoDAAAAQAgAGkMAAABAC4AawwAAAEAEwBqDAAAAgAgAGwMAAABACcA6gwAAAQARgADAAQJzRN+pwC4AARoDAAAAwAxAGkMAAADAC0AawwAAAMAPgDqDAAAAQAtAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

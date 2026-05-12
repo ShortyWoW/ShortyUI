@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-BeastMastery','Hunter-Marksmanship',}
-local provider = {region='US',realm='Bladefist',name='US',type='subscribers',zone=46,date='2026-05-10',data={Ni='Nicked:BAECLgAFFH8MAAIBAAUJVBjtFgBLAQVoDAAABABJAGkMAAABAFUAawwAAAIANgBqDAAAAQARAOoMAAAEACQAAQAFCVQY7RYASwEFaAwAAAQASQBpDAAAAQBVAGsMAAACADYAagwAAAEAEQDqDAAABAAkAC4ABAp/IwADAQAJCawfnA4AxgIAAQAJCawfnA4AxgIAAgAECXQGUWkAmQAAAAA=.',},}
+local provider = {region='US',realm='Bladefist',name='US',type='subscribers',zone=46,date='2026-05-11',data={Ni='Nicked:BAECLgAFFH8MAAIBAAUJVBhkGABFAQVoDAAABABJAGkMAAABAFUAawwAAAIANgBqDAAAAQARAOoMAAAEACQAAQAFCVQYZBgARQEFaAwAAAQASQBpDAAAAQBVAGsMAAACADYAagwAAAEAEQDqDAAABAAkAC4ABAp/IwADAQAJCawfmg4AxgIAAQAJCawfmg4AxgIAAgAECXQGUWkAmQAAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

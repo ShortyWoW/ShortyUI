@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Rogue-Subtlety','Rogue-Assassination','Unknown-Unknown',}
-local provider = {region='US',realm='Onyxia',name='US',type='subscribers',zone=46,date='2026-05-10',data={Za='Zangyaku:BAEALgAECggJEQAAAA==.Zanmetsu:BAEBLgAECn8ZAAMBAAcJrRyMGABDAgdoDAAABABLAGkMAAAEAFoAawwAAAQATgBqDAAABABDAGwMAAAEAFEAbQwAAAIAJwDqDAAAAwBKAAEABwmtHIwYAEMCB2gMAAAEAEsAaQwAAAQAWgBrDAAABABOAGoMAAAEAEMAbAwAAAMAUQBtDAAAAgAnAOoMAAADAEoAAgABCY4M6h4AOAABbAwAAAEAIAABLgAECggJEQADAAAAAA==.',},}
+local lookup = {'DeathKnight-Blood','Rogue-Subtlety','Rogue-Assassination',}
+local provider = {region='US',realm='Onyxia',name='US',type='subscribers',zone=46,date='2026-05-11',data={Za='Zangyaku:BAEBLgAECn8ZAAIBAAgJWyUTAgDwAghoDAAAAwBhAGkMAAADAFwAawwAAAMAYQBqDAAAAwBhAGwMAAACAF0AbQwAAAMAYgDqDAAABABaAG4MAAAEAGMAAQAICVslEwIA8AIIaAwAAAMAYQBpDAAAAwBcAGsMAAADAGEAagwAAAMAYQBsDAAAAgBdAG0MAAADAGIA6gwAAAQAWgBuDAAABABjAAAA.Zanmetsu:BAEBLgAECn8ZAAMCAAcJrRyMGABDAgdoDAAABABLAGkMAAAEAFoAawwAAAQATgBqDAAABABDAGwMAAAEAFEAbQwAAAIAJwDqDAAAAwBKAAIABwmtHIwYAEMCB2gMAAAEAEsAaQwAAAQAWgBrDAAABABOAGoMAAAEAEMAbAwAAAMAUQBtDAAAAgAnAOoMAAADAEoAAwABCY4M6h4AOAABbAwAAAEAIAABLgAECggJGQABAFslAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

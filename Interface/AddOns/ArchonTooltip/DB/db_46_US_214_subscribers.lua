@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Frost','DemonHunter-Devourer',}
-local provider = {region='US',realm='TheForgottenCoast',name='US',type='subscribers',zone=46,date='2026-05-10',data={As='Aspir:BAEALgAECgcJEwABLgAFFAQJCwABAD8cAA==.',['Fú']='Fúsion:BAEALgAECgMJBQABLgAECgkJMwACAHYiAA==.',},}
+local provider = {region='US',realm='TheForgottenCoast',name='US',type='subscribers',zone=46,date='2026-05-11',data={As='Aspir:BAEALgAECgcJEwABLgAFFAQJCwABAD8cAA==.',['Fú']='Fúsion:BAEALgAECgMJBQABLgAECgkJMwACAHYiAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

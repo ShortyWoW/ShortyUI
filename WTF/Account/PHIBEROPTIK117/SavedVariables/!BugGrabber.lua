@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
+["session"] = 21,
 ["lastSanitation"] = 3,
-["session"] = 18,
 ["errors"] = {
 {
 ["message"] = ".../ElvUI/Game/Shared/Modules/Nameplates/Nameplates.lua:819: attempt to index field 'RaisedElement' (a nil value)",

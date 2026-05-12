@@ -3,7 +3,7 @@ TomTomDB = {
 ["profileKeys"] = {
 ["Callmeshortÿ - Moon Guard"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
-["Shortbowjob - Area 52"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortybear - Illidan"] = "Default",
@@ -12,7 +12,7 @@ TomTomDB = {
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
 ["Shortytest - Illidan"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
@@ -29,11 +29,6 @@ nil,
 123.0002899169922,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 ["block"] = {
 ["position"] = {
 "BOTTOM",
@@ -41,6 +36,11 @@ nil,
 "BOTTOM",
 10.00003242492676,
 175.0008544921875,
+},
+},
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
 },
 },
 },
@@ -51,7 +51,7 @@ TomTomWaypointsM = {
 ["profileKeys"] = {
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
@@ -60,7 +60,7 @@ TomTomWaypointsM = {
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
@@ -71,7 +71,7 @@ TomTomWaypointsM = {
 },
 ["Callmeshorty - Dalaran"] = {
 },
-["Shortbowjob - Area 52"] = {
+["Shortlight - Illidan"] = {
 },
 ["Callmeshorty - Illidan"] = {
 },
@@ -89,7 +89,7 @@ TomTomWaypointsM = {
 },
 ["Shortytest - Illidan"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Area 52"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },
@@ -113,9 +113,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["world"] = true,

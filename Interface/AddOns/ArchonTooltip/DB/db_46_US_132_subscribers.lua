@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown','Monk-Brewmaster','Paladin-Holy',}
-local provider = {region='US',realm="Khaz'goroth",name='US',type='subscribers',zone=46,date='2026-05-11',data={Ev='Evistrianza:BAEALgADCgcJDgABLgAECgYJEwABAAAAAA==.',Ho='Holychi:BAECLgAFFH8WAAICAAQJ7B7XCQB3AQRoDAAACABaAGkMAAAGAFIAawwAAAIANQDqDAAABgBaAAIABAnsHtcJAHcBBGgMAAAIAFoAaQwAAAYAUgBrDAAAAgA1AOoMAAAGAFoALgAECn9UAAICAAkJ/CTaAABKAwACAAkJ/CTaAABKAwAAAA==.',Ka='Kandris:BAEALgAECgEJAQAAAA==.',Sc='Scaryheäls:BAEBLgAECn82AAIDAAgJdyZsAwAWAwhoDAAACQBjAGkMAAAJAGMAawwAAAkAYwBqDAAABwBjAGwMAAAHAGMAbQwAAAEAYwDqDAAACwBjAG4MAAABAFsAAwAICXcmbAMAFgMIaAwAAAkAYwBpDAAACQBjAGsMAAAJAGMAagwAAAcAYwBsDAAABwBjAG0MAAABAGMA6gwAAAsAYwBuDAAAAQBbAAAA.',},}
+local lookup = {'Monk-Windwalker','Monk-Brewmaster','Paladin-Holy',}
+local provider = {region='US',realm="Khaz'goroth",name='US',type='subscribers',zone=46,date='2026-05-12',data={Ev='Evistrianza:BAEALgADCgcJDgABLgAECgcJFAABAFoUAA==.',Ho='Holychi:BAECLgAFFH8WAAICAAQJ7B4/CgB2AQRoDAAACABaAGkMAAAGAFIAawwAAAIANQDqDAAABgBaAAIABAnsHj8KAHYBBGgMAAAIAFoAaQwAAAYAUgBrDAAAAgA1AOoMAAAGAFoALgAECn9UAAICAAkJ/CTiAABKAwACAAkJ/CTiAABKAwAAAA==.',Ka='Kandris:BAEALgAECgEJAQAAAA==.',Sc='Scaryheäls:BAEBLgAECn82AAIDAAgJdyYhAQB+AwhoDAAACQBjAGkMAAAJAGMAawwAAAkAYwBqDAAABwBjAGwMAAAHAGMAbQwAAAEAYwDqDAAACwBjAG4MAAABAFsAAwAICXcmIQEAfgMIaAwAAAkAYwBpDAAACQBjAGsMAAAJAGMAagwAAAcAYwBsDAAABwBjAG0MAAABAGMA6gwAAAsAYwBuDAAAAQBbAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

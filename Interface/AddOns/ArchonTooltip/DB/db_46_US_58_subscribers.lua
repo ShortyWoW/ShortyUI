@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Guardian','Paladin-Retribution','Priest-Discipline',}
-local provider = {region='US',realm='Dalvengyr',name='US',type='subscribers',zone=46,date='2026-05-11',data={Ad='Addiegate:BAEALgAECgQJBwABLgAFFAcJGwABAMwjAA==.',Ra='Ratribution:BAEBLgAECn8XAAICAAkJFB+HCADaAgloDAAABABNAGkMAAAFAFQAawwAAAQAUQBqDAAAAQAHAGwMAAACAGEAbQwAAAEAXwDqDAAABAA4AG4MAAABAD0AbwwAAAEAUQACAAkJFB+HCADaAgloDAAABABNAGkMAAAFAFQAawwAAAQAUQBqDAAAAQAHAGwMAAACAGEAbQwAAAEAXwDqDAAABAA4AG4MAAABAD0AbwwAAAEAUQABLgAFFAYJEgADAFweAA==.',},}
+local provider = {region='US',realm='Dalvengyr',name='US',type='subscribers',zone=46,date='2026-05-12',data={Ad='Addiegate:BAEALgAECgQJBwABLgAFFAcJGwABAMwjAA==.',Ra='Ratribution:BAEBLgAECn8jAAICAAkJ5SFWBAAfAwloDAAABgBNAGkMAAAHAF0AawwAAAYAWgBqDAAAAwBaAGwMAAAEAGEAbQwAAAEAXwDqDAAABgBgAG4MAAABAD0AbwwAAAEAUQACAAkJ5SFWBAAfAwloDAAABgBNAGkMAAAHAF0AawwAAAYAWgBqDAAAAwBaAGwMAAAEAGEAbQwAAAEAXwDqDAAABgBgAG4MAAABAD0AbwwAAAEAUQABLgAFFAYJEgADAFweAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -5,17 +5,18 @@ KeystonePolarisDB = {
 ["Drewis24EEA3 - Illidan"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
-["Callmeshorty - Dalaran"] = "Default",
-["Drewishlaser - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",
+["Drewishlaser - Dalaran"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortlight - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Callmeshorty - Dalaran"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
+["lastSeasonCheck"] = "2026-03-26",
 ["general"] = {
 ["mobPercentagesMigrationVersion"] = "3.8",
 ["showMinimapIcon"] = false,
@@ -26,7 +27,6 @@ KeystonePolarisDB = {
 ["hide"] = true,
 },
 },
-["lastSeasonCheck"] = "2026-03-26",
 },
 },
 }

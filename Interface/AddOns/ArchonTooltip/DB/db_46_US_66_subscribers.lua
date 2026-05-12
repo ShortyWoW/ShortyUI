@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warrior-Protection','Mage-Frost',}
-local provider = {region='US',realm='Dentarg',name='US',type='subscribers',zone=46,date='2026-05-11',data={Ag='Aggathon:BAEBLgAECn8bAAIBAAgJBAzfEwA4AQhoDAAABQA2AGkMAAAEACoAawwAAAQAHwBqDAAABAAlAGwMAAADACEAbQwAAAIADgDqDAAABAAgAG4MAAABAAYAAQAICQQM3xMAOAEIaAwAAAUANgBpDAAABAAqAGsMAAAEAB8AagwAAAQAJQBsDAAAAwAhAG0MAAACAA4A6gwAAAQAIABuDAAAAQAGAAAA.',Gr='Griever:BAEALgAECgUJDAAAAA==.',Sp='Splashmountn:BAEALgAECgEJAQABLgAECgYJFAACAFMkAA==.',},}
+local lookup = {'Warrior-Protection','Warlock-Demonology','Warlock-Destruction','Warlock-Affliction',}
+local provider = {region='US',realm='Dentarg',name='US',type='subscribers',zone=46,date='2026-05-12',data={Ag='Aggathon:BAEBLgAECn8bAAIBAAgJBAyQFAAvAQhoDAAABQA2AGkMAAAEACoAawwAAAQAHwBqDAAABAAlAGwMAAADACEAbQwAAAIADgDqDAAABAAgAG4MAAABAAYAAQAICQQMkBQALwEIaAwAAAUANgBpDAAABAAqAGsMAAAEAB8AagwAAAQAJQBsDAAAAwAhAG0MAAACAA4A6gwAAAQAIABuDAAAAQAGAAAA.',Gr='Griever:BAEBLgAECn8YAAQCAAYJMRuiWwArAQZoDAAABQBPAGkMAAAEADsAawwAAAQAQgBqDAAAAwBRAGwMAAACAE0A6gwAAAYAQAACAAUJgxmiWwArAQVoDAAABQBPAGkMAAACADsAawwAAAEAOQBqDAAAAQBRAOoMAAAGAEAAAwADCTIcgxYAqAADawwAAAMAQgBqDAAAAgBGAGwMAAACAE0ABAABCUYVNxoAQgABaQwAAAIANgAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

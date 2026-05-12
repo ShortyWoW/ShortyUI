@@ -1,10 +1,5 @@
 
 LuckyoneDB = {
-["global"] = {
-["install_version"] = 4.12,
-["DebugDisabledAddOns"] = {
-},
-},
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Cyword - Area 52"] = "Default",
@@ -16,24 +11,29 @@ LuckyoneDB = {
 ["Shortbowjob - Area 52"] = "Default",
 ["Shortlight - Illidan"] = "Default",
 ["Rndylikehoof - Dalaran"] = "Default",
-["Shortonheals - Area 52"] = "Default",
+["Chugmonk - Mal'Ganis"] = "Default",
 ["Shortbreath - Area 52"] = "Default",
 ["Randuhrr - Dalaran"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
-["Chugmonk - Mal'Ganis"] = "Default",
+["Shortonheals - Area 52"] = "Default",
 ["Randysmells - Dalaran"] = "Default",
-["Shortybear - Illidan"] = "Default",
 ["Udderstorm - Mal'Ganis"] = "Default",
+["Shortybear - Illidan"] = "Default",
 ["Medimilk - Mal'Ganis"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
-["Callmeshorte - Area 52"] = "Default",
 ["Shortlite - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
+["Callmeshorte - Area 52"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortlite - Dalaran"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
 ["Lildotnrg - Stormrage"] = "Default",
+},
+["global"] = {
+["install_version"] = 4.12,
+["DebugDisabledAddOns"] = {
+},
 },
 ["profiles"] = {
 ["Default"] = {

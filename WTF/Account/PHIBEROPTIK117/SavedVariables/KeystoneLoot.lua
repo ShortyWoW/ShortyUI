@@ -1,13 +1,14 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
+["version"] = 5,
 ["settings"] = {
 ["highlighting"] = {
-["versatility"] = true,
-["crit"] = true,
 ["mastery"] = true,
-["haste"] = true,
 ["comboMode"] = false,
+["versatility"] = true,
+["haste"] = true,
+["crit"] = true,
 ["noStats"] = true,
 },
 ["keystoneTooltip"] = true,
@@ -23,7 +24,6 @@ KeystoneLootDB = {
 ["degrees"] = 195,
 },
 },
-["version"] = 5,
 ["favorites"] = {
 ["Illidan-Shortlight-2"] = {
 },

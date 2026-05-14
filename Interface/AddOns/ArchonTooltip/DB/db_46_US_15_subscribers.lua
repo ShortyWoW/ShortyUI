@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warlock-Destruction','Druid-Feral',}
-local provider = {region='US',realm='Anvilmar',name='US',type='subscribers',zone=46,date='2026-05-12',data={Do='Donzilch:BAEALgAECgQJBAAAAA==.',Il='Illyríá:BAEALgAFFAIJAgABLgAECggJHgABAJwYAA==.',Wa='Waghoba:BAECLgAFFH8VAAICAAUJMxhKAgBwAQVoDAAABwBPAGkMAAAGAE8AawwAAAMAJQBqDAAAAgAlAOoMAAADADIAAgAFCTMYSgIAcAEFaAwAAAcATwBpDAAABgBPAGsMAAADACUAagwAAAIAJQDqDAAAAwAyAC4ABAp/IAACAgAICSQhJwYAnAIAAgAICSQhJwYAnAIAAAA=.',},}
+local provider = {region='US',realm='Anvilmar',name='US',type='subscribers',zone=46,date='2026-05-13',data={Do='Donzilch:BAEALgAECgQJBAAAAA==.',Il='Illyríá:BAEALgAFFAIJAgABLgAECggJHgABAJwYAA==.',Wa='Waghoba:BAECLgAFFH8aAAICAAUJ2hk6AgByAQVoDAAACABPAGkMAAAHAE8AawwAAAQAJQBqDAAAAwA0AOoMAAAEAEMAAgAFCdoZOgIAcgEFaAwAAAgATwBpDAAABwBPAGsMAAAEACUAagwAAAMANADqDAAABABDAC4ABAp/IAACAgAICSQhJwYAnAIAAgAICSQhJwYAnAIAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

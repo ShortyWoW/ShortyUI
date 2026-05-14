@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Mage-Frost',}
-local provider = {region='US',realm='Smolderthorn',name='US',type='subscribers',zone=46,date='2026-05-12',data={Ba='Barkknight:BAEALgAECggJAwABLgAECggJFQABADsIAA==.',Li='Liari:BAEBLgAECn8VAAIBAAgJOwgXdAA7AQhoDAAAAwAOAGkMAAADAB0AawwAAAMAFABqDAAAAwAPAGwMAAACAAsAbQwAAAIAFgDqDAAABAAdAG4MAAABABMAAQAICTsIF3QAOwEIaAwAAAMADgBpDAAAAwAdAGsMAAADABQAagwAAAMADwBsDAAAAgALAG0MAAACABYA6gwAAAQAHQBuDAAAAQATAAAA.',},}
+local lookup = {'Paladin-Retribution','Mage-Frost',}
+local provider = {region='US',realm='Smolderthorn',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ba='Barkknight:BAEALgAECggJAwABLgAFFAIJBgABABsLAA==.',Li='Liari:BAEBLgAECn8VAAICAAgJOwhMdwA1AQhoDAAAAwAOAGkMAAADAB0AawwAAAMAFABqDAAAAwAPAGwMAAACAAsAbQwAAAIAFgDqDAAABAAdAG4MAAABABMAAgAICTsITHcANQEIaAwAAAMADgBpDAAAAwAdAGsMAAADABQAagwAAAMADwBsDAAAAgALAG0MAAACABYA6gwAAAQAHQBuDAAAAQATAAEuAAUUAgkGAAEAGwsA.',},}
 provider.parse = parse
 
 local rawData = provider.data

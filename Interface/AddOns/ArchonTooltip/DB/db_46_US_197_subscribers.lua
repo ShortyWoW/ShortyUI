@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Mistweaver',}
-local provider = {region='US',realm='SistersofElune',name='US',type='subscribers',zone=46,date='2026-05-12',data={Ka='Kardai:BAEALgAECgYJEwAAAA==.',Ri='Rin:BAEBLgAECn8eAAIBAAgJhB8wBwCgAghoDAAABQBSAGkMAAAFAFAAawwAAAUAUABqDAAABABUAGwMAAADAE4AbQwAAAEARADqDAAABABgAG4MAAADAEkAAQAICYQfMAcAoAIIaAwAAAUAUgBpDAAABQBQAGsMAAAFAFAAagwAAAQAVABsDAAAAwBOAG0MAAABAEQA6gwAAAQAYABuDAAAAwBJAAAA.',},}
+local provider = {region='US',realm='SistersofElune',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ka='Kardai:BAEALgAECgYJEwAAAA==.',Ri='Rin:BAEBLgAECn8eAAIBAAgJhB/ABwCcAghoDAAABQBSAGkMAAAFAFAAawwAAAUAUABqDAAABABUAGwMAAADAE4AbQwAAAEARADqDAAABABgAG4MAAADAEkAAQAICYQfwAcAnAIIaAwAAAUAUgBpDAAABQBQAGsMAAAFAFAAagwAAAQAVABsDAAAAwBOAG0MAAABAEQA6gwAAAQAYABuDAAAAwBJAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

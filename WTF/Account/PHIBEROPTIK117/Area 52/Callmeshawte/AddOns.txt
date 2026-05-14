@@ -60,3 +60,4 @@ ElvUI_Options: enabled
 BigWigs_MarchOnQuelDanas: enabled
 ShortyFalls: enabled
 BigWigs_MidnightWorld: enabled
+LittleWigs_Dragonflight: enabled

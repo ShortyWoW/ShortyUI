@@ -1,9 +1,9 @@
 
 LoggerHeadDB = {
 ["profileKeys"] = {
-["Callmeshortÿ - Moon Guard"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortybear - Illidan"] = "Default",
@@ -11,12 +11,12 @@ LoggerHeadDB = {
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
-["Shortytest - Illidan"] = "Default",
-["Shortbowjob - Area 52"] = "Default",
+["Shortlite - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlite - Illidan"] = "Default",
+["Callmeshortÿ - Moon Guard"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -94,11 +94,14 @@ true,
 [23] = true,
 [8] = true,
 },
+["Algeth'ar Academy"] = {
+[23] = true,
+[8] = true,
+},
 ["Gate of the Setting Sun"] = {
 [24] = false,
 },
-["Mogu'shan Palace"] = {
-[24] = false,
+["Upper Blackrock Spire"] = {
 },
 ["Utgarde Pinnacle"] = {
 false,
@@ -116,14 +119,13 @@ true,
 true,
 [23] = true,
 },
-["Lower Blackrock Spire"] = {
-false,
-},
-["Magisters' Terrace"] = {
+["Voidscar Arena"] = {
 true,
 true,
 [23] = true,
-[8] = true,
+},
+["Blackrock Caverns"] = {
+[24] = false,
 },
 ["Scholomance"] = {
 [24] = false,
@@ -140,18 +142,20 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["Blackrock Caverns"] = {
-[24] = false,
-},
-["Voidscar Arena"] = {
+["Magisters' Terrace"] = {
 true,
 true,
 [23] = true,
+[8] = true,
+},
+["Lower Blackrock Spire"] = {
+false,
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Upper Blackrock Spire"] = {
+["Mogu'shan Palace"] = {
+[24] = false,
 },
 ["Murder Row"] = {
 true,
@@ -181,10 +185,10 @@ true,
 ["The Darkway"] = {
 [208] = false,
 },
-["The Shadow Enclave"] = {
+["The Gulf of Memory"] = {
 [208] = true,
 },
-["The Gulf of Memory"] = {
+["The Shadow Enclave"] = {
 [208] = true,
 },
 ["Atal'Aman"] = {

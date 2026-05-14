@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Monk-Brewmaster','Unknown-Unknown',}
-local provider = {region='US',realm='Suramar',name='US',type='subscribers',zone=46,date='2026-05-12',data={Dr='Drovosh:BAEALgAECgIJAgABLgAFFAYJFgABAK0XAA==.',He='Heimerdonker:BAEALgADCgcJBwABLgAECgcJEwACAAAAAA==.',Mo='Monkorith:BAECLgAFFH8WAAIBAAYJrRd9BgChAQZoDAAABgAwAGkMAAAGAD0AawwAAAMAUQBqDAAAAgASAGwMAAABABUA6gwAAAQAWQABAAYJrRd9BgChAQZoDAAABgAwAGkMAAAGAD0AawwAAAMAUQBqDAAAAgASAGwMAAABABUA6gwAAAQAWQAuAAQKfyAAAgEACQlaEJgkAN0BAAEACQlaEJgkAN0BAAAA.',Ra='Raxxar:BAEALgADCgcJBwAAAA==.',},}
+local lookup = {'Monk-Brewmaster','Mage-Frost',}
+local provider = {region='US',realm='Suramar',name='US',type='subscribers',zone=46,date='2026-05-13',data={Dr='Drovosh:BAEALgAECgIJAgABLgAFFAYJFwABAK0XAA==.',He='Heimerdonker:BAEALgADCgcJBwABLgAFFAQJDgACAMEIAA==.',Mo='Monkorith:BAECLgAFFH8XAAIBAAYJrRe9BgChAQZoDAAABgAwAGkMAAAGAD0AawwAAAMAUQBqDAAAAgASAGwMAAABABUA6gwAAAUAWQABAAYJrRe9BgChAQZoDAAABgAwAGkMAAAGAD0AawwAAAMAUQBqDAAAAgASAGwMAAABABUA6gwAAAUAWQAuAAQKfyAAAgEACQlaEJgkAN0BAAEACQlaEJgkAN0BAAAA.',Ra='Raxxar:BAEALgADCgcJBwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

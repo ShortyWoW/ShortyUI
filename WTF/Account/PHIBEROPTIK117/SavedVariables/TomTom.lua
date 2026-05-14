@@ -1,9 +1,9 @@
 
 TomTomDB = {
 ["profileKeys"] = {
-["Callmeshortÿ - Moon Guard"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortybear - Illidan"] = "Default",
@@ -11,12 +11,12 @@ TomTomDB = {
 ["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
-["Shortytest - Illidan"] = "Default",
-["Shortbowjob - Area 52"] = "Default",
+["Shortlite - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlite - Illidan"] = "Default",
+["Callmeshortÿ - Moon Guard"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -29,6 +29,11 @@ nil,
 123.0002899169922,
 },
 },
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
+},
+},
 ["block"] = {
 ["position"] = {
 "BOTTOM",
@@ -38,20 +43,15 @@ nil,
 175.0008544921875,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 },
 },
 }
 TomTomWaypoints = nil
 TomTomWaypointsM = {
 ["profileKeys"] = {
-["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
@@ -59,19 +59,19 @@ TomTomWaypointsM = {
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 },
 ["profiles"] = {
-["Callmeshortÿ - Moon Guard"] = {
+["Shortytest - Illidan"] = {
 },
 ["Callmeshorty - Dalaran"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Area 52"] = {
 },
 ["Callmeshorty - Illidan"] = {
 },
@@ -87,28 +87,18 @@ TomTomWaypointsM = {
 },
 ["Drewishlaser - Dalaran"] = {
 },
-["Shortytest - Illidan"] = {
-},
-["Shortbowjob - Area 52"] = {
-},
-["Callmeshawte - Area 52"] = {
-},
-["Drewis24EEA3 - Illidan"] = {
-},
-["Shortbeef - Vashj"] = {
-},
 ["Shortlite - Illidan"] = {
 [862] = {
-["862:511200000:477800000:Old Merchant Road"] = {
+["862:816700000:442400000:Gral's Grotto"] = {
 862,
-0.5112,
-0.4778,
+0.8167,
+0.4424,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
 ["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Old Merchant Road",
+["title"] = "Gral's Grotto",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -121,6 +111,16 @@ TomTomWaypointsM = {
 ["world"] = true,
 },
 },
+},
+["Shortlight - Illidan"] = {
+},
+["Callmeshawte - Area 52"] = {
+},
+["Drewis24EEA3 - Illidan"] = {
+},
+["Shortbeef - Vashj"] = {
+},
+["Callmeshortÿ - Moon Guard"] = {
 },
 },
 }

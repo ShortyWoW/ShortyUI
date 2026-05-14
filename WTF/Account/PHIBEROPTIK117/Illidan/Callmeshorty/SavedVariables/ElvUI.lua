@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/g rip",
-"/2 Anyone have any idea why Raidbots is telling me to upgrade an item I don't have the crests for?",
-"/g Gonna go play with the dog, bbl.",
-"/simc",
 "/calendar",
+"/g ha ha get demoted idiot",
+"/key",
+"/p i love you",
+"/p By the way, what are your thoughts on the hit cinema master piece that is Boss Baby 2, and why is it your favorite movie?",
 },
 ["ChatHistoryLog"] = {
 {

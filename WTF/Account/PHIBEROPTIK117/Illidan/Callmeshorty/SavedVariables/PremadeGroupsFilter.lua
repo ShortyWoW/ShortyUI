@@ -51,7 +51,7 @@ PremadeGroupsFilterState = {
 ["enabled"] = true,
 ["raid"] = {
 ["difficulty"] = {
-["act"] = true,
+["act"] = false,
 ["val"] = 1,
 },
 ["heals"] = {

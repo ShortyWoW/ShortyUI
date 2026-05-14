@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Guardian','Mage-Frost',}
-local provider = {region='US',realm='TwistingNether',name='US',type='subscribers',zone=46,date='2026-05-12',data={Ka='Kahira:BAEALgADCgQJBAAAAA==.',Sj='Sjaridin:BAEALgAECgQJDAABLgAFFAUJFAABANsCAA==.',Su='Sule:BAEBLgAECn8zAAICAAkJmhFXLAADAgloDAAABwA4AGkMAAAHADgAawwAAAcAOwBqDAAABgAwAGwMAAAGADUAbQwAAAUAHADqDAAABwA5AG4MAAAEABMAbwwAAAIAHQACAAkJmhFXLAADAgloDAAABwA4AGkMAAAHADgAawwAAAcAOwBqDAAABgAwAGwMAAAGADUAbQwAAAUAHADqDAAABwA5AG4MAAAEABMAbwwAAAIAHQAAAA==.',},}
+local provider = {region='US',realm='TwistingNether',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ka='Kahira:BAEALgADCgQJBAAAAA==.',Sj='Sjaridin:BAEALgAECgQJDAABLgAFFAUJFAABANsCAA==.',Su='Sule:BAEBLgAECn87AAICAAkJTRTNIwAwAgloDAAACABQAGkMAAAIAD4AawwAAAgAPABqDAAABwAwAGwMAAAHADUAbQwAAAYANQDqDAAACAA5AG4MAAAFABMAbwwAAAIAHQACAAkJTRTNIwAwAgloDAAACABQAGkMAAAIAD4AawwAAAgAPABqDAAABwAwAGwMAAAHADUAbQwAAAYANQDqDAAACAA5AG4MAAAFABMAbwwAAAIAHQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

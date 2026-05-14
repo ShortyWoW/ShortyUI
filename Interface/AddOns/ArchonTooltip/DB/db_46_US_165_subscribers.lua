@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Retribution',}
-local provider = {region='US',realm='Nazjatar',name='US',type='subscribers',zone=46,date='2026-05-12',data={Ob='Oborax:BAEBLgAECn8bAAIBAAcJqRYoQACaAQdoDAAABQBJAGkMAAAFADoAawwAAAUAQgBqDAAABABcAGwMAAAEAD0AbQwAAAEAJADqDAAAAwA0AAEABwmpFihAAJoBB2gMAAAFAEkAaQwAAAUAOgBrDAAABQBCAGoMAAAEAFwAbAwAAAQAPQBtDAAAAQAkAOoMAAADADQAAAA=.',Sk='Skjolvarn:BAEALgAECgMJBwAAAA==.',},}
+local provider = {region='US',realm='Nazjatar',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ob='Oborax:BAEBLgAECn8bAAIBAAcJqRbfQQCUAQdoDAAABQBJAGkMAAAFADoAawwAAAUAQgBqDAAABABcAGwMAAAEAD0AbQwAAAEAJADqDAAAAwA0AAEABwmpFt9BAJQBB2gMAAAFAEkAaQwAAAUAOgBrDAAABQBCAGoMAAAEAFwAbAwAAAQAPQBtDAAAAQAkAOoMAAADADQAAAA=.',Sk='Skjolvarn:BAEALgAECgMJBwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

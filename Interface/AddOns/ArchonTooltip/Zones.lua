@@ -43,22 +43,25 @@ Private.Zones[1046] = {
     difficultyIconMap = nil,
 }
 
-Private.Zones[1051] = {
-    id = 1051,
-    name = "HoF / ToES",
+Private.Zones[1055] = {
+    id = 1055,
+    name = "Throne of Thunder",
     hasMultipleDifficulties = true,
     hasMultipleSizes = true,
     encounters = {
-        { id = 51507, },
-        { id = 51504, },
-        { id = 51463, },
-        { id = 51498, },
-        { id = 51499, },
-        { id = 51501, },
-        { id = 51409, },
-        { id = 51505, },
-        { id = 51506, },
-        { id = 51431, },
+        { id = 101577, },
+        { id = 101575, },
+        { id = 101570, },
+        { id = 101565, },
+        { id = 101578, },
+        { id = 101573, },
+        { id = 101572, },
+        { id = 101574, },
+        { id = 101576, },
+        { id = 101559, },
+        { id = 101560, },
+        { id = 101579, },
+        { id = 101580, },
     },
     difficultyIconMap = nil,
 }
@@ -108,15 +111,22 @@ Private.Zones[1053] = {
     difficultyIconMap = nil,
 }
 
-Private.Zones[1048] = {
-    id = 1048,
-    name = "Gruul / Magtheridon",
+Private.Zones[1056] = {
+    id = 1056,
+    name = "SSC / TK",
     hasMultipleDifficulties = false,
     hasMultipleSizes = false,
     encounters = {
-        { id = 50649, },
-        { id = 50650, },
-        { id = 50651, },
+        { id = 100623, },
+        { id = 100624, },
+        { id = 100625, },
+        { id = 100626, },
+        { id = 100627, },
+        { id = 100628, },
+        { id = 100730, },
+        { id = 100731, },
+        { id = 100732, },
+        { id = 100733, },
     },
     difficultyIconMap = nil,
 }

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-BeastMastery','Unknown-Unknown',}
-local provider = {region='US',realm='EchoIsles',name='US',type='subscribers',zone=46,date='2026-05-13',data={Di='Didimissfire:BAEBLgAECn8yAAIBAAkJZBMkHQAJAgloDAAABwBEAGkMAAAIADMAawwAAAgANwBqDAAABwA6AGwMAAAGADIAbQwAAAMAJwDqDAAABgBJAG4MAAAEACgAbwwAAAEAEgABAAkJZBMkHQAJAgloDAAABwBEAGkMAAAIADMAawwAAAgANwBqDAAABwA6AGwMAAAGADIAbQwAAAMAJwDqDAAABgBJAG4MAAAEACgAbwwAAAEAEgAAAA==.',Gl='Glenlizzo:BAEALgADCgUJCQABLgAECgUJCAACAAAAAA==.Glenroyce:BAEALgAECgUJCAAAAA==.',Ha='Hammered:BAEALgADCgUJBQABLgAECgUJCAACAAAAAA==.',},}
+local provider = {region='US',realm='EchoIsles',name='US',type='subscribers',zone=46,date='2026-05-14',data={Di='Didimissfire:BAEBLgAECn8yAAIBAAkJZBNHIQD+AQloDAAABwBEAGkMAAAIADMAawwAAAgANwBqDAAABwA6AGwMAAAGADIAbQwAAAMAJwDqDAAABgBJAG4MAAAEACgAbwwAAAEAEgABAAkJZBNHIQD+AQloDAAABwBEAGkMAAAIADMAawwAAAgANwBqDAAABwA6AGwMAAAGADIAbQwAAAMAJwDqDAAABgBJAG4MAAAEACgAbwwAAAEAEgAAAA==.',Gl='Glenlizzo:BAEALgADCgUJCQABLgAECgUJCAACAAAAAA==.Glenroyce:BAEALgAECgUJCAAAAA==.',Ha='Hammered:BAEALgADCgUJBQABLgAECgUJCAACAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

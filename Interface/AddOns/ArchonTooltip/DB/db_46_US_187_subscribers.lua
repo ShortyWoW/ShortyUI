@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Blood','Monk-Brewmaster',}
-local provider = {region='US',realm='Sentinels',name='US',type='subscribers',zone=46,date='2026-05-13',data={De='Deathcrocker:BAECLgAFFH8aAAIBAAYJoCVLAACGAgZoDAAABQBfAGkMAAADAGAAawwAAAQAXgBqDAAABgBhAGwMAAADAF8A6gwAAAUAYwABAAYJoCVLAACGAgZoDAAABQBfAGkMAAADAGAAawwAAAQAXgBqDAAABgBhAGwMAAADAF8A6gwAAAUAYwAuAAQKfxoAAgEACQkDJmwAAMsDAAEACQkDJmwAAMsDAAEuAAUUBwkPAAIArSIA.',Mo='Monkcrocker:BAECLgAFFH8PAAICAAcJrSIcAADYAgdoDAAAAgBYAGkMAAAEAF8AawwAAAIAWQBsDAAAAQBhAG0MAAACAEoA6gwAAAMAWwBuDAAAAQBUAAIABwmtIhwAANgCB2gMAAACAFgAaQwAAAQAXwBrDAAAAgBZAGwMAAABAGEAbQwAAAIASgDqDAAAAwBbAG4MAAABAFQALgAECn8VAAICAAcJ8SXADQC3AgACAAcJ8SXADQC3AgAAAA==.',},}
+local provider = {region='US',realm='Sentinels',name='US',type='subscribers',zone=46,date='2026-05-14',data={De='Deathcrocker:BAECLgAFFH8cAAIBAAYJoCVLAACGAgZoDAAABQBfAGkMAAADAGAAawwAAAQAXgBqDAAABwBhAGwMAAADAF8A6gwAAAYAYwABAAYJoCVLAACGAgZoDAAABQBfAGkMAAADAGAAawwAAAQAXgBqDAAABwBhAGwMAAADAF8A6gwAAAYAYwAuAAQKfxoAAgEACQkDJmwAAMsDAAEACQkDJmwAAMsDAAEuAAUUBwkSAAIAAiMA.',Mo='Monkcrocker:BAECLgAFFH8SAAICAAcJAiMeAADgAgdoDAAAAwBaAGkMAAAFAF8AawwAAAMAXQBsDAAAAQBhAG0MAAACAEoA6gwAAAMAWwBuDAAAAQBUAAIABwkCIx4AAOACB2gMAAADAFoAaQwAAAUAXwBrDAAAAwBdAGwMAAABAGEAbQwAAAIASgDqDAAAAwBbAG4MAAABAFQALgAECn8VAAICAAcJ8SXADQC3AgACAAcJ8SXADQC3AgAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

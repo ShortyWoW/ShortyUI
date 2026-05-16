@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Rogue-Subtlety','Hunter-Survival','Hunter-Marksmanship','Hunter-BeastMastery',}
-local provider = {region='US',realm='Firetree',name='US',type='subscribers',zone=46,date='2026-05-13',data={De='Deleerious:BAEALgAECgQJBAABLgAFFAUJEgABAMwlAA==.',Pe='Percival:BAECLgAFFH8ZAAICAAcJJRtQAABGAgdoDAAABgBgAGkMAAAFAGIAawwAAAQATwBqDAAAAwBgAGwMAAACAB0AbQwAAAEADgDqDAAABABhAAIABwklG1AAAEYCB2gMAAAGAGAAaQwAAAUAYgBrDAAABABPAGoMAAADAGAAbAwAAAIAHQBtDAAAAQAOAOoMAAAEAGEALgAECn8gAAQCAAkJXCNBAADFAwACAAkJXCNBAADFAwADAAUJzRz/TAAdAQAEAAMJlSPwnQCUAAAAAA==.',},}
+local provider = {region='US',realm='Firetree',name='US',type='subscribers',zone=46,date='2026-05-14',data={De='Deleerious:BAEALgAECgQJBAABLgAFFAUJEgABAMwlAA==.',Pe='Percival:BAECLgAFFH8ZAAICAAcJJRtjAAA9AgdoDAAABgBgAGkMAAAFAGIAawwAAAQATwBqDAAAAwBgAGwMAAACAB0AbQwAAAEADgDqDAAABABhAAIABwklG2MAAD0CB2gMAAAGAGAAaQwAAAUAYgBrDAAABABPAGoMAAADAGAAbAwAAAIAHQBtDAAAAQAOAOoMAAAEAGEALgAECn8mAAQCAAkJXCNBAADFAwACAAkJXCNBAADFAwADAAUJzRz/TAAdAQAEAAMJlSPwnQCUAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

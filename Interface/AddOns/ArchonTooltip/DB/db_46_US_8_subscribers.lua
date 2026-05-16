@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Unknown-Unknown','DeathKnight-Unholy',}
-local provider = {region='US',realm='AltarofStorms',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ch='Cheeseylock:BAEALgADCgMJAwABLgAECgUJDwABAAAAAA==.',Ki='Kippo:BAEALgAECgIJAwABLgAFFAUJCwACACEQAA==.',},}
+local provider = {region='US',realm='AltarofStorms',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ch='Cheeseylock:BAEALgADCgMJAwABLgAECgUJDwABAAAAAA==.',Ki='Kippo:BAEALgAECgIJAwABLgAFFAUJCwACABUQAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

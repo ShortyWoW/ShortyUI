@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Guardian',}
-local provider = {region='US',realm='Drenden',name='US',type='subscribers',zone=46,date='2026-05-13',data={Bl='Blink:BAEALgAECgQJBgAAAA==.',Lo='Lonen:BAEBLgAECn8nAAIBAAgJARTFCwCJAQhoDAAABwA4AGkMAAAGADMAawwAAAYAOABqDAAABQA4AGwMAAAFAEQAbQwAAAIAJwDqDAAABgA+AG4MAAACABgAAQAICQEUxQsAiQEIaAwAAAcAOABpDAAABgAzAGsMAAAGADgAagwAAAUAOABsDAAABQBEAG0MAAACACcA6gwAAAYAPgBuDAAAAgAYAAAA.',},}
+local provider = {region='US',realm='Drenden',name='US',type='subscribers',zone=46,date='2026-05-14',data={Bl='Blink:BAEALgAECgQJBgAAAA==.',Lo='Lonen:BAEBLgAECn8nAAIBAAgJARR1DQCBAQhoDAAABwA4AGkMAAAGADMAawwAAAYAOABqDAAABQA4AGwMAAAFAEQAbQwAAAIAJwDqDAAABgA+AG4MAAACABgAAQAICQEUdQ0AgQEIaAwAAAcAOABpDAAABgAzAGsMAAAGADgAagwAAAUAOABsDAAABQBEAG0MAAACACcA6gwAAAYAPgBuDAAAAgAYAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -1,20 +1,22 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
+["version"] = 6,
 ["settings"] = {
-["favoriteTooltip"] = true,
-["keystoneTooltip"] = true,
+["hideOtherItems"] = false,
 ["highlighting"] = {
-["versatility"] = true,
-["crit"] = true,
 ["mastery"] = true,
-["haste"] = true,
 ["comboMode"] = false,
+["versatility"] = true,
+["haste"] = true,
+["crit"] = true,
 ["noStats"] = true,
 },
-["wideMode"] = false,
+["keystoneTooltip"] = true,
 ["hiddenCharacters"] = {
 },
+["wideMode"] = false,
+["favoriteTooltip"] = true,
 ["lootReminder"] = {
 ["dungeons"] = true,
 },
@@ -23,7 +25,6 @@ KeystoneLootDB = {
 ["degrees"] = 195,
 },
 },
-["version"] = 5,
 ["favorites"] = {
 ["Illidan-Shortlight-2"] = {
 },

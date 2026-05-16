@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warrior-Fury','Warrior-Protection','Warrior-Arms','Priest-Discipline','Paladin-Retribution',}
-local provider = {region='US',realm='Dawnbringer',name='US',type='subscribers',zone=46,date='2026-05-13',data={La='Lavismad:BAEBLgAECn8yAAQBAAkJVyT/BgCWAgloDAAACABjAGkMAAAIAGIAawwAAAcAYgBqDAAABgBiAGwMAAAEAGEAbQwAAAMARQDqDAAACABhAG4MAAAEAGAAbwwAAAIAVQABAAgJECT/BgCWAghoDAAABQBjAGkMAAAFAGIAawwAAAQAYgBqDAAAAwBiAG0MAAABAEUA6gwAAAQAYQBuDAAABABgAG8MAAACAFUAAgAHCZ4gVQcAJwIHaAwAAAMATwBpDAAAAwBaAGsMAAADAE0AagwAAAMAUgBsDAAABABhAG0MAAACAEQA6gwAAAMAVgADAAEJRiV3MgBpAAHqDAAAAQBfAAAA.Lavoc:BAEALgADCgcJBwABLgAECgkJMgABAFckAA==.Lavv:BAEALgAECgYJCAABLgAECgkJMgABAFckAA==.',Ny='Nyxsia:BAEALgAFFAEJAQABLgAFFAYJEAABAIoYAA==.',Ro='Rosefist:BAEALgADCgcJCAABLgAFFAUJDwAEAM0SAA==.Rosemourne:BAEALgAECgIJAgABLgAFFAUJDwAEAM0SAA==.',St='Strunrage:BAEALgAECgUJBQABLgAECggJNwAFANglAA==.',},}
+local provider = {region='US',realm='Dawnbringer',name='US',type='subscribers',zone=46,date='2026-05-14',data={La='Lavismad:BAEBLgAECn80AAQBAAkJDCXuAABYAwloDAAACABjAGkMAAAIAGIAawwAAAcAYgBqDAAABgBiAGwMAAAFAGEAbQwAAAQAUwDqDAAACABhAG4MAAAEAGAAbwwAAAIAVQABAAkJ2CTuAABYAwloDAAABQBjAGkMAAAFAGIAawwAAAQAYgBqDAAAAwBiAGwMAAABAF0AbQwAAAIAUwDqDAAABABhAG4MAAAEAGAAbwwAAAIAVQACAAcJniBQCAAdAgdoDAAAAwBPAGkMAAADAFoAawwAAAMATQBqDAAAAwBSAGwMAAAEAGEAbQwAAAIARADqDAAAAwBWAAMAAQlGJXcyAGkAAeoMAAABAF8AAAA=.Lavoc:BAEALgADCgcJBwABLgAECgkJNAABAAwlAA==.Lavv:BAEALgAECgYJCAABLgAECgkJNAABAAwlAA==.',Ny='Nyxsia:BAEALgAFFAEJAQABLgAFFAYJEAABAIoYAA==.',Ro='Rosefist:BAEALgADCgcJCAABLgAFFAUJDwAEAM0SAA==.Rosemourne:BAEALgAECgIJAgABLgAFFAUJDwAEAM0SAA==.',St='Strunrage:BAEALgAECgUJBQABLgAECggJNwAFANglAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

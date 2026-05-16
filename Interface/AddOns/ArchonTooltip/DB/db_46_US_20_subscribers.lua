@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Shaman-Restoration','Shaman-Elemental','Druid-Restoration','DemonHunter-Devourer','Priest-Shadow',}
-local provider = {region='US',realm='Arthas',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ca='Catynca:BAEALgAECgEJAQABLgAFFAIJCAABALESAA==.',Ll='Lleyla:BAECLgAFFH8IAAIBAAIJsRJINgCTAAJoDAAABQBHAOoMAAADABgAAQACCbESSDYAkwACaAwAAAUARwDqDAAAAwAYAC4ABAp/LwADAQAICaghuQoAoQIAAQAICaghuQoAoQIAAgABCdMLHnUALQAAAAA=.',Mo='Mooge:BAEALgAECgIJAgABLgAECgYJFAADAJwTAA==.Mooky:BAEBLgAECn8UAAIDAAYJnBNLQAAtAQZoDAAABAAmAGkMAAAEACwAawwAAAQANwBqDAAAAwBKAGwMAAACAB0A6gwAAAMAOQADAAYJnBNLQAAtAQZoDAAABAAmAGkMAAAEACwAawwAAAQANwBqDAAAAwBKAGwMAAACAB0A6gwAAAMAOQAAAA==.',Sp='Sproxs:BAEALgAECgcJEgAAAA==.',Th='Theirashes:BAEALgAFFAEJAQABLgAFFAUJEQAEAKEjAA==.',Ve='Verbatim:BAEALgAECgMJAwAAAA==.',Vy='Vyr:BAEALgADCgYJBgABLgAFFAcJEQAFAOYPAA==.',Yo='Yourpaleddy:BAEALgAECgIJAgABLgAFFAUJEQAEAKEjAA==.',},}
+local provider = {region='US',realm='Arthas',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ca='Catynca:BAEALgAECgEJAQABLgAFFAIJCAABAJ4SAA==.',Ll='Lleyla:BAECLgAFFH8IAAIBAAIJnhL8NwCSAAJoDAAABQBHAOoMAAADABgAAQACCZ4S/DcAkgACaAwAAAUARwDqDAAAAwAYAC4ABAp/LwADAQAICaghLQwAmwIAAQAICaghLQwAmwIAAgABCdMLIngALAAAAAA=.',Mo='Mooge:BAEALgAECgIJAgABLgAECgYJFAADAJwTAA==.Mooky:BAEBLgAECn8UAAIDAAYJnBOURAAhAQZoDAAABAAmAGkMAAAEACwAawwAAAQANwBqDAAAAwBKAGwMAAACAB0A6gwAAAMAOQADAAYJnBOURAAhAQZoDAAABAAmAGkMAAAEACwAawwAAAQANwBqDAAAAwBKAGwMAAACAB0A6gwAAAMAOQAAAA==.',Sp='Sproxs:BAEALgAECgcJEgAAAA==.',Th='Theirashes:BAEALgAFFAEJAQABLgAFFAUJEQAEAKEjAA==.',Ve='Verbatim:BAEALgAECgMJAwAAAA==.',Vy='Vyr:BAEALgADCgYJBgABLgAFFAcJEQAFAOEPAA==.',Yo='Yourpaleddy:BAEALgAECgIJAgABLgAFFAUJEQAEAKEjAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

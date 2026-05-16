@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Blood','Warlock-Affliction','Priest-Shadow',}
-local provider = {region='US',realm='ScarletCrusade',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ak='Akinira:BAEBLgAECn80AAIBAAkJOx6tBQBtAgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwABAAkJOx6tBQBtAgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwAAAA==.',Ma='Magdalene:BAEALgAECgQJBQABLgAFFAQJCgACACQQAA==.',Ra='Ramhadin:BAEALgAECgMJBAABLgAECgYJFwADABodAA==.',},}
+local provider = {region='US',realm='ScarletCrusade',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ak='Akinira:BAEBLgAECn80AAIBAAkJOx6qBgBfAgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwABAAkJOx6qBgBfAgloDAAABwBiAGkMAAAHAF4AawwAAAYATwBqDAAABwBWAGwMAAAGAFEAbQwAAAUAUQDqDAAABwBTAG4MAAAFADcAbwwAAAIAKwAAAA==.',Ma='Magdalene:BAEALgAECgQJBQABLgAFFAQJDAACAFsRAA==.',Ra='Ramhadin:BAEALgAECgMJBAABLgAECgYJFwADABodAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

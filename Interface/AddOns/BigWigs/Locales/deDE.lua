@@ -341,6 +341,7 @@ L.N25 = "Normal 25"
 L.H10 = "Heroisch 10"
 L.H25 = "Heroisch 25"
 L.titan = "Titan" -- Chinese-only "Titan Reforged" servers
+L.mythic_flex = "Mythisch (Flex)" -- Mythic (Flexible 15-25 player raids)
 
 -----------------------------------------------------------------------
 -- TOOLS
@@ -380,7 +381,7 @@ L.autoRoleExplainer = "Jedes mal, wenn einer Gruppe beigetreten wird, oder die T
 
 L.battleResTitle = "Battle Res"
 L.battleResDesc = "Zeigt ein Symbol an, welches die Anzahl der verfügbaren Battle Res Aufladungen sowie die Zeit bis zur nächsten Aufladung anzeigt."
-L.battleResDesc2 = "\nDer |cFF33FF99Battle Res Verlauf|r wird im Tooltip beim Überfahren des Symbols mit der Maus angezeigt.\n\n"
+L.battleResDesc2 = "\nDer |cFF33FF99Battle Res Verlauf|r wird im Tooltip beim Überfahren des Symbols mit der Maus angezeigt.\nHinweis: Dieser Tooltip wird nur außerhalb des Kampfes angezeigt.\n\n"
 L.battleResHistory = "Battle Res Verlauf:"
 L.battleResResetAll = "Alle Battle Res Einstellungen auf ihre Standardwerte zurücksetzen."
 L.battleResDurationText = "Dauer Text"
@@ -393,7 +394,6 @@ L.iconTextureSpellIDError = "Es muss eine gültige Zauber ID zur Nutzung der Sym
 L.battleResModeIcon = "Modus: Symbol"
 L.battleResModeText = "Modus: Nur Text"
 L.battleResModeTextTooltip = "Es wird vorübergehend ein Hintergrund angezeigt, um beim Bewegen der Battle Res Funktion behilflich zu sein und den Mouseover Bereich anzuzeigen."
-L.battleResNoteTooltip = "Hinweis: Dieser Tooltip wird nur außerhalb des Kampfes angezeigt."
 
 -----------------------------------------------------------------------
 -- CombatTimer.lua

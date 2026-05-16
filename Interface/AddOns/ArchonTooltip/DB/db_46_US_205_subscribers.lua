@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Restoration',}
-local provider = {region='US',realm='Stonemaul',name='US',type='subscribers',zone=46,date='2026-05-13',data={Br='Broccoliz:BAECLgAFFH8cAAIBAAgJSA/0AgC9AQhoDAAABgAzAGkMAAAEADEAawwAAAMAGwBqDAAABQAdAGwMAAABABIAbQwAAAEAJgDqDAAABwBQAG4MAAABABEAAQAICUgP9AIAvQEIaAwAAAYAMwBpDAAABAAxAGsMAAADABsAagwAAAUAHQBsDAAAAQASAG0MAAABACYA6gwAAAcAUABuDAAAAQARAC4ABAp/QAACAQAJCRQf9xEAXQIAAQAJCRQf9xEAXQIAAAA=.',},}
+local provider = {region='US',realm='Stonemaul',name='US',type='subscribers',zone=46,date='2026-05-14',data={Br='Broccoliz:BAECLgAFFH8cAAIBAAgJSA/0AgC9AQhoDAAABgAzAGkMAAAEADEAawwAAAMAGwBqDAAABQAdAGwMAAABABIAbQwAAAEAJgDqDAAABwBQAG4MAAABABEAAQAICUgP9AIAvQEIaAwAAAYAMwBpDAAABAAxAGsMAAADABsAagwAAAUAHQBsDAAAAQASAG0MAAABACYA6gwAAAcAUABuDAAAAQARAC4ABAp/QAACAQAJCRQf/xMAUQIAAQAJCRQf/xMAUQIAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

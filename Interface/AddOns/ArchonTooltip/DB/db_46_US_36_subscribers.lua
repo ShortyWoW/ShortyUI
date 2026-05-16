@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {}
-local provider = {region='US',realm="Blade'sEdge",name='US',type='subscribers',zone=46,date='2026-05-13',data={Ke='Keilun:BAEALgAECgYJCQAAAA==.',},}
+local provider = {region='US',realm="Blade'sEdge",name='US',type='subscribers',zone=46,date='2026-05-14',data={Ke='Keilun:BAEALgAECgYJCQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

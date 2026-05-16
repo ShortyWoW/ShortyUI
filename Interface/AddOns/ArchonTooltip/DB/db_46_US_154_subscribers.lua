@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Shadow','Hunter-Survival','Hunter-Marksmanship','Hunter-BeastMastery',}
-local provider = {region='US',realm='Mannoroth',name='US',type='subscribers',zone=46,date='2026-05-13',data={Bg='Bgkaren:BAEALgAFFAEJAQABLgAFFAQJCgABADEQAA==.',Jo='Johhnyp:BAECLgAFFH8KAAIBAAQJMRCcDgA6AQRoDAAAAwA6AGkMAAADACMAawwAAAIAFADqDAAAAgAzAAEABAkxEJwOADoBBGgMAAADADoAaQwAAAMAIwBrDAAAAgAUAOoMAAACADMALgAECn8hAAIBAAgJOR/eDAAXAgABAAgJOR/eDAAXAgAAAA==.Josa:BAECLgAFFH8FAAICAAIJZBnQFgCzAAJoDAAAAwBMAGkMAAACADUAAgACCWQZ0BYAswACaAwAAAMATABpDAAAAgA1AC4ABAp/MQAEAgAICWwgBgYAawIAAwAICVgeIBAAvQIAAgAICbcdBgYAawIABAAHCSUbAScA0gEAAAA=.',Re='Reyca:BAEALgADCgcJAgABLgAFFAIJBQACAGQZAA==.',},}
+local provider = {region='US',realm='Mannoroth',name='US',type='subscribers',zone=46,date='2026-05-14',data={Bg='Bgkaren:BAEALgAFFAMJBAABLgAFFAQJCgABADEQAA==.',Jo='Johhnyp:BAECLgAFFH8KAAIBAAQJMRBDDwA2AQRoDAAAAwA6AGkMAAADACMAawwAAAIAFADqDAAAAgAzAAEABAkxEEMPADYBBGgMAAADADoAaQwAAAMAIwBrDAAAAgAUAOoMAAACADMALgAECn8hAAIBAAgJOR/QDgAMAgABAAgJOR/QDgAMAgAAAA==.Josa:BAECLgAFFH8FAAICAAIJZBkhGACuAAJoDAAAAwBMAGkMAAACADUAAgACCWQZIRgArgACaAwAAAMATABpDAAAAgA1AC4ABAp/MQAEAgAICWwg1wcAUgIAAwAICVgeIBAAvQIAAgAICbcd1wcAUgIABAAHCSUbbSwAxQEAAAA=.',Re='Reyca:BAEALgADCgcJAgABLgAFFAIJBQACAGQZAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warlock-Demonology','Warlock-Destruction','Rogue-Assassination','Rogue-Subtlety',}
-local provider = {region='US',realm='Duskwood',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ae='Aegon:BAECLgAFFH8VAAIBAAUJ8SEeGQBmAQVoDAAABwBcAGkMAAAEAFQAawwAAAMAXABqDAAAAgBGAOoMAAAFAE4AAQAFCfEhHhkAZgEFaAwAAAcAXABpDAAABABUAGsMAAADAFwAagwAAAIARgDqDAAABQBOAC4ABAp/IwADAQAJCfwfGyIA+wEAAQAGCR4hGyIA+wEAAgADCZQcvikAGwEAAAA=.',Da='Damitsu:BAEBLgAECn8mAAMDAAYJ8RZqCABmAQZoDAAABwBDAGkMAAAHAEYAawwAAAcANwBqDAAABQA+AGwMAAAFADAA6gwAAAcANAADAAYJ8RZqCABmAQZoDAAAAwBDAGkMAAAFAEYAawwAAAQANwBqDAAAAwA+AGwMAAADADAA6gwAAAIANAAEAAYJkxA8HAAzAQZoDAAABAA+AGkMAAACACsAawwAAAMAIQBqDAAAAgAlAGwMAAACACAA6gwAAAUAKAAAAA==.Damnitsu:BAEALgAECgYJDwABLgAECgYJJgADAPEWAA==.',Wa='Watevr:BAEALgAECgYJBgABLgAECgYJJgADAPEWAA==.',},}
+local provider = {region='US',realm='Duskwood',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ae='Aegon:BAECLgAFFH8ZAAIBAAUJ8SFkGQBqAQVoDAAACABcAGkMAAAEAFQAawwAAAQAXABqDAAAAwBaAOoMAAAGAE4AAQAFCfEhZBkAagEFaAwAAAgAXABpDAAABABUAGsMAAAEAFwAagwAAAMAWgDqDAAABgBOAC4ABAp/IwADAQAJCfwfniYA7wEAAQAGCR8hniYA7wEAAgADCZQcvikAGwEAAAA=.',Da='Damitsu:BAEBLgAECn8mAAMDAAYJ8RYqCQBcAQZoDAAABwBDAGkMAAAHAEYAawwAAAcANwBqDAAABQA+AGwMAAAFADAA6gwAAAcANAADAAYJ8RYqCQBcAQZoDAAAAwBDAGkMAAAFAEYAawwAAAQANwBqDAAAAwA+AGwMAAADADAA6gwAAAIANAAEAAYJkxBfHwAiAQZoDAAABAA+AGkMAAACACsAawwAAAMAIQBqDAAAAgAlAGwMAAACACAA6gwAAAUAKAAAAA==.Damnitsu:BAEALgAECgYJDwABLgAECgYJJgADAPEWAA==.',Wa='Watevr:BAEALgAECgYJBgABLgAECgYJJgADAPEWAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

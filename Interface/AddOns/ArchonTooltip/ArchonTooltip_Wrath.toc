@@ -1,7 +1,7 @@
 ## Interface: 38000
 ## Title: Archon Tooltip
 ## Author: Archon
-## Version: 9.3.7
+## Version: 9.3.33
 ## DefaultState: enabled
 ## SavedVariables: ArchonTooltipSaved
 ## IconTexture: Interface/AddOns/ArchonTooltip/Media/logo-32-circle.tga
@@ -24,6 +24,7 @@ Settings.lua
 StaticData.lua
 BitDecoder.lua
 Provider.lua
+SplitProvider.lua
 Profile.lua
 Tooltip.lua
 Dropdown.lua

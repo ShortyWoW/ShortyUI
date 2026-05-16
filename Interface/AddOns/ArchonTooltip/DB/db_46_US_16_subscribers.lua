@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Retribution','Paladin-Holy','DemonHunter-Vengeance',}
-local provider = {region='US',realm='Arathor',name='US',type='subscribers',zone=46,date='2026-05-13',data={Da='Dayquil:BAECLgAFFH8GAAIBAAIJKgsOVgCaAAJoDAAAAwAVAGkMAAADACMAAQACCSoLDlYAmgACaAwAAAMAFQBpDAAAAwAjAC4ABAp/IQADAQAICXodtjYASAIAAQAICXodtjYASAIAAgABCcsZOWMAQgAAAAA=.',Di='Diane:BAEALgAECgYJBgAAAA==.',Sa='Salina:BAEBLgAECn8oAAIDAAkJFRYdBgDAAQloDAAABgBSAGkMAAAGAD0AawwAAAYARQBqDAAABgBUAGwMAAAEAEoAbQwAAAEAJADqDAAABwA3AG4MAAACACEAbwwAAAIAJQADAAkJFRYdBgDAAQloDAAABgBSAGkMAAAGAD0AawwAAAYARQBqDAAABgBUAGwMAAAEAEoAbQwAAAEAJADqDAAABwA3AG4MAAACACEAbwwAAAIAJQAAAA==.',},}
+local provider = {region='US',realm='Arathor',name='US',type='subscribers',zone=46,date='2026-05-14',data={Da='Dayquil:BAECLgAFFH8GAAIBAAIJGwv6WACYAAJoDAAAAwAVAGkMAAADACMAAQACCRsL+lgAmAACaAwAAAMAFQBpDAAAAwAjAC4ABAp/IQADAQAICXodtjYASAIAAQAICXodtjYASAIAAgABCcsZqWUAQgAAAAA=.',Di='Diane:BAEALgAECgYJBgAAAA==.',Sa='Salina:BAEBLgAECn8oAAIDAAkJFRajBgC8AQloDAAABgBSAGkMAAAGAD0AawwAAAYARQBqDAAABgBUAGwMAAAEAEoAbQwAAAEAJADqDAAABwA3AG4MAAACACEAbwwAAAIAJQADAAkJFRajBgC8AQloDAAABgBSAGkMAAAGAD0AawwAAAYARQBqDAAABgBUAGwMAAAEAEoAbQwAAAEAJADqDAAABwA3AG4MAAACACEAbwwAAAIAJQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

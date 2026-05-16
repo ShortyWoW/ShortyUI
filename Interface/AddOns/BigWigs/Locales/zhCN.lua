@@ -318,7 +318,7 @@ L.first_desc = "你在与该首领战斗时首次获胜的详细信息，格式�
 
 -- Difficulty levels for statistics display on bosses
 L.unknown = "未知"
-L.LFR = "随机团队"
+L.LFR = "随机"
 L.normal = "普通"
 L.heroic = "英雄"
 L.mythic = "史诗"
@@ -341,6 +341,7 @@ L.N25 = "25人普通"
 L.H10 = "10人英雄"
 L.H25 = "25人英雄"
 L.titan = "25人泰坦" -- Chinese-only "Titan Reforged" servers
+L.mythic_flex = "史诗（弹性）" -- 233. 史诗 - 弹性团队副本
 
 -----------------------------------------------------------------------
 -- TOOLS
@@ -380,7 +381,7 @@ L.autoRoleExplainer = "当你加入一个队伍，或者在队伍中切换你的
 
 L.battleResTitle = "战复"
 L.battleResDesc = "新建一个图标，显示可用战复次数及下次获得额外次数所需时间。"
-L.battleResDesc2 = "\n你的 |cFF33FF99战复|r 使用记录可以通过将鼠标悬停在图标上时查看。\n\n"
+L.battleResDesc2 = "\n你的 |cFF33FF99战复|r 使用记录可以通过将鼠标悬停在图标上时查看。\n注意：此提示仅在脱离战斗后显示。\n\n"
 L.battleResHistory = "战复："
 L.battleResResetAll = "将所有战复设置重置为默认。"
 L.battleResDurationText = "时间文本"
@@ -393,7 +394,6 @@ L.iconTextureSpellIDError = "你必须输入一个有效的法术ID来作为显�
 L.battleResModeIcon = "显示模式：图标"
 L.battleResModeText = "显示模式：仅文字"
 L.battleResModeTextTooltip = "显示临时背景以便调整战复功能的位置，并查看鼠标悬停提示位置。"
-L.battleResNoteTooltip = "注意：此提示仅在脱离战斗后显示。"
 
 -----------------------------------------------------------------------
 -- CombatTimer.lua

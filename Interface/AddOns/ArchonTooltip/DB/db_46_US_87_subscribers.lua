@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warlock-Demonology','Unknown-Unknown','Shaman-Restoration',}
-local provider = {region='US',realm='Elune',name='US',type='subscribers',zone=46,date='2026-05-13',data={Bc='Bc:BAEALgADCgcJBwABLgAECggJGAABAPgmAA==.',Gu='Gurfy:BAEALgAECgEJAgABLgAECgMJBAACAAAAAA==.',Th='Thicums:BAEALgAECgMJBAAAAA==.',Va='Valdanyr:BAEBLgAECn8ZAAIDAAcJdiVDBgDsAgdoDAAABgBiAGkMAAAFAGMAawwAAAUAYgBqDAAAAwBhAGwMAAACAGEA6gwAAAMAXwBuDAAAAQBUAAMABwl2JUMGAOwCB2gMAAAGAGIAaQwAAAUAYwBrDAAABQBiAGoMAAADAGEAbAwAAAIAYQDqDAAAAwBfAG4MAAABAFQAAAA=.',},}
+local lookup = {'Unknown-Unknown','Shaman-Restoration',}
+local provider = {region='US',realm='Elune',name='US',type='subscribers',zone=46,date='2026-05-14',data={Gu='Gurfy:BAEALgAECgEJAgABLgAECgMJBAABAAAAAA==.',Th='Thicums:BAEALgAECgMJBAAAAA==.',Va='Valdanyr:BAEBLgAECn8ZAAICAAcJdiUPBwDpAgdoDAAABgBiAGkMAAAFAGMAawwAAAUAYgBqDAAAAwBhAGwMAAACAGEA6gwAAAMAXwBuDAAAAQBUAAIABwl2JQ8HAOkCB2gMAAAGAGIAaQwAAAUAYwBrDAAABQBiAGoMAAADAGEAbAwAAAIAYQDqDAAAAwBfAG4MAAABAFQAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

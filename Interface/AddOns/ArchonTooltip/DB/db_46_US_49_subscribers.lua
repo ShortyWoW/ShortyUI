@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Blood','DeathKnight-Unholy',}
-local provider = {region='US',realm='Cairne',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ip='Iplayleague:BAEALgAECgUJCgABLgAECggJFQABAMojAA==.',Za='Zarrgon:BAEBLgAECn8VAAMBAAgJyiNJCwBgAghoDAAAAgBfAGkMAAADAF8AawwAAAMAYABqDAAAAwBiAGwMAAAEAGMAbQwAAAEAPQDqDAAAAwBfAG4MAAACAGAAAQAICcojSQsAYAIIaAwAAAIAXwBpDAAAAgBfAGsMAAACAGAAagwAAAMAYgBsDAAABABjAG0MAAABAD0A6gwAAAIAXwBuDAAAAgBgAAIAAwlTBqK8AIoAA2kMAAABABIAawwAAAEAEADqDAAAAQANAAAA.',},}
+local provider = {region='US',realm='Cairne',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ip='Iplayleague:BAEALgAECgUJCgABLgAECggJFQABAMojAA==.',Za='Zarrgon:BAEBLgAECn8VAAMBAAgJyiNJCwBgAghoDAAAAgBfAGkMAAADAF8AawwAAAMAYABqDAAAAwBiAGwMAAAEAGMAbQwAAAEAPQDqDAAAAwBfAG4MAAACAGAAAQAICcojSQsAYAIIaAwAAAIAXwBpDAAAAgBfAGsMAAACAGAAagwAAAMAYgBsDAAABABjAG0MAAABAD0A6gwAAAIAXwBuDAAAAgBgAAIAAwlTBuPIAH4AA2kMAAABABIAawwAAAEAEADqDAAAAQANAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

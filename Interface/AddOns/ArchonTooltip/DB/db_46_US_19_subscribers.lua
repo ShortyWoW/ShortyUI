@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Shadow','DeathKnight-Unholy',}
-local provider = {region='US',realm='ArgentDawn',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ra='Ramcco:BAEBLgAECn8XAAIBAAYJGh1EFwCfAQZoDAAABQBHAGkMAAAEAEMAawwAAAQAUQBqDAAAAwBTAGwMAAADAE8A6gwAAAQASQABAAYJGh1EFwCfAQZoDAAABQBHAGkMAAAEAEMAawwAAAQAUQBqDAAAAwBTAGwMAAADAE8A6gwAAAQASQAAAA==.',Wa='Wandorf:BAEBLgAECn8gAAICAAgJSQ1VQwCNAQhoDAAABQAyAGkMAAAFADQAawwAAAUAGQBqDAAABQATAGwMAAAEABQAbQwAAAIAGADqDAAABQAtAG4MAAABABIAAgAICUkNVUMAjQEIaAwAAAUAMgBpDAAABQA0AGsMAAAFABkAagwAAAUAEwBsDAAABAAUAG0MAAACABgA6gwAAAUALQBuDAAAAQASAAAA.',},}
+local provider = {region='US',realm='ArgentDawn',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ra='Ramcco:BAEBLgAECn8XAAIBAAYJGh0NGgCTAQZoDAAABQBHAGkMAAAEAEMAawwAAAQAUQBqDAAAAwBTAGwMAAADAE8A6gwAAAQASQABAAYJGh0NGgCTAQZoDAAABQBHAGkMAAAEAEMAawwAAAQAUQBqDAAAAwBTAGwMAAADAE8A6gwAAAQASQAAAA==.',Wa='Wandorf:BAEBLgAECn8nAAICAAgJ8g4YSACJAQhoDAAABgAyAGkMAAAGADQAawwAAAYAGQBqDAAABgAZAGwMAAAFACkAbQwAAAMAIQDqDAAABgAtAG4MAAABABIAAgAICfIOGEgAiQEIaAwAAAYAMgBpDAAABgA0AGsMAAAGABkAagwAAAYAGQBsDAAABQApAG0MAAADACEA6gwAAAYALQBuDAAAAQASAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

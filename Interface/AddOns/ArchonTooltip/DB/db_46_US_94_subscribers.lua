@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Holy','Druid-Restoration',}
-local provider = {region='US',realm='Feathermoon',name='US',type='subscribers',zone=46,date='2026-05-13',data={As='Ashkinassi:BAEALgAECgQJDwAAAA==.',Lu='Lunå:BAECLgAFFH8KAAIBAAMJnhiMEQDeAANoDAAABAA7AGkMAAAEAEgA6gwAAAIAOAABAAMJnhiMEQDeAANoDAAABAA7AGkMAAAEAEgA6gwAAAIAOAAuAAQKfyUAAgEACAmQFJMsAJQBAAEACAmQFJMsAJQBAAAA.',Ze='Zerati:BAEALgAECgIJAgAAAA==.',['Êc']='Êclipse:BAEBLgAECn8kAAICAAgJEgkEQAAuAQhoDAAABgAdAGkMAAAGABcAawwAAAYALgBqDAAABQAUAGwMAAAEABMAbQwAAAMADgDqDAAABQATAG4MAAABAAwAAgAICRIJBEAALgEIaAwAAAYAHQBpDAAABgAXAGsMAAAGAC4AagwAAAUAFABsDAAABAATAG0MAAADAA4A6gwAAAUAEwBuDAAAAQAMAAEuAAUUAwkKAAEAnhgA.',},}
+local provider = {region='US',realm='Feathermoon',name='US',type='subscribers',zone=46,date='2026-05-14',data={As='Ashkinassi:BAEALgAECgQJDwAAAA==.',Lu='Lunå:BAECLgAFFH8KAAIBAAMJnhggEgDdAANoDAAABAA7AGkMAAAEAEgA6gwAAAIAOAABAAMJnhggEgDdAANoDAAABAA7AGkMAAAEAEgA6gwAAAIAOAAuAAQKfyUAAgEACAmQFJMsAJQBAAEACAmQFJMsAJQBAAAA.',Ze='Zerati:BAEALgAECgIJAgAAAA==.',['Êc']='Êclipse:BAEBLgAECn8qAAICAAgJFBG0JwC3AQhoDAAABwArAGkMAAAHAB0AawwAAAcAPgBqDAAABgAoAGwMAAAFAEwAbQwAAAMADgDqDAAABgBGAG4MAAABAAwAAgAICRQRtCcAtwEIaAwAAAcAKwBpDAAABwAdAGsMAAAHAD4AagwAAAYAKABsDAAABQBMAG0MAAADAA4A6gwAAAYARgBuDAAAAQAMAAEuAAUUAwkKAAEAnhgA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

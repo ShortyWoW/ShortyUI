@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Holy','Shaman-Restoration',}
-local provider = {region='US',realm='Norgannon',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ni='Nijun:BAEBLgAECn8jAAIBAAgJbxM+GACnAQhoDAAABQBCAGkMAAAEAD0AawwAAAQAHQBqDAAABAA0AGwMAAAGAEwAbQwAAAMAMADqDAAABgAxAG4MAAADAA0AAQAICW8TPhgApwEIaAwAAAUAQgBpDAAABAA9AGsMAAAEAB0AagwAAAQANABsDAAABgBMAG0MAAADADAA6gwAAAYAMQBuDAAAAwANAAAA.',Sk='Skymaggedon:BAEBLgAECn8kAAICAAgJZQ24OQBDAQhoDAAABgAxAGkMAAAGADAAawwAAAYAHABqDAAABAAhAGwMAAAEACgAbQwAAAMAGQDqDAAABAAaAG4MAAADABYAAgAICWUNuDkAQwEIaAwAAAYAMQBpDAAABgAwAGsMAAAGABwAagwAAAQAIQBsDAAABAAoAG0MAAADABkA6gwAAAQAGgBuDAAAAwAWAAAA.',St='Starrdust:BAEALgAECgMJAwAAAA==.',},}
+local provider = {region='US',realm='Norgannon',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ni='Nijun:BAEBLgAECn8jAAIBAAgJbxP8GQCfAQhoDAAABQBCAGkMAAAEAD0AawwAAAQAHQBqDAAABAA0AGwMAAAGAEwAbQwAAAMAMADqDAAABgAxAG4MAAADAA0AAQAICW8T/BkAnwEIaAwAAAUAQgBpDAAABAA9AGsMAAAEAB0AagwAAAQANABsDAAABgBMAG0MAAADADAA6gwAAAYAMQBuDAAAAwANAAAA.',Sk='Skymaggedon:BAEBLgAECn8kAAICAAgJZQ04PQBBAQhoDAAABgAxAGkMAAAGADAAawwAAAYAHABqDAAABAAhAGwMAAAEACgAbQwAAAMAGQDqDAAABAAaAG4MAAADABYAAgAICWUNOD0AQQEIaAwAAAYAMQBpDAAABgAwAGsMAAAGABwAagwAAAQAIQBsDAAABAAoAG0MAAADABkA6gwAAAQAGgBuDAAAAwAWAAAA.',St='Starrdust:BAEALgAECgMJAwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

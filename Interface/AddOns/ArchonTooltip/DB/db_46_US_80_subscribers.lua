@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-Survival','Hunter-Marksmanship','Hunter-BeastMastery',}
-local provider = {region='US',realm='Dunemaul',name='US',type='subscribers',zone=46,date='2026-05-13',data={Rh='Rhordric:BAECLgAFFH8FAAQBAAMJDwyNGACpAANoDAAAAwAWAGkMAAABAAcA6gwAAAEAPgABAAIJjBCNGACpAAJoDAAAAgAWAOoMAAABAD4AAgABCbYHECoASAABaAwAAAEAEwADAAEJFAMcXwBFAAFpDAAAAQAHAC4ABAp/IQADAQAICUYcIA0A7QEAAgAICRIWAB4ANgIAAQAHCTgbIA0A7QEAAAA=.',},}
+local provider = {region='US',realm='Dunemaul',name='US',type='subscribers',zone=46,date='2026-05-14',data={Rh='Rhordric:BAECLgAFFH8FAAQBAAMJDwwqGQCpAANoDAAAAwAWAGkMAAABAAcA6gwAAAEAPgABAAIJjBAqGQCpAAJoDAAAAgAWAOoMAAABAD4AAgABCbYHECoASAABaAwAAAEAEwADAAEJFAMjZABAAAFpDAAAAQAHAC4ABAp/IQADAgAICUYcAB4ANgIAAgAICRIWAB4ANgIAAQAHCTgbjA8A2QEAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

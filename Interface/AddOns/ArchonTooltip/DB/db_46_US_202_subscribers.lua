@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Unholy','DeathKnight-Blood',}
-local provider = {region='US',realm='Spirestone',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ax='Ax:BAEBLgAFFH8RAAMBAAUJpBH6PgAwAQVoDAAAAwAtAGkMAAAEADsAawwAAAIAGgBqDAAAAwAKAOoMAAAFADEAAQAECaQR+j4AMAEEaAwAAAMALQBpDAAABAA7AGsMAAACABoA6gwAAAUAMQACAAEJAABIOQAAAAFqDAAAAwAKAAAA.',},}
+local provider = {region='US',realm='Spirestone',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ax='Ax:BAEBLgAFFH8RAAMBAAUJpBG3QQAsAQVoDAAAAwAtAGkMAAAEADsAawwAAAIAGgBqDAAAAwAKAOoMAAAFADEAAQAECaQRt0EALAEEaAwAAAMALQBpDAAABAA7AGsMAAACABoA6gwAAAUAMQACAAEJAAABOwAAAAFqDAAAAwAKAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

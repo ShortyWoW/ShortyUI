@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DemonHunter-Devourer','DemonHunter-Havoc','Hunter-BeastMastery','Hunter-Survival',}
-local provider = {region='US',realm='Hakkar',name='US',type='subscribers',zone=46,date='2026-05-13',data={Km='Kmarti:BAECLgAFFH8IAAIBAAMJMRMANwDwAANoDAAABABLAGkMAAACACcA6gwAAAIAIAABAAMJMRMANwDwAANoDAAABABLAGkMAAACACcA6gwAAAIAIAAuAAQKfyAAAwEACQklHmUhAIkCAAEACQklHmUhAIkCAAIAAgn/CwFgAGIAAAAA.',Yo='Yogsothoth:BAEBLgAECn8hAAMDAAgJgxScLAC3AQhoDAAABgAzAGkMAAAGAEsAawwAAAYAPQBqDAAABABOAGwMAAAEADYAbQwAAAEALwDqDAAABQA0AG4MAAABABkAAwAICYgTnCwAtwEIaAwAAAIAIQBpDAAAAwBLAGsMAAADAD0AagwAAAMATgBsDAAAAwA2AG0MAAABAC8A6gwAAAEANABuDAAAAQAZAAQABgmMEGIWAGMBBmgMAAAEADMAaQwAAAMAOwBrDAAAAwAiAGoMAAABABsAbAwAAAEAGADqDAAABAAqAAAA.',},}
+local provider = {region='US',realm='Hakkar',name='US',type='subscribers',zone=46,date='2026-05-14',data={Km='Kmarti:BAECLgAFFH8IAAIBAAMJMRPVOADrAANoDAAABABLAGkMAAACACcA6gwAAAIAIAABAAMJMRPVOADrAANoDAAABABLAGkMAAACACcA6gwAAAIAIAAuAAQKfyUAAwEACQklHmUhAIkCAAEACQklHmUhAIkCAAIAAgn/CwFgAGIAAAAA.',Yo='Yogsothoth:BAEBLgAECn8hAAMDAAgJgxQGMgCrAQhoDAAABgAzAGkMAAAGAEsAawwAAAYAPQBqDAAABABOAGwMAAAEADYAbQwAAAEALwDqDAAABQA0AG4MAAABABkAAwAICYgTBjIAqwEIaAwAAAIAIQBpDAAAAwBLAGsMAAADAD0AagwAAAMATgBsDAAAAwA2AG0MAAABAC8A6gwAAAEANABuDAAAAQAZAAQABgmMEGIWAGMBBmgMAAAEADMAaQwAAAMAOwBrDAAAAwAiAGoMAAABABsAbAwAAAEAGADqDAAABAAqAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

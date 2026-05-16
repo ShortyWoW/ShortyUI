@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DemonHunter-Devourer','DeathKnight-Blood','DeathKnight-Unholy',}
-local provider = {region='US',realm='Azshara',name='US',type='subscribers',zone=46,date='2026-05-13',data={De='Decun:BAEALgAECgIJAgABLgAECgkJJQABALgjAA==.',Ho='Hondodk:BAECLgAFFH8HAAMCAAMJGBuQEAD7AANoDAAABABhAGkMAAABAEkA6gwAAAIAJQACAAMJGBuQEAD7AANoDAAAAwBhAGkMAAABAEkA6gwAAAEAJQADAAIJ1xBUgACfAAJoDAAAAQA4AOoMAAABAB0ALgAECn8YAAMCAAgJ7yPsCACSAgACAAcJOiXsCACSAgADAAIJxRZIuQCQAAABLgAFFAYJGQADAC8iAA==.',},}
+local lookup = {'Paladin-Holy','Paladin-Protection','Paladin-Retribution','DeathKnight-Blood','DeathKnight-Unholy',}
+local provider = {region='US',realm='Azshara',name='US',type='subscribers',zone=46,date='2026-05-14',data={Dr='Driney:BAEBLgAECn8YAAQBAAgJCSReDAC3AghoDAAAAwAqAGkMAAAEAGQAawwAAAMAYwBqDAAAAwBjAGwMAAAEAGMAbQwAAAIAYgDqDAAABABjAG4MAAABAGIAAQAHCbAjXgwAtwIHaAwAAAEAKgBpDAAAAgBkAGsMAAACAGMAagwAAAIAYwBsDAAAAgBjAG0MAAABAGIA6gwAAAMAYwACAAYJ/CSGBgAdAgZoDAAAAQBUAGkMAAACAGIAawwAAAEAYwBqDAAAAQBcAGwMAAACAGMAbQwAAAEAWwADAAMJHxwgxACdAANoDAAAAQBbAOoMAAABACIAbgwAAAEAWgAAAA==.',Ho='Hondodk:BAECLgAFFH8HAAMEAAMJGBtrEQD5AANoDAAABABhAGkMAAABAEkA6gwAAAIAJQAEAAMJGBtrEQD5AANoDAAAAwBhAGkMAAABAEkA6gwAAAEAJQAFAAIJ1xCigwCfAAJoDAAAAQA4AOoMAAABAB0ALgAECn8YAAMEAAgJ7yPsCACSAgAEAAcJOiXsCACSAgAFAAIJxRbdvwCPAAABLgAFFAYJGQAFACUiAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

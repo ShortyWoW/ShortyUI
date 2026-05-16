@@ -24,6 +24,7 @@ Settings.lua
 StaticData.lua
 BitDecoder.lua
 Provider.lua
+SplitProvider.lua
 Profile.lua
 Tooltip.lua
 Dropdown.lua

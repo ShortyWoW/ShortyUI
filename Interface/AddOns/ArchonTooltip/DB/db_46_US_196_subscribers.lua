@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Restoration','Druid-Balance','Monk-Windwalker','Hunter-BeastMastery',}
-local provider = {region='US',realm='Silvermoon',name='US',type='subscribers',zone=46,date='2026-05-13',data={Bl='Blackkstaff:BAECLgAFFH8PAAIBAAYJVRjiBQD/AQZoDAAAAgBYAGkMAAACAC4AawwAAAIAIABqDAAAAgBBAGwMAAADADEA6gwAAAQAXAABAAYJVRjiBQD/AQZoDAAAAgBYAGkMAAACAC4AawwAAAIAIABqDAAAAgBBAGwMAAADADEA6gwAAAQAXAAuAAQKfzoAAwEACQnoIEsFADkDAAEACAn0JEsFADkDAAIAAwlCCBZZAEUAAAAA.',Ja='Jarco:BAECLgAFFH8JAAIDAAQJSSCvCQDOAARoDAAAAwBdAGkMAAACAE8AawwAAAIAWwDqDAAAAgBCAAMABAlJIK8JAM4ABGgMAAADAF0AaQwAAAIATwBrDAAAAgBbAOoMAAACAEIALgAECn8kAAIDAAkJZCQ/AQCuAwADAAkJZCQ/AQCuAwABLgAFFAUJCQAEAGYTAA==.',},}
+local provider = {region='US',realm='Silvermoon',name='US',type='subscribers',zone=46,date='2026-05-14',data={Bl='Blackkstaff:BAECLgAFFH8PAAIBAAYJVRhGBgD/AQZoDAAAAgBYAGkMAAACAC4AawwAAAIAIABqDAAAAgBBAGwMAAADADEA6gwAAAQAXAABAAYJVRhGBgD/AQZoDAAAAgBYAGkMAAACAC4AawwAAAIAIABqDAAAAgBBAGwMAAADADEA6gwAAAQAXAAuAAQKfzsAAwEACQlRIUsFADkDAAEACAlqJUsFADkDAAIAAwlCCPBbAEMAAAAA.',Ja='Jarco:BAECLgAFFH8JAAIDAAQJSSCvCQDOAARoDAAAAwBdAGkMAAACAE8AawwAAAIAWwDqDAAAAgBCAAMABAlJIK8JAM4ABGgMAAADAF0AaQwAAAIATwBrDAAAAgBbAOoMAAACAEIALgAECn8kAAIDAAkJZCQ/AQCuAwADAAkJZCQ/AQCuAwABLgAFFAUJCgAEAGYTAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

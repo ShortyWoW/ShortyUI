@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Blood',}
-local provider = {region='US',realm='Gundrak',name='US',type='subscribers',zone=46,date='2026-05-13',data={De='Deki:BAEALgAECgYJBgAAAA==.',Ex='Exo:BAECLgAFFH8eAAIBAAUJ6h7WCQBGAQVoDAAACABbAGkMAAAGAGAAawwAAAYAUgBqDAAAAwAdAOoMAAAHAC4AAQAFCeoe1gkARgEFaAwAAAgAWwBpDAAABgBgAGsMAAAGAFIAagwAAAMAHQDqDAAABwAuAC4ABAp/IgACAQAJCfwcLwYA1QIAAQAJCfwcLwYA1QIAAAA=.',},}
+local provider = {region='US',realm='Gundrak',name='US',type='subscribers',zone=46,date='2026-05-14',data={De='Deki:BAEALgAECgYJBgAAAA==.',Ex='Exo:BAECLgAFFH8eAAIBAAUJ6h6eBwBwAQVoDAAACABbAGkMAAAGAGAAawwAAAYAUgBqDAAAAwAcAOoMAAAHAC4AAQAFCeoengcAcAEFaAwAAAgAWwBpDAAABgBgAGsMAAAGAFIAagwAAAMAHADqDAAABwAuAC4ABAp/KwACAQAJCS0iLwYA1QIAAQAJCS0iLwYA1QIAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

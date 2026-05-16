@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Mistweaver',}
-local provider = {region='US',realm='SistersofElune',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ka='Kardai:BAEALgAECgYJEwAAAA==.',Ri='Rin:BAEBLgAECn8eAAIBAAgJhB/ABwCcAghoDAAABQBSAGkMAAAFAFAAawwAAAUAUABqDAAABABUAGwMAAADAE4AbQwAAAEARADqDAAABABgAG4MAAADAEkAAQAICYQfwAcAnAIIaAwAAAUAUgBpDAAABQBQAGsMAAAFAFAAagwAAAQAVABsDAAAAwBOAG0MAAABAEQA6gwAAAQAYABuDAAAAwBJAAAA.',},}
+local provider = {region='US',realm='SistersofElune',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ka='Kardai:BAEALgAECgYJEwAAAA==.',Ri='Rin:BAEBLgAECn8jAAIBAAgJNSFBBgDSAghoDAAABgBSAGkMAAAGAFYAawwAAAYAUABqDAAABABUAGwMAAAEAFIAbQwAAAIAXgDqDAAABABgAG4MAAADAEkAAQAICTUhQQYA0gIIaAwAAAYAUgBpDAAABgBWAGsMAAAGAFAAagwAAAQAVABsDAAABABSAG0MAAACAF4A6gwAAAQAYABuDAAAAwBJAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

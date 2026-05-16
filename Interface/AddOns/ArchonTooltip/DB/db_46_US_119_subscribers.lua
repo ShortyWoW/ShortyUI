@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Windwalker','Unknown-Unknown','Priest-Shadow','Priest-Discipline',}
-local provider = {region='US',realm='Hellscream',name='US',type='subscribers',zone=46,date='2026-05-13',data={Bu='Butterdtoast:BAEBLgAECn8aAAIBAAgJvhL3FQCVAQhoDAAABAA6AGkMAAAEAEAAawwAAAQANABqDAAAAwBIAGwMAAADACAAbQwAAAIALgDqDAAABAArAG4MAAACACYAAQAICb4S9xUAlQEIaAwAAAQAOgBpDAAABABAAGsMAAAEADQAagwAAAMASABsDAAAAwAgAG0MAAACAC4A6gwAAAQAKwBuDAAAAgAmAAAA.',Pl='Plopp:BAEALgAECgcJEwAAAA==.',Ro='Roseclaw:BAEALgAECgYJCwABLgAECgYJEQACAAAAAA==.Roseclawed:BAEALgAECgYJEQAAAA==.',Sk='Skolivermist:BAEALgAECgYJBgABLgAFFAQJDQADAHsJAA==.Skolivia:BAECLgAFFH8NAAMDAAQJewnwDwAsAQRoDAAABQAUAGkMAAAEACUAawwAAAEADwDqDAAAAwAXAAMABAl7CfAPACwBBGgMAAAFABQAaQwAAAMAJQBrDAAAAQAPAOoMAAACABcABAACCSYBXCgAagACaQwAAAEABADqDAAAAQAAAC4ABAp/FgADAwAICfoYZRkAFgIAAwAICfoYZRkAFgIABAACCV8Qm0kAcQAAAAA=.',},}
+local provider = {region='US',realm='Hellscream',name='US',type='subscribers',zone=46,date='2026-05-14',data={Bu='Butterdtoast:BAEBLgAECn8aAAIBAAgJvhI5GACOAQhoDAAABAA6AGkMAAAEAEAAawwAAAQANABqDAAAAwBIAGwMAAADACAAbQwAAAIALgDqDAAABAArAG4MAAACACYAAQAICb4SORgAjgEIaAwAAAQAOgBpDAAABABAAGsMAAAEADQAagwAAAMASABsDAAAAwAgAG0MAAACAC4A6gwAAAQAKwBuDAAAAgAmAAAA.',Pl='Plopp:BAEALgAECgcJEwAAAA==.',Ro='Roseclaw:BAEALgAECgYJDAABLgAECgYJEQACAAAAAA==.Roseclawed:BAEALgAECgYJEQAAAA==.',Sk='Skolivermist:BAEALgAECgcJCgABLgAFFAQJDQADAHsJAA==.Skolivia:BAECLgAFFH8NAAMDAAQJewmYEAAoAQRoDAAABQAUAGkMAAAEACUAawwAAAEADwDqDAAAAwAXAAMABAl7CZgQACgBBGgMAAAFABQAaQwAAAMAJQBrDAAAAQAPAOoMAAACABcABAACCSYBaSkAagACaQwAAAEABADqDAAAAQAAAC4ABAp/FgADAwAICfoYZRkAFgIAAwAICfoYZRkAFgIABAACCV8Qm0kAcQAAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

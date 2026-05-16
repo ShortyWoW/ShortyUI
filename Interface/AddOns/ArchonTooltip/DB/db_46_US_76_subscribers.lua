@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Shaman-Restoration','Shaman-Elemental','Hunter-BeastMastery','Hunter-Marksmanship',}
-local provider = {region='US',realm='Draka',name='US',type='subscribers',zone=46,date='2026-05-13',data={El='Ellimist:BAECLgAFFH8UAAIBAAUJbBsxBwDBAQVoDAAABgBhAGkMAAAGAFwAawwAAAMAMQBqDAAAAgA7AOoMAAADADMAAQAFCWwbMQcAwQEFaAwAAAYAYQBpDAAABgBcAGsMAAADADEAagwAAAIAOwDqDAAAAwAzAC4ABAp/IgADAQAJCYkYdBcAWgIAAQAJCYkYdBcAWgIAAgAFCTQXF1AABwEAAAA=.',St='Stonedragon:BAECLgAFFH8PAAIDAAQJnx/ACgB6AQRoDAAABABBAGkMAAAEAGAAawwAAAIAUADqDAAABQBQAAMABAmfH8AKAHoBBGgMAAAEAEEAaQwAAAQAYABrDAAAAgBQAOoMAAAFAFAALgAECn8rAAMDAAgJ/iTMBQAxAwADAAgJ/iTMBQAxAwAEAAIJ/w79HgBnAAAAAA==.',},}
+local provider = {region='US',realm='Draka',name='US',type='subscribers',zone=46,date='2026-05-14',data={El='Ellimist:BAECLgAFFH8UAAIBAAUJbBv0BwC4AQVoDAAABgBhAGkMAAAGAFwAawwAAAMAMQBqDAAAAgA7AOoMAAADADMAAQAFCWwb9AcAuAEFaAwAAAYAYQBpDAAABgBcAGsMAAADADEAagwAAAIAOwDqDAAAAwAzAC4ABAp/IgADAQAJCYkYdBcAWgIAAQAJCYkYdBcAWgIAAgAFCTQXF1AABwEAAAA=.',St='Stonedragon:BAECLgAFFH8PAAIDAAQJnx/6CwB0AQRoDAAABABBAGkMAAAEAGAAawwAAAIAUADqDAAABQBQAAMABAmfH/oLAHQBBGgMAAAEAEEAaQwAAAQAYABrDAAAAgBQAOoMAAAFAFAALgAECn8rAAMDAAgJ/iTMBQAxAwADAAgJ/iTMBQAxAwAEAAIJ/w6WIABjAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

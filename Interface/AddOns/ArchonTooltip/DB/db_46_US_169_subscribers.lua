@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-BeastMastery',}
-local provider = {region='US',realm='Nordrassil',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ar='Ardell:BAEALgAECgYJBgAAAA==.',Li='Likestoflash:BAEALgAECgYJEAABLgAECgkJLAABAPsaAA==.',},}
+local provider = {region='US',realm='Nordrassil',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ar='Ardell:BAEALgAECgYJBgAAAA==.',Li='Likestoflash:BAEALgAECgYJEAABLgAECgkJMAABAPsaAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

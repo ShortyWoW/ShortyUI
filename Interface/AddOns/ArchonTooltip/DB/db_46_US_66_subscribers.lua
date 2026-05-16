@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warrior-Protection','Warlock-Demonology','Warlock-Destruction','Warlock-Affliction',}
-local provider = {region='US',realm='Dentarg',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ag='Aggathon:BAEBLgAECn8jAAIBAAgJpBAADwCFAQhoDAAABgA7AGkMAAAFAC4AawwAAAUAPABqDAAABQAqAGwMAAAEADUAbQwAAAMAEQDqDAAABQA1AG4MAAACAAcAAQAICaQQAA8AhQEIaAwAAAYAOwBpDAAABQAuAGsMAAAFADwAagwAAAUAKgBsDAAABAA1AG0MAAADABEA6gwAAAUANQBuDAAAAgAHAAAA.',Gr='Griever:BAEBLgAECn8YAAQCAAYJMRukXgAoAQZoDAAABQBPAGkMAAAEADsAawwAAAQAQgBqDAAAAwBRAGwMAAACAE0A6gwAAAYAQAACAAUJgxmkXgAoAQVoDAAABQBPAGkMAAACADsAawwAAAEAOQBqDAAAAQBRAOoMAAAGAEAAAwADCTIcBRcApgADawwAAAMAQgBqDAAAAgBGAGwMAAACAE0ABAABCUYVZxsAQgABaQwAAAIANgAAAA==.',},}
+local provider = {region='US',realm='Dentarg',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ag='Aggathon:BAEBLgAECn8jAAIBAAgJpBBAEAB9AQhoDAAABgA7AGkMAAAFAC4AawwAAAUAPABqDAAABQAqAGwMAAAEADUAbQwAAAMAEQDqDAAABQA1AG4MAAACAAcAAQAICaQQQBAAfQEIaAwAAAYAOwBpDAAABQAuAGsMAAAFADwAagwAAAUAKgBsDAAABAA1AG0MAAADABEA6gwAAAUANQBuDAAAAgAHAAAA.',Gr='Griever:BAEBLgAECn8YAAQCAAYJMRvnZQAeAQZoDAAABQBPAGkMAAAEADsAawwAAAQAQgBqDAAAAwBRAGwMAAACAE0A6gwAAAYAQAACAAUJgxnnZQAeAQVoDAAABQBPAGkMAAACADsAawwAAAEAOQBqDAAAAQBRAOoMAAAGAEAAAwADCTIcPhgAogADawwAAAMAQgBqDAAAAgBGAGwMAAACAE0ABAABCUYVBx8APwABaQwAAAIANgAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

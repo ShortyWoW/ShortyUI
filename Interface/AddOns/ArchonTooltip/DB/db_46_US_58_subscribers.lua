@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Blood','Paladin-Retribution','Priest-Discipline',}
-local provider = {region='US',realm='Dalvengyr',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ad='Addiegate:BAEALgAECgQJBwABLgAFFAIJBgABAOIWAA==.',Ra='Ratribution:BAEBLgAECn8kAAICAAkJLCJgBAAgAwloDAAABgBNAGkMAAAHAF0AawwAAAYAWgBqDAAAAwBaAGwMAAAEAGEAbQwAAAEAXwDqDAAABgBgAG4MAAABAD0AbwwAAAIAVgACAAkJLCJgBAAgAwloDAAABgBNAGkMAAAHAF0AawwAAAYAWgBqDAAAAwBaAGwMAAAEAGEAbQwAAAEAXwDqDAAABgBgAG4MAAABAD0AbwwAAAIAVgABLgAFFAYJEgADAFweAA==.',},}
+local lookup = {'Druid-Guardian','Paladin-Retribution','Priest-Discipline',}
+local provider = {region='US',realm='Dalvengyr',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ad='Addiegate:BAEALgAECgQJBwABLgAFFAcJGwABAMwjAA==.',Ra='Ratribution:BAEBLgAECn8mAAICAAkJOiIWBQAZAwloDAAABgBNAGkMAAAHAF0AawwAAAcAXABqDAAABABdAGwMAAAEAGEAbQwAAAEAXwDqDAAABgBgAG4MAAABAD0AbwwAAAIAVgACAAkJOiIWBQAZAwloDAAABgBNAGkMAAAHAF0AawwAAAcAXABqDAAABABdAGwMAAAEAGEAbQwAAAEAXwDqDAAABgBgAG4MAAABAD0AbwwAAAIAVgABLgAFFAYJEgADAFweAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-BeastMastery','Priest-Discipline','Priest-Shadow',}
-local provider = {region='US',realm='Dragonblight',name='US',type='subscribers',zone=46,date='2026-05-13',data={Al='Alivis:BAEALgAECgQJBAABLgAECgcJHQABAFciAA==.',Sa='Saintfrosty:BAEALgADCgEJAQABLgAECggJFAACAJkTAA==.Saintkhal:BAEALgAECgQJCAABLgAECggJFAACAJkTAA==.Saintmedicus:BAEBLgAECn8UAAMCAAgJmRP1HwBJAQhoDAAABQBCAGkMAAADADYAawwAAAMAOABqDAAAAgBGAGwMAAABACoAbQwAAAEAJQDqDAAABAAyAG4MAAABABYAAgAFCWQX9R8ASQEFaAwAAAUAQgBpDAAAAwA2AGsMAAADADgAagwAAAIARgDqDAAABAAyAAMAAwnVDZQ9AKkAA2wMAAABAC8AbQwAAAEAGwBuDAAAAQAfAAAA.',},}
+local provider = {region='US',realm='Dragonblight',name='US',type='subscribers',zone=46,date='2026-05-14',data={Al='Alivis:BAEALgAECgQJBAABLgAECgcJHQABAFciAA==.',La='Lapras:BAEALgAFFAkJAwAAAA==.',Sa='Saintfrosty:BAEALgADCgEJAQABLgAECggJFAACAJkTAA==.Saintkhal:BAEALgAECgQJCAABLgAECggJFAACAJkTAA==.Saintmedicus:BAEBLgAECn8UAAMCAAgJmRO4IgBDAQhoDAAABQBCAGkMAAADADYAawwAAAMAOABqDAAAAgBGAGwMAAABACoAbQwAAAEAJQDqDAAABAAyAG4MAAABABYAAgAFCWQXuCIAQwEFaAwAAAUAQgBpDAAAAwA2AGsMAAADADgAagwAAAIARgDqDAAABAAyAAMAAwnVDf8/AKYAA2wMAAABAC8AbQwAAAEAGwBuDAAAAQAfAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Mistweaver','Monk-Windwalker','Monk-Brewmaster',}
-local provider = {region='US',realm='Blackhand',name='US',type='subscribers',zone=46,date='2026-05-13',data={At='Ativan:BAEBLgAECn8qAAQBAAcJ2RhyEgD0AQdoDAAABwBAAGkMAAAHADIAawwAAAcANwBqDAAABgBAAGwMAAAGAEgAbQwAAAMARADqDAAABgBEAAEABwnZGHISAPQBB2gMAAAFAEAAaQwAAAUAMgBrDAAABgA3AGoMAAAGAEAAbAwAAAYASABtDAAAAwBEAOoMAAAFAEQAAgADCcMHikMAigADaAwAAAIAEgBpDAAAAgAXAGsMAAABABEAAwABCXIAloIAGgAB6gwAAAEAAQAAAA==.',Di='Dienne:BAEALgAECggJEgABLgAECgkJKgABANkYAA==.',Ly='Lyralina:BAEALgADCgQJBAABLgAECgkJKgABANkYAA==.',},}
+local provider = {region='US',realm='Blackhand',name='US',type='subscribers',zone=46,date='2026-05-14',data={At='Ativan:BAEBLgAECn8qAAQBAAcJ1RiaFADqAQdoDAAABwBAAGkMAAAHADIAawwAAAcANwBqDAAABgBAAGwMAAAGAEgAbQwAAAMARADqDAAABgBEAAEABwnVGJoUAOoBB2gMAAAFAEAAaQwAAAUAMgBrDAAABgA3AGoMAAAGAEAAbAwAAAYASABtDAAAAwBEAOoMAAAFAEQAAgADCcMH8UYAhwADaAwAAAIAEgBpDAAAAgAXAGsMAAABABEAAwABCXIAJIYAGAAB6gwAAAEAAQAAAA==.',Di='Dienne:BAEALgAECggJEgABLgAECgkJKgABANUYAA==.',Ly='Lyralina:BAEALgADCgQJBAABLgAECgkJKgABANUYAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

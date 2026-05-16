@@ -26,23 +26,13 @@ END
 VER 3 0000000000000071 "Reset Instances" "4548871"
 /script ResetInstances();
 END
-VER 3 0000000000000076 "sfalls:circle" "7736246"
-/raid sfalls:circle
+VER 3 000000000000007C "Skull Marker" "134400"
+#showtooltip
+/wm [@cursor] 8
 END
-VER 3 000000000000007B "sfalls:clear" "7736246"
-/raid sfalls:clear
-END
-VER 3 0000000000000078 "sfalls:cross" "7736246"
-/raid sfalls:cross
-END
-VER 3 0000000000000077 "sfalls:diamond" "7736246"
-/raid sfalls:diamond
-END
-VER 3 000000000000007A "sfalls:t" "7736246"
-/raid sfalls:t
-END
-VER 3 0000000000000079 "sfalls:triangle" "7736246"
-/raid sfalls:triangle
+VER 3 000000000000007D "Star Marker" "134400"
+#showtooltip
+/wm [@cursor] 5
 END
 VER 3 0000000000000065 "Swap Blaster" "134400"
 #showtooltip

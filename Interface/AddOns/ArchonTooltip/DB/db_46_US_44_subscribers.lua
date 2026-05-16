@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Mage-Frost','Mage-Arcane','Shaman-Elemental','Shaman-Enhancement','Unknown-Unknown',}
-local provider = {region='US',realm='Boulderfist',name='US',type='subscribers',zone=46,date='2026-05-13',data={Be='Benlian:BAEALgAECgUJDQAAAA==.',Bi='Bigolbkt:BAECLgAFFH8VAAIBAAYJJhEvFwCbAQZoDAAABgAnAGkMAAAFADsAawwAAAMAFABqDAAAAgAnAGwMAAABAA0A6gwAAAQAVgABAAYJJhEvFwCbAQZoDAAABgAnAGkMAAAFADsAawwAAAMAFABqDAAAAgAnAGwMAAABAA0A6gwAAAQAVgAuAAQKfyMAAwEACAkgIbkgAPECAAEACAkgIbkgAPECAAIAAQmmFUseADUAAAAA.',Sp='Spaghet:BAECLgAFFH8JAAIDAAMJkA+YEQDcAANoDAAAAwAZAGkMAAABABQA6gwAAAUASgADAAMJkA+YEQDcAANoDAAAAwAZAGkMAAABABQA6gwAAAUASgAuAAQKfxkAAwMACAlLEUgmAN8BAAMACAlLEUgmAN8BAAQAAwmxBWgkAJIAAAEuAAUUBgkVAAEAJhEA.',Sy='Sylvy:BAEALgAECgUJBQABLgAECgUJDQAFAAAAAA==.',},}
+local provider = {region='US',realm='Boulderfist',name='US',type='subscribers',zone=46,date='2026-05-14',data={Be='Benlian:BAEALgAECgUJDQAAAA==.',Bi='Bigolbkt:BAECLgAFFH8VAAIBAAYJJhHWGACYAQZoDAAABgAnAGkMAAAFADsAawwAAAMAFABqDAAAAgAnAGwMAAABAA0A6gwAAAQAVgABAAYJJhHWGACYAQZoDAAABgAnAGkMAAAFADsAawwAAAMAFABqDAAAAgAnAGwMAAABAA0A6gwAAAQAVgAuAAQKfyMAAwEACAkgIbkgAPECAAEACAkgIbkgAPECAAIAAQmmFUseADUAAAAA.',Sp='Spaghet:BAECLgAFFH8JAAIDAAMJkA+YEQDcAANoDAAAAwAZAGkMAAABABQA6gwAAAUASgADAAMJkA+YEQDcAANoDAAAAwAZAGkMAAABABQA6gwAAAUASgAuAAQKfxkAAwMACAlLEUgmAN8BAAMACAlLEUgmAN8BAAQAAwmxBWgkAJIAAAEuAAUUBgkVAAEAJhEA.',Sy='Sylvy:BAEALgAECgUJBQABLgAECgUJDQAFAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

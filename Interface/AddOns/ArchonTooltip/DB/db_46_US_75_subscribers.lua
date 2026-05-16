@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Unknown-Unknown','DemonHunter-Vengeance','DeathKnight-Unholy',}
-local provider = {region='US',realm="Drak'thul",name='US',type='subscribers',zone=46,date='2026-05-13',data={Br='Bragdand:BAEALgADCgkJHAAAAA==.',He='Heolt:BAEALgADCgUJBQABLgADCgkJHAABAAAAAA==.',Mo='Mordacity:BAEBLgAECn8XAAICAAYJTgcHEwCyAAZoDAAABAAQAGkMAAAEAB0AawwAAAQADgBqDAAAAwAJAGwMAAADABEA6gwAAAUAEAACAAYJTgcHEwCyAAZoDAAABAAQAGkMAAAEAB0AawwAAAQADgBqDAAAAwAJAGwMAAADABEA6gwAAAUAEAAAAA==.',Pa='Palimorea:BAEALgADCgcJEAABLgADCgkJHAABAAAAAA==.',St='Strixmonk:BAEALgAFFAEJAQABLgAFFAUJGAADAI8bAA==.',},}
+local provider = {region='US',realm="Drak'thul",name='US',type='subscribers',zone=46,date='2026-05-14',data={Br='Bragdand:BAEALgADCgkJHAAAAA==.',He='Heolt:BAEALgADCgUJBQABLgADCgkJHAABAAAAAA==.',Mo='Mordacity:BAEBLgAECn8XAAICAAYJTgfaEwCyAAZoDAAABAAQAGkMAAAEAB0AawwAAAQADgBqDAAAAwAJAGwMAAADABEA6gwAAAUAEAACAAYJTgfaEwCyAAZoDAAABAAQAGkMAAAEAB0AawwAAAQADgBqDAAAAwAJAGwMAAADABEA6gwAAAUAEAAAAA==.',Pa='Palimorea:BAEALgADCgcJEAABLgADCgkJHAABAAAAAA==.',St='Strixmonk:BAEALgAFFAEJAQABLgAFFAUJGAADAI8bAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

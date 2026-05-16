@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Evoker-Devastation','Evoker-Augmentation',}
-local provider = {region='US',realm='Azuremyst',name='US',type='subscribers',zone=46,date='2026-05-13',data={Dr='Drylo:BAEBLgAECn8rAAMBAAkJQSDkAQBnAgloDAAABwBdAGkMAAAHAF4AawwAAAYAYABqDAAABQBRAGwMAAAEAFYAbQwAAAIAJwDqDAAABwBdAG4MAAADAFMAbwwAAAIARwABAAgJxB/kAQBnAghoDAAABgBZAGkMAAAGAF0AawwAAAUAVwBqDAAAAwBMAGwMAAAEAFYAbQwAAAIAJwDqDAAABgBdAG4MAAABAE4AAgAHCaEihggAYgIHaAwAAAEAXQBpDAAAAQBeAGsMAAABAGAAagwAAAIAUQDqDAAAAQBbAG4MAAACAFMAbwwAAAIARwAAAA==.',Sh='Shmooves:BAEALgAECgMJAwAAAA==.',},}
+local lookup = {'Evoker-Augmentation','Evoker-Devastation',}
+local provider = {region='US',realm='Azuremyst',name='US',type='subscribers',zone=46,date='2026-05-14',data={Dr='Drylo:BAEBLgAECn8tAAMBAAkJJSC9BADXAgloDAAABwBcAGkMAAAHAF0AawwAAAYAYABqDAAABQBRAGwMAAAFAFYAbQwAAAMAJwDqDAAABwBdAG4MAAADAFMAbwwAAAIASAABAAkJih69BADXAgloDAAAAQBcAGkMAAABAF0AawwAAAEAYABqDAAAAgBRAGwMAAABAFIAbQwAAAEADQDqDAAAAQBbAG4MAAACAFMAbwwAAAIASAACAAgJxB8sAgBcAghoDAAABgBZAGkMAAAGAF0AawwAAAUAVwBqDAAAAwBMAGwMAAAEAFYAbQwAAAIAJwDqDAAABgBdAG4MAAABAE4AAAA=.',Sh='Shmooves:BAEALgAECgMJAwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-BeastMastery','Hunter-Survival','Monk-Brewmaster',}
-local provider = {region='US',realm='Moonrunner',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ja='Jarco:BAEBLgAFFH8JAAMBAAUJZhMBFABTAQVoDAAAAwAOAGkMAAADAEoAawwAAAEAYQBqDAAAAQAlAOoMAAABAAwAAQAFCWYTARQAUwEFaAwAAAIADgBpDAAAAwBKAGsMAAABAGEAagwAAAEAJQDqDAAAAQAMAAIAAQmKBEUhAEsAAWgMAAABAAsAAAA=.',Ma='Mathbrew:BAEBLgAECn8gAAIDAAgJyCFRCQBMAghoDAAABQBOAGkMAAAEAFcAawwAAAYAWABqDAAABABVAGwMAAAEAFwAbQwAAAEAVgDqDAAABABXAG4MAAAEAFQAAwAICcghUQkATAIIaAwAAAUATgBpDAAABABXAGsMAAAGAFgAagwAAAQAVQBsDAAABABcAG0MAAABAFYA6gwAAAQAVwBuDAAABABUAAAA.',Me='Mehv:BAEALgAECgkJCwAAAQ==.',My='Mythbruh:BAEALgAFFAEJAQABLgAECggJIAADAMghAA==.',Sm='Smithbruh:BAEALgAECgQJBAABLgAECggJIAADAMghAA==.',},}
+local provider = {region='US',realm='Moonrunner',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ja='Jarco:BAEBLgAFFH8KAAMBAAUJZhP/FQBMAQVoDAAAAwAOAGkMAAADAEoAawwAAAEAYQBqDAAAAQAlAOoMAAACAAwAAQAFCWYT/xUATAEFaAwAAAIADgBpDAAAAwBKAGsMAAABAGEAagwAAAEAJQDqDAAAAgAMAAIAAQmKBC4iAEsAAWgMAAABAAsAAAA=.',Ma='Mathbrew:BAEBLgAECn8hAAIDAAgJyCGECgA/AghoDAAABQBOAGkMAAAEAFcAawwAAAYAWABqDAAABABVAGwMAAAEAFwAbQwAAAIAVgDqDAAABABXAG4MAAAEAFQAAwAICcghhAoAPwIIaAwAAAUATgBpDAAABABXAGsMAAAGAFgAagwAAAQAVQBsDAAABABcAG0MAAACAFYA6gwAAAQAVwBuDAAABABUAAAA.Mathbruh:BAEALgAECgEJAQABLgAECggJIQADAMghAA==.',Me='Mehv:BAEALgAECgkJCwAAAQ==.',My='Mythbruh:BAEALgAFFAEJAQABLgAECggJIQADAMghAA==.',Sm='Smithbruh:BAEALgAECgQJBAABLgAECggJIQADAMghAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

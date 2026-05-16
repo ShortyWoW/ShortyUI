@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Balance','Druid-Guardian','Druid-Feral',}
-local provider = {region='US',realm="Mug'thol",name='US',type='subscribers',zone=46,date='2026-05-13',data={Fu='Furrykane:BAEBLgAECn8lAAQBAAkJ0iNbAgAPAwloDAAABQBbAGkMAAAEAFYAawwAAAQAYQBqDAAABABSAGwMAAAEAGEAbQwAAAMAUADqDAAABwBfAG4MAAAEAGEAbwwAAAIAVwABAAkJ0iNbAgAPAwloDAAAAwBbAGkMAAADAFYAawwAAAQAYQBqDAAABABSAGwMAAAEAGEAbQwAAAMAUADqDAAABwBfAG4MAAAEAGEAbwwAAAIAVwACAAIJURnDIwB+AAJoDAAAAQA8AGkMAAABAEUAAwABCVcadDMANAABaAwAAAEAQwAAAA==.',Pa='Palkane:BAEALgADCgMJAwABLgAECgkJJQABANIjAA==.',},}
+local provider = {region='US',realm="Mug'thol",name='US',type='subscribers',zone=46,date='2026-05-14',data={Fu='Furrykane:BAEBLgAECn8lAAQBAAkJ0iPwAgD9AgloDAAABQBbAGkMAAAEAFYAawwAAAQAYQBqDAAABABSAGwMAAAEAGEAbQwAAAMAUADqDAAABwBfAG4MAAAEAGEAbwwAAAIAVwABAAkJ0iPwAgD9AgloDAAAAwBbAGkMAAADAFYAawwAAAQAYQBqDAAABABSAGwMAAAEAGEAbQwAAAMAUADqDAAABwBfAG4MAAAEAGEAbwwAAAIAVwACAAIJURnDIwB+AAJoDAAAAQA8AGkMAAABAEUAAwABCVcadDMANAABaAwAAAEAQwAAAA==.',Pa='Palkane:BAEALgADCgMJAwABLgAECgkJJQABANIjAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

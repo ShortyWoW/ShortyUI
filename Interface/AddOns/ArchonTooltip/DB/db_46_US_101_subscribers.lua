@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-Survival','Hunter-BeastMastery','Hunter-Marksmanship',}
-local provider = {region='US',realm='Galakrond',name='US',type='subscribers',zone=46,date='2026-05-13',data={Eu='Eunja:BAEALgAECgYJBgAAAQ==.',Mu='Mustard:BAEBLgAECn8rAAQBAAcJ5yUhBQCEAgdoDAAACABiAGkMAAAGAGAAawwAAAYAYQBqDAAABgBjAGwMAAAGAF0A6gwAAAYAYwBuDAAABQBgAAEABwniJCEFAIQCB2gMAAAGAGIAaQwAAAQAYABrDAAABQBcAGoMAAAFAGIAbAwAAAMAUgDqDAAABABjAG4MAAAFAGAAAgAFCdIkDC8ArAEFaAwAAAIAXgBpDAAAAQBbAGsMAAABAGEAagwAAAEAYwDqDAAAAgBdAAMAAgn9I9ATAM4AAmkMAAABAFoAbAwAAAMAXQAAAA==.',},}
+local provider = {region='US',realm='Galakrond',name='US',type='subscribers',zone=46,date='2026-05-14',data={Eu='Eunja:BAEALgAECgYJBgAAAQ==.',Mu='Mustard:BAEBLgAECn8rAAQBAAcJ5yVvBgByAgdoDAAACABiAGkMAAAGAGAAawwAAAYAYQBqDAAABgBjAGwMAAAGAF0A6gwAAAYAYwBuDAAABQBgAAEABwniJG8GAHICB2gMAAAGAGIAaQwAAAQAYABrDAAABQBcAGoMAAAFAGIAbAwAAAMAUgDqDAAABABjAG4MAAAFAGAAAgAFCdIkZDQAoQEFaAwAAAIAXgBpDAAAAQBbAGsMAAABAGEAagwAAAEAYwDqDAAAAgBdAAMAAgn9I8MUAMYAAmkMAAABAFoAbAwAAAMAXQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Holy','Shaman-Elemental','DeathKnight-Blood','DeathKnight-Unholy',}
-local provider = {region='US',realm='Crushridge',name='US',type='subscribers',zone=46,date='2026-05-13',data={Al='Aliyah:BAEALgADCgIJAgABLgAECgkJJgABAMsZAA==.',Ig='Iglooshocker:BAEBLgAFFH8FAAICAAMJfAbVEQDXAANoDAAAAgAhAGkMAAACAAUA6gwAAAEACQACAAMJfAbVEQDXAANoDAAAAgAhAGkMAAACAAUA6gwAAAEACQAAAA==.',Sh='Shamshielder:BAEBLgAECn8kAAMDAAcJHSEtDgAqAgdoDAAABwBbAGkMAAAHAF8AawwAAAYAUABqDAAABABQAGwMAAAFAFMAbQwAAAEARADqDAAABgBYAAMABwkdIS0OACoCB2gMAAAHAFsAaQwAAAcAXwBrDAAABgBQAGoMAAAEAFAAbAwAAAUAUwBtDAAAAQBEAOoMAAAFAFgABAABCbkJYQwBLQAB6gwAAAEAGAABLgAFFAMJBQACAHwGAA==.',},}
+local provider = {region='US',realm='Crushridge',name='US',type='subscribers',zone=46,date='2026-05-14',data={Al='Aliyah:BAEALgADCgIJAgABLgAECgkJJgABAMsZAA==.',Ig='Iglooshocker:BAEBLgAFFH8FAAICAAMJfAbVEQDXAANoDAAAAgAhAGkMAAACAAUA6gwAAAEACQACAAMJfAbVEQDXAANoDAAAAgAhAGkMAAACAAUA6gwAAAEACQAAAA==.',Sh='Shamshielder:BAEBLgAECn8kAAMDAAcJHSEtDgAqAgdoDAAABwBbAGkMAAAHAF8AawwAAAYAUABqDAAABABQAGwMAAAFAFMAbQwAAAEARADqDAAABgBYAAMABwkdIS0OACoCB2gMAAAHAFsAaQwAAAcAXwBrDAAABgBQAGoMAAAEAFAAbAwAAAUAUwBtDAAAAQBEAOoMAAAFAFgABAABCbkJYxUBKQAB6gwAAAEAGAABLgAFFAMJBQACAHwGAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

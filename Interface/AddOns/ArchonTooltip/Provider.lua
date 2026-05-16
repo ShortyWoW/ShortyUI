@@ -8,14 +8,17 @@ local Private = select(2, ...)
 ---@field date string
 ---@field data table<string, ProviderProfileV2>
 ---@field getChunk fun(characterName: string): string|nil
+---@field splitId number?
+---@field splitType SplitType?
+---@field splitCount number?
 
 ---@type table<string, Provider>
 local providers = {}
 
----@param dataset table<'realm'|'subscribers', string|number>
+---@param dataset table<'realm'|'subscribers'|'splitId', string|number>
 ---@return string
 local function CreateProviderKey(dataset)
-	return dataset.realm .. "-" .. dataset.subscribers
+	return dataset.realm .. "-" .. dataset.subscribers .. "-" .. dataset.splitId
 end
 
 ---@param lookup table<string, string>
@@ -85,6 +88,7 @@ function ArchonTooltip.AddProvider(lookup, provider)
 		realm = provider.realm,
 		subscribers = string.find(provider.type, "subscribers") and 1 or 0,
 		region = provider.region,
+		splitId = provider.splitId or 0,
 	})
 
 	if count > 0 then
@@ -149,8 +153,20 @@ local function ExtractProfileForCharacter(name, realm)
 	local providerIsLoaded = false
 
 	for i = 1, 0, -1 do
-		local key = CreateProviderKey({ realm = realm, subscribers = i })
+		-- the split config is part of the provider. to determine the config, we load split 0 (which is always present)
+		-- and use its config (if present) to locate the actual provider
+		local splitId = 0
+		local key = CreateProviderKey({ realm = realm, subscribers = i, splitId = splitId })
 		local provider = providers[key]
+
+		if provider ~= nil then
+			splitId = Private.GetSplitProviderIndex(provider, name, realm)
+
+			if splitId ~= provider.splitId then
+				key = CreateProviderKey({ realm = realm, subscribers = i, splitId = splitId })
+				provider = providers[key]
+			end
+		end
 
 		if provider ~= nil then
 			providerIsLoaded = true
@@ -348,6 +364,7 @@ function ArchonTooltip.AddProviderV2(lookup, provider)
 			realm = provider.realm,
 			subscribers = string.find(provider.type, "subscribers") and 1 or 0,
 			region = provider.region,
+			splitId = provider.splitId or 0,
 		})
 
 		Private.Print("Provider", "added v2 provider: " .. key)

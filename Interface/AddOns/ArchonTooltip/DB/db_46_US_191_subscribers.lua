@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Mage-Frost','DeathKnight-Unholy','Unknown-Unknown',}
-local provider = {region='US',realm='Shandris',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ei='Eifaun:BAEALgAECgUJCQAAAA==.',Ki='Kippo:BAECLgAFFH8HAAIBAAQJigURMwDRAARoDAAAAgAhAGkMAAACAAQAawwAAAEAAgDqDAAAAgARAAEABAmKBREzANEABGgMAAACACEAaQwAAAIABABrDAAAAQACAOoMAAACABEALgAECn8jAAIBAAgJlhdASgBYAgABAAgJlhdASgBYAgABLgAFFAUJCwACABUQAA==.',Sa='Sanorasong:BAEALgAECgYJEwAAAA==.',So='Songli:BAEALgADCgEJAQABLgAECgYJEwADAAAAAA==.',},}
+local provider = {region='US',realm='Shandris',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ei='Eifaun:BAEALgAECgUJCQAAAA==.',Ki='Kippo:BAECLgAFFH8HAAIBAAQJigURMwDRAARoDAAAAgAhAGkMAAACAAQAawwAAAEAAgDqDAAAAgARAAEABAmKBREzANEABGgMAAACACEAaQwAAAIABABrDAAAAQACAOoMAAACABEALgAECn8jAAIBAAgJlhdASgBYAgABAAgJlhdASgBYAgABLgAFFAUJCwACABUQAA==.',Sa='Sanorasong:BAEALgAECgYJEwAAAA==.',So='Songli:BAEALgADCgEJAQABLgAECgYJEwADAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

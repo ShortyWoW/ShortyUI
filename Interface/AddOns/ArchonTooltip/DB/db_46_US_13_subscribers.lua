@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Monk-Brewmaster','Warrior-Protection',}
-local provider = {region='US',realm='Antonidas',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ad='Adoryn:BAEBLgAECn8oAAIBAAgJ6A5lGwBvAQhoDAAABwApAGkMAAAGABoAawwAAAYAMgBqDAAABAA3AGwMAAAFADUAbQwAAAIALgDqDAAABgAgAG4MAAAEABAAAQAICegOZRsAbwEIaAwAAAcAKQBpDAAABgAaAGsMAAAGADIAagwAAAQANwBsDAAABQA1AG0MAAACAC4A6gwAAAYAIABuDAAABAAQAAAA.',Ar='Arrill:BAEALgAECgMJAwABLgAECggJGwACAP0JAA==.',Ch='Chûd:BAEALgAECgUJBQAAAA==.',Wa='Warrill:BAEBLgAECn8bAAICAAgJ/QknIwAlAQhoDAAABAATAGkMAAADACoAawwAAAMAMABqDAAABAAKAGwMAAAEAA4AbQwAAAIADADqDAAABQAaAG4MAAACAA4AAgAICf0JJyMAJQEIaAwAAAQAEwBpDAAAAwAqAGsMAAADADAAagwAAAQACgBsDAAABAAOAG0MAAACAAwA6gwAAAUAGgBuDAAAAgAOAAAA.',},}
+local lookup = {'Monk-Brewmaster','Warrior-Protection','DeathKnight-Blood',}
+local provider = {region='US',realm='Antonidas',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ad='Adoryn:BAEBLgAECn8oAAIBAAgJ6A5mHgBiAQhoDAAABwApAGkMAAAGABoAawwAAAYAMgBqDAAABAA3AGwMAAAFADUAbQwAAAIALgDqDAAABgAgAG4MAAAEABAAAQAICegOZh4AYgEIaAwAAAcAKQBpDAAABgAaAGsMAAAGADIAagwAAAQANwBsDAAABQA1AG0MAAACAC4A6gwAAAYAIABuDAAABAAQAAAA.',Ar='Arrill:BAEALgAECgMJAwABLgAECggJGwACAP0JAA==.',Ch='Chûd:BAEALgAECgUJBQAAAA==.',Se='Seanthaniel:BAEALgADCgQJBAABLgAFFAUJFwADACMWAA==.',Wa='Warrill:BAEBLgAECn8bAAICAAgJ/QknIwAlAQhoDAAABAATAGkMAAADACoAawwAAAMAMABqDAAABAAKAGwMAAAEAA4AbQwAAAIADADqDAAABQAaAG4MAAACAA4AAgAICf0JJyMAJQEIaAwAAAQAEwBpDAAAAwAqAGsMAAADADAAagwAAAQACgBsDAAABAAOAG0MAAACAAwA6gwAAAUAGgBuDAAAAgAOAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

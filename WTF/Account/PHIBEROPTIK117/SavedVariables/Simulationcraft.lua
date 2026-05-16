@@ -11,20 +11,20 @@ SimulationCraftDB = {
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Rndylikehoof - Dalaran"] = "Rndylikehoof - Dalaran",
-["Shortonheals - Area 52"] = "Shortonheals - Area 52",
+["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
 ["Shortbreath - Area 52"] = "Shortbreath - Area 52",
 ["Randuhrr - Dalaran"] = "Randuhrr - Dalaran",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
-["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
+["Shortonheals - Area 52"] = "Shortonheals - Area 52",
 ["Randysmells - Dalaran"] = "Randysmells - Dalaran",
-["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Udderstorm - Mal'Ganis"] = "Udderstorm - Mal'Ganis",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Medimilk - Mal'Ganis"] = "Medimilk - Mal'Ganis",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
-["Callmeshorte - Area 52"] = "Callmeshorte - Area 52",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Callmeshorte - Area 52"] = "Callmeshorte - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortlite - Dalaran"] = "Shortlite - Dalaran",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
@@ -54,7 +54,7 @@ SimulationCraftDB = {
 },
 ["Rndylikehoof - Dalaran"] = {
 },
-["Shortonheals - Area 52"] = {
+["Chugmonk - Mal'Ganis"] = {
 },
 ["Shortbreath - Area 52"] = {
 },
@@ -62,16 +62,16 @@ SimulationCraftDB = {
 },
 ["Drewis24EEA3 - Illidan"] = {
 },
-["Chugmonk - Mal'Ganis"] = {
+["Shortonheals - Area 52"] = {
 },
 ["Randysmells - Dalaran"] = {
+},
+["Udderstorm - Mal'Ganis"] = {
 },
 ["Shortybear - Illidan"] = {
 ["minimap"] = {
 ["hide"] = true,
 },
-},
-["Udderstorm - Mal'Ganis"] = {
 },
 ["Medimilk - Mal'Ganis"] = {
 },
@@ -85,11 +85,11 @@ SimulationCraftDB = {
 ["hide"] = true,
 },
 },
-["Callmeshorte - Area 52"] = {
+["Shortytest - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 },
-["Shortytest - Illidan"] = {
+["Callmeshorte - Area 52"] = {
 },
 ["Callmeshawte - Area 52"] = {
 ["minimap"] = {

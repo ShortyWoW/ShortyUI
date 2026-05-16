@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Priest-Discipline','Druid-Balance','DemonHunter-Devourer',}
-local provider = {region='US',realm='Malfurion',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ho='Hope:BAEALgAECgUJBQABLgAFFAYJCQABAAAPAA==.',Ru='Rucy:BAEBLgAECn80AAICAAkJ4hKZEgDRAQloDAAACAAkAGkMAAAIAEQAawwAAAgAQgBqDAAABwAxAGwMAAAGADUAbQwAAAQALQDqDAAABwBJAG4MAAADAB8AbwwAAAEACwACAAkJ4hKZEgDRAQloDAAACAAkAGkMAAAIAEQAawwAAAgAQgBqDAAABwAxAGwMAAAGADUAbQwAAAQALQDqDAAABwBJAG4MAAADAB8AbwwAAAEACwAAAA==.Rucybow:BAEALgADCgUJBQABLgAECgkJNAACAOISAA==.',Se='Seagulls:BAEBLgAECn8YAAIDAAgJihuSIgDWAQhoDAAABABTAGkMAAADAD4AawwAAAMASgBqDAAAAwBeAGwMAAADAFMAbQwAAAIAPQDqDAAABABIAG4MAAACADcAAwAICYobkiIA1gEIaAwAAAQAUwBpDAAAAwA+AGsMAAADAEoAagwAAAMAXgBsDAAAAwBTAG0MAAACAD0A6gwAAAQASABuDAAAAgA3AAAA.',},}
+local lookup = {'Evoker-Preservation','Druid-Balance','DemonHunter-Devourer',}
+local provider = {region='US',realm='Malfurion',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ho='Hope:BAEALgAECgUJBQABLgAFFAUJCwABAIgIAA==.',Ru='Rucy:BAEBLgAECn80AAICAAkJ4hI8FQC9AQloDAAACAAkAGkMAAAIAEQAawwAAAgAQgBqDAAABwAxAGwMAAAGADUAbQwAAAQALQDqDAAABwBJAG4MAAADAB8AbwwAAAEACwACAAkJ4hI8FQC9AQloDAAACAAkAGkMAAAIAEQAawwAAAgAQgBqDAAABwAxAGwMAAAGADUAbQwAAAQALQDqDAAABwBJAG4MAAADAB8AbwwAAAEACwAAAA==.Rucybow:BAEALgADCgUJBQABLgAECgkJNAACAOISAA==.',Se='Seagulls:BAEBLgAECn8YAAIDAAgJihs6KADLAQhoDAAABABTAGkMAAADAD4AawwAAAMASgBqDAAAAwBeAGwMAAADAFMAbQwAAAIAPQDqDAAABABIAG4MAAACADcAAwAICYobOigAywEIaAwAAAQAUwBpDAAAAwA+AGsMAAADAEoAagwAAAMAXgBsDAAAAwBTAG0MAAACAD0A6gwAAAQASABuDAAAAgA3AAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

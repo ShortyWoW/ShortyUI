@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Shadow','Unknown-Unknown','Warrior-Protection',}
-local provider = {region='US',realm='Skywall',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ha='Hanhealz:BAEBLgAECn8dAAIBAAgJshCYGACTAQhoDAAABgA/AGkMAAAFADsAawwAAAUAKwBqDAAAAgAoAGwMAAADAEUAbQwAAAEACADqDAAABgApAG4MAAABAAwAAQAICbIQmBgAkwEIaAwAAAYAPwBpDAAABQA7AGsMAAAFACsAagwAAAIAKABsDAAAAwBFAG0MAAABAAgA6gwAAAYAKQBuDAAAAQAMAAEuAAQKBgkHAAIAAAAA.',['Hà']='Hàney:BAEALgAECgYJBwAAAA==.',Ir='Irkenfox:BAECLgAFFH8RAAIDAAUJfSBtBQBxAQVoDAAABQBPAGkMAAAEAFYAawwAAAMARwBqDAAAAgA8AOoMAAADAF4AAwAFCX0gbQUAcQEFaAwAAAUATwBpDAAABABWAGsMAAADAEcAagwAAAIAPADqDAAAAwBeAC4ABAp/JQACAwAICaEjngMAGwMAAwAICaEjngMAGwMAAAA=.',Lo='Lotheovian:BAEALgAECgIJAgABLgAECgcJEwACAAAAAA==.',Za='Zaxhdk:BAEALgAECgcJEwAAAA==.',},}
+local provider = {region='US',realm='Skywall',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ha='Hanhealz:BAEBLgAECn8dAAIBAAgJshAcGwCKAQhoDAAABgA/AGkMAAAFADsAawwAAAUAKwBqDAAAAgAoAGwMAAADAEUAbQwAAAEACADqDAAABgApAG4MAAABAAwAAQAICbIQHBsAigEIaAwAAAYAPwBpDAAABQA7AGsMAAAFACsAagwAAAIAKABsDAAAAwBFAG0MAAABAAgA6gwAAAYAKQBuDAAAAQAMAAEuAAQKBgkHAAIAAAAA.',['Hà']='Hàney:BAEALgAECgYJBwAAAA==.',Ir='Irkenfox:BAECLgAFFH8WAAIDAAUJ8CIbBACZAQVoDAAABgBgAGkMAAAFAFYAawwAAAQATwBqDAAAAwBDAOoMAAAEAF4AAwAFCfAiGwQAmQEFaAwAAAYAYABpDAAABQBWAGsMAAAEAE8AagwAAAMAQwDqDAAABABeAC4ABAp/JQACAwAICaEjngMAGwMAAwAICaEjngMAGwMAAAA=.',Lo='Lotheovian:BAEALgAECgIJAgABLgAECgcJEwACAAAAAA==.',Za='Zaxhdk:BAEALgAECgcJEwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

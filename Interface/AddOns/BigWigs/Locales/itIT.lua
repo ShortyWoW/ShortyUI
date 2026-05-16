@@ -341,6 +341,7 @@ L.N25 = "Normale 25"
 L.H10 = "Eroico 10"
 L.H25 = "Eroico 25"
 --L.titan = "Titan" -- Chinese-only "Titan Reforged" servers
+--L.mythic_flex = "Mythic (Flex)" -- Mythic (Flexible 15-25 player raids)
 
 -----------------------------------------------------------------------
 -- TOOLS
@@ -380,7 +381,7 @@ L.autoRoleExplainer = "Quando ti unisci ad un gruppo, o cambii le tue spec mentr
 
 --L.battleResTitle = "Battle Res"
 --L.battleResDesc = "An icon that shows how many battle resurrection charges are available and the time until another charge is gained."
---L.battleResDesc2 = "\nYour |cFF33FF99Battle Resurrection History|r can be viewed in the tooltip when you mouse over the icon.\n\n"
+--L.battleResDesc2 = "\nYour |cFF33FF99Battle Resurrection History|r can be viewed in the tooltip when you mouse over the icon.\nNote: The tooltip will only show when you are out of combat.\n\n"
 --L.battleResHistory = "Battle Res History:"
 --L.battleResResetAll = "Reset all the Battle Resurrection settings to their default values."
 --L.battleResDurationText = "Duration Text"
@@ -393,7 +394,6 @@ L.autoRoleExplainer = "Quando ti unisci ad un gruppo, o cambii le tue spec mentr
 --L.battleResModeIcon = "Mode: Icon"
 --L.battleResModeText = "Mode: Text Only"
 --L.battleResModeTextTooltip = "Showing a temporary background to help you move the Battle Res feature and to see where the mouseover area is."
---L.battleResNoteTooltip = "Note: This tooltip will only show when you are out of combat."
 
 -----------------------------------------------------------------------
 -- CombatTimer.lua

@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Shaman-Enhancement','Warlock-Demonology','Monk-Brewmaster',}
-local provider = {region='US',realm='BoreanTundra',name='US',type='subscribers',zone=46,date='2026-05-13',data={Fr='Fries:BAEBLgAECn8XAAIBAAkJACKXAAAxAwloDAAABABhAGkMAAADAGMAawwAAAMAYwBqDAAAAgBgAGwMAAACAGMAbQwAAAIAWwDqDAAABQBVAG4MAAABADgAbwwAAAEAQwABAAkJACKXAAAxAwloDAAABABhAGkMAAADAGMAawwAAAMAYwBqDAAAAgBgAGwMAAACAGMAbQwAAAIAWwDqDAAABQBVAG4MAAABADgAbwwAAAEAQwABLgAFFAQJBwACAKYPAA==.',Ic='Icedchi:BAEBLgAECn8dAAIDAAkJ3x9kFgBWAgloDAAABABiAGkMAAAEAFsAawwAAAQAWQBqDAAAAwBAAGwMAAADAFEAbQwAAAEAHwDqDAAABgBdAG4MAAADAFYAbwwAAAEAUAADAAkJ3x9kFgBWAgloDAAABABiAGkMAAAEAFsAawwAAAQAWQBqDAAAAwBAAGwMAAADAFEAbQwAAAEAHwDqDAAABgBdAG4MAAADAFYAbwwAAAEAUAAAAA==.',},}
+local lookup = {'Shaman-Enhancement','Shaman-Restoration','Warlock-Demonology','Monk-Brewmaster',}
+local provider = {region='US',realm='BoreanTundra',name='US',type='subscribers',zone=46,date='2026-05-14',data={Fr='Fries:BAEBLgAECn8cAAMBAAkJACLHAAAhAwloDAAABQBhAGkMAAAEAGMAawwAAAQAYwBqDAAAAwBgAGwMAAADAGMAbQwAAAIAWwDqDAAABQBVAG4MAAABADgAbwwAAAEAQwABAAkJACLHAAAhAwloDAAABABhAGkMAAADAGMAawwAAAMAYwBqDAAAAgBgAGwMAAACAGMAbQwAAAIAWwDqDAAABQBVAG4MAAABADgAbwwAAAEAQwACAAUJBgzeVADiAAVoDAAAAQATAGkMAAABABUAawwAAAEAMwBqDAAAAQAlAGwMAAABABgAAS4ABRQECQcAAwCmDwA=.',Ic='Icedchi:BAEBLgAECn8dAAIEAAkJ3x9kFgBWAgloDAAABABiAGkMAAAEAFsAawwAAAQAWQBqDAAAAwBAAGwMAAADAFEAbQwAAAEAHwDqDAAABgBdAG4MAAADAFYAbwwAAAEAUAAEAAkJ3x9kFgBWAgloDAAABABiAGkMAAAEAFsAawwAAAQAWQBqDAAAAwBAAGwMAAADAFEAbQwAAAEAHwDqDAAABgBdAG4MAAADAFYAbwwAAAEAUAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

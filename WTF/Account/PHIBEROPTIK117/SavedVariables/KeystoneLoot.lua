@@ -4,6 +4,8 @@ KeystoneLootDB = {
 ["version"] = 6,
 ["settings"] = {
 ["hideOtherItems"] = false,
+["favoriteTooltip"] = true,
+["keystoneTooltip"] = true,
 ["highlighting"] = {
 ["mastery"] = true,
 ["comboMode"] = false,
@@ -12,11 +14,9 @@ KeystoneLootDB = {
 ["crit"] = true,
 ["noStats"] = true,
 },
-["keystoneTooltip"] = true,
+["wideMode"] = false,
 ["hiddenCharacters"] = {
 },
-["wideMode"] = false,
-["favoriteTooltip"] = true,
 ["lootReminder"] = {
 ["dungeons"] = true,
 },
@@ -41,6 +41,8 @@ KeystoneLootDB = {
 ["Illidan-Shortybear-11"] = {
 },
 ["Area 52-Callmeshawte-9"] = {
+},
+["Illidan-Shortyshamm-7"] = {
 },
 ["Area 52-Shortbowjob-3"] = {
 },

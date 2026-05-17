@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Mage-Frost','DeathKnight-Unholy','Unknown-Unknown',}
-local provider = {region='US',realm='Shandris',name='US',type='subscribers',zone=46,date='2026-05-14',data={Ei='Eifaun:BAEALgAECgUJCQAAAA==.',Ki='Kippo:BAECLgAFFH8HAAIBAAQJigURMwDRAARoDAAAAgAhAGkMAAACAAQAawwAAAEAAgDqDAAAAgARAAEABAmKBREzANEABGgMAAACACEAaQwAAAIABABrDAAAAQACAOoMAAACABEALgAECn8jAAIBAAgJlhdASgBYAgABAAgJlhdASgBYAgABLgAFFAUJCwACABUQAA==.',Sa='Sanorasong:BAEALgAECgYJEwAAAA==.',So='Songli:BAEALgADCgEJAQABLgAECgYJEwADAAAAAA==.',},}
+local lookup = {'Mage-Frost','Paladin-Holy','Paladin-Retribution',}
+local provider = {region='US',realm='Shandris',name='US',type='subscribers',zone=46,date='2026-05-16',data={Ei='Eifaun:BAEALgAECgUJCQAAAA==.',Ki='Kippo:BAECLgAFFH8HAAIBAAQJigURMwDRAARoDAAAAgAhAGkMAAACAAQAawwAAAEAAgDqDAAAAgARAAEABAmKBREzANEABGgMAAACACEAaQwAAAIABABrDAAAAQACAOoMAAACABEALgAECn8jAAIBAAgJlhdASgBYAgABAAgJlhdASgBYAgAAAA==.',Sa='Sanorasong:BAEBLgAECn8UAAMCAAcJBBrXGQDsAQdoDAAABQBRAGkMAAADAEAAawwAAAQARwBqDAAAAgAyAGwMAAACAE0AbQwAAAEAJgDqDAAAAwBSAAIABwkEGtcZAOwBB2gMAAACAFEAaQwAAAIAQABrDAAAAwBHAGoMAAABADIAbAwAAAIATQBtDAAAAQAmAOoMAAADAFIAAwAECW8MWdYAlwAEaAwAAAMAHwBpDAAAAQAiAGsMAAABAB0AagwAAAEABgAAAA==.',So='Songli:BAEALgADCgEJAQABLgAECgcJFAACAAQaAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

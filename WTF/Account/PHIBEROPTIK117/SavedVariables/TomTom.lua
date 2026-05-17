@@ -1,22 +1,23 @@
 
 TomTomDB = {
 ["profileKeys"] = {
-["Callmeshortÿ - Moon Guard"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
-["Shortlight - Illidan"] = "Default",
-["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
-["Shortybear - Illidan"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
-["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Callmeshortÿ - Moon Guard"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
-["Callmeshawte - Area 52"] = "Default",
 ["Drewis24EEA3 - Illidan"] = "Default",
-["Shortbeef - Vashj"] = "Default",
+["Callmeshorty - Illidan"] = "Default",
+["Shortybear - Illidan"] = "Default",
+["Drewishlazer - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
+["Callmeshawte - Area 52"] = "Default",
+["Shortyshamm - Illidan"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+["Shortytest - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -25,8 +26,8 @@ TomTomDB = {
 "CENTER",
 nil,
 "CENTER",
-28.99972915649414,
-123.0002899169922,
+-0.9997032284736633,
+121.0002670288086,
 },
 },
 ["block"] = {
@@ -49,53 +50,46 @@ nil,
 TomTomWaypoints = nil
 TomTomWaypointsM = {
 ["profileKeys"] = {
-["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
-["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
-["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
-["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
-["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
-["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
+["Shortybear - Illidan"] = "Shortybear - Illidan",
+["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
+["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
+["Shortbeef - Vashj"] = "Shortbeef - Vashj",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 },
 ["profiles"] = {
-["Callmeshortÿ - Moon Guard"] = {
-},
 ["Callmeshorty - Dalaran"] = {
-},
-["Shortlight - Illidan"] = {
-},
-["Callmeshorty - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
 },
-["Shortybear - Illidan"] = {
-},
 ["Shortypal - Dalaran"] = {
-},
-["Drewishlazer - Dalaran"] = {
 },
 ["Callmeshorty - Area 52"] = {
 },
 ["Drewishlaser - Dalaran"] = {
 },
-["Shortytest - Illidan"] = {
+["Callmeshortÿ - Moon Guard"] = {
 },
 ["Shortbowjob - Area 52"] = {
 },
-["Callmeshawte - Area 52"] = {
-},
 ["Drewis24EEA3 - Illidan"] = {
 },
-["Shortbeef - Vashj"] = {
+["Callmeshorty - Illidan"] = {
+},
+["Shortybear - Illidan"] = {
+},
+["Drewishlazer - Dalaran"] = {
 },
 ["Shortlite - Illidan"] = {
 [862] = {
@@ -121,6 +115,46 @@ TomTomWaypointsM = {
 ["world"] = true,
 },
 },
+},
+["Shortlight - Illidan"] = {
+},
+["Callmeshawte - Area 52"] = {
+},
+["Shortyshamm - Illidan"] = {
+[542] = {
+["542:406700000:503400000:Admiral Taylor's Garrison"] = {
+542,
+0.4067,
+0.5034000000000001,
+["arrivaldistance"] = 15,
+["crazy"] = true,
+["persistent"] = true,
+["minimap"] = true,
+["cleardistance"] = 0,
+["title"] = "Admiral Taylor's Garrison",
+["from"] = "Dystinct Earthen Skyriding",
+["callbacks"] = {
+["distance"] = {
+[15] = nil --[[ skipped inline function ]],
+},
+["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+},
+["world"] = true,
+},
+},
+},
+["Shortbeef - Vashj"] = {
+},
+["Shortytest - Illidan"] = {
 },
 },
 }

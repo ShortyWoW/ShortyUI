@@ -1,22 +1,23 @@
 
 LoggerHeadDB = {
 ["profileKeys"] = {
-["Shortytest - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
-["Shortbowjob - Area 52"] = "Default",
-["Callmeshorty - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
-["Shortybear - Illidan"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
-["Drewishlazer - Dalaran"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
-["Shortlite - Illidan"] = "Default",
-["Shortlight - Illidan"] = "Default",
-["Callmeshawte - Area 52"] = "Default",
-["Drewis24EEA3 - Illidan"] = "Default",
-["Shortbeef - Vashj"] = "Default",
 ["Callmeshortÿ - Moon Guard"] = "Default",
+["Shortbowjob - Area 52"] = "Default",
+["Drewis24EEA3 - Illidan"] = "Default",
+["Callmeshorty - Illidan"] = "Default",
+["Shortybear - Illidan"] = "Default",
+["Drewishlazer - Dalaran"] = "Default",
+["Shortlite - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
+["Callmeshawte - Area 52"] = "Default",
+["Shortyshamm - Illidan"] = "Default",
+["Shortbeef - Vashj"] = "Default",
+["Shortlight - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {

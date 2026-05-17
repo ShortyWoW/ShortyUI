@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Unholy',}
-local provider = {region='US',realm='Windrunner',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ge='Genhooves:BAECLgAFFH8IAAIBAAMJ7xIOVwD1AANoDAAAAwAuAGkMAAADAB0A6gwAAAIARQABAAMJ7xIOVwD1AANoDAAAAwAuAGkMAAADAB0A6gwAAAIARQAuAAQKfxwAAgEACQmKHa0RAI0CAAEACQmKHa0RAI0CAAAA.',Po='Pongo:BAEALgAECgEJAQABLgAFFAMJCAABAO8SAA==.',Sp='Spriggs:BAEALgAECgYJCAABLgAFFAMJCAABAO8SAA==.',Ti='Tinklestein:BAEALgADCgEJAQABLgAFFAMJCAABAO8SAA==.',},}
+local provider = {region='US',realm='Windrunner',name='US',type='subscribers',zone=46,date='2026-05-16',data={Ge='Genhooves:BAECLgAFFH8LAAIBAAQJPhkyJgAOAQRoDAAABABEAGkMAAADAB0AawwAAAEAWwDqDAAAAwBFAAEABAk+GTImAA4BBGgMAAAEAEQAaQwAAAMAHQBrDAAAAQBbAOoMAAADAEUALgAECn8cAAIBAAkJih2bGwBfAgABAAkJih2bGwBfAgAAAA==.',Po='Pongo:BAEALgAECgEJAQABLgAFFAQJCwABAD4ZAA==.',Sp='Spriggs:BAEALgAECgYJCAABLgAFFAQJCwABAD4ZAA==.',Ti='Tinklestein:BAEALgADCgEJAQABLgAFFAQJCwABAD4ZAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

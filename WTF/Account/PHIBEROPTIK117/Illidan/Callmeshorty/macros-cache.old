@@ -1,3 +1,7 @@
+VER 3 0100000000000011 "Chains" "134400"
+#showtooltip
+/cast [@cursor] Sigil of Chains
+END
 VER 3 0100000000000009 "Charge" "134400"
 #showtooltip
 /cast [@mouseover] Felblade

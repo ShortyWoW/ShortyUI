@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Holy','Priest-Discipline',}
-local provider = {region='US',realm='TheVentureCo',name='US',type='subscribers',zone=46,date='2026-05-13',data={As='Asonda:BAEBLgAECn8fAAMBAAgJoBXCFgC2AQhoDAAABgBKAGkMAAAGADcAawwAAAYAPgBqDAAABAA9AGwMAAADADoAbQwAAAIAGADqDAAAAwBEAG4MAAABACQAAQAHCaYWwhYAtgEHaAwAAAYASgBpDAAABQA3AGsMAAAFAD4AagwAAAQAPQBsDAAAAgA6AG0MAAABABgA6gwAAAIARAACAAYJFQj8JgAVAQZpDAAAAQAIAGsMAAABABAAbAwAAAEAGgBtDAAAAQAUAOoMAAABAA8AbgwAAAEAJAAAAA==.',Kr='Krakens:BAEALgAECgUJBwABLgAECggJHwABAKAVAA==.',},}
+local provider = {region='US',realm='TheVentureCo',name='US',type='subscribers',zone=46,date='2026-05-16',data={As='Asonda:BAEBLgAECn8fAAMBAAgJoBUTGwCnAQhoDAAABgBKAGkMAAAGADcAawwAAAYAPgBqDAAABAA9AGwMAAADADoAbQwAAAIAGADqDAAAAwBEAG4MAAABACQAAQAHCaYWExsApwEHaAwAAAYASgBpDAAABQA3AGsMAAAFAD4AagwAAAQAPQBsDAAAAgA6AG0MAAABABgA6gwAAAIARAACAAYJFQiQLQAOAQZpDAAAAQAIAGsMAAABABAAbAwAAAEAGgBtDAAAAQAUAOoMAAABAA8AbgwAAAEAJAAAAA==.',Kr='Krakens:BAEALgAECgUJBwABLgAECggJHwABAKAVAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

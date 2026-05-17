@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Brewmaster','Monk-Windwalker',}
-local provider = {region='US',realm='TheScryers',name='US',type='subscribers',zone=46,date='2026-05-13',data={Tt='Ttattoo:BAEBLgAECn8YAAMBAAYJ5QcaNgDTAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAACABUA6gwAAAUACQABAAYJ5QcaNgDTAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAABABUA6gwAAAUACQACAAEJqAJLfQAZAAFsDAAAAQAGAAAA.Ttattooz:BAEALgADCgMJAwABLgAECgYJGAABAOUHAA==.',},}
+local provider = {region='US',realm='TheScryers',name='US',type='subscribers',zone=46,date='2026-05-16',data={Tt='Ttattoo:BAEBLgAECn8YAAMBAAYJ5QcBPwDFAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAACABUA6gwAAAUACQABAAYJ5QcBPwDFAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAABABUA6gwAAAUACQACAAEJqAImiAAZAAFsDAAAAQAGAAAA.Ttattooz:BAEALgAECgYJBgABLgAECgYJGAABAOUHAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Shadow',}
-local provider = {region='US',realm='Uldaman',name='US',type='subscribers',zone=46,date='2026-05-13',data={Eq='Equinoxis:BAEALgAECgYJBgABLgAFFAYJGAABAD8VAA==.',Ni='Nishikki:BAECLgAFFH8YAAIBAAYJPxV6BACxAQZoDAAABgA+AGkMAAAFAE0AawwAAAQAMwBqDAAAAwAkAGwMAAABACUA6gwAAAUAKgABAAYJPxV6BACxAQZoDAAABgA+AGkMAAAFAE0AawwAAAQAMwBqDAAAAwAkAGwMAAABACUA6gwAAAUAKgAuAAQKfzUAAgEACQkGIfcBAB4DAAEACQkGIfcBAB4DAAAA.',},}
+local provider = {region='US',realm='Uldaman',name='US',type='subscribers',zone=46,date='2026-05-16',data={Eq='Equinoxis:BAEALgAECgYJBgABLgAFFAYJHgABAO0YAA==.',Ni='Nishikki:BAECLgAFFH8eAAIBAAYJ7RjMBAC3AQZoDAAABwA+AGkMAAAGAE4AawwAAAUAOgBqDAAABAAkAGwMAAACADcA6gwAAAYAQAABAAYJ7RjMBAC3AQZoDAAABwA+AGkMAAAGAE4AawwAAAUAOgBqDAAABAAkAGwMAAACADcA6gwAAAYAQAAuAAQKfzwAAgEACQmYI4QBAEkDAAEACQmYI4QBAEkDAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

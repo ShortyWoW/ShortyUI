@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warrior-Arms','Rogue-Subtlety','Priest-Discipline','Priest-Holy',}
-local provider = {region='US',realm='Zuluhed',name='US',type='subscribers',zone=46,date='2026-05-13',data={Be='Berserk:BAEBLgAECn8XAAIBAAYJJyJQCAAyAgZoDAAABQBiAGkMAAAFAF8AawwAAAQASwBqDAAAAwBiAGwMAAACAFQA6gwAAAQAUwABAAYJJyJQCAAyAgZoDAAABQBiAGkMAAAFAF8AawwAAAQASwBqDAAAAwBiAGwMAAACAFQA6gwAAAQAUwABLgAFFAMJBQACALwMAA==.',Pe='Peachaid:BAECLgAFFH8XAAIDAAcJdRpFAgCNAgdoDAAABABXAGkMAAAEAGEAawwAAAQAQgBqDAAAAwA2AGwMAAADAEwAbQwAAAEAEgDqDAAABABHAAMABwl1GkUCAI0CB2gMAAAEAFcAaQwAAAQAYQBrDAAABABCAGoMAAADADYAbAwAAAMATABtDAAAAQASAOoMAAAEAEcALgAECn8wAAMDAAkJViIDAgBbAwADAAkJViIDAgBbAwAEAAYJGB0oJQDAAQAAAA==.',},}
+local provider = {region='US',realm='Zuluhed',name='US',type='subscribers',zone=46,date='2026-05-16',data={Be='Berserk:BAEBLgAECn8XAAIBAAYJJyJQCAAyAgZoDAAABQBiAGkMAAAFAF8AawwAAAQASwBqDAAAAwBiAGwMAAACAFQA6gwAAAQAUwABAAYJJyJQCAAyAgZoDAAABQBiAGkMAAAFAF8AawwAAAQASwBqDAAAAwBiAGwMAAACAFQA6gwAAAQAUwABLgAFFAMJBQACALwMAA==.',Pe='Peachaid:BAECLgAFFH8XAAIDAAcJdRokAwCDAgdoDAAABABXAGkMAAAEAGEAawwAAAQAQgBqDAAAAwA2AGwMAAADAEwAbQwAAAEAEgDqDAAABABHAAMABwl1GiQDAIMCB2gMAAAEAFcAaQwAAAQAYQBrDAAABABCAGoMAAADADYAbAwAAAMATABtDAAAAQASAOoMAAAEAEcALgAECn8wAAMDAAkJViLwAgBFAwADAAkJViLwAgBFAwAEAAYJGB0oJQDAAQAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

@@ -233,13 +233,17 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warlock-Demonology','Unknown-Unknown',}
-local provider = {region='US',realm='Velen',name='US',type='subscribers',zone=46,date='2026-05-13',data={Ba='Bandadi:BAEBLgAECn8wAAIBAAgJox9tFQDVAghoDAAACABjAGkMAAAIAGEAawwAAAgAWQBqDAAABwBjAGwMAAAHAF0AbQwAAAEAEwDqDAAACABfAG8MAAABAEgAAQAICaMfbRUA1QIIaAwAAAgAYwBpDAAACABhAGsMAAAIAFkAagwAAAcAYwBsDAAABwBdAG0MAAABABMA6gwAAAgAXwBvDAAAAQBIAAAA.',Ho='Hobiscuits:BAEALgADCgQJBAABLgAECgQJBAACAAAAAA==.',Ra='Raveneyes:BAEBLgAECn8eAAIBAAgJDA8yPgCEAQhoDAAABQA6AGkMAAAFAC4AawwAAAUAIwBqDAAABQA7AGwMAAAEADAAbQwAAAEACQDqDAAABAA1AG4MAAABABIAAQAICQwPMj4AhAEIaAwAAAUAOgBpDAAABQAuAGsMAAAFACMAagwAAAUAOwBsDAAABAAwAG0MAAABAAkA6gwAAAQANQBuDAAAAQASAAAA.',},}
+local lookup = {'Warlock-Demonology','Unknown-Unknown','Monk-Windwalker',}
+local provider = {region='US',realm='Velen',name='US',type='subscribers',zone=46,date='2026-05-16',data={Ba='Bandadi:BAEBLgAECn8wAAIBAAgJox9tFQDVAghoDAAACABjAGkMAAAIAGEAawwAAAgAWQBqDAAABwBjAGwMAAAHAF0AbQwAAAEAEwDqDAAACABfAG8MAAABAEgAAQAICaMfbRUA1QIIaAwAAAgAYwBpDAAACABhAGsMAAAIAFkAagwAAAcAYwBsDAAABwBdAG0MAAABABMA6gwAAAgAXwBvDAAAAQBIAAAA.',Ho='Hobiscuits:BAEALgADCgQJBAABLgAECgQJBAACAAAAAA==.',Mk='Mk:BAEALgAECgMJAwABLgAECggJNwADAGsjAA==.',Ra='Raveneyes:BAEBLgAECn8eAAIBAAgJDA90UABtAQhoDAAABQA6AGkMAAAFAC4AawwAAAUAIwBqDAAABQA7AGwMAAAEADAAbQwAAAEACQDqDAAABAA1AG4MAAABABIAAQAICQwPdFAAbQEIaAwAAAUAOgBpDAAABQAuAGsMAAAFACMAagwAAAUAOwBsDAAABAAwAG0MAAABAAkA6gwAAAQANQBuDAAAAQASAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

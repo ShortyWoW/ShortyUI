@@ -1,6 +1,6 @@
 
 ShortyFallsDB = {
-["manualHidden"] = true,
+["manualHidden"] = false,
 ["debug"] = true,
 ["assign"] = {
 },

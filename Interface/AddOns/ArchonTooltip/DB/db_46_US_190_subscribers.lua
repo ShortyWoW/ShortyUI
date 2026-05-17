@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warlock-Demonology','Warlock-Destruction',}
-local provider = {region='US',realm='Shadowsong',name='US',type='subscribers',zone=46,date='2026-05-14',data={Do='Downbeatxo:BAECLgAFFH8YAAMBAAcJdRjHBAAAAgdoDAAABABYAGkMAAAFAFsAawwAAAQAWQBqDAAAAgBDAGwMAAABABQAbQwAAAEAAwDqDAAABwBSAAEABwl1GMcEAAACB2gMAAAEAFgAaQwAAAMAWwBrDAAABABZAGoMAAACAEMAbAwAAAEAFABtDAAAAQADAOoMAAAHAFIAAgABCUgV1hQAVQABaQwAAAIANgAuAAQKfykAAwEACQknJDsLACEDAAEACQknJDsLACEDAAIAAgnUHDROAIMAAAAA.',},}
+local lookup = {'Warlock-Demonology','Warlock-Destruction','Monk-Windwalker',}
+local provider = {region='US',realm='Shadowsong',name='US',type='subscribers',zone=46,date='2026-05-16',data={Do='Downbeatxo:BAECLgAFFH8YAAMBAAcJdRjcBQD9AQdoDAAABABYAGkMAAAFAFsAawwAAAQAWQBqDAAAAgBDAGwMAAABABQAbQwAAAEAAwDqDAAABwBSAAEABwl1GNwFAP0BB2gMAAAEAFgAaQwAAAMAWwBrDAAABABZAGoMAAACAEMAbAwAAAEAFABtDAAAAQADAOoMAAAHAFIAAgABCUgV1hQAVQABaQwAAAIANgAuAAQKfykAAwEACQknJDsLACEDAAEACQknJDsLACEDAAIAAgnUHDROAIMAAAAA.',Mk='Mk:BAEALgAECggJEwABLgAECggJNwADAGsjAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

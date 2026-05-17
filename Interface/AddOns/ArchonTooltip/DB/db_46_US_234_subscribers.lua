@@ -234,12 +234,16 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DemonHunter-Vengeance','DemonHunter-Havoc','Paladin-Holy','Paladin-Retribution',}
-local provider = {region='US',realm="Vek'nilash",name='US',type='subscribers',zone=46,date='2026-05-13',data={Ka='Kaevrielle:BAEBLgAECn8eAAMBAAkJjBtpAwA6AgloDAAABQBCAGkMAAAEAF0AawwAAAQAXABqDAAAAwBGAGwMAAAEAEsAbQwAAAIASADqDAAABQA4AG4MAAACADgAbwwAAAEAMgABAAkJjBtpAwA6AgloDAAABQBCAGkMAAAEAF0AawwAAAQAXABqDAAAAwBGAGwMAAADAEsAbQwAAAIASADqDAAABQA4AG4MAAACADgAbwwAAAEAMgACAAEJVgowSwAwAAFsDAAAAQAaAAAA.',Sh='Shiftstyle:BAEALgAECgEJAQAAAA==.',Va='Vallez:BAECLgAFFH8HAAMDAAMJLBneJgCIAANoDAAAAwBGAGkMAAABAGAA6gwAAAMAGgADAAIJ+hLeJgCIAAJoDAAAAwBGAOoMAAADABoABAABCWsCNXIAQgABaQwAAAEABgAuAAQKfyQAAwMACAkaHTIWAF8CAAMACAkaHTIWAF8CAAQAAgnbCUApATAAAAAA.',},}
+local provider = {region='US',realm="Vek'nilash",name='US',type='subscribers',zone=46,date='2026-05-16',data={Ka='Kaevrielle:BAEBLgAECn8eAAMBAAkJjBtWBAArAgloDAAABQBCAGkMAAAEAF0AawwAAAQAXABqDAAAAwBGAGwMAAAEAEsAbQwAAAIASADqDAAABQA4AG4MAAACADgAbwwAAAEAMgABAAkJjBtWBAArAgloDAAABQBCAGkMAAAEAF0AawwAAAQAXABqDAAAAwBGAGwMAAADAEsAbQwAAAIASADqDAAABQA4AG4MAAACADgAbwwAAAEAMgACAAEJVgqZTwAuAAFsDAAAAQAaAAAA.',Sh='Shiftstyle:BAEALgAECgEJAQAAAA==.',Va='Vallez:BAECLgAFFH8KAAMDAAMJYhdWHQDoAANoDAAABABGAGkMAAACABMA6gwAAAQAWQADAAMJYhdWHQDoAANoDAAABABGAGkMAAABABMA6gwAAAQAWQAEAAEJawJxfAA/AAFpDAAAAQAGAC4ABAp/JQADAwAICd4eKA8AXQIAAwAICd4eKA8AXQIABAACCdsJr0UBMgAAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data
 provider.data = {}
 provider.getChunk = getChunkLookup(rawData, 2)
+
+provider.splitId = 0
+provider.splitCount = 1
+provider.splitType = 'none'
 
 setmetatable(provider.data, {
 	__index = function(table, key)

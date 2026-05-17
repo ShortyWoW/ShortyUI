@@ -17,6 +17,18 @@ VER 3 0100000000000008 "Glaive" "134400"
 /cast [@mouseover] Throw Glaive
 /dismount
 END
+VER 3 0100000000000012 "Interrupt" "134400"
+#showtooltip Disrupt
+/cast [@focus,exists,nodead,harm] Disrupt
+/stopmacro [@focus,exists,nodead,harm]
+/focus target
+/cleartarget
+/targetenemy
+/cast Disrupt
+/target focus
+/clearfocus
+/startattack
+END
 VER 3 0100000000000002 "Leap" "134400"
 #showtooltip
 /dismount

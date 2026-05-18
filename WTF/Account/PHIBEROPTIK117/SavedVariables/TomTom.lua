@@ -121,17 +121,17 @@ TomTomWaypointsM = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortyshamm - Illidan"] = {
-[117] = {
-["117:460700000:206700000:Winter's Breath Lake"] = {
-117,
-0.4607,
-0.2067,
+[115] = {
+["115:275300000:621700000:Glittering Strand"] = {
+115,
+0.2753,
+0.6217,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
 ["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Winter's Breath Lake",
+["title"] = "Glittering Strand",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {

@@ -121,17 +121,17 @@ TomTomWaypointsM = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortyshamm - Illidan"] = {
-[108] = {
-["108:586400000:643500000:Lake Ere'Noru"] = {
-108,
-0.5864,
-0.6435,
+[117] = {
+["117:460700000:206700000:Winter's Breath Lake"] = {
+117,
+0.4607,
+0.2067,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
 ["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Lake Ere'Noru",
+["title"] = "Winter's Breath Lake",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {

@@ -1,808 +1,7 @@
 
 Blizzard_Console_SavedVars = {
 ["version"] = 3,
-["height"] = 299.9999694824219,
 ["messageHistory"] = {
-{
-"Skill 183 increased from 145 to 150",
-0,
-},
-{
-"Skill 762 increased from 225 to 375",
-0,
-},
-{
-"Skill 924 increased from 145 to 150",
-0,
-},
-{
-"Skill 2895 increased from 145 to 150",
-0,
-},
-{
-"Weather changed to 1, intensity 0.252256\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 1, intensity 0.800000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 150 to 155",
-0,
-},
-{
-"Skill 924 increased from 150 to 155",
-0,
-},
-{
-"Skill 2895 increased from 150 to 155",
-0,
-},
-{
-"Skill 183 increased from 155 to 160",
-0,
-},
-{
-"Skill 924 increased from 155 to 160",
-0,
-},
-{
-"Skill 2895 increased from 155 to 160",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 160 to 165",
-0,
-},
-{
-"Skill 924 increased from 160 to 165",
-0,
-},
-{
-"Skill 2895 increased from 160 to 165",
-0,
-},
-{
-"Skill 183 increased from 165 to 170",
-0,
-},
-{
-"Skill 924 increased from 165 to 170",
-0,
-},
-{
-"Skill 2895 increased from 165 to 170",
-0,
-},
-{
-"Weather changed to 1, intensity 1.000000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Weather changed to 1, intensity 1.000000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 170 to 175",
-0,
-},
-{
-"Skill 924 increased from 170 to 175",
-0,
-},
-{
-"Skill 2895 increased from 170 to 175",
-0,
-},
-{
-"Skill 183 increased from 175 to 180",
-0,
-},
-{
-"Skill 924 increased from 175 to 180",
-0,
-},
-{
-"Skill 2895 increased from 175 to 180",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 180 to 185",
-0,
-},
-{
-"Skill 924 increased from 180 to 185",
-0,
-},
-{
-"Skill 2895 increased from 180 to 185",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 185 to 190",
-0,
-},
-{
-"Skill 924 increased from 185 to 190",
-0,
-},
-{
-"Skill 2895 increased from 185 to 190",
-0,
-},
-{
-"Skill 183 increased from 190 to 195",
-0,
-},
-{
-"Skill 924 increased from 190 to 195",
-0,
-},
-{
-"Skill 2895 increased from 190 to 195",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 195 to 200",
-0,
-},
-{
-"Skill 924 increased from 195 to 200",
-0,
-},
-{
-"Skill 2895 increased from 195 to 200",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 200 to 205",
-0,
-},
-{
-"Skill 924 increased from 200 to 205",
-0,
-},
-{
-"Skill 2895 increased from 200 to 205",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 205 to 210",
-0,
-},
-{
-"Skill 924 increased from 205 to 210",
-0,
-},
-{
-"Skill 2895 increased from 205 to 210",
-0,
-},
-{
-"Skill 183 increased from 210 to 215",
-0,
-},
-{
-"Skill 924 increased from 210 to 215",
-0,
-},
-{
-"Skill 2895 increased from 210 to 215",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 215 to 220",
-0,
-},
-{
-"Skill 924 increased from 215 to 220",
-0,
-},
-{
-"Skill 2895 increased from 215 to 220",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 220 to 225",
-0,
-},
-{
-"Skill 924 increased from 220 to 225",
-0,
-},
-{
-"Skill 2895 increased from 220 to 225",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 225 to 230",
-0,
-},
-{
-"Skill 924 increased from 225 to 230",
-0,
-},
-{
-"Skill 2895 increased from 225 to 230",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 230 to 235",
-0,
-},
-{
-"Skill 924 increased from 230 to 235",
-0,
-},
-{
-"Skill 2895 increased from 230 to 235",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 235 to 240",
-0,
-},
-{
-"Skill 924 increased from 235 to 240",
-0,
-},
-{
-"Skill 2895 increased from 235 to 240",
-0,
-},
-{
-"Skill 183 increased from 240 to 245",
-0,
-},
-{
-"Skill 924 increased from 240 to 245",
-0,
-},
-{
-"Skill 2895 increased from 240 to 245",
-0,
-},
-{
-"World transfer pending...",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 2, intensity 0.303830\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.303830\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.159656\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.143240\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.159656\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Skill 183 increased from 245 to 250",
-0,
-},
-{
-"Skill 924 increased from 245 to 250",
-0,
-},
-{
-"Skill 2895 increased from 245 to 250",
-0,
-},
-{
-"Weather changed to 2, intensity 0.177749\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.119330\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.119330\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.177749\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.302833\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.177749\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.177749\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.381063\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.302833\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.177749\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.165578\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.355853\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.355853\n",
-0,
-},
-{
-"Weather changed to 2, intensity 1.000000\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.355853\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Skill 183 increased from 250 to 255",
-0,
-},
-{
-"Skill 924 increased from 250 to 255",
-0,
-},
-{
-"Skill 2895 increased from 250 to 255",
-0,
-},
-{
-"Weather changed to 2, intensity 0.355853\n",
-0,
-},
-{
-"Weather changed to 2, intensity 1.000000\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.355853\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.101569\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.528336\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.115694\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.169257\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.528336\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.528336\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.528336\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Skill 183 increased from 255 to 260",
-0,
-},
-{
-"Skill 924 increased from 255 to 260",
-0,
-},
-{
-"Skill 2895 increased from 255 to 260",
-0,
-},
-{
-"Weather changed to 2, intensity 0.325230\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.160951\n",
-0,
-},
-{
-"Weather changed to 2, intensity 0.117184\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 260 to 265",
-0,
-},
-{
-"Skill 924 increased from 260 to 265",
-0,
-},
-{
-"Skill 2895 increased from 260 to 265",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"World transfer aborted (reason: 30)",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Skill 183 increased from 265 to 270",
-0,
-},
-{
-"Skill 924 increased from 265 to 270",
-0,
-},
-{
-"Skill 2895 increased from 265 to 270",
-0,
-},
-{
-"Got new connection 3",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Weather changed to 4, intensity 1.000000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
-{
-"Weather changed to 4, intensity 1.000000\n",
-0,
-},
-{
-"Weather changed to 0, intensity 0.000000\n",
-0,
-},
 {
 "Weather changed to 4, intensity 1.000000\n",
 0,
@@ -4207,9 +3406,702 @@ Blizzard_Console_SavedVars = {
 "Skill 2895 increased from 440 to 445",
 0,
 },
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
 },
-["isShown"] = false,
+{
+"Sorting particles normally.",
+0,
+},
+{
+"Multithreaded rendering enabled.",
+0,
+},
+{
+"Multithreaded BeginDraw enabled.",
+0,
+},
+{
+"Multithread shadows changed to 1.",
+0,
+},
+{
+"Multithreaded prepass enabled.",
+0,
+},
+{
+"Multithreaded opaque pass enabled.",
+0,
+},
+{
+"Multithreaded opaque pass enabled.",
+0,
+},
+{
+"Multithreaded alpha M2 pass enabled.",
+0,
+},
+{
+"Multithreaded opaque WMO pass enabled.",
+0,
+},
+{
+"Multithreaded terrain pass enabled.",
+0,
+},
+{
+"Multithreaded volumetric fog enabled.",
+0,
+},
+{
+"Multithreaded Refraction Pass enabled.",
+0,
+},
+{
+"Multithreaded miscellaneous passes enabled.",
+0,
+},
+{
+"Multithreaded decal passes disabled.",
+0,
+},
+{
+"Multithreaded outline passes enabled.",
+0,
+},
+{
+"Multithreaded lightshaft passes enabled.",
+0,
+},
+{
+"|cFFffff00Use trigger on BeginDrawComplete enabled.|r",
+0,
+},
+{
+"Multithreaded alpha pass enabled.",
+0,
+},
+{
+"Multithreaded daynight update enabled.",
+0,
+},
+{
+"Water detail changed to 2",
+0,
+},
+{
+"Ripple detail changed to 1",
+0,
+},
+{
+"Reflection mode changed to 0",
+0,
+},
+{
+"Reflection downscale changed to 0",
+0,
+},
+{
+"Sunshafts quality changed to 2",
+0,
+},
+{
+"Refraction mode changed to 2",
+0,
+},
+{
+"Volume fog enabled.",
+0,
+},
+{
+"Particulate volumes enabled.",
+0,
+},
+{
+"Projected textures enabled.",
+0,
+},
+{
+"Shadow mode changed to 3 - 3 band dynamic shadows on units and terrain, 2048",
+0,
+},
+{
+"Shadow texture size changed to 2048.",
+0,
+},
+{
+"Soft shadows changed to 0.",
+0,
+},
+{
+"Shadow cascade blending changed to 1",
+0,
+},
+{
+"Number of shadow cascades changed to 3",
+0,
+},
+{
+"Shadow RT mode changed to 0 (Disabled)",
+0,
+},
+{
+"maxLightCount must be in range 0 to 32.",
+0,
+},
+{
+"CVar 'maxLightCount' failed validation for its initial value.",
+0,
+},
+{
+"Clustered shading enabled.",
+0,
+},
+{
+"Not forcing clustered shading.",
+0,
+},
+{
+"SSAO mode set to 3",
+0,
+},
+{
+"SSAO type set to 0",
+0,
+},
+{
+"Depth Based Opacity Enabled",
+0,
+},
+{
+"SkyCloudLOD set to 0",
+0,
+},
+{
+"Texture filtering mode updated.",
+0,
+},
+{
+"Terrain mip level changed to 0.",
+0,
+},
+{
+"Outline mode changed to 2",
+0,
+},
+{
+"Physics interaction level changed to 1",
+0,
+},
+{
+"Render scale changed to 1",
+0,
+},
+{
+"Resample quality changed to 3",
+0,
+},
+{
+"MSAA disabled",
+0,
+},
+{
+"MSAA for alpha-test enabled.",
+0,
+},
+{
+"VALAR mode changed to 0",
+0,
+},
+{
+"lodObjectSizeScale cannot be changed.",
+0,
+},
+{
+"Volume fog enabled.",
+0,
+},
+{
+"dynamicLod enabled",
+0,
+},
+{
+"World preload object sort enabled.",
+0,
+},
+{
+"World load object sort enabled.",
+0,
+},
+{
+"World preload non critical enabled.",
+0,
+},
+{
+"World preload high res textures enabled.",
+0,
+},
+{
+"FFX: Color Blind Test Mode Disabled",
+0,
+},
+{
+"Error display disabled",
+0,
+},
+{
+"Error display shown",
+0,
+},
+{
+"Displaying errors through fatal errors",
+0,
+},
+{
+"Displaying errors through fatal errors",
+0,
+},
+{
+"Now filtering: all messages",
+0,
+},
+{
+"CVar 'Sound_AmbienceHighpassDSPCutoff' failed validation for its initial value.",
+0,
+},
+{
+"CVar 'Sound_AllyPlayerHighpassDSPCutoff' failed validation for its initial value.",
+0,
+},
+{
+"CVar 'Sound_EnemyPlayerHighpassDSPCutoff' failed validation for its initial value.",
+0,
+},
+{
+"CVar 'Sound_NPCHighpassDSPCutoff' failed validation for its initial value.",
+0,
+},
+{
+"ChromaEffects disabled",
+0,
+},
+{
+"NetClient::HandleConnect()\n",
+0,
+},
+{
+"Got new connection 2",
+0,
+},
+{
+"[WowEntitlements] [BNetAccount-0-000000112052] [WowAccount-0-0000004A49BC] Initialized with 143 entitlements.",
+0,
+},
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
+},
+{
+"|cff99999917:29:04|r |cff20b0ffFarmHud|r: |cff00ff00<debug>|r |cffff6060<nsModulesCall>|r |cff44ffffOnLoad|r",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x0000000001",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x0000008001",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000021",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c001",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c003",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c403",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000061",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000069",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x000000006d",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c423",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e423",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e433",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x000000006f",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e433",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x000000006f",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Time set to 5/18/2026 (Mon) 14:30",
+0,
+},
+{
+"Gamespeed set from 0.017 to 0.017",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Weather changed to 1, intensity 0.800000\n",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Weather changed to 1, intensity 0.800000\n",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Weather changed to 1, intensity 0.800000\n",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Weather changed to 2, intensity 0.505487\n",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Skill 183 increased from 445 to 450",
+0,
+},
+{
+"Skill 924 increased from 445 to 450",
+0,
+},
+{
+"Skill 2895 increased from 445 to 450",
+0,
+},
+{
+"World transfer pending...",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"World transfer pending...",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"World transfer pending...",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
+},
+{
+"|cff99999917:40:55|r |cff20b0ffFarmHud|r: |cff00ff00<debug>|r |cffff6060<nsModulesCall>|r |cff44ffffOnLoad|r",
+0,
+},
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
+},
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
+},
+{
+"|cff99999917:42:23|r |cff20b0ffFarmHud|r: |cff00ff00<debug>|r |cffff6060<nsModulesCall>|r |cff44ffffOnLoad|r",
+0,
+},
+{
+"Attempted to register existing command: SetDifficulty",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x0000000040",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x0000008040",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000021",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c040",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c440",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000025",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c460",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e460",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000010e460",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000010e470",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000027",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000010e470",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000027",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Time set to 5/18/2026 (Mon) 14:42",
+0,
+},
+{
+"Gamespeed set from 0.017 to 0.017",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Time set to 5/18/2026 (Mon) 14:42",
+0,
+},
+{
+"Time set to 5/18/2026 (Mon) 14:42",
+0,
+},
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
+},
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
+},
+{
+"|cff99999917:43:46|r |cff20b0ffFarmHud|r: |cff00ff00<debug>|r |cffff6060<nsModulesCall>|r |cff44ffffOnLoad|r",
+0,
+},
+{
+"Attempted to register existing command: SetDifficulty",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x0000000001",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x0000008001",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000021",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c001",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c003",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c403",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000061",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x0000000069",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x000000006d",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000c423",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e423",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e433",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x000000006f",
+0,
+},
+{
+"Proficiency in item class 2 set to 0x000000e433",
+0,
+},
+{
+"Proficiency in item class 4 set to 0x000000006f",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+{
+"Time set to 5/18/2026 (Mon) 14:42",
+0,
+},
+{
+"Gamespeed set from 0.017 to 0.017",
+0,
+},
+{
+"Got new connection 3",
+0,
+},
+{
+"Weather changed to 0, intensity 0.000000\n",
+0,
+},
+},
+["height"] = 299.9999694824219,
 ["fontHeight"] = 14,
+["isShown"] = false,
 ["commandHistory"] = {
 },
 }

@@ -3,11 +3,8 @@ KeystoneLootDB = {
 ["currentSeason"] = 16,
 ["settings"] = {
 ["hideOtherItems"] = false,
-["hiddenCharacters"] = {
-},
-["keystoneTooltip"] = true,
 ["favoriteTooltip"] = true,
-["wideMode"] = false,
+["keystoneTooltip"] = true,
 ["highlighting"] = {
 ["versatility"] = true,
 ["crit"] = true,
@@ -15,6 +12,9 @@ KeystoneLootDB = {
 ["haste"] = true,
 ["comboMode"] = false,
 ["noStats"] = true,
+},
+["wideMode"] = false,
+["hiddenCharacters"] = {
 },
 ["lootReminder"] = {
 ["dungeons"] = true,

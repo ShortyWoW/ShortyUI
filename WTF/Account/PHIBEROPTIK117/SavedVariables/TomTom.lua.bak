@@ -121,17 +121,18 @@ TomTomWaypointsM = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortyshamm - Illidan"] = {
-[117] = {
-["117:460700000:206700000:Winter's Breath Lake"] = {
-117,
-0.4607,
-0.2067,
+[118] = {
+["118:259800000:607400000:Jotunheim"] = {
+118,
+0.2598,
+0.6074,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["minimap"] = true,
+["desc"] = "Jotunheim",
+["silent"] = true,
 ["cleardistance"] = 0,
-["title"] = "Winter's Breath Lake",
+["title"] = "Jotunheim",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -141,6 +142,7 @@ TomTomWaypointsM = {
 ["world"] = {
 },
 },
+["minimap"] = true,
 ["world"] = true,
 },
 },

@@ -4,6 +4,11 @@ KeystoneLootDB = {
 ["version"] = 6,
 ["settings"] = {
 ["hideOtherItems"] = false,
+["hiddenCharacters"] = {
+},
+["keystoneTooltip"] = true,
+["favoriteTooltip"] = true,
+["wideMode"] = false,
 ["highlighting"] = {
 ["mastery"] = true,
 ["comboMode"] = false,
@@ -12,11 +17,6 @@ KeystoneLootDB = {
 ["crit"] = true,
 ["noStats"] = true,
 },
-["keystoneTooltip"] = true,
-["hiddenCharacters"] = {
-},
-["wideMode"] = false,
-["favoriteTooltip"] = true,
 ["lootReminder"] = {
 ["dungeons"] = true,
 },

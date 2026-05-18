@@ -55,9 +55,10 @@ RaiderIO_Config = {
 ["mplusHeadlineMode"] = 0,
 ["showClientGuildBest"] = true,
 }
-RaiderIO_LastCharacter = "us-Callmeshorty-illidan"
+RaiderIO_LastCharacter = "us-Shortybear-illidan"
 RaiderIO_MissingCharacters = {
-["us-Fail-undermine"] = true,
+["us-Dazkalzlok-illidan"] = true,
+["us-Velgrath-illidan"] = true,
 }
 RaiderIO_MissingServers = {
 }

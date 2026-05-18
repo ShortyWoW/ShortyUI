@@ -121,17 +121,18 @@ TomTomWaypointsM = {
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortyshamm - Illidan"] = {
-[115] = {
-["115:275300000:621700000:Glittering Strand"] = {
-115,
-0.2753,
-0.6217,
+[118] = {
+["118:259800000:607400000:Jotunheim"] = {
+118,
+0.2598,
+0.6074,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["minimap"] = true,
+["desc"] = "Jotunheim",
+["silent"] = true,
 ["cleardistance"] = 0,
-["title"] = "Glittering Strand",
+["title"] = "Jotunheim",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -148,6 +149,7 @@ TomTomWaypointsM = {
 ["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
+["minimap"] = true,
 ["world"] = true,
 },
 },

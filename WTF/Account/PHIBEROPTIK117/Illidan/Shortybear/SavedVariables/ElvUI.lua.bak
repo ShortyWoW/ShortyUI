@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Return Music volume: 110%",
 "/cw Return it will drown out the screaming in my head",
 "/simc",
 "/cw Prodichí-Illidan what are you trying to do?",
 "/cw Prodichí-Illidan hell yeah brother, stonks",
+"/p My safe word is Apples",
 },
 ["ChatHistoryLog"] = {
 {

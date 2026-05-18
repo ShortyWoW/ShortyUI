@@ -13,11 +13,11 @@ TomTomDB = {
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -30,6 +30,11 @@ nil,
 121.0002670288086,
 },
 },
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
+},
+},
 ["block"] = {
 ["position"] = {
 "BOTTOM",
@@ -37,11 +42,6 @@ nil,
 "BOTTOM",
 10.00003242492676,
 175.0008544921875,
-},
-},
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
 },
 },
 },
@@ -62,11 +62,11 @@ TomTomWaypointsM = {
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -107,31 +107,31 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["world"] = true,
 },
 },
 },
-["Shortlight - Illidan"] = {
+["Shortytest - Illidan"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortyshamm - Illidan"] = {
-[542] = {
-["542:406700000:503400000:Admiral Taylor's Garrison"] = {
-542,
-0.4067,
-0.5034000000000001,
+[117] = {
+["117:460700000:206700000:Winter's Breath Lake"] = {
+117,
+0.4607,
+0.2067,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
 ["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Admiral Taylor's Garrison",
+["title"] = "Winter's Breath Lake",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -154,7 +154,7 @@ TomTomWaypointsM = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortytest - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 },
 }

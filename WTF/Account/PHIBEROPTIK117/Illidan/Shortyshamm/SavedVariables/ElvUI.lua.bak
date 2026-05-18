@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/s I have no clue where it is",
-"/cw Jlight-Sargeras you looking for Ravager Den",
-"/cw Jlight-Sargeras wowhead says it's deleted from the game",
 "/cw Jlight-Sargeras yeah i'm skipping it",
 "/cw Jlight-Sargeras gl friend",
+"/g Yo",
+"/g almost 82",
+"/played",
 },
 ["ChatHistoryLog"] = {
 {

@@ -13,11 +13,11 @@ TomTomDB = {
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -30,11 +30,6 @@ nil,
 121.0002670288086,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 ["block"] = {
 ["position"] = {
 "BOTTOM",
@@ -42,6 +37,11 @@ nil,
 "BOTTOM",
 10.00003242492676,
 175.0008544921875,
+},
+},
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
 },
 },
 },
@@ -62,11 +62,11 @@ TomTomWaypointsM = {
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -107,31 +107,31 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["world"] = true,
 },
 },
 },
-["Shortytest - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },
 ["Shortyshamm - Illidan"] = {
-[542] = {
-["542:406700000:503400000:Admiral Taylor's Garrison"] = {
-542,
-0.4067,
-0.5034000000000001,
+[108] = {
+["108:586400000:643500000:Lake Ere'Noru"] = {
+108,
+0.5864,
+0.6435,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
 ["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Admiral Taylor's Garrison",
+["title"] = "Lake Ere'Noru",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -147,7 +147,7 @@ TomTomWaypointsM = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortytest - Illidan"] = {
 },
 },
 }

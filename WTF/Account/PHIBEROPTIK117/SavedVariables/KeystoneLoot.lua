@@ -36,17 +36,19 @@ KeystoneLootDB = {
 },
 ["Illidan-Shortlite-2"] = {
 },
-["Vashj-Shortbeef-10"] = {
+["Illidan-Shortytest-11"] = {
+},
+["Illidan-Shortyshamm-7"] = {
 },
 ["Illidan-Shortybear-11"] = {
 },
 ["Area 52-Callmeshawte-9"] = {
 },
-["Illidan-Shortytest-11"] = {
+["Illidan-Shortcannon-8"] = {
 },
 ["Area 52-Shortbowjob-3"] = {
 },
-["Illidan-Shortyshamm-7"] = {
+["Vashj-Shortbeef-10"] = {
 },
 },
 }

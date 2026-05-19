@@ -57,7 +57,17 @@ RaiderIO_Config = {
 }
 RaiderIO_LastCharacter = "us-Shortyshamm-illidan"
 RaiderIO_MissingCharacters = {
+["us-Venumbz-illidan"] = true,
+["us-Ipiql-illidan"] = true,
+["us-Pixars-illidan"] = true,
+["us-Lesbiathan-illidan"] = true,
+["us-Nejî-illidan"] = true,
+["us-Buffyvoker-illidan"] = true,
+["us-Gympsy-illidan"] = true,
 ["us-Shortyshamm-illidan"] = true,
+["us-Raymorick-illidan"] = true,
+["us-Deminionn-korgath"] = true,
+["us-Parviflorum-illidan"] = true,
 }
 RaiderIO_MissingServers = {
 }

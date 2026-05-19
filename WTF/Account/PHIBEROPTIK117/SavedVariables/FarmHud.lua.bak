@@ -162,7 +162,7 @@ true,
 ["MinimapIcon"] = {
 ["minimapPos"] = 220,
 ["radius"] = 80,
-["hide"] = false,
+["hide"] = true,
 },
 ["tracking^535616"] = "client",
 ["cardinalpoints_gathercircle_distance"] = 10,

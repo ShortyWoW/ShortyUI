@@ -5,6 +5,7 @@ MythicDungeonToolsDB = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",

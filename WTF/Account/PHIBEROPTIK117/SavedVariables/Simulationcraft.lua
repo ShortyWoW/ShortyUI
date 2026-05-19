@@ -4,8 +4,9 @@ SimulationCraftDB = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Cyword - Area 52"] = "Cyword - Area 52",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
-["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortypal - Dalaran"] = "Shortypal - Dalaran",
+["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
@@ -41,9 +42,11 @@ SimulationCraftDB = {
 },
 ["Shortbeef - Area 52"] = {
 },
+["Shortlight - Illidan"] = {
+},
 ["Shortypal - Dalaran"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortcannon - Illidan"] = {
 },
 ["Callmeshorty - Area 52"] = {
 },
@@ -100,6 +103,9 @@ SimulationCraftDB = {
 },
 },
 ["Shortyshamm - Illidan"] = {
+["minimap"] = {
+["hide"] = true,
+},
 },
 ["Shortbeef - Vashj"] = {
 ["minimap"] = {

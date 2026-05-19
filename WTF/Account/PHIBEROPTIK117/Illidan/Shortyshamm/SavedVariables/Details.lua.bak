@@ -127,7 +127,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["classe"] = "SHAMAN",
+["aID"] = "57-0E27428E",
 ["totalover"] = 0.00104,
 ["total_without_pet"] = 0.00104,
 ["total"] = 1019,
@@ -141,13 +141,13 @@ _detalhes_database = {
 ["specIcon"] = 136048,
 ["targets"] = {
 },
-["heal_enemy_amt"] = 0,
+["classe"] = "SHAMAN",
 ["totalover_without_pet"] = 0.00104,
 ["healing_taken"] = 0.00104,
 ["healpotion"] = 0,
 ["end_time"] = 1779049149,
 ["tipo"] = 2,
-["aID"] = "57-0E27428E",
+["heal_enemy_amt"] = 0,
 ["nome"] = "Shortyshamm",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -630,8 +630,9 @@ nil,
 ["width"] = 120,
 ["ignored_cooldowns"] = {
 },
+["cooldowns"] = {
+},
 ["height"] = 18,
-["framme_locked"] = false,
 ["own_frame"] = {
 ["defensive-raid"] = false,
 ["ofensive"] = false,
@@ -639,8 +640,7 @@ nil,
 ["utility"] = false,
 ["defensive-personal"] = false,
 },
-["cooldowns"] = {
-},
+["framme_locked"] = false,
 ["show_conditions"] = {
 ["only_inside_instance"] = true,
 ["only_in_group"] = true,
@@ -694,8 +694,8 @@ nil,
 ["pos"] = {
 ["normal"] = {
 ["y"] = -624.4998321533203,
-["x"] = 1358.359619140625,
-["w"] = 241.0010681152344,
+["x"] = 1358.498046875,
+["w"] = 241.0006103515625,
 ["h"] = 191.0003356933594,
 },
 ["solo"] = {
@@ -711,7 +711,7 @@ nil,
 ["sub_attribute"] = 1,
 ["horizontalSnap"] = true,
 ["verticalSnap"] = false,
-["isLocked"] = true,
+["isLocked"] = false,
 ["is_open"] = true,
 ["sub_atributo_last"] = {
 1,
@@ -729,7 +729,7 @@ nil,
 ["pos"] = {
 ["normal"] = {
 ["y"] = -624.4998321533203,
-["x"] = 1599.360595703125,
+["x"] = 1599.49853515625,
 ["w"] = 241.0006103515625,
 ["h"] = 191.0003356933594,
 },
@@ -742,7 +742,8 @@ nil,
 },
 },
 },
-["on_death_menu"] = false,
+["data_harvested_for_charts"] = {
+},
 ["announce_firsthit"] = {
 ["enabled"] = true,
 ["channel"] = "SELF",
@@ -777,19 +778,28 @@ nil,
 ["channel"] = "SELF",
 ["reverse"] = false,
 },
-["active_profile"] = "Luckyone 4.1",
-["last_day"] = "18",
-["nick_tag_cache"] = {
-["nextreset"] = 1780340836,
-["last_version"] = 16,
+["active_profile"] = "Luckyone 4.13",
+["mythic_dungeon_currentsaved"] = {
+["dungeon_name"] = "",
+["started"] = false,
+["segment_id"] = 0,
+["ej_id"] = 0,
+["started_at"] = 0,
+["run_id"] = 0,
+["level"] = 0,
+["dungeon_zone_id"] = 0,
+["previous_boss_killed_at"] = 0,
 },
+["last_day"] = "18",
 ["benchmark_db"] = {
 ["frame"] = {
 },
 },
 ["damage_meter_session_info"] = {
 },
-["ignore_nicktag"] = false,
+["SoloTablesSaved"] = {
+["Mode"] = 1,
+},
 ["combat_log"] = {
 ["inverse_deathlog_overalldata"] = false,
 ["merge_gemstones_1007"] = false,
@@ -800,8 +810,10 @@ nil,
 ["evoker_show_realtimedps"] = false,
 ["inverse_deathlog_mplus"] = false,
 },
-["cached_talents"] = {
+["on_death_menu"] = false,
+["mythic_plus_log"] = {
 },
+["ignore_nicktag"] = false,
 ["plugin_database"] = {
 ["DETAILS_PLUGIN_TINY_THREAT"] = {
 ["enabled"] = true,
@@ -895,22 +907,6 @@ nil,
 },
 ["row_texture"] = "Details Serenity",
 ["square_grow_direction"] = "right",
-["use_spark"] = true,
-["author"] = "Terciob",
-["square_amount"] = 5,
-["enabled"] = false,
-["arrow_size"] = 10,
-["y"] = 1.52587890625e-05,
-["row_spacement"] = 21,
-["main_frame_color"] = {
-0,
-0,
-0,
-0.2,
-},
-["main_frame_strata"] = "LOW",
-["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
-["font_size"] = 10,
 ["per_second"] = {
 ["enabled"] = false,
 ["point"] = "CENTER",
@@ -922,6 +918,22 @@ nil,
 ["update_speed"] = 0.05,
 ["size"] = 32,
 },
+["author"] = "Terciob",
+["square_amount"] = 5,
+["enabled"] = false,
+["arrow_size"] = 10,
+["font_size"] = 10,
+["row_spacement"] = 21,
+["main_frame_color"] = {
+0,
+0,
+0,
+0.2,
+},
+["main_frame_strata"] = "LOW",
+["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
+["y"] = 1.52587890625e-05,
+["use_spark"] = true,
 ["x"] = -0.000244140625,
 ["font_face"] = "Friz Quadrata TT",
 ["square_size"] = 32,
@@ -936,26 +948,12 @@ nil,
 ["scale"] = 1,
 },
 },
+["cached_roles"] = {
+},
 ["player_stats"] = {
 },
 ["character_data"] = {
-["logons"] = 12,
-},
-["data_harvested_for_charts"] = {
-},
-["mythic_dungeon_currentsaved"] = {
-["dungeon_name"] = "",
-["started"] = false,
-["segment_id"] = 0,
-["ej_id"] = 0,
-["started_at"] = 0,
-["run_id"] = 0,
-["level"] = 0,
-["dungeon_zone_id"] = 0,
-["previous_boss_killed_at"] = 0,
-},
-["SoloTablesSaved"] = {
-["Mode"] = 1,
+["logons"] = 16,
 },
 ["last_instance_time"] = 0,
 ["last_version"] = "12.0.5 15079",
@@ -963,7 +961,7 @@ nil,
 ["savedStyles"] = {
 },
 ["last_realversion"] = 172,
-["mythic_plus_log"] = {
+["arena_data_compressed"] = {
 },
 ["announce_deaths"] = {
 ["enabled"] = false,
@@ -1093,7 +1091,8 @@ nil,
 ["totalover"] = 0.014396,
 ["total_without_pet"] = 0.014396,
 ["total"] = 2038.007318,
-["spec"] = 262,
+["targets_absorbs"] = {
+},
 ["heal_enemy"] = {
 },
 ["on_hold"] = false,
@@ -1102,7 +1101,7 @@ nil,
 ["last_hps"] = 0,
 ["targets"] = {
 },
-["aID"] = "57-0E27428E",
+["last_event"] = 0,
 ["totalover_without_pet"] = 0.014396,
 ["healing_taken"] = 0.014396,
 ["healpotion"] = 0.007318,
@@ -1140,14 +1139,13 @@ nil,
 ["tipo"] = 3,
 },
 ["grupo"] = true,
+["aID"] = "57-0E27428E",
 ["heal_enemy_amt"] = 0,
-["last_event"] = 0,
 ["custom"] = 0,
 ["tipo"] = 2,
 ["totaldenied"] = 0.014396,
 ["delay"] = 0,
-["targets_absorbs"] = {
-},
+["spec"] = 262,
 },
 },
 },
@@ -1219,20 +1217,7 @@ nil,
 },
 ["compressed_charts"] = {
 },
-["PhaseData"] = {
-{
-1,
-1,
-},
-["damage_section"] = {
-},
-["heal_section"] = {
-},
-["heal"] = {
-},
-["damage"] = {
-},
-},
+["data_inicio"] = "16:16:52",
 ["end_time"] = 389825.562,
 ["mapId"] = 0,
 ["raid_roster"] = {
@@ -1259,6 +1244,29 @@ nil,
 },
 },
 ["is_challenge"] = false,
+["spells_cast_timeline"] = {
+},
+["combat_counter"] = 11,
+["overall_enemy_name"] = "Unknown",
+["frags"] = {
+},
+["PhaseData"] = {
+{
+1,
+1,
+},
+["damage_section"] = {
+},
+["heal_section"] = {
+},
+["heal"] = {
+},
+["damage"] = {
+},
+},
+["start_time"] = 389627.46,
+["TimeData"] = {
+},
 ["segments_added"] = {
 {
 ["elapsed"] = 137.5970000000089,
@@ -1279,22 +1287,14 @@ nil,
 ["clock"] = 0,
 },
 },
-["combat_counter"] = 11,
-["overall_enemy_name"] = "Unknown",
-["frags"] = {
 },
-["data_inicio"] = "16:16:52",
-["start_time"] = 389627.46,
-["TimeData"] = {
-},
-["spells_cast_timeline"] = {
-},
-},
-["arena_data_compressed"] = {
+["cached_talents"] = {
 },
 ["arena_data_headers"] = {
 },
-["cached_roles"] = {
+["nick_tag_cache"] = {
+["nextreset"] = 1780340836,
+["last_version"] = 16,
 },
 ["announce_cooldowns"] = {
 ["ignored_cooldowns"] = {

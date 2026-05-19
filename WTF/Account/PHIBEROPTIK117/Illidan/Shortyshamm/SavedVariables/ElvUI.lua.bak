@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Jlight-Sargeras gl friend",
-"/g Yo",
-"/g almost 82",
-"/played",
 "/s why the hell was i the lk",
+"/ec",
+"/macro",
+"/leave service",
+"/simc minimap",
 },
 ["ChatHistoryLog"] = {
 {

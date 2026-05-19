@@ -4,6 +4,7 @@ LoggerHeadDB = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
+["Shortcannon - Illidan"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
 ["Callmeshortÿ - Moon Guard"] = "Default",

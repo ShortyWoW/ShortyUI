@@ -12,9 +12,10 @@ HandyNotes_MidnightTreasuresDB = {
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
@@ -59,11 +60,13 @@ HandyNotes_MidnightTreasuresDB = {
 },
 ["Callmeshorty - Illidan"] = {
 },
+["Shortlite - Illidan"] = {
+},
 ["Shortybear - Illidan"] = {
 },
 ["Shortypal - Dalaran"] = {
 },
-["Shortlite - Illidan"] = {
+["Shortcannon - Illidan"] = {
 },
 ["Shortlight - Illidan"] = {
 },

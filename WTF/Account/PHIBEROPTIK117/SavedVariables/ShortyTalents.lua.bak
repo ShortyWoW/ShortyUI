@@ -21,6 +21,26 @@ ShortyTalentsDB = {
 },
 },
 },
+[1449] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["BGs"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["Dungeons"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
 [1453] = {
 ["allowed"] = {
 ["Mythic+"] = {

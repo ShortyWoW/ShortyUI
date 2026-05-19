@@ -4,6 +4,7 @@ HandyNotesDB = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
+["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
@@ -25,6 +26,8 @@ HandyNotesDB = {
 ["Shortbeef - Area 52"] = {
 },
 ["Shortypal - Dalaran"] = {
+},
+["Shortcannon - Illidan"] = {
 },
 ["Callmeshorty - Area 52"] = {
 },
@@ -61,6 +64,7 @@ HandyNotes_HandyNotesDB = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
+["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
@@ -82,6 +86,8 @@ HandyNotes_HandyNotesDB = {
 ["Shortbeef - Area 52"] = {
 },
 ["Shortypal - Dalaran"] = {
+},
+["Shortcannon - Illidan"] = {
 },
 ["Callmeshorty - Area 52"] = {
 },

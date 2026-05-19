@@ -6,6 +6,7 @@ KeystonePolarisDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
+["Shortcannon - Illidan"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",

@@ -4,6 +4,7 @@ TomTomDB = {
 ["Callmeshorty - Dalaran"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
+["Shortcannon - Illidan"] = "Default",
 ["Callmeshorty - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
 ["Callmeshortÿ - Moon Guard"] = "Default",
@@ -53,6 +54,7 @@ TomTomWaypointsM = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
+["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
@@ -74,6 +76,8 @@ TomTomWaypointsM = {
 ["Shortbeef - Area 52"] = {
 },
 ["Shortypal - Dalaran"] = {
+},
+["Shortcannon - Illidan"] = {
 },
 ["Callmeshorty - Area 52"] = {
 },

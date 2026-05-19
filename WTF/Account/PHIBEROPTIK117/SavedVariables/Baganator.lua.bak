@@ -6,6 +6,8 @@ BAGANATOR_CONFIG = {
 ["sort_ignore_slots_count_2"] = {
 },
 ["currencies_tracked"] = {
+["Shortcannon-Illidan"] = {
+},
 ["Shortyshamm-Illidan"] = {
 },
 ["Shortbeef-Vashj"] = {

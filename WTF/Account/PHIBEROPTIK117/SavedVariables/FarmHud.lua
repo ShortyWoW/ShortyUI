@@ -157,7 +157,7 @@ true,
 ["MinimapIcon"] = {
 ["minimapPos"] = 220,
 ["radius"] = 80,
-["hide"] = false,
+["hide"] = true,
 },
 ["tracking^1598183"] = "client",
 ["time_server"] = true,

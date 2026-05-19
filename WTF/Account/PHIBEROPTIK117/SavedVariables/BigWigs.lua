@@ -4,8 +4,9 @@ BigWigs3DB = {
 ["Callmeshorty - Dalaran"] = "Luckyone Main",
 ["Cyword - Area 52"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
-["Shortypal - Dalaran"] = "Default",
 ["Shortlight - Illidan"] = "Luckyone Main",
+["Shortypal - Dalaran"] = "Default",
+["Shortcannon - Illidan"] = "Luckyone Main",
 ["Callmeshorty - Area 52"] = "Luckyone Main",
 ["Drewishlaser - Dalaran"] = "Luckyone Main",
 ["Callmeshortÿ - Moon Guard"] = "Luckyone Healing",
@@ -34,7 +35,7 @@ BigWigs3DB = {
 ["namespaces"] = {
 ["BigWigs_Plugins_Colors"] = {
 ["profiles"] = {
-["Luckyone Main"] = {
+["Luckyone Healing"] = {
 ["barBackground"] = {
 ["BigWigs_Plugins_Colors"] = {
 ["default"] = {
@@ -46,7 +47,7 @@ BigWigs3DB = {
 },
 },
 },
-["Luckyone Healing"] = {
+["Luckyone Main"] = {
 ["barBackground"] = {
 ["BigWigs_Plugins_Colors"] = {
 ["default"] = {
@@ -65,62 +66,26 @@ BigWigs3DB = {
 ["tableNeedsCopied"] = false,
 ["watchedMovies"] = {
 [73] = true,
-[1034] = true,
+[75] = true,
 [74] = true,
 [-437] = true,
-[1049] = true,
+[-593] = {
+true,
+},
 [682] = true,
-[75] = true,
+[1034] = true,
 [-2529] = true,
 [-367] = true,
 [-323] = true,
 [76] = true,
 [-2516] = true,
 [1050] = true,
-[-593] = {
-true,
-},
-},
-},
-},
-["BigWigs_Bosses_Crown of the Cosmos"] = {
-["profiles"] = {
-["Luckyone Main"] = {
-["toggles"] = {
-[1233602] = 3130103,
-[1246918] = 3064567,
-},
+[1049] = true,
 },
 },
 },
 ["BigWigs_Plugins_Bars"] = {
 ["profiles"] = {
-["Luckyone Main"] = {
-["outline"] = "OUTLINE",
-["normalWidth"] = 258,
-["visibleBarLimit"] = 6,
-["expHeight"] = 18,
-["emphasizeRestart"] = false,
-["expWidth"] = 239,
-["texture"] = "Minimalist",
-["barStyle"] = "ElvUI",
-["fontSizeEmph"] = 12,
-["fontName"] = "Expressway",
-["spellIndicators"] = 0,
-["spacing"] = 3,
-["visibleBarLimitEmph"] = 6,
-["normalPosition"] = {
-nil,
-nil,
-0,
--36,
-"ElvUF_Player",
-},
-["emphasizeTime"] = 8,
-["fontSize"] = 12,
-["emphasizeMultiplier"] = 1,
-["emphasizeMove"] = false,
-},
 ["Luckyone Healing"] = {
 ["outline"] = "OUTLINE",
 ["normalWidth"] = 239,
@@ -152,25 +117,30 @@ nil,
 ["emphasizeMultiplier"] = 1,
 ["emphasizeMove"] = false,
 },
-},
-},
-["BigWigs_Plugins_PrivateAuras"] = {
-["global"] = {
-["showHelpTip"] = false,
-},
-["profiles"] = {
 ["Luckyone Main"] = {
-["player"] = {
-["disabled"] = true,
-},
-},
-},
-},
-["BigWigs_Bosses_Midnight Falls"] = {
-["profiles"] = {
-["Luckyone Main"] = {
-["toggles"] = {
-[1267049] = 4179703,
+["outline"] = "OUTLINE",
+["normalWidth"] = 258,
+["visibleBarLimit"] = 6,
+["expHeight"] = 18,
+["emphasizeRestart"] = false,
+["expWidth"] = 239,
+["texture"] = "Minimalist",
+["barStyle"] = "ElvUI",
+["fontSizeEmph"] = 12,
+["fontName"] = "Expressway",
+["emphasizeMove"] = false,
+["spacing"] = 3,
+["visibleBarLimitEmph"] = 6,
+["fontSize"] = 12,
+["emphasizeTime"] = 8,
+["spellIndicators"] = 0,
+["emphasizeMultiplier"] = 1,
+["normalPosition"] = {
+nil,
+nil,
+0,
+-36,
+"ElvUF_Player",
 },
 },
 },
@@ -212,26 +182,56 @@ nil,
 },
 },
 },
-["BigWigs_Plugins_BattleRes"] = {
+["BigWigs_Plugins_PrivateAuras"] = {
+["global"] = {
+["showHelpTip"] = false,
+},
 ["profiles"] = {
 ["Luckyone Main"] = {
-["disabled"] = false,
-["durationAlign"] = "CENTER",
-["chargesAlign"] = "CENTER",
-["textXPositionDuration"] = 1,
-["textYPositionDuration"] = 1,
-["textXPositionCharges"] = 1,
-["lock"] = true,
+["player"] = {
+["disabled"] = true,
+},
+},
+},
+},
+["BigWigs_Plugins_Countdown"] = {
+["profiles"] = {
+["Luckyone Healing"] = {
+["outline"] = "OUTLINE",
+["fontSize"] = 50,
 ["fontName"] = "Expressway",
-["cooldownEdge"] = false,
-["borderSize"] = 1,
 ["position"] = {
 nil,
 nil,
--769,
--694,
+nil,
+-385,
 },
 },
+["Luckyone Main"] = {
+["outline"] = "OUTLINE",
+["fontSize"] = 54,
+["fontName"] = "Expressway",
+["position"] = {
+nil,
+nil,
+nil,
+-385,
+},
+},
+},
+},
+["BigWigs_Bosses_Crown of the Cosmos"] = {
+["profiles"] = {
+["Luckyone Main"] = {
+["toggles"] = {
+[1233602] = 3130103,
+[1246918] = 3064567,
+},
+},
+},
+},
+["BigWigs_Plugins_BattleRes"] = {
+["profiles"] = {
 ["Luckyone Healing"] = {
 ["cooldownEdge"] = false,
 ["borderSize"] = 1,
@@ -248,10 +248,48 @@ nil,
 ["chargesAlign"] = "CENTER",
 ["lock"] = true,
 },
+["Luckyone Main"] = {
+["disabled"] = false,
+["durationAlign"] = "CENTER",
+["fontName"] = "Expressway",
+["textXPositionDuration"] = 1,
+["textYPositionDuration"] = 1,
+["textXPositionCharges"] = 1,
+["lock"] = true,
+["position"] = {
+nil,
+nil,
+-769,
+-694,
+},
+["cooldownEdge"] = false,
+["borderSize"] = 1,
+["chargesAlign"] = "CENTER",
+},
 },
 },
 ["BigWigs_Plugins_Messages"] = {
 ["profiles"] = {
+["Luckyone Healing"] = {
+["outline"] = "OUTLINE",
+["fontSize"] = 16,
+["emphPosition"] = {
+"TOP",
+"TOP",
+nil,
+-465,
+},
+["fontName"] = "Expressway",
+["emphOutline"] = "OUTLINE",
+["emphFontName"] = "Expressway",
+["emphFontSize"] = 20,
+["normalPosition"] = {
+"CENTER",
+"CENTER",
+nil,
+40,
+},
+},
 ["Luckyone Main"] = {
 ["outline"] = "OUTLINE",
 ["fontSize"] = 18,
@@ -275,26 +313,6 @@ nil,
 40,
 },
 },
-["Luckyone Healing"] = {
-["outline"] = "OUTLINE",
-["fontSize"] = 16,
-["emphPosition"] = {
-"TOP",
-"TOP",
-nil,
--465,
-},
-["fontName"] = "Expressway",
-["emphOutline"] = "OUTLINE",
-["emphFontName"] = "Expressway",
-["emphFontSize"] = 20,
-["normalPosition"] = {
-"CENTER",
-"CENTER",
-nil,
-40,
-},
-},
 },
 },
 ["BigWigs_Bosses_Lightblinded Vanguard"] = {
@@ -307,28 +325,11 @@ nil,
 },
 },
 },
-["BigWigs_Plugins_Countdown"] = {
+["BigWigs_Bosses_Midnight Falls"] = {
 ["profiles"] = {
 ["Luckyone Main"] = {
-["outline"] = "OUTLINE",
-["fontSize"] = 54,
-["fontName"] = "Expressway",
-["position"] = {
-nil,
-nil,
-nil,
--385,
-},
-},
-["Luckyone Healing"] = {
-["outline"] = "OUTLINE",
-["fontSize"] = 50,
-["fontName"] = "Expressway",
-["position"] = {
-nil,
-nil,
-nil,
--385,
+["toggles"] = {
+[1267049] = 4179703,
 },
 },
 },

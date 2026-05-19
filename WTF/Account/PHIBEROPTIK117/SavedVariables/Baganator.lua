@@ -7,6 +7,8 @@ BAGANATOR_CONFIG = {
 ["currencies_tracked_imported"] = {
 },
 ["currencies_tracked"] = {
+["Shortcannon-Illidan"] = {
+},
 ["Shortyshamm-Illidan"] = {
 },
 ["Shortbeef-Vashj"] = {

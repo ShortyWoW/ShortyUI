@@ -233,6 +233,8 @@ GameCooltipFrame2 = {}
 ---@field CreateStatusbarTextureListGenerator fun(self:table, callback:function) : function return a function which when called returns a table filled with all statusbar textures available and ready to be used on dropdowns
 ---@field CreateFrameStrataDropDown fun(self:table, parent:frame, callback:function, default:any, width:number?, height:number?, member:string?, name:string?, template:table?) : df_dropdown
 ---@field CreateFrameStrataListGenerator fun(self:table, callback:function) : function return a function which when called returns a table filled with all frame strata levels available and ready to be used on dropdowns
+---@field CreateBackgroundDropDown fun(self:table, parent:frame, callback:function, default:any, width:number?, height:number?, member:string?, name:string?, template:table?, bIncludeDefault:boolean?) : df_dropdown
+---@field CreateBackgroundListGenerator fun(self:table, callback:function, bIncludeDefault:boolean?) : function return a function which when called returns a table filled with all background textures available and ready to be used on dropdowns
 ---@field CreateFontDropDown fun(self:table, parent:frame, func:function, default:any, width:number?, height:number?, member:string?, name:string?, template:table?, bIncludeDefault:boolean?) : df_dropdown
 ---@field CreateColorDropDown fun(self:table, parent:frame, func:function, default:any, width:number?, height:number?, member:string?, name:string?, template:table?) : df_dropdown
 ---@field CreateOutlineDropDown fun(self:table, parent:frame, func:function, default:any, width:number?, height:number?, member:string?, name:string?, template:table?) : df_dropdown
@@ -328,6 +330,7 @@ GameCooltipFrame2 = {}
 ---@field Mixin fun(self:table, target:table, ...) : table
 ---@field MixinX fun(self:table, target:table, ...)
 ---@field SetButtonTexture fun(self:table, button:button|df_button, texture:atlasname|texturepath|textureid)
+---@field SetFont fun(self:table, fontstring:fontstring, font:string, size:number?, flags:string?) set font attributes is passed
 ---@field SetFontSize fun(self:table, fontstring:fontstring, size:number)
 ---@field GetFontSize fun(self:table, fontstring:fontstring) : number return the font size of the fontstring
 ---@field SetFontColor fun(self:table, fontstring:fontstring, red:any, green:number?, blue:number?, alpha:number?)
@@ -420,7 +423,7 @@ GameCooltipFrame2 = {}
 ---@field AddClassIconToText fun(self:table, text:string, playerName:string, englishClassName:string, useSpec:boolean?, iconSize:number?) : string wrap 'text' with the class icon of 'playerName' using |T|t scape codes
 ---@field RemoveRealNameFromName fun(self:table, name:string) : string remove the realm name from a name string
 ---@field GetSpecInfoFromSpecId fun(self:table, specId:number) : specinfo
----@field GetSpecInfoFromSpecIcon fun(self:table, specIcon:string) : specinfo
+---@field GetSpecInfoFromSpecIcon fun(self:table, specIcon:number) : specinfo
 ---@field GetSpecIdFromSpecIcon fun(self:table, specIcon:number) : number?
 
 

@@ -1,6 +1,6 @@
 # Baganator
 
-## [802](https://github.com/TheMouseNest/Baganator/tree/802) (2026-05-02)
-[Full Changelog](https://github.com/TheMouseNest/Baganator/compare/801...802) 
+## [803](https://github.com/TheMouseNest/Baganator/tree/803) (2026-05-08)
+[Full Changelog](https://github.com/TheMouseNest/Baganator/compare/802...803) 
 
-- Single bag: Bugfix for exporting profiles using hidden special containers  
+- Prevent nil reference error  

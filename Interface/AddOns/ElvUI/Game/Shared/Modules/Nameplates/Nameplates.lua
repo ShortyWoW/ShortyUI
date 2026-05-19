@@ -29,7 +29,6 @@ local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
-
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
@@ -954,6 +953,25 @@ function NP:BlizzardPlate_RefreshAuras(updateInfo)
 	if not NP.db.useBlizzardAuras then return end
 
 	NP:NamePlateCallBack('FAKE_REFRESH_AURAS', self.unitToken, updateInfo)
+end
+
+do
+	local hookedPlates = {}
+	function NP:BlizzardPlate_HookAuras(frame)
+		local auras = E.Retail and frame.AurasFrame
+		if not auras then return end
+
+		if NP.db.useBlizzardAuras then
+			frame:RegisterUnitEvent('UNIT_AURA', frame.unit)
+		end
+
+		if not hookedPlates[frame] then
+			hookedPlates[frame] = true
+
+			hooksecurefunc(auras, 'RefreshList', NP.BlizzardPlate_RefreshList)
+			hooksecurefunc(auras, 'RefreshAuras', NP.BlizzardPlate_RefreshAuras)
+		end
+	end
 end
 
 function NP:NamePlateCallBack(event, unit, updateInfo)

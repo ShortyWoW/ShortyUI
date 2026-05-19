@@ -87,6 +87,7 @@ local IS_WOW_PROJECT_CLASSIC_WRATH = IS_WOW_PROJECT_NOT_MAINLINE and ClassicExpa
 --local IS_WOW_PROJECT_CLASSIC_CATACLYSM = IS_WOW_PROJECT_NOT_MAINLINE and ClassicExpansionAtLeast and LE_EXPANSION_CATACLYSM and ClassicExpansionAtLeast(LE_EXPANSION_CATACLYSM)
 local IS_WOW_PROJECT_CLASSIC_MOP = IS_WOW_PROJECT_NOT_MAINLINE and ClassicExpansionAtLeast and LE_EXPANSION_MISTS_OF_PANDARIA and ClassicExpansionAtLeast(LE_EXPANSION_MISTS_OF_PANDARIA)
 local IS_WOW_PROJECT_MIDNIGHT = DF.IsAddonApocalypseWow()
+--local IS_WOW_PROJECT_MIDNIGHT = DF.IsMidnightWowAPI()
 
 local PixelUtil = PixelUtil or DFPixelUtil
 
@@ -1774,6 +1775,7 @@ Plater.AnchorNamesByPhraseId = {
 		DB_AURA_SEPARATE_BUFFS = profile.buffs_on_aura2
 
 		DB_NUMBER_REGION_EAST_ASIA = Plater.db.profile.number_region == "eastasia"
+		platerInternal.ReBuildAbbreviateConfig()
 		
 		DB_TICK_THROTTLE = profile.update_throttle
 		DB_LERP_COLOR = not IS_WOW_PROJECT_MIDNIGHT and profile.use_color_lerp or false
@@ -1986,7 +1988,6 @@ Plater.AnchorNamesByPhraseId = {
 			if IS_WOW_PROJECT_MIDNIGHT then
 				defaultScale = defaultScale / UIParent:GetEffectiveScale() --MIDNIGHT!! normalize for now
 			end
-			--local defaultScale = UIParent:GetEffectiveScale()
 			
 			if (defaultScale < 0.4) then
 				--assuming the nameplate is in process of being removed from the screen if the scale if lower than .4
@@ -2109,6 +2110,114 @@ Plater.AnchorNamesByPhraseId = {
 			
 		else
 			eastAsiaMyriads_1k, eastAsiaMyriads_10k, eastAsiaMyriads_1B = "천", "만", "억"
+		end
+
+		platerInternal.abbreviateConfig = C_StringUtil and C_StringUtil.GetDefaultAbbreviationBreakpoints and C_StringUtil.GetDefaultAbbreviationBreakpoints(GetLocale()) -- default it
+		platerInternal.ReBuildAbbreviateConfig = function()
+			if not platerInternal.abbreviateConfig then return end -- if it could not be defaulted, skip this.
+			local myriadK, myriadM, myriadB, myriadT
+			if DB_NUMBER_REGION_EAST_ASIA then
+				-- use the easter locale
+				myriadM, myriadB = eastAsiaMyriads_10k, eastAsiaMyriads_1B
+				platerInternal.abbreviateConfig = {
+					breakpointData = {
+						{
+							breakpoint=1000000000,
+							significandDivisor=100000000,
+							fractionDivisor=1,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadB
+						}, 
+						{
+							breakpoint=100000000, 
+							significandDivisor=10000000,
+							fractionDivisor=10,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadB
+						}, 
+						{
+							breakpoint=100000,
+							significandDivisor=10000,
+							fractionDivisor=1,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadM
+						}, 
+						{
+							breakpoint=10000,
+							significandDivisor=1000,
+							fractionDivisor=10,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadM
+						}
+					}
+				}
+			else
+				-- default to eastern locale
+				myriadK, myriadM, myriadB, myriadT = "K", "M", "B", "T"
+				platerInternal.abbreviateConfig = {
+					breakpointData = {
+						{ 
+							breakpoint=10000000000000,
+							significandDivisor=1000000000000,
+							fractionDivisor=1,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadT
+						},
+						{
+							breakpoint=1000000000000,
+							significandDivisor=100000000000,
+							fractionDivisor=10,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadT
+						},
+						{
+							breakpoint=10000000000,
+							significandDivisor=1000000000,
+							fractionDivisor=1,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadB
+						},
+						{
+							breakpoint=1000000000,
+							significandDivisor=100000000,
+							fractionDivisor=10,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadB 
+						}, 
+						{
+							breakpoint=10000000,
+							significandDivisor=1000000,
+							fractionDivisor=1,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadM
+						}, 
+						{
+							breakpoint=1000000,
+							significandDivisor=100000,
+							fractionDivisor=10,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadM
+						}, 
+						{
+							breakpoint=10000,
+							significandDivisor=1000,
+							fractionDivisor=1,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadK
+						}, 
+						{
+							breakpoint=1000,
+							significandDivisor=100,
+							fractionDivisor=10,
+							abbreviationIsGlobal=false,
+							abbreviation=myriadK
+						}
+					}
+				}
+			end
+		end
+		Plater.GetAbbreviateConfig = function ()
+			return platerInternal.abbreviateConfig
 		end
 
 		function Plater.FormatNumber (number)
@@ -2919,6 +3028,9 @@ Plater.AnchorNamesByPhraseId = {
 				
 				-- stacking size for midnight
 				if plateFrame.SetStackingBoundsFrame then
+					unitFrame.hitTestFrame = CreateFrame("Frame", newUnitFrame:GetName() .. "HitTestFrame", unitFrame)
+					unitFrame.hitTestFrame:SetPoint("CENTER", unitFrame, "CENTER", 0, 0)
+
 					unitFrame.stackSizeFrame = CreateFrame("Frame", nil, unitFrame, "BackdropTemplate")
 					local tex = unitFrame.stackSizeFrame:CreateTexture()
 					tex:SetColorTexture(1, 0, 0, 0)
@@ -3039,11 +3151,16 @@ Plater.AnchorNamesByPhraseId = {
 			unitFrame.CustomIndicators = {}
 			
 			--> cliclable area debug
-				plateFrame.debugAreaTexture = plateFrame:CreateTexture (nil, "background")
+				if IS_WOW_PROJECT_MIDNIGHT then
+					plateFrame.debugAreaTexture = plateFrame.unitFrame.hitTestFrame:CreateTexture (nil, "background")
+					plateFrame.debugAreaText = plateFrame.unitFrame.hitTestFrame:CreateFontString (nil, "artwork", "GameFontNormal")
+				else
+					plateFrame.debugAreaTexture = plateFrame:CreateTexture (nil, "background")
+					plateFrame.debugAreaText = plateFrame:CreateFontString (nil, "artwork", "GameFontNormal")
+				end
 				plateFrame.debugAreaTexture:SetColorTexture (.1, .1, .1, .5)
 				plateFrame.debugAreaTexture:SetAllPoints()
 				plateFrame.debugAreaTexture:Hide()
-				plateFrame.debugAreaText = plateFrame:CreateFontString (nil, "artwork", "GameFontNormal")
 				plateFrame.debugAreaText:SetPoint ("bottom", plateFrame.debugAreaTexture, "top", 0, 1)
 				plateFrame.debugAreaText:SetText ("valid area for clicks")
 				plateFrame.debugAreaText:SetTextColor (.7, .7, .7)
@@ -3311,6 +3428,9 @@ Plater.AnchorNamesByPhraseId = {
 				plateFrame.ActorNameSpecial:Hide()
 				
 				local ActorTitleSpecial = unitFrame:CreateFontString (nil, "artwork", "GameFontNormal")
+				if ActorTitleSpecial.SetSmoothScaling then
+					--ActorTitleSpecial:SetSmoothScaling(true)
+				end
 				unitFrame.ActorTitleSpecial = ActorTitleSpecial --alias for scripts
 				plateFrame.ActorTitleSpecial = ActorTitleSpecial
 				PixelUtil.SetPoint (plateFrame.ActorTitleSpecial, "top", ActorNameSpecial, "bottom", 0, -2)
@@ -3319,10 +3439,16 @@ Plater.AnchorNamesByPhraseId = {
 				
 			--> level text
 				local actorLevel = healthBar:CreateFontString (nil, "overlay", "GameFontNormal")
+				if actorLevel.SetSmoothScaling then
+					--actorLevel:SetSmoothScaling(true)
+				end
 				healthBar.actorLevel = actorLevel
 			
 			--> life percent text
 				local lifePercent = healthBar:CreateFontString (nil, "overlay", "GameFontNormal")
+				if lifePercent.SetSmoothScaling then
+					--lifePercent:SetSmoothScaling(true)
+				end
 				lifePercent:SetDrawLayer ("overlay", 5)
 				healthBar.lifePercent = lifePercent
 				
@@ -3472,6 +3598,9 @@ Plater.AnchorNamesByPhraseId = {
 				castBar.FrameOverlay:SetBackdropBorderColor (1, 1, 1, 0)
 				--creates the target name overlay which shows who the unit is targetting while casting (this is disabled by default)
 				castBar.FrameOverlay.TargetName = castBar.FrameOverlay:CreateFontString (nil, "overlay", "GameFontNormal")
+				if castBar.FrameOverlay.TargetName.SetSmoothScaling then
+					--castBar.FrameOverlay.TargetName:SetSmoothScaling(true)
+				end
 				castBar.TargetName = castBar.FrameOverlay.TargetName --alias for scripts
 			
 				--> create the spell color texture
@@ -3721,18 +3850,6 @@ Plater.AnchorNamesByPhraseId = {
 				--hook the retail nameplate
 				--plateFrame.UnitFrame:HookScript("OnShow", Plater.OnRetailNamePlateShow)
 				hooksecurefunc(plateFrame.UnitFrame, "Show", Plater.OnRetailNamePlateShow)
-				if IS_WOW_PROJECT_MIDNIGHT then
-					local locked = false
-					hooksecurefunc(plateFrame.UnitFrame, "SetAlpha", function(self)
-						if locked or self:IsForbidden() then
-							return
-						end
-						if ENABLED_BLIZZARD_PLATEFRAMES[tostring(self)] then return end
-						locked = true
-						self:SetAlpha(0)
-						locked = false
-					end)
-				end
 				
 				--plateFrame.UnitFrame.HasPlaterHooksRegistered = true
 				HOOKED_BLIZZARD_PLATEFRAMES[blizzardPlateFrameID] = true
@@ -3743,6 +3860,16 @@ Plater.AnchorNamesByPhraseId = {
 			if IS_WOW_PROJECT_MIDNIGHT then
 				--TextureLoadingGroupMixin.AddTexture({ textures = plateFrame.UnitFrame.healthBar }, "capNumericDisplay") -- this is, luckily, baseline now.
 				C_NamePlateManager.SetNamePlateSimplified(unitID, false)
+
+				local width, height = Plater.db.profile.click_space[1], Plater.db.profile.click_space[2]
+				plateFrame.unitFrame.hitTestFrame:SetSize(width, height)
+				plateFrame.unitFrame.hitTestFrame:ClearAllPoints()
+				plateFrame.unitFrame.hitTestFrame:SetPoint("CENTER", plateFrame.unitFrame, "CENTER")
+				if plateFrame:CanChangeHitTestPoints() then
+					plateFrame:ClearAllHitTestPoints()
+					plateFrame:SetAllHitTestPoints(plateFrame.unitFrame.hitTestFrame)
+				end
+
 				
 				local isPlayer = UnitIsPlayer (unitID)
 				local reaction = UnitReaction (unitID, "player")
@@ -4527,19 +4654,6 @@ Plater.AnchorNamesByPhraseId = {
 			elseif DevTool then
 				DevTool:AddData(self, "protected nameplate...")
 			end
-		elseif IS_WOW_PROJECT_MIDNIGHT then
-			self:SetAlpha(0)
-			local hiddenParent = platerInternal.hiddenParentFrame
-			if self.AurasFrame then -- assume this suffices
-				self.AurasFrame.DebuffListFrame:SetParent(hiddenParent)
-				self.AurasFrame.BuffListFrame:SetParent(hiddenParent)
-				self.AurasFrame.CrowdControlListFrame:SetParent(hiddenParent)
-				self.AurasFrame.LossOfControlFrame:SetParent(hiddenParent)
-				for _, key in ipairs(platerInternal.blizzNameplateObjects) do
-					self[key]:SetParent(hiddenParent)
-				end
-				platerInternal.reparentedUnitFrames[self.unit] = self
-			end
 		else
 			self:Hide()
 		end
@@ -5088,36 +5202,6 @@ function Plater.OnInit() --private --~oninit ~init
 			end)
 			
 			if IS_WOW_PROJECT_MIDNIGHT then -- MIDNIGHT!! fucking bullshit workaround for SetAlpha(0) instead of :Hide() until we have proper click-frame control...
-				platerInternal.reparentedUnitFrames = {}
-				platerInternal.hiddenParentFrame = CreateFrame("Frame")
-				platerInternal.hiddenParentFrame:Hide()
-				platerInternal.blizzNameplateObjects = {
-					"aggroHighlight",
-					"aggroHighlightAdditive",
-					"aggroHighlightBase",
-					"castBar",
-					"name",
-					"AurasFrame",
-					"ClassificationFrame",
-					"HealthBarsContainer",
-					"PlayerLevelDiffFrame",
-					"RaidTargetFrame",
-					"SoftTargetFrame",
-				}
-				-- the hidden parent is set in OnRetailNameplateShow
-				hooksecurefunc(NamePlateDriverFrame, "OnNamePlateRemoved", function(_, unit)
-					local blizzUnitFrame = platerInternal.reparentedUnitFrames[unit]
-					if blizzUnitFrame then
-						blizzUnitFrame.AurasFrame.DebuffListFrame:SetParent(blizzUnitFrame)
-						blizzUnitFrame.AurasFrame.BuffListFrame:SetParent(blizzUnitFrame)
-						blizzUnitFrame.AurasFrame.CrowdControlListFrame:SetParent(blizzUnitFrame)
-						blizzUnitFrame.AurasFrame.LossOfControlFrame:SetParent(blizzUnitFrame)
-						for _, key in ipairs(platerInternal.blizzNameplateObjects) do
-							blizzUnitFrame[key]:SetParent(blizzUnitFrame)
-						end
-						platerInternal.reparentedUnitFrames[unit] = nil
-					end
-				end)
 				
 				--Nameplate base options tables: NamePlateFriendlyFrameOptions / NamePlateEnemyFrameOptions
 				hooksecurefunc(NamePlateDriverFrame, "OnNamePlateAdded", function(_, unit)
@@ -5342,7 +5426,7 @@ function Plater.OnInit() --private --~oninit ~init
 				C_Timer.After(1, function() Plater.SetNamePlatePreferredClickInsets(nameplateType, left, right, top, bottom) end)
 			end
 		end
-		if not IS_WOW_PROJECT_MIDNIGHT then
+		if not IS_WOW_PROJECT_MIDNIGHT and NamePlateDriverFrame and NamePlateDriverFrame.namePlateSetInsetFunctions then
 			hooksecurefunc(NamePlateDriverFrame.namePlateSetInsetFunctions, "friendly", function()
 				--C_NamePlate.SetNamePlateFriendlyPreferredClickInsets (0, 0, 0, 0)
 				Plater.SetNamePlatePreferredClickInsets("friendly", 0, 0, 0, 0)
@@ -6025,10 +6109,10 @@ function Plater.OnInit() --private --~oninit ~init
 						if IS_WOW_PROJECT_MIDNIGHT then
 							local targetName = UnitSpellTargetName(self.unit)
 							if targetName then
-								local targetNameShort = Ambiguate(targetName, "none")
-								if targetNameShort then
-									targetName = targetNameShort
-								end
+								--local targetNameShort = Ambiguate(targetName, "short")
+								--if targetNameShort then
+								--	targetName = targetNameShort
+								--end
 								local classFilename = UnitSpellTargetClass(self.unit)
 								if classFilename then
 									local color = C_ClassColor.GetClassColor(classFilename)
@@ -6037,6 +6121,8 @@ function Plater.OnInit() --private --~oninit ~init
 								
 								targetName = Plater.UpdateTextSize (targetName or "", self.FrameOverlay.TargetName, Plater.db.profile.castbar_target_text_max_width or 0, nil, Plater.db.profile.castbar_target_text_wrap)
 								
+							elseif Plater.IsShowingCastBarTest then
+								self.FrameOverlay.TargetName:SetText("Target Name")
 							else
 								self.FrameOverlay.TargetName:SetText(nil)
 							end
@@ -7000,35 +7086,36 @@ end
 		
 		Plater.StartLogPerformanceCore("Plater-Core", "Update", "UpdatePlateClickSpace")
 		
-		if IS_WOW_PROJECT_MIDNIGHT then
+		if IS_WOW_PROJECT_MIDNIGHT or C_NamePlate.SetNamePlateSize then
 			local width, height = Plater.db.profile.click_space[1], Plater.db.profile.click_space[2]
-			C_NamePlate.SetNamePlateSize(width, height)
+			local scale = Plater.db.profile.use_ui_parent and Plater.db.profile.ui_parent_scale_tune or 1
+			C_NamePlate.SetNamePlateSize(width*scale, height*scale)
 			
-			local widthScale, heightScale = Plater.db.profile.click_space_scale[1], Plater.db.profile.click_space_scale[2]
-			local hS, vS = widthScale < 1 and 1 or -1, heightScale < 1 and 1 or -1
-			local offsetW, offsetH = hS * (width * widthScale - width), vS * (height * heightScale - height)
-			C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Enemy, offsetW, offsetW, offsetH, offsetH)
-			
-			
-			width, height = Plater.db.profile.click_space_friendly[1], Plater.db.profile.click_space_friendly[2]
-			widthScale, heightScale = Plater.db.profile.click_space_scale_friendly[1], Plater.db.profile.click_space_scale_friendly[2]
-			hS, vS = widthScale < 1 and 1 or -1, heightScale < 1 and 1 or -1
-			offsetW, offsetH = hS * (width * widthScale - width), vS * (height * heightScale - height)
-			C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Friendly, offsetW, offsetW, offsetH, offsetH)
+			--local widthScale, heightScale = Plater.db.profile.click_space_scale[1], Plater.db.profile.click_space_scale[2]
+			--local hS, vS = widthScale < 1 and 1 or -1, heightScale < 1 and 1 or -1
+			--local offsetW, offsetH = hS * (width * widthScale - width), vS * (height * heightScale - height)
+			--C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Enemy, offsetW, offsetW, offsetH, offsetH)
+			--
+			--
+			--width, height = Plater.db.profile.click_space_friendly[1], Plater.db.profile.click_space_friendly[2]
+			--widthScale, heightScale = Plater.db.profile.click_space_scale_friendly[1], Plater.db.profile.click_space_scale_friendly[2]
+			--hS, vS = widthScale < 1 and 1 or -1, heightScale < 1 and 1 or -1
+			--offsetW, offsetH = hS * (width * widthScale - width), vS * (height * heightScale - height)
+			--C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Friendly, offsetW, offsetW, offsetH, offsetH)
 			
 			if Plater.db.profile.plate_config.friendlyplayer.click_through then
 				C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Friendly, 10000, 10000, 10000, 10000)
 			else
 				C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Friendly, -10000, -10000, -10000, -10000)
 			end
-			C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Enemy, -10000, -10000, -10000, -10000)
+			--C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Enemy, -10000, -10000, -10000, -10000)
 			
 		else
 			-- ensure we support the "large nameplate" setting properly
 			local namePlateVerticalScale = GetCVarNumberOrDefault("NamePlateVerticalScale")
+			local horizontalScale = GetCVarNumberOrDefault("NamePlateHorizontalScale")
 			local zeroBasedScale = namePlateVerticalScale - 1.0
 			local clampedZeroBasedScale = Saturate(zeroBasedScale)
-			local horizontalScale = GetCVarNumberOrDefault("NamePlateHorizontalScale")
 
 			local width, height = Plater.db.profile.click_space[1], Plater.db.profile.click_space[2]
 			C_NamePlate.SetNamePlateEnemySize (width * horizontalScale, height * Lerp(1.0, 1.25, zeroBasedScale)) --classic: {132, 32}, retail: {110, 45},
@@ -8591,7 +8678,7 @@ end
 			--TODO: MIDNIGHT!!
 			--local currentAbsorb, currentAbsorbMax, currentAbsorbIsClamped = healthBar.currentAbsorb, healthBar.currentAbsorbMax, healthBar.currentAbsorbIsClamped
 			
-			currentHealth = AbbreviateNumbers(currentHealth)
+			currentHealth = AbbreviateNumbers(currentHealth, Plater.GetAbbreviateConfig())
 			if (showHealthAmount or showPercentAmount) then
 				healthBar.lifePercent:SetText(currentHealth)
 			else
@@ -8762,9 +8849,9 @@ end
 		local plateConfig = DB_PLATE_CONFIG [plateFrame.actorType]
 		local maxWidth = plateConfig.actorname_text_max_width or 0
 		local wrap = plateConfig.actorname_text_wrap
-		if plateFrame.IsFriendlyPlayerWithoutHealthBar or plateFrame.IsNpcWithoutHealthBar then
-			maxWidth = 0
-			wrap = true
+		if plateFrame.IsFriendlyPlayerWithoutHealthBar or plateFrame.IsNpcWithoutHealthBar or plateConfig.show_guild_name then
+			--maxWidth = 0
+			wrap = true -- force wrapping
 		end
 		local name = plateFrame [MEMBER_NAME] or plateFrame.unitFrame [MEMBER_NAME] or ""
 		if IS_WOW_PROJECT_MIDNIGHT and issecretvalue(name) then
@@ -8957,6 +9044,11 @@ end
 			--unitFrame.stackSizeFrame:ClearAllPoints()
 			--unitFrame.stackSizeFrame:SetPoint("TOPLEFT", unitFrame.PlaterOnScreen and unitFrame or plateFrame, "TOPLEFT", offsetW, -offsetH)
 			--unitFrame.stackSizeFrame:SetPoint("BOTTOMRIGHT", unitFrame.PlaterOnScreen and unitFrame or plateFrame, "BOTTOMRIGHT", -offsetW, offsetH)
+		end
+		if unitFrame.hitTestFrame then
+			--unitFrame.hitTestFrame:SetPoint("CENTER", isPlateEnabled and unitFrame or plateFrame, "CENTER", 0, 0)
+			local width, height = Plater.db.profile.click_space[1], Plater.db.profile.click_space[2]
+			unitFrame.hitTestFrame:SetSize(width, height)
 		end
 	end
 	

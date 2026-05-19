@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local gsub, format = gsub, format
+local gsub = gsub
+local format = format
 local strlower = strlower
 
 local UnitHealth = UnitHealth
@@ -15,17 +16,19 @@ local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitHealthMissing = UnitHealthMissing
 local UnitPowerMissing = UnitPowerMissing
 
+local TruncateWhenZero = C_StringUtil and C_StringUtil.TruncateWhenZero
+
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower -- override during testing groups
 
 E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
-	return UnitGetTotalAbsorbs(unit)
+	return TruncateWhenZero(UnitGetTotalAbsorbs(unit))
 end)
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
-	return UnitGetTotalHealAbsorbs(unit)
+	return TruncateWhenZero(UnitGetTotalHealAbsorbs(unit))
 end)
 
 for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do

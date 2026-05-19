@@ -54,7 +54,7 @@ function platerInternal.CreateAdvancedOptions()
 
     --outline table
     local outline_modes = {"NONE", "MONOCHROME", "OUTLINE", "THICKOUTLINE", "OUTLINEMONOCHROME", "THICKOUTLINEMONOCHROME", "SLUG", "OUTLINE, SLUG"}
-    local outline_modes_names = {"None", "Monochrome", "Outline", "Thick Outline", "Monochrome Outline", "Monochrome Thick Outline", "Slug", "Outline Slug"}
+    local outline_modes_names = {"None", "Monochrome", "Outline", "Thick Outline", "Monochrome Outline", "Monochrome Thick Outline", "SLUG", "Outline Slug"}
     local build_outline_modes_table = function (actorType, member)
         local t = {}
         for i = 1, #outline_modes do
@@ -578,6 +578,7 @@ function platerInternal.CreateAdvancedOptions()
         {
             type = "toggle",
             get = function()
+                if not GetCVarDefault("NamePlateHorizontalScale") then return false end
                 local hScale = GetCVarNumberOrDefault("NamePlateHorizontalScale");
                 local vScale = GetCVarNumberOrDefault("NamePlateVerticalScale");
                 local cScale = GetCVarNumberOrDefault("NamePlateClassificationScale");
@@ -669,6 +670,7 @@ function platerInternal.CreateAdvancedOptions()
             set = function (self, fixedparam, value)
                 Plater.db.profile.click_space[1] = value
                 Plater.UpdatePlateClickSpace (nil, true)
+                Plater.UpdateAllPlates()
             end,
             min = 1,
             max = 300,
@@ -685,6 +687,7 @@ function platerInternal.CreateAdvancedOptions()
             set = function (self, fixedparam, value)
                 Plater.db.profile.click_space[2] = value
                 Plater.UpdatePlateClickSpace (nil, true)
+                Plater.UpdateAllPlates()
             end,
             min = 1,
             max = 100,

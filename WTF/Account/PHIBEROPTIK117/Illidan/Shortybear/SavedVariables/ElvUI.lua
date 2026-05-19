@@ -4,9 +4,9 @@ ElvCharacterDB = {
 ["ChatEditHistory"] = {
 "/cw Prodichí-Illidan hell yeah brother, stonks",
 "/p My safe word is Apples",
-"/simc",
 "/rc",
 "/pull 10",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

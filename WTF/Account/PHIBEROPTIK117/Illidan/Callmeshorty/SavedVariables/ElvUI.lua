@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/g i think Finn would love it, he loves the basement",
 "/g ngl after my basement flooded i had to rip the carpeting out",
 "/g I used ChatGPT to render out a \"Gaming Man Cave\" picture",
 "/g it looks sick af",
 "/g i just don't know how expensive / hard it would be to put in my own flooring",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

@@ -621,6 +621,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.backdrop.callbackBackdropColor = UF.StatusBarBlackBackdrop
 	additionalPower.backdrop:SetBackdropColor(0, 0, 0, 1)
 
+	additionalPower.displayPairs = UF.ALT_POWER_INFO
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 

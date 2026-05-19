@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-
 local pi = math.pi
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
@@ -85,7 +84,7 @@ end
 function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
-	S:HandleButton(dropdown, nil, nil, nil, true, 'Default')
+	S:HandleButton(dropdown, nil, nil, nil, true)
 
 	dropdown:Size(20)
 	dropdown:NudgePoint(nil, -2)
@@ -114,7 +113,7 @@ end
 function S:DamageMeter_HandleSessionDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
-	S:HandleButton(dropdown, nil, nil, nil, true, 'Default')
+	S:HandleButton(dropdown, nil, nil, nil, true)
 
 	dropdown:NudgePoint(nil, -3)
 	dropdown:Height(20)
@@ -139,7 +138,7 @@ end
 function S:DamageMeter_HandleSettingsDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
-	S:HandleButton(dropdown, nil, nil, nil, true, 'Default')
+	S:HandleButton(dropdown, nil, nil, nil, true)
 
 	dropdown:Size(20)
 	dropdown:NudgePoint(2, 0)

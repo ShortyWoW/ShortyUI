@@ -7,7 +7,9 @@ local _ = nil
 local IS_WOW_PROJECT_MAINLINE = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local IS_WOW_PROJECT_NOT_MAINLINE = WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE
 local IS_WOW_PROJECT_CLASSIC_ERA = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local IS_WOW_PROJECT_MIDNIGHT = DF.IsAddonApocalypseWow()
+--local IS_WOW_PROJECT_MIDNIGHT = DF.IsAddonApocalypseWow()
+local IS_WOW_PROJECT_MIDNIGHT = DF.IsMidnightWowAPI()
+--local IS_WOW_PROJECT_MIDNIGHT_API = DF.IsMidnightWowAPI()
 
 --stop yellow lines on my editor
 local tinsert = _G.tinsert
@@ -842,6 +844,7 @@ end
 
 local function getBlizzardDebuffs(unitFrame)
 	local blizzDebuffFrame = unitFrame.PlateFrame.UnitFrame and unitFrame.PlateFrame.UnitFrame.AurasFrame and unitFrame.PlateFrame.UnitFrame.AurasFrame.DebuffListFrame
+	--DevTool:AddData(unitFrame.PlateFrame.UnitFrame)
 	local blizzardDebuffs = {}
 	if blizzDebuffFrame then
 		for _, child in ipairs(blizzDebuffFrame:GetLayoutChildren()) do
@@ -1444,6 +1447,9 @@ end
 			newIcon.CountFrame:EnableMouseMotion (false)
 		end
 		newIcon.CountFrame.Count = newIcon.CountFrame:CreateFontString (nil, "artwork", "NumberFontNormalSmall")
+		if newIcon.CountFrame.Count.SetSmoothScaling then
+			--newIcon.CountFrame.Count:SetSmoothScaling(true)
+		end
 		newIcon.CountFrame.Count:SetJustifyH ("right")
 		newIcon.CountFrame.Count:SetPoint ("bottomright", 3, -2)
 		
@@ -1453,6 +1459,7 @@ end
 		if IS_WOW_PROJECT_MIDNIGHT then
 			newIcon.Cooldown:SetMinimumCountdownDuration(0)
 			newIcon.Cooldown.Timer = newIcon.Cooldown:GetRegions()
+			--newIcon.Cooldown.Timer:SetSmoothScaling(true)
 		else
 			newIcon.Cooldown.Timer = newIcon.Cooldown:CreateFontString (nil, "overlay", "NumberFontNormal")
 			newIcon.Cooldown.Timer:SetPoint ("center")
@@ -2252,8 +2259,8 @@ end
 		if IS_WOW_PROJECT_MIDNIGHT then
 			local durationObject = C_UnitAuras.GetAuraDuration and C_UnitAuras.GetAuraDuration(self.unitFrame.namePlateUnitToken, id)
 			duration = durationObject
-			if sourceUnit ~= nil and not issecretvalue(sourceUnit) then
-				local sourceUnitGUID = UnitGUID(sourceUnit)
+			if sourceUnit ~= nil then
+				--local sourceUnitGUID = UnitGUID(sourceUnit)
 				local _, class, _, race, _, name, realm --= GetPlayerInfoByGUID(sourceUnitGUID)
 				local name = UnitName(sourceUnit)
 				local classColor

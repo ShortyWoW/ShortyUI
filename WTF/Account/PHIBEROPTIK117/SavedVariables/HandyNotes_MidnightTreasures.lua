@@ -12,18 +12,18 @@ HandyNotes_MidnightTreasuresDB = {
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -36,31 +36,31 @@ HandyNotes_MidnightTreasuresDB = {
 [62185] = true,
 [62125] = false,
 [61507] = true,
-[61576] = true,
-[61582] = true,
+[62104] = true,
+[62202] = false,
 [62130] = true,
 [61263] = false,
 [61264] = true,
 [62288] = true,
 [62289] = true,
-[62104] = true,
+[62290] = true,
 [62291] = true,
 [61455] = false,
-[62201] = true,
 [61581] = true,
-[62202] = false,
-[62290] = true,
+[62201] = true,
+[61582] = true,
+[61576] = true,
 },
+["show_npcs"] = false,
+["show_treasure_filter"] = "notable",
 ["groupsHidden"] = {
 ["professionknowledge"] = false,
 ["glyphs"] = true,
 },
-["show_treasure_filter"] = "notable",
-["show_npcs"] = false,
 },
 ["Callmeshorty - Illidan"] = {
 },
-["Shortlite - Illidan"] = {
+["Drewis24EEA3 - Illidan"] = {
 },
 ["Shortybear - Illidan"] = {
 },
@@ -68,13 +68,13 @@ HandyNotes_MidnightTreasuresDB = {
 },
 ["Shortcannon - Illidan"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Area 52"] = {
 },
 ["Drewishlaser - Dalaran"] = {
 },
 ["Shortytest - Illidan"] = {
 },
-["Shortbowjob - Area 52"] = {
+["Shortlight - Illidan"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },
@@ -82,7 +82,7 @@ HandyNotes_MidnightTreasuresDB = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Drewis24EEA3 - Illidan"] = {
+["Shortlite - Illidan"] = {
 },
 },
 }

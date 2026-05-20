@@ -3,10 +3,10 @@ ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
 "/s why the hell was i the lk",
-"/ec",
 "/macro",
 "/leave service",
 "/simc minimap",
+"/ec",
 },
 ["ChatHistoryLog"] = {
 {

@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Brewmaster','Monk-Windwalker',}
-local provider = {region='US',realm='TheScryers',name='US',type='subscribers',zone=46,date='2026-05-16',data={Tt='Ttattoo:BAEBLgAECn8YAAMBAAYJ5QcBPwDFAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAACABUA6gwAAAUACQABAAYJ5QcBPwDFAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAABABUA6gwAAAUACQACAAEJqAImiAAZAAFsDAAAAQAGAAAA.Ttattooz:BAEALgAECgYJBgABLgAECgYJGAABAOUHAA==.',},}
+local provider = {region='US',realm='TheScryers',name='US',type='subscribers',zone=46,date='2026-05-20',data={Tt='Ttattoo:BAEBLgAECn8YAAMBAAYJ5QdKRADFAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAACABUA6gwAAAUACQABAAYJ5QdKRADFAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAABABUA6gwAAAUACQACAAEJqAKGlAAZAAFsDAAAAQAGAAAA.Ttattooz:BAEALgAECgYJBgABLgAECgYJGAABAOUHAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

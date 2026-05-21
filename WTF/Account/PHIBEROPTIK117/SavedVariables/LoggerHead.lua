@@ -14,11 +14,11 @@ LoggerHeadDB = {
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -100,12 +100,12 @@ true,
 [23] = true,
 [8] = true,
 },
-["Gate of the Setting Sun"] = {
+["Mogu'shan Palace"] = {
 [24] = false,
 },
 ["Upper Blackrock Spire"] = {
 },
-["Utgarde Pinnacle"] = {
+["Lower Blackrock Spire"] = {
 false,
 },
 ["The Blinding Vale"] = {
@@ -121,10 +121,11 @@ true,
 true,
 [23] = true,
 },
-["Voidscar Arena"] = {
+["Magisters' Terrace"] = {
 true,
 true,
 [23] = true,
+[8] = true,
 },
 ["Blackrock Caverns"] = {
 [24] = false,
@@ -132,11 +133,11 @@ true,
 ["Scholomance"] = {
 [24] = false,
 },
-["Darkflame Cleft"] = {
-true,
-},
 ["The Nexus"] = {
 false,
+},
+["Darkflame Cleft"] = {
+true,
 },
 ["Halls of Stone"] = {
 false,
@@ -144,19 +145,18 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["Magisters' Terrace"] = {
+["Voidscar Arena"] = {
 true,
 true,
 [23] = true,
-[8] = true,
 },
-["Lower Blackrock Spire"] = {
+["Utgarde Pinnacle"] = {
 false,
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Mogu'shan Palace"] = {
+["Gate of the Setting Sun"] = {
 [24] = false,
 },
 ["Murder Row"] = {
@@ -187,10 +187,10 @@ true,
 ["The Darkway"] = {
 [208] = false,
 },
-["The Gulf of Memory"] = {
+["The Shadow Enclave"] = {
 [208] = true,
 },
-["The Shadow Enclave"] = {
+["The Gulf of Memory"] = {
 [208] = true,
 },
 ["Atal'Aman"] = {

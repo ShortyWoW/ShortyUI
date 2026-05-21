@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Monk-Mistweaver',}
-local provider = {region='US',realm='SistersofElune',name='US',type='subscribers',zone=46,date='2026-05-16',data={Ka='Kardai:BAEALgAECgYJEwAAAA==.',Ri='Rin:BAEBLgAECn8jAAIBAAgJNSGtBwDIAghoDAAABgBSAGkMAAAGAFYAawwAAAYAUABqDAAABABUAGwMAAAEAFIAbQwAAAIAXgDqDAAABABgAG4MAAADAEkAAQAICTUhrQcAyAIIaAwAAAYAUgBpDAAABgBWAGsMAAAGAFAAagwAAAQAVABsDAAABABSAG0MAAACAF4A6gwAAAQAYABuDAAAAwBJAAAA.',},}
+local lookup = {'DeathKnight-Blood','Monk-Mistweaver',}
+local provider = {region='US',realm='SistersofElune',name='US',type='subscribers',zone=46,date='2026-05-20',data={Ka='Kardai:BAEBLgAECn8ZAAIBAAYJvwdyLwCoAAZoDAAABQAJAGkMAAAFABsAawwAAAUAIgBqDAAABAARAGwMAAACABIA6gwAAAQACQABAAYJvwdyLwCoAAZoDAAABQAJAGkMAAAFABsAawwAAAUAIgBqDAAABAARAGwMAAACABIA6gwAAAQACQAAAA==.',Ri='Rin:BAEBLgAECn8jAAICAAgJNSEhCQDGAghoDAAABgBSAGkMAAAGAFYAawwAAAYAUABqDAAABABUAGwMAAAEAFIAbQwAAAIAXgDqDAAABABgAG4MAAADAEkAAgAICTUhIQkAxgIIaAwAAAYAUgBpDAAABgBWAGsMAAAGAFAAagwAAAQAVABsDAAABABSAG0MAAACAF4A6gwAAAQAYABuDAAAAwBJAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

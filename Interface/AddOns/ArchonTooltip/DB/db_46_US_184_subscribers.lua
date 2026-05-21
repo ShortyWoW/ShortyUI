@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Blood','Warlock-Affliction','Priest-Shadow',}
-local provider = {region='US',realm='ScarletCrusade',name='US',type='subscribers',zone=46,date='2026-05-16',data={Ak='Akinira:BAEBLgAECn88AAIBAAkJkh7ZAwByAgloDAAACABiAGkMAAAIAF4AawwAAAcAUABqDAAACABWAGwMAAAHAFcAbQwAAAYAUQDqDAAACABTAG4MAAAGADcAbwwAAAIAKwABAAkJkh7ZAwByAgloDAAACABiAGkMAAAIAF4AawwAAAcAUABqDAAACABWAGwMAAAHAFcAbQwAAAYAUQDqDAAACABTAG4MAAAGADcAbwwAAAIAKwAAAA==.',Ma='Magdalene:BAEALgAECgUJCQABLgAFFAQJDAACAFsRAA==.',Ra='Ramhadin:BAEALgAECgMJBAABLgAECgYJHAADAHoeAA==.',},}
+local provider = {region='US',realm='ScarletCrusade',name='US',type='subscribers',zone=46,date='2026-05-20',data={Ak='Akinira:BAEBLgAECn88AAIBAAkJkh7pBQCaAgloDAAACABiAGkMAAAIAF4AawwAAAcAUABqDAAACABWAGwMAAAHAFcAbQwAAAYAUQDqDAAACABTAG4MAAAGADcAbwwAAAIAKwABAAkJkh7pBQCaAgloDAAACABiAGkMAAAIAF4AawwAAAcAUABqDAAACABWAGwMAAAHAFcAbQwAAAYAUQDqDAAACABTAG4MAAAGADcAbwwAAAIAKwAAAA==.',Ma='Magdalene:BAEALgAECgUJCQABLgAFFAQJDAACAFsRAA==.',Ra='Ramhadin:BAEALgAECgMJBAABLgAECggJHwADAJIZAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

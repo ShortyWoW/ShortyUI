@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Shaman-Elemental','Unknown-Unknown',}
-local provider = {region='US',realm='Korialstrasz',name='US',type='subscribers',zone=46,date='2026-05-16',data={Co='Cosmicjay:BAECLgAFFH8FAAIBAAMJMBMGHgDhAANoDAAAAgBEAGkMAAABAB8A6gwAAAIALwABAAMJMBMGHgDhAANoDAAAAgBEAGkMAAABAB8A6gwAAAIALwAuAAQKfxgAAgEACAmqILMKAG0CAAEACAmqILMKAG0CAAAA.Cosmicnova:BAEALgAECgYJDQABLgAFFAMJBQABADATAA==.',Ez='Eztradez:BAEALgADCgcJCwABLgAECggJDgACAAAAAA==.',Ma='Mannafest:BAEALgADCgYJBgAAAA==.',Sm='Smuurfette:BAEALgAECggJDgAAAA==.',Sp='Spriest:BAEALgAECgUJCAABLgAECggJDgACAAAAAA==.',},}
+local lookup = {'Shaman-Elemental','Warlock-Demonology',}
+local provider = {region='US',realm='Korialstrasz',name='US',type='subscribers',zone=46,date='2026-05-20',data={Co='Cosmicjay:BAECLgAFFH8FAAIBAAMJMBO6IQDfAANoDAAAAgBEAGkMAAABAB8A6gwAAAIALwABAAMJMBO6IQDfAANoDAAAAgBEAGkMAAABAB8A6gwAAAIALwAuAAQKfxgAAgEACAmqIDMNAGICAAEACAmqIDMNAGICAAAA.Cosmicnova:BAEALgAFFAEJAQABLgAFFAMJBQABADATAA==.',Ez='Eztradez:BAEALgADCgcJCwABLgAECggJFAACAPEVAA==.',Ma='Mannafest:BAEALgADCgYJBgAAAA==.',Sm='Smuurfette:BAEBLgAECn8UAAICAAgJ8RWzPgC/AQhoDAAAAwBFAGkMAAADAEoAawwAAAMAPQBqDAAAAwBSAGwMAAADAEoAbQwAAAEAEwDqDAAAAwBBAG4MAAABAB0AAgAICfEVsz4AvwEIaAwAAAMARQBpDAAAAwBKAGsMAAADAD0AagwAAAMAUgBsDAAAAwBKAG0MAAABABMA6gwAAAMAQQBuDAAAAQAdAAAA.',Sp='Spriest:BAEALgAECgUJCAABLgAECggJFAACAPEVAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

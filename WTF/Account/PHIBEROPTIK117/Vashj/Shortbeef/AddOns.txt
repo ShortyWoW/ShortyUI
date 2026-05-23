@@ -112,3 +112,4 @@ RaiderIO_DB_CN_F: disabled
 PatchWerk: disabled
 !PatchWerk: disabled
 BigWigs_MidnightWorld: enabled
+Dystinct_EarthenSkyriding: enabled

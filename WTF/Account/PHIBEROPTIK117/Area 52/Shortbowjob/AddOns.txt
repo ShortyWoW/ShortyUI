@@ -61,3 +61,4 @@ BigWigs_MarchOnQuelDanas: enabled
 ShortyFalls: enabled
 BigWigs_MidnightWorld: enabled
 LittleWigs_Dragonflight: enabled
+Dystinct_EarthenSkyriding: enabled

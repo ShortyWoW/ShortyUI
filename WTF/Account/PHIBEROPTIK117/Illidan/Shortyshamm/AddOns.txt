@@ -28,7 +28,7 @@ Details_DataStorage: enabled
 Details_Streamer: enabled
 Details_TinyThreat: enabled
 Details_Vanguard: enabled
-Dystinct_EarthenSkyriding: disabled
+Dystinct_EarthenSkyriding: enabled
 ElvUI: enabled
 ElvUI_Libraries: enabled
 ElvUI_Options: enabled

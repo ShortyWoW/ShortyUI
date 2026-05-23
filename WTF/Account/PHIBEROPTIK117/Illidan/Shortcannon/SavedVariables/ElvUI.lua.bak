@@ -6,6 +6,7 @@ ElvCharacterDB = {
 "/cw Aulhucar This is my mage",
 "/ec",
 "/details options",
+"/reload",
 },
 ["ChatHistoryLog"] = {
 {

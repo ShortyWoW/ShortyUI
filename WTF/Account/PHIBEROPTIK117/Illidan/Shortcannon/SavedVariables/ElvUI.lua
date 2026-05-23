@@ -2,10 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/who Solid Gone",
-"/cw Aulhucar This is my mage",
-"/ec",
 "/details options",
+"/reload",
+"/dyses",
+"/leave service",
+"/leave services",
 },
 ["ChatHistoryLog"] = {
 {

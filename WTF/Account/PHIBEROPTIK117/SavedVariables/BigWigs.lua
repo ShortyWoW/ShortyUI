@@ -66,21 +66,21 @@ BigWigs3DB = {
 ["tableNeedsCopied"] = false,
 ["watchedMovies"] = {
 [73] = true,
-[1034] = true,
+[75] = true,
 [74] = true,
 [-437] = true,
 [76] = true,
 [682] = true,
-[1049] = true,
+[-593] = {
+true,
+},
 [-2529] = true,
 [-367] = true,
 [-323] = true,
 [1050] = true,
 [-2516] = true,
-[-593] = {
-true,
-},
-[75] = true,
+[1049] = true,
+[1034] = true,
 },
 },
 },
@@ -344,6 +344,14 @@ nil,
 ["keyLevel"] = 12,
 ["realm"] = "Illidan",
 },
+["Player-57-0E2766ED"] = {
+["playerRating"] = 0,
+["specId"] = 0,
+["keyMap"] = 0,
+["name"] = "Shortcannon",
+["keyLevel"] = 0,
+["realm"] = "Illidan",
+},
 ["Player-57-0E213F9D"] = {
 ["playerRating"] = 2377,
 ["specId"] = 581,
@@ -397,12 +405,12 @@ BigWigsStatsDB = {
 ["fkDate"] = "2026/03/30",
 },
 ["heroic"] = {
-["kills"] = 8,
+["kills"] = 9,
 ["fkDuration"] = 593.7930000000051,
 ["wipes"] = 11,
 ["fkWipes"] = 9,
-["best"] = 313.8380000000179,
-["bestDate"] = "2026/05/15",
+["best"] = 270.5659999999916,
+["bestDate"] = "2026/05/22",
 ["fkDate"] = "2026/03/29",
 },
 ["LFR"] = {
@@ -417,7 +425,7 @@ BigWigsStatsDB = {
 [2912] = {
 [2735] = {
 ["heroic"] = {
-["kills"] = 5,
+["kills"] = 6,
 ["fkDate"] = "2026/04/03",
 ["bestDate"] = "2026/04/24",
 ["fkWipes"] = 28,
@@ -451,12 +459,12 @@ BigWigsStatsDB = {
 ["fkDuration"] = 346.747000000003,
 },
 ["heroic"] = {
-["kills"] = 7,
+["kills"] = 8,
 ["fkDuration"] = 494.9120000000112,
 ["wipes"] = 7,
 ["fkWipes"] = 5,
-["best"] = 281.00900000002,
-["bestDate"] = "2026/04/17",
+["best"] = 238.6009999999951,
+["bestDate"] = "2026/05/22",
 ["fkDate"] = "2026/03/27",
 },
 ["LFR"] = {
@@ -469,11 +477,11 @@ BigWigsStatsDB = {
 },
 [2737] = {
 ["heroic"] = {
-["kills"] = 7,
+["kills"] = 8,
 ["fkDate"] = "2026/04/05",
-["bestDate"] = "2026/04/24",
+["bestDate"] = "2026/05/22",
 ["fkWipes"] = 9,
-["best"] = 257.7569999999832,
+["best"] = 242.3369999999995,
 ["wipes"] = 16,
 ["fkDuration"] = 304.8160000000498,
 },
@@ -496,12 +504,12 @@ BigWigsStatsDB = {
 },
 [2738] = {
 ["heroic"] = {
-["kills"] = 3,
+["kills"] = 4,
 ["fkDate"] = "2026/04/19",
 ["bestDate"] = "2026/05/01",
 ["fkWipes"] = 64,
 ["best"] = 450.5759999999937,
-["wipes"] = 81,
+["wipes"] = 84,
 ["fkDuration"] = 527.3260000000009,
 },
 ["normal"] = {
@@ -534,12 +542,12 @@ BigWigsStatsDB = {
 ["fkDuration"] = 246.8810000000012,
 },
 ["heroic"] = {
-["kills"] = 9,
+["kills"] = 10,
 ["fkDuration"] = 330.8389999999927,
 ["wipes"] = 24,
 ["fkWipes"] = 23,
-["best"] = 190.573000000004,
-["bestDate"] = "2026/04/24",
+["best"] = 157.7429999999877,
+["bestDate"] = "2026/05/22",
 ["fkDate"] = "2026/03/22",
 },
 ["LFR"] = {
@@ -561,12 +569,12 @@ BigWigsStatsDB = {
 ["fkDuration"] = 356.6020000000062,
 },
 ["heroic"] = {
-["kills"] = 9,
+["kills"] = 10,
 ["fkDuration"] = 369.5999999999913,
 ["wipes"] = 11,
 ["fkWipes"] = 7,
-["best"] = 245.6590000000142,
-["bestDate"] = "2026/04/24",
+["best"] = 208.4290000000037,
+["bestDate"] = "2026/05/22",
 ["fkDate"] = "2026/03/22",
 },
 ["LFR"] = {
@@ -678,20 +686,22 @@ BigWigsStatsDB = {
 ["fkDate"] = "2026/02/08",
 },
 },
-[2684] = {
+[2747] = {
 ["mythic"] = {
 ["kills"] = 1,
 ["fkDate"] = "2026/02/06",
 ["bestDate"] = "2026/02/06",
-["best"] = 126.445000000007,
-["fkDuration"] = 126.445000000007,
+["fkWipes"] = 2,
+["best"] = 112.8099999999977,
+["wipes"] = 2,
+["fkDuration"] = 112.8099999999977,
 },
 ["heroic"] = {
-["kills"] = 1,
-["fkDate"] = "2026/02/14",
-["bestDate"] = "2026/02/14",
-["best"] = 113.6000000000349,
-["fkDuration"] = 113.6000000000349,
+["kills"] = 2,
+["fkDuration"] = 137.0470000000205,
+["best"] = 117.1130000000121,
+["bestDate"] = "2026/02/15",
+["fkDate"] = "2026/02/08",
 },
 },
 [2690] = {
@@ -712,17 +722,20 @@ BigWigsStatsDB = {
 ["fkDuration"] = 206.4530000000086,
 },
 },
-[2691] = {
-["heroic"] = {
-["kills"] = 2,
+[2684] = {
+["mythic"] = {
+["kills"] = 1,
 ["fkDate"] = "2026/02/06",
 ["bestDate"] = "2026/02/06",
-["best"] = 213.7770000000019,
-["wipes"] = 1,
-["fkDuration"] = 213.7770000000019,
+["best"] = 126.445000000007,
+["fkDuration"] = 126.445000000007,
 },
-["mythic"] = {
-["wipes"] = 33,
+["heroic"] = {
+["kills"] = 1,
+["fkDate"] = "2026/02/14",
+["bestDate"] = "2026/02/14",
+["best"] = 113.6000000000349,
+["fkDuration"] = 113.6000000000349,
 },
 },
 [2685] = {
@@ -741,22 +754,17 @@ BigWigsStatsDB = {
 ["fkDuration"] = 106.2420000000275,
 },
 },
-[2747] = {
-["mythic"] = {
-["kills"] = 1,
-["fkDate"] = "2026/02/06",
-["bestDate"] = "2026/02/06",
-["fkWipes"] = 2,
-["best"] = 112.8099999999977,
-["wipes"] = 2,
-["fkDuration"] = 112.8099999999977,
-},
+[2691] = {
 ["heroic"] = {
 ["kills"] = 2,
-["fkDuration"] = 137.0470000000205,
-["best"] = 117.1130000000121,
-["bestDate"] = "2026/02/15",
-["fkDate"] = "2026/02/08",
+["fkDate"] = "2026/02/06",
+["bestDate"] = "2026/02/06",
+["best"] = 213.7770000000019,
+["wipes"] = 1,
+["fkDuration"] = 213.7770000000019,
+},
+["mythic"] = {
+["wipes"] = 33,
 },
 },
 },

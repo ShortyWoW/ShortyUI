@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Monk-Brewmaster','Unknown-Unknown',}
-local provider = {region='US',realm='Aggramar',name='US',type='subscribers',zone=46,date='2026-05-20',data={Ab='Abbotsmurfh:BAEBLgAECn8qAAIBAAgJuxAWIACAAQhoDAAACABMAGkMAAAGACQAawwAAAcAMABqDAAABgA1AGwMAAAGACkAbQwAAAMAMwDqDAAABAAbAG4MAAACABEAAQAICbsQFiAAgAEIaAwAAAgATABpDAAABgAkAGsMAAAHADAAagwAAAYANQBsDAAABgApAG0MAAADADMA6gwAAAQAGwBuDAAAAgARAAAA.',De='Demonoot:BAEALgAECgUJDAABLgAECgYJBgACAAAAAA==.',Do='Dotfeardot:BAEALgAECggJEAAAAA==.',Dr='Drfishy:BAEALgADCgYJBgABLgADCgEJAQACAAAAAA==.',Fi='Fishymd:BAEALgADCgYJBwABLgADCgEJAQACAAAAAA==.',Hu='Hungweìlo:BAEALgADCgYJBgAAAA==.',Pa='Palnoot:BAEALgAECgYJBgAAAA==.',Pr='Priorsmurfh:BAEALgAECgYJCQABLgAECggJKgABALsQAA==.',},}
+local lookup = {'Monk-Brewmaster','Unknown-Unknown','Evoker-Augmentation','Evoker-Preservation',}
+local provider = {region='US',realm='Aggramar',name='US',type='subscribers',zone=46,date='2026-05-22',data={Ab='Abbotsmurfh:BAEBLgAECn8qAAIBAAgJvBB8IQB7AQhoDAAACABMAGkMAAAGACQAawwAAAcAMABqDAAABgA1AGwMAAAGACkAbQwAAAMAMwDqDAAABAAbAG4MAAACABEAAQAICbwQfCEAewEIaAwAAAgATABpDAAABgAkAGsMAAAHADAAagwAAAYANQBsDAAABgApAG0MAAADADMA6gwAAAQAGwBuDAAAAgARAAAA.',De='Demonoot:BAEALgAECgUJDAABLgAECgYJBgACAAAAAA==.',Do='Dotfeardot:BAEALgAECggJEAAAAA==.',Dr='Drfishy:BAEALgADCgYJBgABLgADCgEJAQACAAAAAA==.',Fi='Fishymd:BAEALgAECgEJAQABLgADCgEJAQACAAAAAA==.',Ha='Hanzdormu:BAECLgAFFH8VAAIDAAUJzx+jEgB3AQVoDAAABQBLAGkMAAAFAFwAawwAAAQAXABqDAAAAgApAOoMAAAFAEEAAwAFCc8foxIAdwEFaAwAAAUASwBpDAAABQBcAGsMAAAEAFwAagwAAAIAKQDqDAAABQBBAC4ABAp/IQADAwAJCVMhSQ8AggIAAwAJCVMhSQ8AggIABAAECSwaeRcAMQEAAAA=.Hanzumbra:BAEALgADCgYJDwABLgAFFAUJFQADAM8fAA==.',Hu='Hungweìlo:BAEALgADCgYJBgAAAA==.',Pa='Palnoot:BAEALgAECgYJBgAAAA==.',Pr='Priorsmurfh:BAEALgAECgYJDAABLgAECggJKgABALwQAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

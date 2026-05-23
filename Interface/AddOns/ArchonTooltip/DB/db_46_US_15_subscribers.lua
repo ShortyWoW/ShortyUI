@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warlock-Destruction','Druid-Feral',}
-local provider = {region='US',realm='Anvilmar',name='US',type='subscribers',zone=46,date='2026-05-20',data={Do='Donzilch:BAEALgAECgQJBAAAAA==.',Il='Illyríá:BAEALgAFFAMJBAABLgAECggJJgABAMEbAA==.',My='Mystí:BAEALgAECgkJBgABLgAECggJJgABAMEbAA==.',Wa='Waghoba:BAECLgAFFH8fAAICAAYJPBrUAADDAQZoDAAACQBSAGkMAAAIAE8AawwAAAUAOQBqDAAABABAAGwMAAABADEA6gwAAAQAQgACAAYJPBrUAADDAQZoDAAACQBSAGkMAAAIAE8AawwAAAUAOQBqDAAABABAAGwMAAABADEA6gwAAAQAQgAuAAQKfyIAAgIACQnMIScGAJwCAAIACQnMIScGAJwCAAAA.',},}
+local lookup = {'Warlock-Demonology','Warlock-Destruction','Druid-Feral',}
+local provider = {region='US',realm='Anvilmar',name='US',type='subscribers',zone=46,date='2026-05-22',data={Do='Donzilch:BAEALgAECgQJBAAAAA==.',Il='Illyríá:BAEBLgAFFH8GAAIBAAMJXw5qXgDXAANoDAAAAgAtAGkMAAACADIA6gwAAAIADgABAAMJXw5qXgDXAANoDAAAAgAtAGkMAAACADIA6gwAAAIADgABLgAECggJJgACAMEbAA==.',My='Mystí:BAEALgAECgkJBgABLgAECggJJgACAMEbAA==.',Wa='Waghoba:BAECLgAFFH8gAAIDAAYJfRr+AADBAQZoDAAACQBSAGkMAAAIAE8AawwAAAUAOQBqDAAABABAAGwMAAACADQA6gwAAAQAQgADAAYJfRr+AADBAQZoDAAACQBSAGkMAAAIAE8AawwAAAUAOQBqDAAABABAAGwMAAACADQA6gwAAAQAQgAuAAQKfyIAAgMACQnMIScGAJwCAAMACQnMIScGAJwCAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

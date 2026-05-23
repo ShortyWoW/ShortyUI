@@ -4,12 +4,12 @@ Co_Tank_Frame_Settings = {
 ["layouts"] = {
 ["ShortyUI"] = {
 ["relativeFrame"] = "UIParent",
-["height"] = 55.00001907348633,
+["scale"] = 1,
 ["point"] = "CENTER",
 ["relativePoint"] = "CENTER",
-["yOfs"] = -40.99980926513672,
+["height"] = 55.00001907348633,
 ["xOfs"] = -344.004638671875,
-["scale"] = 1,
+["yOfs"] = -40.99980926513672,
 ["width"] = 200,
 },
 },

@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Shaman-Elemental','Unknown-Unknown','Priest-Shadow','Mage-Frost',}
-local provider = {region='US',realm='Ravencrest',name='US',type='subscribers',zone=46,date='2026-05-20',data={De='Demoryx:BAEALgAECgQJBAABLgAECggJIgABAF0dAA==.',Ho='Honêy:BAEALgAECgEJAQABLgAECggJIgABAF0dAA==.',Pa='Pampoovy:BAEALgADCgMJAwABLgAECgUJCQACAAAAAA==.',Ra='Ravenrest:BAEBLgAECn8vAAIDAAgJqx5TDQBNAghoDAAACABcAGkMAAAIAEcAawwAAAcAVABqDAAABgA+AGwMAAAGAEoAbQwAAAMAQwDqDAAABwBDAG4MAAACAFoAAwAICaseUw0ATQIIaAwAAAgAXABpDAAACABHAGsMAAAHAFQAagwAAAYAPgBsDAAABgBKAG0MAAADAEMA6gwAAAcAQwBuDAAAAgBaAAAA.',['Æl']='Ælxx:BAEALgAECgYJBwABLgAFFAUJEwAEAHkQAA==.',},}
+local lookup = {'Shaman-Elemental','Unknown-Unknown','Priest-Shadow','Shaman-Enhancement','Mage-Frost',}
+local provider = {region='US',realm='Ravencrest',name='US',type='subscribers',zone=46,date='2026-05-22',data={De='Demoryx:BAEALgAECgQJBAABLgAECggJIgABAF4dAA==.',Ho='Honêy:BAEALgAECgEJAQABLgAECggJIgABAF4dAA==.',Pa='Pampoovy:BAEALgADCgMJAwABLgAECgUJCQACAAAAAA==.',Ra='Ravenrest:BAEBLgAECn8vAAIDAAgJqx5xDgBJAghoDAAACABcAGkMAAAIAEcAawwAAAcAVABqDAAABgA+AGwMAAAGAEoAbQwAAAMAQwDqDAAABwBDAG4MAAACAFoAAwAICasecQ4ASQIIaAwAAAgAXABpDAAACABHAGsMAAAHAFQAagwAAAYAPgBsDAAABgBKAG0MAAADAEMA6gwAAAcAQwBuDAAAAgBaAAAA.',Sh='Shazi:BAEBLgAECn8iAAMBAAgJXh1tFAAWAghoDAAABQBMAGkMAAAFAFoAawwAAAQAQABqDAAABAA0AGwMAAAFAE4AbQwAAAEANQDqDAAABwBgAG4MAAADAEIAAQAICV4dbRQAFgIIaAwAAAUATABpDAAABQBaAGsMAAAEAEAAagwAAAQANABsDAAABQBOAG0MAAABADUA6gwAAAYAYABuDAAAAwBCAAQAAQnwCjUsADUAAeoMAAABABwAAS4ABAoICSIAAQBeHQA=.',['Æl']='Ælxx:BAEALgAECgYJBwABLgAFFAYJFAAFACIPAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

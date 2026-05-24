@@ -54,6 +54,26 @@ WarpDepleteDB = {
 ["currentDiff"] = {
 },
 },
+[10] = {
+["current"] = {
+257,
+467,
+612,
+1026,
+["forces"] = 893,
+["challenge"] = 1026717,
+},
+["best"] = {
+257,
+467,
+612,
+1026,
+["forces"] = 893,
+["challenge"] = 1026717,
+},
+["currentDiff"] = {
+},
+},
 [12] = {
 },
 [11] = {
@@ -364,6 +384,26 @@ nil,
 ["currentDiff"] = {
 },
 },
+[12] = {
+["current"] = {
+296,
+879,
+1538,
+1723,
+["forces"] = 1209,
+["challenge"] = 1722775,
+},
+["best"] = {
+296,
+879,
+1538,
+1723,
+["forces"] = 1209,
+["challenge"] = 1722775,
+},
+["currentDiff"] = {
+},
+},
 },
 [402] = {
 [12] = {
@@ -544,21 +584,44 @@ nil,
 },
 },
 },
-[392] = {
-[14] = {
+[542] = {
+[12] = {
 ["current"] = {
-701,
-1106,
-1621,
-["forces"] = 1274,
-["challenge"] = 1621414,
+333,
+1058,
+1599,
+["forces"] = 1627,
+["challenge"] = 1627100,
 },
 ["best"] = {
-701,
-1106,
-1621,
-["forces"] = 1274,
-["challenge"] = 1621414,
+273,
+958,
+1484,
+["forces"] = 1542,
+["challenge"] = 1542853,
+},
+["currentDiff"] = {
+60,
+100,
+115,
+["forces"] = 85,
+["challenge"] = 84247,
+},
+},
+[14] = {
+["current"] = {
+296,
+809,
+1486,
+["forces"] = 1259,
+["challenge"] = 1485798,
+},
+["best"] = {
+296,
+809,
+1486,
+["forces"] = 1259,
+["challenge"] = 1485798,
 },
 ["currentDiff"] = {
 },
@@ -606,44 +669,21 @@ nil,
 },
 },
 },
-[542] = {
-[12] = {
-["current"] = {
-333,
-1058,
-1599,
-["forces"] = 1627,
-["challenge"] = 1627100,
-},
-["best"] = {
-273,
-958,
-1484,
-["forces"] = 1542,
-["challenge"] = 1542853,
-},
-["currentDiff"] = {
-60,
-100,
-115,
-["forces"] = 85,
-["challenge"] = 84247,
-},
-},
+[392] = {
 [14] = {
 ["current"] = {
-296,
-809,
-1486,
-["forces"] = 1259,
-["challenge"] = 1485798,
+701,
+1106,
+1621,
+["forces"] = 1274,
+["challenge"] = 1621414,
 },
 ["best"] = {
-296,
-809,
-1486,
-["forces"] = 1259,
-["challenge"] = 1485798,
+701,
+1106,
+1621,
+["forces"] = 1274,
+["challenge"] = 1621414,
 },
 ["currentDiff"] = {
 },
@@ -755,10 +795,10 @@ nil,
 ["barPadding"] = 4,
 ["frameX"] = 19,
 ["keyDetailsFontSize"] = 12,
-["bar3FontSize"] = 12,
 ["bar1Texture"] = "Minimalist",
 ["bar2Texture"] = "Minimalist",
 ["frameAnchor"] = "TOPRIGHT",
+["bar3FontSize"] = 12,
 ["frameY"] = -211,
 ["showDeathsTooltip"] = false,
 ["forcesOverlayTexture"] = "Minimalist",

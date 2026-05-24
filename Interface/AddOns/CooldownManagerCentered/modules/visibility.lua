@@ -23,8 +23,6 @@ local viewers = {
 local RULE_CONDITIONALS = {
     SHOW_IN_COMBAT         = "[combat] show",
     HIDE_IN_VEHICLES       = "[unithasvehicleui] hide;[overridebar] hide;[possessbar] hide",
-    SHOW_WITH_ENEMY_TARGET = "[harm] show",
-    SHOW_WITH_TARGET       = "[exists] show",
     HIDE_WHEN_FLYING       = "[flying] hide",
     HIDE_WHEN_MOUNTED      = "[mounted] hide",
     HIDE_WHEN_RESTING      = "[resting] hide",
@@ -35,8 +33,6 @@ local RULE_CONDITIONALS = {
 local RULE_ORDER = {
     "SHOW_IN_COMBAT",
     "HIDE_IN_VEHICLES",
-    "SHOW_WITH_ENEMY_TARGET",
-    "SHOW_WITH_TARGET",
     "HIDE_WHEN_FLYING",
     "HIDE_WHEN_MOUNTED",
     "HIDE_WHEN_RESTING",
@@ -97,6 +93,16 @@ local function ApplyViewerAlpha(viewerData)
     end
     if rules.HIDE_IN_VEHICLES and miniGameSceneActive then
         viewer:SetAlpha(0)
+        return
+    end
+    local hasTarget = UnitExists("target")
+    local targetIsEnemy = UnitCanAttack("player", "target")
+    if rules.SHOW_WITH_TARGET and hasTarget then
+        viewer:SetAlpha(alpha)
+        return
+    end
+    if rules.SHOW_WITH_ENEMY_TARGET and hasTarget and targetIsEnemy then
+        viewer:SetAlpha(alpha)
         return
     end
 
@@ -202,14 +208,12 @@ function CMCVisibility:Initialize()
     -- Also register PLAYER_ENTERING_WORLD when at least one viewer uses SHOW_IN_INSTANCE.
     EventFrame:UnregisterAllEvents()
     EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-    for _, viewerData in ipairs(viewers) do
-        local rules = GetViewerRules(viewerData.viewerName)
-        if rules.SHOW_IN_INSTANCE then
-            inInstance = IsInInstance()
-            EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-            break
-        end
-    end
+
+    inInstance = IsInInstance()
+    EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+    EventFrame:RegisterEvent("CLIENT_SCENE_OPENED")
+    EventFrame:RegisterEvent("CLIENT_SCENE_CLOSED")
+    EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 end
 
 function CMCVisibility:DeInitialize()

@@ -837,7 +837,11 @@ local function AddonSettings_BuildCooldown(category, layout)
             return ns.db.profile.cooldownManager_cooldownFontFlags or {}
         end,
         setSelection = function(value)
-            ns.db.profile.cooldownManager_cooldownFontFlags = value
+            if value["OUTLINE"] or value["THICKOUTLINE"] or value["MONOCHROME"] then
+                ns.db.profile.cooldownManager_cooldownFontFlags = value
+            else
+                ns.db.profile.cooldownManager_cooldownFontFlags = {OUTLINE = false}
+            end
             ns.CooldownFont:RefreshAll()
             if ns.TrackerItemViewer then
                 ns.TrackerItemViewer:RefreshStyling()
@@ -1401,8 +1405,17 @@ local function AddonSettings_BuildCooldown(category, layout)
             return ns.db.profile.cooldownManager_stackFontFlags or {}
         end,
         setSelection = function(value)
-            ns.db.profile.cooldownManager_stackFontFlags = value
+            
+            if value["OUTLINE"] or value["THICKOUTLINE"] or value["MONOCHROME"] then
+                ns.db.profile.cooldownManager_stackFontFlags = value
+            else
+                ns.db.profile.cooldownManager_stackFontFlags = {OUTLINE = false}
+            end
+            
             ns.Stacks:OnSettingChanged()
+            if ns.TrackerItemViewer then
+                ns.TrackerItemViewer:RefreshStyling()
+            end
         end,
         desc = "Select font flags for ability stack numbers.",
     })
@@ -1977,8 +1990,15 @@ local function AddonSettings_BuildCooldown(category, layout)
             return ns.db.profile.cooldownManager_keybindFontFlags or {}
         end,
         setSelection = function(value)
-            ns.db.profile.cooldownManager_keybindFontFlags = value
+            if value["OUTLINE"] or value["THICKOUTLINE"] or value["MONOCHROME"] then
+                ns.db.profile.cooldownManager_keybindFontFlags = value
+            else
+                ns.db.profile.cooldownManager_keybindFontFlags = {OUTLINE = false}
+            end
             ns.Keybinds:OnSettingChanged()
+            if ns.TrackerItemViewer then
+                ns.TrackerItemViewer:RefreshStyling()
+            end
         end,
         desc = "Select font flags for ability keybind text.",
     })

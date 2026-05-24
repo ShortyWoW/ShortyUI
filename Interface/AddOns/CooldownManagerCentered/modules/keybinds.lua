@@ -376,13 +376,13 @@ local function ApplyKeybindTextSettings(icon, viewerSettingName)
     local fontName = GetKeybindFontName()
     local fontPath = GetFontPath(fontName)
     local fontFlags = ns.db.profile.cooldownManager_keybindFontFlags or {}
-    local fontFlag = ""
+    local fontFlag = {}
     for n, v in pairs(fontFlags) do
         if v == true then
-            fontFlag = fontFlag .. n .. ","
+            table.insert(fontFlag, n)
         end
     end
-    keybindText:SetFont(fontPath, settings.fontSize, fontFlag or "")
+    keybindText:SetFont(fontPath, settings.fontSize, table.concat(fontFlag, ","))
 end
 
 local function ExtractSpellIDFromChild(child)

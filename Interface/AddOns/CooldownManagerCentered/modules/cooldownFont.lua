@@ -58,30 +58,37 @@ end
 local function SetIconCooldownFont(icon, viewerName)
     if icon.Cooldown.GetCountdownFontString then
         local fontString = icon.Cooldown:GetCountdownFontString()
+        if not fontString then
+            return
+        end
         local size, enabled, _size = GetViewerCooldownSettings(viewerName)
         if not enabled then
             return
         end
-        if not size or size == 0 then
-            fontString:SetFontHeight(0)
-            return
-        end
-        fontString:SetTextColor(1, 1, 1, 1)
-
         if size == "NIL" then
             size = _size
         end
+        if size == 0 then
+            fontString:SetFontHeight(0)
+            return
+        end
+        if not size then
+            size = select(2, fontString:GetFont()) or 16
+        end
 
+        fontString:SetTextColor(1, 1, 1, 1)
+
+        
         local fontName = ns.db.profile.cooldownManager_cooldownFontName or "Friz Quadrata TT"
         local fontPath = GetFontPath(fontName)
         local fontFlags = ns.db.profile.cooldownManager_cooldownFontFlags or {}
-        local fontFlag = ""
+        local fontFlag = {}
         for n, v in pairs(fontFlags) do
             if v == true then
-                fontFlag = fontFlag .. n .. ","
+                table.insert(fontFlag, n)
             end
         end
-        fontString:SetFont(fontPath, size, fontFlag or "")
+        fontString:SetFont(fontPath, size, table.concat(fontFlag, ","))
     end
 end
 
@@ -146,16 +153,26 @@ local function GetViewerStackSettings(viewerName)
 end
 
 local function ApplyStackFont(fontString, size)
+    if not fontString then
+        return
+    end
     local fontName = (ns.db and ns.db.profile and ns.db.profile.cooldownManager_stackFontName) or "Friz Quadrata TT"
     local fontPath = GetFontPath(fontName)
     local fontFlags = ns.db.profile.cooldownManager_stackFontFlags or {}
-    local fontFlag = ""
+    local fontFlag = {}
     for n, v in pairs(fontFlags) do
         if v == true then
-            fontFlag = fontFlag .. n .. ","
+            table.insert(fontFlag, n)
         end
     end
-    fontString:SetFont(fontPath, size, fontFlag or "")
+    if size == 0 then
+        fontString:SetFontHeight(0)
+        return
+    end
+    if not size or size == "NIL" then
+        size = select(2, fontString:GetFont()) or 16
+    end
+    fontString:SetFont(fontPath, size, table.concat(fontFlag, ","))
 end
 
 function Stacks:ApplyStackFonts(viewerName)

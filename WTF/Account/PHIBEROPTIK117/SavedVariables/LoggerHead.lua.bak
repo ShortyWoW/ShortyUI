@@ -227,6 +227,8 @@ true,
 [15] = true,
 [17] = true,
 },
+["Onyxia's Lair"] = {
+},
 ["The Dreamrift"] = {
 [14] = true,
 [16] = true,

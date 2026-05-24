@@ -78,6 +78,36 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
+[76] = {
+["76:237600000:770000000:The Ancient Grove"] = {
+76,
+0.2376,
+0.77,
+["arrivaldistance"] = 15,
+["crazy"] = true,
+["persistent"] = true,
+["minimap"] = true,
+["cleardistance"] = 0,
+["title"] = "The Ancient Grove",
+["from"] = "Dystinct Earthen Skyriding",
+["callbacks"] = {
+["distance"] = {
+[15] = nil --[[ skipped inline function ]],
+},
+["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+},
+["world"] = true,
+},
+},
 },
 ["Callmeshorty - Area 52"] = {
 },

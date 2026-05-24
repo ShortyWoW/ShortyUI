@@ -91,8 +91,7 @@ local function ApplyCooldownFontToFrame(frame)
             table.insert(fontFlagParts, n)
         end
     end
-    local fontFlags = table.concat(fontFlagParts, ",")
-    fontString:SetFont(fontPath, numericSize, fontFlags or "")
+    fontString:SetFont(fontPath, numericSize, table.concat(fontFlagParts, ","))
 end
 
 local function ApplySquareStyle(frame)

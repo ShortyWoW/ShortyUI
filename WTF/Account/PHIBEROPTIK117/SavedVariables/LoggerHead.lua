@@ -31,8 +31,9 @@ false,
 false,
 },
 ["Skyreach"] = {
-[23] = true,
 [8] = true,
+[2] = false,
+[23] = true,
 },
 ["The Stonecore"] = {
 [24] = false,
@@ -226,17 +227,22 @@ true,
 [15] = true,
 [17] = true,
 },
+["Onyxia's Lair"] = {
+},
 ["The Dreamrift"] = {
 [14] = true,
 [16] = true,
 [15] = true,
 [17] = false,
 },
+["Firelands"] = {
+[24] = true,
+},
 ["Molten Core"] = {
 [9] = false,
 },
-["Firelands"] = {
-[24] = true,
+["Tempest Keep"] = {
+[4] = false,
 },
 },
 },

@@ -51,7 +51,7 @@ PremadeGroupsFilterState = {
 ["enabled"] = true,
 ["raid"] = {
 ["difficulty"] = {
-["act"] = false,
+["act"] = true,
 ["val"] = 1,
 },
 ["heals"] = {
@@ -62,7 +62,7 @@ PremadeGroupsFilterState = {
 ["tanks"] = {
 ["max"] = "1",
 ["min"] = "0",
-["act"] = true,
+["act"] = false,
 },
 ["members"] = {
 ["max"] = "",
@@ -79,7 +79,7 @@ PremadeGroupsFilterState = {
 ["min"] = "",
 ["act"] = false,
 },
-["expression"] = "members>1",
+["expression"] = "partyfit",
 },
 },
 ["c114f6"] = {

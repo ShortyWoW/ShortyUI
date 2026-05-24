@@ -10,7 +10,7 @@ local LEM = LibStub("LibEQOLEditMode-1.0")
 local ItemViewer = ns.TrackerItemViewer or {}
 ns.TrackerItemViewer = ItemViewer
 
-local UPDATE_THROTTLE_DELAY = 0.25
+local UPDATE_THROTTLE_DELAY = 0.02
 local DEFAULT_ICON_SIZE = 50
 local DEFAULT_ICON_PADDING = 2
 local BASE_SQUARE_MASK = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\Square"
@@ -38,16 +38,12 @@ local CONFIG_KEY_TO_NAME = {
     ["tracker2"] = "|cff008945Cool|r|cff1e9a4e|r|cff3faa4fdown Ma|r|cff5fb64anag|r|cff7ac243er Ce|r|cff8ccd00ntered|r 2",
 }
 
-local function IsSquareIconsEnabled()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_squareIcons) or false
-end
-
-local function GetBorderThickness()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_borderThickness) or 1
-end
-
-local function GetIconZoom()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_iconZoom) or 0.3
+local function GetIconHeight(iconSize)
+    if (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_rectangularIcons) then
+        local percent = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_rectangularIcons_percent) or 0.8
+        return math.floor(iconSize * percent)
+    end
+    return iconSize
 end
 
 local function GetFontPath(fontName)
@@ -61,64 +57,6 @@ local function GetFontPath(fontName)
         end
     end
     return DEFAULT_FONT_PATH
-end
-
-local function GetStackFontName()
-    if ns.db and ns.db.profile and ns.db.profile.cooldownManager_stackFontName then
-        return ns.db.profile.cooldownManager_stackFontName
-    end
-    return "Friz Quadrata TT"
-end
-
-local function GetStackFontFlags()
-    local fontFlags = ns.db.profile.cooldownManager_stackFontFlags or {}
-    local fontFlag = ""
-    for n, v in pairs(fontFlags) do
-        if v == true then
-            fontFlag = fontFlag .. n .. ","
-        end
-    end
-    return fontFlag
-end
-
-local function GetStackAnchor()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackAnchor) or "BOTTOMRIGHT"
-end
-
-local function GetStackFontSize()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackFontSize) or 14
-end
-
-local function GetStackOffsetX()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackOffsetX) or -1
-end
-
-local function GetStackOffsetY()
-    return (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackOffsetY) or 1
-end
-
-local function GetCooldownSwipeColor()
-    return {
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_r)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[1],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_g)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[2],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_b)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[3],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_a)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[4],
-    }
-end
-
-local function GetCooldownFontFlags()
-    local fontFlags = ns.db.profile.cooldownManager_cooldownFontFlags or {}
-    local fontFlag = {}
-    for n, v in pairs(fontFlags) do
-        if v == true then
-            table.insert(fontFlag, n)
-        end
-    end
-    return table.concat(fontFlag, ",")
 end
 
 local function ApplyCooldownFontToFrame(frame)
@@ -146,17 +84,41 @@ local function ApplyCooldownFontToFrame(frame)
 
     local fontName = ns.db.profile.cooldownManager_cooldownFontName or "Friz Quadrata TT"
     local fontPath = GetFontPath(fontName)
-    local fontFlags = GetCooldownFontFlags()
+    local fontFlagTable = ns.db.profile.cooldownManager_cooldownFontFlags or {}
+    local fontFlagParts = {}
+    for n, v in pairs(fontFlagTable) do
+        if v == true then
+            table.insert(fontFlagParts, n)
+        end
+    end
+    local fontFlags = table.concat(fontFlagParts, ",")
     fontString:SetFont(fontPath, numericSize, fontFlags or "")
 end
 
 local function ApplySquareStyle(frame)
-    local borderThickness = GetBorderThickness()
-    local zoom = GetIconZoom()
+    local borderThickness = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_borderThickness) or 1
+    local zoom = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_iconZoom) or 0.3
     local crop = zoom * 0.5
 
     if frame.Icon and frame.Icon.SetTexCoord then
-        frame.Icon:SetTexCoord(crop, 1 - crop, crop, 1 - crop)
+        local width, height = frame:GetSize()
+        if width > 0 and height > 0 and width > height + 0.5 then
+            -- Wider than tall: crop top/bottom proportionally to maintain zoom feel
+            local horizontalSpan = 1 - (2 * crop)
+            local verticalSpan = horizontalSpan * (height / width)
+            local clampedSpan = math.max(0, math.min(1, verticalSpan))
+            local verticalCrop = (1 - clampedSpan) * 0.5
+            frame.Icon:SetTexCoord(crop, 1 - crop, verticalCrop, 1 - verticalCrop)
+        elseif width > 0 and height > 0 and height > width + 0.5 then
+            -- Taller than wide: crop left/right proportionally
+            local verticalSpan = 1 - (2 * crop)
+            local horizontalSpan = verticalSpan * (width / height)
+            local clampedSpan = math.max(0, math.min(1, horizontalSpan))
+            local horizontalCrop = (1 - clampedSpan) * 0.5
+            frame.Icon:SetTexCoord(horizontalCrop, 1 - horizontalCrop, crop, 1 - crop)
+        else
+            frame.Icon:SetTexCoord(crop, 1 - crop, crop, 1 - crop)
+        end
     end
 
     if frame.Cooldown then
@@ -218,7 +180,7 @@ local function RestoreDefaultStyle(frame)
 end
 
 local function ApplyStyleToFrame(frame)
-    local isSquare = IsSquareIconsEnabled()
+    local isSquare = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_squareIcons) or false
 
     if isSquare then
         ApplySquareStyle(frame)
@@ -236,16 +198,22 @@ local function ApplyStyleToFrame(frame)
 end
 
 local function ApplyStackFontToFrame(frame)
-    local fontName = GetStackFontName()
+    local fontName = (ns.db and ns.db.profile and ns.db.profile.cooldownManager_stackFontName) or "Friz Quadrata TT"
     local fontPath = GetFontPath(fontName)
-    local fontFlags = GetStackFontFlags()
-    local fontSize = GetStackFontSize()
-    local anchor = GetStackAnchor()
-    local offsetX = GetStackOffsetX()
-    local offsetY = GetStackOffsetY()
+    local fontFlagTable = ns.db.profile.cooldownManager_stackFontFlags or {}
+    local fontFlagStr = ""
+    for n, v in pairs(fontFlagTable) do
+        if v == true then
+            fontFlagStr = fontFlagStr .. n .. ","
+        end
+    end
+    local fontSize = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackFontSize) or 14
+    local anchor = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackAnchor) or "BOTTOMRIGHT"
+    local offsetX = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackOffsetX) or -1
+    local offsetY = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_stackOffsetY) or 1
 
     if frame.count then
-        frame.count:SetFont(fontPath, fontSize, fontFlags)
+        frame.count:SetFont(fontPath, fontSize, fontFlagStr)
         frame.count:ClearAllPoints()
         frame.count:SetPoint(anchor, frame, anchor, offsetX, offsetY)
     end
@@ -274,7 +242,7 @@ function ItemViewerFrame:Initialize()
     if not frame.IconOverlay and frame.Icon then
         frame.IconOverlay = frame:CreateTexture(nil, "OVERLAY", nil, 1)
         frame.IconOverlay:SetAtlas("UI-HUD-CoolDownManager-IconOverlay")
-        frame.IconOverlay:SetSize(width*1.5, height*1.5)
+        frame.IconOverlay:SetSize(width * 1.5, height * 1.5)
         frame.IconOverlay:SetPoint("Center", frame.Icon, "CENTER")
 
         frame.IconOverlay:Hide()
@@ -390,6 +358,9 @@ function TrackerInstance:New(configKey, frameName, getEntriesFn)
         anchor = nil,
         iconFrames = {},
         lastUpdateTimes = {},
+        pendingHide = {},
+        shownKeys = {},
+        shownOrder = {},
     }, TrackerInstance)
     return instance
 end
@@ -412,6 +383,7 @@ end
 
 function TrackerInstance:UpdateIconPosition(frame, visibleIndex)
     local iconSize = self:GetIconSize()
+    local iconHeight = GetIconHeight(iconSize)
     local padding = self:GetIconPadding()
     local orientation = self:GetOrientation()
     local anchorData = ORIENTATION_ANCHORS[orientation] or ORIENTATION_ANCHORS["Horizontal Right"]
@@ -421,7 +393,10 @@ function TrackerInstance:UpdateIconPosition(frame, visibleIndex)
         anchorPoint = "LEFT"
     end
     frame:ClearAllPoints()
-    local offset = (visibleIndex - 1) * (iconSize + padding)
+    -- Use iconHeight for vertical layouts so icons don't overlap when height < width
+    local isVertical = anchorData.offsetY ~= 0
+    local stepSize = isVertical and (iconHeight + padding) or (iconSize + padding)
+    local offset = (visibleIndex - 1) * stepSize
     frame:SetPoint(anchorPoint, self.anchor, anchorPoint, anchorData.offsetX * offset, anchorData.offsetY * offset)
 end
 
@@ -439,6 +414,99 @@ function TrackerInstance:UpdateCooldowns()
     end
 end
 
+function TrackerInstance:ApplyStabilityGuard(newEntries)
+    local newKeySet = {}
+    for _, entry in ipairs(newEntries) do
+        newKeySet[entry.kind .. ":" .. tostring(entry.id)] = entry
+    end
+
+    local confirmedRemoved = {}
+    local toRemove = {}
+    for key, data in pairs(self.pendingHide) do
+        if newKeySet[key] then
+            toRemove[key] = true
+        elseif data.entry.wildcardSlotID and ItemsData:GetWildcardSlotItemID(data.entry.wildcardSlotID) ~= data.entry.id then
+            -- Wildcard slot changed: skip the miss threshold.
+            toRemove[key] = true
+            confirmedRemoved[key] = true
+        else
+            data.misses = data.misses + 1
+            if data.misses >= 3 then
+                toRemove[key] = true
+                confirmedRemoved[key] = true -- blocks re-entry into pendingHide this pass
+            end
+        end
+    end
+    for key in pairs(toRemove) do
+        self.pendingHide[key] = nil
+    end
+
+    for key, entry in pairs(self.shownKeys) do
+        if not newKeySet[key] and not self.pendingHide[key] and not confirmedRemoved[key] then
+            if entry.wildcardSlotID and ItemsData:GetWildcardSlotItemID(entry.wildcardSlotID) ~= entry.id then
+                confirmedRemoved[key] = true
+            else
+                self.pendingHide[key] = { entry = entry, misses = 1 }
+            end
+        end
+    end
+
+    if next(self.pendingHide) ~= nil then
+        C_Timer.After(0.1, function()
+            if self.anchor then self:DoRefreshEntries() end
+        end)
+    end
+
+    local allEntries = {}
+    for _, entry in ipairs(newEntries) do
+        table.insert(allEntries, entry)
+    end
+    for _, data in pairs(self.pendingHide) do
+        table.insert(allEntries, data.entry)
+    end
+
+    local prevPos = {}
+    for i, key in ipairs(self.shownOrder) do
+        prevPos[key] = i
+    end
+
+    local function entryKey(e)
+        return e.kind .. ":" .. tostring(e.id)
+    end
+
+    table.sort(allEntries, function(a, b)
+        local aOrder, bOrder = ItemsData:GetEntryOrder(a), ItemsData:GetEntryOrder(b)
+        if aOrder ~= bOrder then
+            if aOrder == nil then return false end
+            if bOrder == nil then return true end
+            return aOrder < bOrder
+        end
+        local aPrev, bPrev = prevPos[entryKey(a)], prevPos[entryKey(b)]
+        if aPrev ~= bPrev then
+            if aPrev == nil then return false end
+            if bPrev == nil then return true end
+            return aPrev < bPrev
+        end
+        local aName = ItemsData:GetEntryName(a.kind, a.id) or tostring(a.id)
+        aName = aName == "" and tostring(a.id) or aName:lower()
+        local bName = ItemsData:GetEntryName(b.kind, b.id) or tostring(b.id)
+        bName = bName == "" and tostring(b.id) or bName:lower()
+        if aName ~= bName then return aName < bName end
+        if a.kind ~= b.kind then return a.kind < b.kind end
+        return tostring(a.id) < tostring(b.id)
+    end)
+
+    self.shownKeys = {}
+    self.shownOrder = {}
+    for _, entry in ipairs(allEntries) do
+        local key = entryKey(entry)
+        self.shownKeys[key] = entry
+        table.insert(self.shownOrder, key)
+    end
+
+    return allEntries
+end
+
 function TrackerInstance:RefreshEntries()
     if not self.anchor then
         return
@@ -450,13 +518,23 @@ function TrackerInstance:RefreshEntries()
         return
     end
 
+    self:DoRefreshEntries()
+end
+
+function TrackerInstance:DoRefreshEntries()
+    if not self.anchor then
+        return
+    end
+
     self.lastUpdateTimes.RefreshEntriesThrottle = GetTime()
 
     local owned = ItemsData:ScanOwnedItems()
     ItemsData:EnsureTrackedItems(owned)
-    local entries = self.getEntriesFn(owned)
+    local rawEntries = self.getEntriesFn(owned)
+    local entries = self:ApplyStabilityGuard(rawEntries)
 
     local iconSize = self:GetIconSize()
+    local iconHeight = GetIconHeight(iconSize)
     local padding = self:GetIconPadding()
     local orientation = self:GetOrientation()
     local showGCD = self:GetShowGCD()
@@ -467,8 +545,8 @@ function TrackerInstance:RefreshEntries()
             self.iconFrames[i] = ItemViewerFrame:New(self.anchor)
         end
         local ivf = self.iconFrames[i]
-        ivf.frame:SetSize(iconSize, iconSize)
-        ivf.frame.IconOverlay:SetSize(iconSize*1.5, iconSize*1.5)
+        ivf.frame:SetSize(iconSize, iconHeight)
+        ivf.frame.IconOverlay:SetSize(iconSize * 1.5, iconHeight * 1.5)
         ivf.frame.showGCD = showGCD
 
         local db = DB.GetDB()
@@ -484,11 +562,12 @@ function TrackerInstance:RefreshEntries()
     local isHorizontal = orientation == "Horizontal Right"
         or orientation == "Horizontal Left"
         or orientation == "Horizontal Center"
-    local totalSize = count > 0 and (count * iconSize + (count - 1) * padding) or iconSize
+    local totalWidthSize = count > 0 and (count * iconSize + (count - 1) * padding) or iconSize
+    local totalHeightSize = count > 0 and (count * iconHeight + (count - 1) * padding) or iconHeight
     if isHorizontal then
-        self.anchor:SetSize(totalSize, iconSize)
+        self.anchor:SetSize(totalWidthSize, iconHeight)
     else
-        self.anchor:SetSize(iconSize, totalSize)
+        self.anchor:SetSize(iconSize, totalHeightSize)
     end
 
     self.anchor:SetShown(count > 0 or self.anchor._CMCTracker_ForceShow)
@@ -507,9 +586,10 @@ end
 
 function TrackerInstance:UpdateIconLayout()
     local iconSize = self:GetIconSize()
+    local iconHeight = GetIconHeight(iconSize)
     for _, ivf in ipairs(self.iconFrames) do
-        ivf.frame:SetSize(iconSize, iconSize)
-        ivf.frame.IconOverlay:SetSize(iconSize*1.5, iconSize*1.5)
+        ivf.frame:SetSize(iconSize, iconHeight)
+        ivf.frame.IconOverlay:SetSize(iconSize * 1.5, iconHeight * 1.5)
     end
     self:RefreshEntries()
 end
@@ -570,7 +650,7 @@ function TrackerInstance:Create()
                 self:RefreshEntries()
             end)
         elseif event == "BAG_UPDATE_DELAYED" then
-            C_Timer.After(0.2, function()
+            C_Timer.After(0.05, function()
                 self:RefreshEntries()
             end)
         elseif
@@ -583,7 +663,7 @@ function TrackerInstance:Create()
                 ItemsData:InvalidateSpellBookCache()
             end
             self:RefreshEntries()
-            C_Timer.After(0.3, function()
+            C_Timer.After(0.1, function()
                 self:RefreshEntries()
             end)
         else
@@ -820,6 +900,40 @@ function TrackerInstance:Create()
             valueStep = 0.01,
             formatter = function(value)
                 return string.format("%.2f", value)
+            end,
+        },
+        {
+            name = "Rectangular Icons",
+            kind = LEM.SettingType.Checkbox,
+            default = false,
+            get = function()
+                return ns.db.profile.trinketRacialTracker_rectangularIcons or false
+            end,
+            set = function(layoutName, value)
+                ns.db.profile.trinketRacialTracker_rectangularIcons = value
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshItemViewerFrames()
+                end
+            end,
+        },
+        {
+            name = "Aspect Ratio (Height %)",
+            kind = LEM.SettingType.Slider,
+            default = 0.8,
+            get = function()
+                return ns.db.profile.trinketRacialTracker_rectangularIcons_percent or 0.8
+            end,
+            set = function(layoutName, value)
+                ns.db.profile.trinketRacialTracker_rectangularIcons_percent = math.floor(value * 100 + 0.5) / 100
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshItemViewerFrames()
+                end
+            end,
+            minValue = 0.3,
+            maxValue = 1,
+            valueStep = 0.01,
+            formatter = function(value)
+                return string.format("%.0f%%", value * 100)
             end,
         },
         {
@@ -1151,32 +1265,6 @@ end)
 local trackers = { tracker1, tracker2 }
 local spellCastEventFrame = nil
 
-local function EnsureSpellCastListener()
-    if spellCastEventFrame then
-        return
-    end
-
-    spellCastEventFrame = CreateFrame("Frame")
-    spellCastEventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
-    spellCastEventFrame:SetScript("OnEvent", function(_, _event, unitTarget, _castGUID, spellID)
-        if unitTarget ~= "player" or not spellID then
-            return
-        end
-
-        local matched = false
-        if ItemVisuals and ItemVisuals.MarkSpellCastActive and ItemVisuals:MarkSpellCastActive(spellID) then
-            matched = true
-        end
-        if ItemVisuals and ItemVisuals.MarkItemCastActive and ItemVisuals:MarkItemCastActive(spellID) then
-            matched = true
-        end
-
-        if matched then
-            ItemViewer:RefreshItemViewerFrames()
-        end
-    end)
-end
-
 function ItemViewer:RefreshItemViewerFrames()
     for _, tracker in ipairs(trackers) do
         tracker:RefreshEntries()
@@ -1194,7 +1282,27 @@ function ItemViewer:Initialize()
         return
     end
 
-    EnsureSpellCastListener()
+    if not spellCastEventFrame then
+        spellCastEventFrame = CreateFrame("Frame")
+        spellCastEventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
+        spellCastEventFrame:SetScript("OnEvent", function(_, _event, unitTarget, _castGUID, spellID)
+            if unitTarget ~= "player" or not spellID then
+                return
+            end
+
+            local matched = false
+            if ItemVisuals and ItemVisuals.MarkSpellCastActive and ItemVisuals:MarkSpellCastActive(spellID) then
+                matched = true
+            end
+            if ItemVisuals and ItemVisuals.MarkItemCastActive and ItemVisuals:MarkItemCastActive(spellID) then
+                matched = true
+            end
+
+            if matched then
+                ItemViewer:RefreshItemViewerFrames()
+            end
+        end)
+    end
 
     for _, tracker in ipairs(trackers) do
         tracker:Create()

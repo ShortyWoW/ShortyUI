@@ -98,15 +98,9 @@ ns.DEFAULT_SETTINGS = {
         -- Icon Size Normalization
         cooldownManager_normalizeUtilitySize = false,
 
-        cooldownManager_visibility_enabled_rules = {},
-        cooldownManager_visibility_enabled_viewers = {
-            ["BuffIconCooldownViewer"] = true,
-            ["BuffBarCooldownViewer"] = true,
-            ["EssentialCooldownViewer"] = true,
-            ["UtilityCooldownViewer"] = true,
-            ["CMCTracker1"] = true,
-            ["CMCTracker2"] = true,
-        },
+        -- Per-viewer visibility rules (populated by CMCVisibility:MigrateSettings on first load).
+        -- Intentionally absent from defaults so migration can detect first-run and copy old settings.
+        -- cooldownManager_visibility_perViewer = {},
 
         cooldownManager_customSwipeColor_enabled = false,
         cooldownManager_customActiveColor_r = 1,
@@ -120,9 +114,6 @@ ns.DEFAULT_SETTINGS = {
 
         cooldownManager_desaturate_under_aura = false,
         cooldownManager_hide_gcd = false,
-
-        cooldownManager_experimental_layoutOptimizations = false,
-        cooldownManager_experimental_disablePerSpellSettings = false,
 
         cooldownManager_experimental_glow_style = "DEFAULT",
         cooldownManager_experimental_glow_custom_color = false,
@@ -144,6 +135,8 @@ ns.DEFAULT_SETTINGS = {
         trinketRacialTracker_squareIcons = false,
         trinketRacialTracker_borderThickness = 1,
         trinketRacialTracker_iconZoom = 0.3,
+        trinketRacialTracker_rectangularIcons = false,
+        trinketRacialTracker_rectangularIcons_percent = 0.8,
         trinketRacialTracker_stackAnchor = "BOTTOMRIGHT",
         trinketRacialTracker_stackFontSize = 14,
         trinketRacialTracker_stackOffsetX = -1,

@@ -184,7 +184,7 @@ StaticPopupDialogs["CMC_IMPORT_PROFILE_NAME"] = {
 
 function ProfileSettings:BuildSettings(parentCategory)
     local profileCategory = SettingsLib:CreateCategory(parentCategory, "Profiles", false)
-    ns.WilduSettings.SettingsLayout.profileCategory = profileCategory
+    ns.AddonSettings.SettingsLayout.profileCategory = profileCategory
 
     SettingsLib:CreateText(profileCategory, {
         name = "Manage your addon profiles.",

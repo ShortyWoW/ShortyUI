@@ -1,7 +1,5 @@
 local addonName, ns = ...
 
-local MiscPanel = ns.MiscPanel
-
 local CooldownStyle = ns.CooldownStyle or {}
 ns.CooldownStyle = CooldownStyle
 local MENU_TITLE = "|cff008945C|r|cff1e9a4eo|r|cff3faa4fol|r|cff5fb64ado|r|cff7ac243wn|r |cff8ccd00Manager Centered|r"
@@ -30,25 +28,15 @@ local isZeroCurve = C_CurveUtil.CreateCurve()
 isZeroCurve:AddPoint(0, 1)
 isZeroCurve:AddPoint(0.001, 0)
 
-local function GetConfiguredGlowStyle()
-    local style = ns.db.profile.cooldownManager_experimental_glow_style or GLOW_STYLE_DEFAULT
-    if
-        style ~= GLOW_STYLE_DEFAULT
-        and style ~= GLOW_STYLE_PROC
-        and style ~= GLOW_STYLE_AUTOCAST
-        and style ~= GLOW_STYLE_PIXEL
-    then
-        return GLOW_STYLE_DEFAULT
-    end
-    return style
-end
-
 local function ResolveGlowStyle(defaultStyle)
-    local selectedStyle = GetConfiguredGlowStyle()
-    if selectedStyle == GLOW_STYLE_DEFAULT then
+    local style = ns.db.profile.cooldownManager_experimental_glow_style or GLOW_STYLE_DEFAULT
+    if style ~= GLOW_STYLE_DEFAULT and style ~= GLOW_STYLE_PROC and style ~= GLOW_STYLE_AUTOCAST and style ~= GLOW_STYLE_PIXEL then
+        style = GLOW_STYLE_DEFAULT
+    end
+    if style == GLOW_STYLE_DEFAULT then
         return defaultStyle
     end
-    return selectedStyle
+    return style
 end
 
 local function GetConfiguredGlowColor()
@@ -184,45 +172,6 @@ CooldownStyle.FORCE_DISABLED_INSTANT_CASTS = {
 --     [207684] = true, -- Sigil of Misery
 --     [202137] = true, -- Sigil of Silence
 -- }
-local function GetCooldownFrames()
-    local frames = {}
-
-    local essentialViewer = _G["EssentialCooldownViewer"]
-    if essentialViewer then
-        for _, child in ipairs({ essentialViewer:GetChildren() }) do
-            if child.Cooldown then
-                table.insert(frames, child)
-            end
-        end
-    end
-
-    local utilityViewer = _G["UtilityCooldownViewer"]
-    if utilityViewer then
-        for _, child in ipairs({ utilityViewer:GetChildren() }) do
-            if child.Cooldown then
-                table.insert(frames, child)
-            end
-        end
-    end
-
-    return frames
-end
-
-local function GetBuffIconFrames()
-    local frames = {}
-
-    local buffViewer = _G["BuffIconCooldownViewer"]
-    if buffViewer then
-        for _, child in ipairs({ buffViewer:GetChildren() }) do
-            if child.Cooldown then
-                table.insert(frames, child)
-            end
-        end
-    end
-
-    return frames
-end
-
 local function GetButtonGlowFrame(cdmFrame)
     if cdmFrame._ProcGlow then
         return cdmFrame._ProcGlow
@@ -400,22 +349,6 @@ local function ApplyIconSettings(cdmFrame)
     end
 end
 
-local function GetCustomActiveSwipe()
-    local r = ns.db.profile.cooldownManager_customActiveColor_r or 1
-    local g = ns.db.profile.cooldownManager_customActiveColor_g or 0.95
-    local b = ns.db.profile.cooldownManager_customActiveColor_b or 0.57
-    local a = ns.db.profile.cooldownManager_customActiveColor_a or 0.69
-    return r, g, b, a
-end
-
-local function GetCustomGCDSwipe()
-    local r = ns.db.profile.cooldownManager_customCDSwipeColor_r or 0
-    local g = ns.db.profile.cooldownManager_customCDSwipeColor_g or 0
-    local b = ns.db.profile.cooldownManager_customCDSwipeColor_b or 0
-    local a = ns.db.profile.cooldownManager_customCDSwipeColor_a or 0.69
-    return r, g, b, a
-end
-
 local function ApplyCooldownSettings(cdmFrame)
     local cooldownInfo = cdmFrame:GetCooldownInfo()
     if cooldownInfo == nil then
@@ -441,8 +374,12 @@ local function ApplyCooldownSettings(cdmFrame)
     if shouldShowAuras and cdmFrame.wasSetFromAura then
         cdmFrame.Cooldown:SetReverse(CooldownStyle.GetReverseAuraSwipe(baseSpellId))
         if ns.db.profile.cooldownManager_customSwipeColor_enabled then
-            local _r, _g, _b, _a = GetCustomActiveSwipe()
-            cdmFrame.Cooldown:SetSwipeColor(_r, _g, _b, _a)
+            cdmFrame.Cooldown:SetSwipeColor(
+                ns.db.profile.cooldownManager_customActiveColor_r or 1,
+                ns.db.profile.cooldownManager_customActiveColor_g or 0.95,
+                ns.db.profile.cooldownManager_customActiveColor_b or 0.57,
+                ns.db.profile.cooldownManager_customActiveColor_a or 0.69
+            )
         end
         if ns.db.profile.cooldownManager_desaturate_under_aura then
             local spellCharges = C_Spell.GetSpellCharges(spellID)
@@ -463,8 +400,12 @@ local function ApplyCooldownSettings(cdmFrame)
     cdmFrame.Cooldown:SetReverse(false)
 
     if ns.db.profile.cooldownManager_customSwipeColor_enabled then
-        local _r, _g, _b, _a = GetCustomGCDSwipe()
-        cdmFrame.Cooldown:SetSwipeColor(_r, _g, _b, _a)
+        cdmFrame.Cooldown:SetSwipeColor(
+            ns.db.profile.cooldownManager_customCDSwipeColor_r or 0,
+            ns.db.profile.cooldownManager_customCDSwipeColor_g or 0,
+            ns.db.profile.cooldownManager_customCDSwipeColor_b or 0,
+            ns.db.profile.cooldownManager_customCDSwipeColor_a or 0.69
+        )
     else
         -- from CooldownViewerConstants.ITEM_COOLDOWN_COLOR
         cdmFrame.Cooldown:SetSwipeColor(0, 0, 0, 0.7)
@@ -600,25 +541,122 @@ local function HookBuffIconFrame(cdmFrame)
 end
 
 local function HookFrames()
-    local cooldownFrames = GetCooldownFrames()
-
-    for _, cdmFrame in ipairs(cooldownFrames) do
-        if cdmFrame.Cooldown and cdmFrame.Icon then
-            HookCooldownFrame(cdmFrame)
+    local essentialViewer = _G["EssentialCooldownViewer"]
+    if essentialViewer then
+        for _, cdmFrame in ipairs({ essentialViewer:GetChildren() }) do
+            if cdmFrame.Cooldown and cdmFrame.Icon then
+                HookCooldownFrame(cdmFrame)
+            end
         end
     end
 
-    local buffIconFrames = GetBuffIconFrames()
+    local utilityViewer = _G["UtilityCooldownViewer"]
+    if utilityViewer then
+        for _, cdmFrame in ipairs({ utilityViewer:GetChildren() }) do
+            if cdmFrame.Cooldown and cdmFrame.Icon then
+                HookCooldownFrame(cdmFrame)
+            end
+        end
+    end
 
-    for _, cdmFrame in ipairs(buffIconFrames) do
-        if cdmFrame.Cooldown and cdmFrame.Icon then
-            HookBuffIconFrame(cdmFrame)
+    local buffViewer = _G["BuffIconCooldownViewer"]
+    if buffViewer then
+        for _, cdmFrame in ipairs({ buffViewer:GetChildren() }) do
+            if cdmFrame.Cooldown and cdmFrame.Icon then
+                HookBuffIconFrame(cdmFrame)
+            end
         end
     end
 end
 
 local function RefreshCooldownManagerFrames()
     HookFrames()
+end
+
+local viewers = {
+    ["BuffIconCooldownViewer"] = BuffIconCooldownViewer,
+    ["BuffBarCooldownViewer"] = BuffBarCooldownViewer,
+    ["EssentialCooldownViewer"] = EssentialCooldownViewer,
+    ["UtilityCooldownViewer"] = UtilityCooldownViewer,
+}
+
+local function GetCooldownViewerChild(frame)
+    if not frame or not frame.GetParent then
+        return nil
+    end
+    if not frame.cooldownInfo then
+        return nil
+    end
+    local current = frame
+    while current and current.GetParent do
+        local parent = current:GetParent()
+        if not parent then
+            return nil
+        end
+        for _, viewer in pairs(viewers) do
+            if parent == viewer then
+                return current
+            end
+        end
+        current = parent
+    end
+    return nil
+end
+
+local function HookActionButtonSpellAlertManager()
+    if not ActionButtonSpellAlertManager then
+        return
+    end
+    if ActionButtonSpellAlertManager._CMC_Hooked then
+        return
+    end
+
+    hooksecurefunc(ActionButtonSpellAlertManager, "ShowAlert", function(_, frame)
+        local activeGlowTarget = GetCooldownViewerChild(frame)
+        if not activeGlowTarget then
+            return
+        end
+        local spellId = frame.cooldownInfo and frame.cooldownInfo.spellID
+        if not spellId then
+            return
+        end
+        if CooldownStyle.GetDisableProcsGlow(spellId) then
+            if activeGlowTarget.SpellActivationAlert then
+                activeGlowTarget.SpellActivationAlert:SetAlpha(0)
+            end
+            return
+        else
+            if activeGlowTarget.SpellActivationAlert then
+                activeGlowTarget.SpellActivationAlert:SetAlpha(1)
+            end
+        end
+
+        local glowStyle = ns.db.profile.cooldownManager_experimental_glow_style
+        if glowStyle and glowStyle ~= "DEFAULT" then
+            activeGlowTarget.SpellActivationAlert:SetAlpha(0)
+            local signature = GetGlowSignature(GLOW_STYLE_PIXEL)
+            if activeGlowTarget.CMCActiveGlow and activeGlowTarget.CMCActiveGlowSignature == signature then
+                return
+            end
+            activeGlowTarget.CMCActiveGlow = true
+            StopAllCustomGlows(activeGlowTarget)
+            activeGlowTarget.CMCActiveGlowStyle = StartConfiguredGlow(activeGlowTarget, GLOW_STYLE_PIXEL)
+            activeGlowTarget.CMCActiveGlowSignature = signature
+            return
+        end
+    end)
+
+    hooksecurefunc(ActionButtonSpellAlertManager, "HideAlert", function(_, frame)
+        local activeGlowTarget = GetCooldownViewerChild(frame)
+        if not activeGlowTarget or not activeGlowTarget.CMCActiveGlow then
+            return
+        end
+        activeGlowTarget.CMCActiveGlow = nil
+        activeGlowTarget.CMCActiveGlowStyle = nil
+        activeGlowTarget.CMCActiveGlowSignature = nil
+        StopAllCustomGlows(activeGlowTarget)
+    end)
+    ActionButtonSpellAlertManager._CMC_Hooked = true
 end
 
 function CooldownStyle:RefreshHooks()
@@ -628,6 +666,7 @@ end
 local isMenuModified = false
 function CooldownStyle:Initialize()
     HookFrames()
+    HookActionButtonSpellAlertManager()
     if isMenuModified then
         return
     end

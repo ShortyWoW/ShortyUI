@@ -6,37 +6,8 @@ ns.TrackerDB = TrackerDB
 TrackerDB.DEFAULT_COOLDOWN_SWIPE_COLOR = { 0, 0, 0, 0.7 }
 TrackerDB.DEFAULT_AURA_SWIPE_COLOR = { 1, 0.95, 0.57, 0.7 }
 
-local dbDefaults = {
-    -- defaultAuraSwipeReversed = false,
-    itemViewerLayouts = {},
-    itemSettings = {},
-    spellItemSettings = {},
-    wildcardSlotSettings = {},
-    showUnusable = false,
-}
-
 local function IsSupportedCustomActiveKind(kind)
     return kind == "spell" or kind == "item"
-end
-
-local function GetEntrySettingsByKind(kind, id)
-    if kind == "spell" then
-        return TrackerDB.GetSpellItemSettings(id)
-    end
-    if kind == "item" then
-        return TrackerDB.GetItemSettings(id)
-    end
-    return nil
-end
-
-local function EnsureEntrySettingsByKind(kind, id)
-    if kind == "spell" then
-        return TrackerDB.EnsureSpellItemSettings(id)
-    end
-    if kind == "item" then
-        return TrackerDB.EnsureItemSettings(id)
-    end
-    return nil
 end
 
 local function NormalizeCustomActiveDuration(value)
@@ -124,19 +95,6 @@ TrackerDB.DefaultSpells = {
     1237885, -- Thorn Bloom
 }
 
-local function ApplyDefaultsToTable(tbl, defaults)
-    for k, v in pairs(defaults) do
-        if type(v) == "table" then
-            if type(tbl[k]) ~= "table" then
-                tbl[k] = {}
-            end
-            ApplyDefaultsToTable(tbl[k], v)
-        elseif tbl[k] == nil then
-            tbl[k] = v
-        end
-    end
-end
-
 function TrackerDB.GetDB()
     return ns.db.profile.tracker
 end
@@ -146,7 +104,11 @@ function TrackerDB.InitializeDB()
         return
     end
     local db = TrackerDB.GetDB()
-    ApplyDefaultsToTable(db, dbDefaults)
+    db.itemViewerLayouts = db.itemViewerLayouts or {}
+    db.itemSettings = db.itemSettings or {}
+    db.spellItemSettings = db.spellItemSettings or {}
+    db.wildcardSlotSettings = db.wildcardSlotSettings or {}
+    if db.showUnusable == nil then db.showUnusable = false end
     if not ns.db.profile._tracker_filled_with_defaults then
         for i, spellID in pairs(TrackerDB.DefaultSpells) do
             if not db.spellItemSettings[spellID] then
@@ -293,8 +255,8 @@ end
 function TrackerDB.ToggleShowUnusable()
     local db = TrackerDB.GetDB()
     db.showUnusable = not TrackerDB.GetShowingUnusable()
-    if ns.MiscPanel and ns.MiscPanel.RefreshMiscPanel then
-        ns.MiscPanel:RefreshMiscPanel()
+    if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
+        ns.TrackerAssignmentPanel:RefreshMiscPanel()
     end
 end
 
@@ -303,7 +265,12 @@ function TrackerDB.GetCustomActiveDuration(kind, id)
         return 0
     end
 
-    local settings = GetEntrySettingsByKind(kind, id)
+    local settings
+    if kind == "spell" then
+        settings = TrackerDB.GetSpellItemSettings(id)
+    elseif kind == "item" then
+        settings = TrackerDB.GetItemSettings(id)
+    end
     local duration = settings and NormalizeCustomActiveDuration(settings.customActiveDuration)
     return duration or 0
 end
@@ -318,7 +285,12 @@ function TrackerDB.SetCustomActiveDuration(kind, id, value)
         return false
     end
 
-    local settings = EnsureEntrySettingsByKind(kind, id)
+    local settings
+    if kind == "spell" then
+        settings = TrackerDB.EnsureSpellItemSettings(id)
+    elseif kind == "item" then
+        settings = TrackerDB.EnsureItemSettings(id)
+    end
     if not settings then
         return false
     end
@@ -330,4 +302,31 @@ function TrackerDB.SetCustomActiveDuration(kind, id, value)
     end
 
     return true
+end
+
+function TrackerDB.GetAlwaysShow(kind, id)
+    local settings
+    if kind == "spell" then
+        settings = TrackerDB.GetSpellItemSettings(id)
+    elseif kind == "item" then
+        settings = TrackerDB.GetItemSettings(id)
+    else
+        settings = TrackerDB.GetWildcardSlotSettings(id)
+    end
+    return settings and settings.alwaysShow == true
+end
+
+function TrackerDB.SetAlwaysShow(kind, id, value)
+    local settings
+    if kind == "spell" then
+        settings = TrackerDB.EnsureSpellItemSettings(id)
+    elseif kind == "item" then
+        settings = TrackerDB.EnsureItemSettings(id)
+    else
+        settings = TrackerDB.EnsureWildcardSlotSettings(id)
+    end
+    if not settings then
+        return
+    end
+    settings.alwaysShow = value == true or nil
 end

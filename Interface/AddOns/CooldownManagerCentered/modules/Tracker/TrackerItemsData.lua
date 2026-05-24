@@ -18,6 +18,8 @@ local WILDCARD_SLOT_TRINKET2 = "trinket2"
 
 local IGNORED_WILDCARD_TRINKETS = {
     [248583] = true, -- Drum of Renewed Bonds
+    [249806] = true, -- Radiant Plume
+    [260235] = true, -- Umbral Plume
 }
 local AUTO_ATTACK_SPELL_ID = 6603
 
@@ -99,20 +101,11 @@ local function IsWildcardSlotID(slotID)
     return slotID == WILDCARD_SLOT_TRINKET1 or slotID == WILDCARD_SLOT_TRINKET2
 end
 
-local function GetWildcardSlotDisplayName(slotID)
-    return WILDCARD_SLOT_DISPLAY_NAMES[slotID] or tostring(slotID)
-end
-
-local function GetWildcardSlotInventorySlot(slotID)
-    return WILDCARD_SLOT_INVENTORY_SLOTS[slotID]
-end
-
 local function GetWildcardSlotItemID(slotID)
-    local inventorySlot = GetWildcardSlotInventorySlot(slotID)
+    local inventorySlot = WILDCARD_SLOT_INVENTORY_SLOTS[slotID]
     if not inventorySlot then
         return nil
     end
-
     local location = ItemLocation:CreateFromEquipmentSlot(inventorySlot)
     if location:IsValid() then
         return C_Item.GetItemID(location)
@@ -124,29 +117,14 @@ local function EntriesEqual(a, b)
     return a and b and a.kind == b.kind and a.id == b.id
 end
 
-local function GetSpellNameByID(spellID)
-    if C_Spell and C_Spell.GetSpellName then
-        return C_Spell.GetSpellName(spellID)
-    end
-    if GetSpellInfo then
-        local name = GetSpellInfo(spellID)
-        return name
-    end
-    return nil
-end
-
-local function IsPassiveSpellID(spellID)
-    if C_Spell and C_Spell.IsSpellPassive then
-        return C_Spell.IsSpellPassive(spellID)
-    end
-    if IsPassiveSpell then
-        return IsPassiveSpell(spellID)
-    end
-    return false
-end
-
 local function AddSpellIDFromSpellBook(ids, spellID)
-    if spellID and spellID ~= AUTO_ATTACK_SPELL_ID and not IsPassiveSpellID(spellID) then
+    if not spellID or spellID == AUTO_ATTACK_SPELL_ID then
+        return
+    end
+    local isPassive = (C_Spell and C_Spell.IsSpellPassive and C_Spell.IsSpellPassive(spellID))
+        or (IsPassiveSpell and IsPassiveSpell(spellID))
+        or false
+    if not isPassive then
         ids[spellID] = true
     end
 end
@@ -218,15 +196,25 @@ end
 
 function ItemsData:GetEntryName(kind, id)
     if kind == ENTRY_KIND_WILDCARD_SLOTS then
-        return GetWildcardSlotDisplayName(id)
+        return WILDCARD_SLOT_DISPLAY_NAMES[id] or tostring(id)
     end
     if kind == "spell" then
-        return GetSpellNameByID(id)
+        if C_Spell and C_Spell.GetSpellName then
+            return C_Spell.GetSpellName(id)
+        end
+        if GetSpellInfo then
+            local name = GetSpellInfo(id)
+            return name
+        end
+        return nil
     end
     return self:GetItemNameByID(id)
 end
 
 local function GetEntrySettings(entry)
+    if entry.wildcardSlotID then
+        return DB.GetWildcardSlotSettings(entry.wildcardSlotID)
+    end
     if IsWildcardSlotEntry(entry) then
         return DB.GetWildcardSlotSettings(entry.id)
     end
@@ -236,28 +224,12 @@ local function GetEntrySettings(entry)
     return DB.GetItemSettings(entry.id)
 end
 
-local function EnsureEntrySettings(entry)
-    if IsWildcardSlotEntry(entry) then
-        return DB.EnsureWildcardSlotSettings(entry.id)
-    end
-    if IsSpellEntry(entry) then
-        return DB.EnsureSpellItemSettings(entry.id)
-    end
-    return DB.EnsureItemSettings(entry.id)
-end
-
-local function EntrySortKey(entry)
-    local name = ItemsData:GetEntryName(entry.kind, entry.id)
-    if not name or name == "" then
-        return tostring(entry.id)
-    end
-    return name:lower()
-end
-
 local function SortEntries(entries)
     table.sort(entries, function(a, b)
-        local aOrder = GetEntrySettings(a) and GetEntrySettings(a).order or nil
-        local bOrder = GetEntrySettings(b) and GetEntrySettings(b).order or nil
+        local aSettings = GetEntrySettings(a)
+        local bSettings = GetEntrySettings(b)
+        local aOrder = aSettings and aSettings.order or nil
+        local bOrder = bSettings and bSettings.order or nil
         if aOrder ~= nil and bOrder ~= nil and aOrder ~= bOrder then
             return aOrder < bOrder
         elseif aOrder ~= nil and bOrder == nil then
@@ -265,8 +237,10 @@ local function SortEntries(entries)
         elseif aOrder == nil and bOrder ~= nil then
             return false
         end
-        local aName = EntrySortKey(a)
-        local bName = EntrySortKey(b)
+        local aName = ItemsData:GetEntryName(a.kind, a.id)
+        aName = (not aName or aName == "") and tostring(a.id) or aName:lower()
+        local bName = ItemsData:GetEntryName(b.kind, b.id)
+        bName = (not bName or bName == "") and tostring(b.id) or bName:lower()
         if aName ~= bName then
             return aName < bName
         end
@@ -283,7 +257,16 @@ local function GetEntryOrder(entry)
 end
 
 local function SetEntryOrder(entry, order)
-    local settings = EnsureEntrySettings(entry)
+    local settings
+    if entry.wildcardSlotID then
+        settings = DB.EnsureWildcardSlotSettings(entry.wildcardSlotID)
+    elseif IsWildcardSlotEntry(entry) then
+        settings = DB.EnsureWildcardSlotSettings(entry.id)
+    elseif IsSpellEntry(entry) then
+        settings = DB.EnsureSpellItemSettings(entry.id)
+    else
+        settings = DB.EnsureItemSettings(entry.id)
+    end
     settings.order = order
 end
 
@@ -301,12 +284,6 @@ local function EnsureOrderForEntries(entries)
             maxOrder = maxOrder + 1
             SetEntryOrder(entry, maxOrder)
         end
-    end
-end
-
-local function ReassignOrders(entries)
-    for index, entry in ipairs(entries) do
-        SetEntryOrder(entry, index)
     end
 end
 
@@ -339,7 +316,9 @@ function ItemsData:InsertItemAt(state, entry, targetEntry, insertBefore)
     end
 
     table.insert(entries, insertIndex, MakeEntry(entry.kind, entry.id))
-    ReassignOrders(entries)
+    for index, e in ipairs(entries) do
+        SetEntryOrder(e, index)
+    end
 end
 
 function ItemsData:GetEntryState(kind, id)
@@ -368,51 +347,14 @@ local function IsTrackableItem(itemID)
     if not itemID then
         return false
     end
-    local usable = C_Item.IsUsableItem(itemID)
+    local usable = C_Item.GetItemSpell(itemID)
 
-    return usable
-end
-
-local function IsTrackableBagItem(itemID)
-    if not itemID then
-        return false
-    end
-    local classID, subclassID = select(6, GetItemInfoInstant(itemID))
-
-    if classID == Enum.ItemClass.Consumable then
-        return true
-    end
-    return false
+    return usable ~= nil
 end
 
 local function IsTrackableWildcardSlot(slotID)
     local itemID = GetWildcardSlotItemID(slotID)
     return itemID ~= nil and IsTrackableItem(itemID) and not IGNORED_WILDCARD_TRINKETS[itemID]
-end
-
-local function IsSpellUsableForTracking(spellID)
-    local override = C_Spell.GetOverrideSpell(spellID)
-    if C_Spell.IsSpellPassive(override) then
-        return false
-    end
-
-    return C_SpellBook.IsSpellInSpellBook(spellID) and true or false
-end
-
-local function CollectOwnedSpellsFromGeneralSpellBook(spells)
-    local generalSpells = GetSpellIDsFromGeneralSpellBook()
-    for spellID in pairs(generalSpells) do
-        spells[spellID] = true
-    end
-end
-
-local function CollectOwnedSpellsByUsability(spells)
-    local db = DB.GetDB()
-    for spellID in pairs(db.spellItemSettings or {}) do
-        if IsSpellUsableForTracking(spellID) then
-            spells[spellID] = true
-        end
-    end
 end
 
 function ItemsData:ScanOwnedItems()
@@ -427,8 +369,11 @@ function ItemsData:ScanOwnedItems()
             local slots = C_Container.GetContainerNumSlots(bag)
             for slot = 1, slots do
                 local itemID = C_Container.GetContainerItemID(bag, slot)
-                if IsTrackableBagItem(itemID) then
-                    owned.items[itemID] = true
+                if itemID then
+                    local classID = select(6, GetItemInfoInstant(itemID))
+                    if classID == Enum.ItemClass.Consumable then
+                        owned.items[itemID] = true
+                    end
                 end
             end
         end
@@ -438,13 +383,21 @@ function ItemsData:ScanOwnedItems()
         local location = ItemLocation:CreateFromEquipmentSlot(slot)
         if location and C_Item.DoesItemExist(location) then
             local itemID = C_Item.GetItemID(location)
-            if IsTrackableItem(itemID) then
+            if itemID and IsTrackableItem(itemID) then
                 owned.items[itemID] = true
             end
         end
     end
 
-    CollectOwnedSpellsByUsability(owned.spells)
+    do
+        local db = DB.GetDB()
+        for spellID in pairs(db.spellItemSettings or {}) do
+            local override = C_Spell.GetOverrideSpell(spellID)
+            if not C_Spell.IsSpellPassive(override) and C_SpellBook.IsSpellInSpellBook(spellID) then
+                owned.spells[spellID] = true
+            end
+        end
+    end
 
     owned.wildcardSlots[WILDCARD_SLOT_TRINKET1] = true
     owned.wildcardSlots[WILDCARD_SLOT_TRINKET2] = true
@@ -455,7 +408,9 @@ end
 function ItemsData:ScanOwnedItemsForMiscPanel()
     local owned = self:ScanOwnedItems()
     owned.spells = {}
-    CollectOwnedSpellsFromGeneralSpellBook(owned.spells)
+    for spellID in pairs(GetSpellIDsFromGeneralSpellBook()) do
+        owned.spells[spellID] = true
+    end
     return owned
 end
 
@@ -550,22 +505,33 @@ function ItemsData:GetTracker1Entries(owned)
     local ownedItems = owned and owned.items or {}
     local ownedSpells = owned and owned.spells or {}
     local ownedWildcardSlots = owned and owned.wildcardSlots or {}
+    local addedItemIDs = {} -- prevent duplicate entries when a wildcard item is also explicitly tracked
 
     for itemID, settings in pairs(db.itemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER1 and ownedItems[itemID] then
-            table.insert(entries, MakeEntry("item", itemID))
+        if settings.state == ITEM_STATE_TRACKER1 and (ownedItems[itemID] or settings.alwaysShow) then
+            local e = MakeEntry("item", itemID)
+            addedItemIDs[itemID] = true
+            table.insert(entries, e)
         end
     end
 
     for spellID, settings in pairs(db.spellItemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER1 and ownedSpells[spellID] then
-            table.insert(entries, MakeEntry("spell", spellID))
+        if settings.state == ITEM_STATE_TRACKER1 and (ownedSpells[spellID] or settings.alwaysShow) then
+            local e = MakeEntry("spell", spellID)
+            table.insert(entries, e)
         end
     end
 
+    -- Wildcard slots are resolved to plain item entries so the tracker handles them
+    -- identically to explicitly-tracked items (no special-casing needed downstream).
     for slotID, settings in pairs(db.wildcardSlotSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER1 and ownedWildcardSlots[slotID] and IsTrackableWildcardSlot(slotID) then
-            table.insert(entries, MakeEntry(ENTRY_KIND_WILDCARD_SLOTS, slotID))
+        if settings.state == ITEM_STATE_TRACKER1 and (ownedWildcardSlots[slotID] or settings.alwaysShow) and IsTrackableWildcardSlot(slotID) then
+            local itemID = GetWildcardSlotItemID(slotID)
+            if itemID and not addedItemIDs[itemID] then
+                local e = MakeEntry("item", itemID)
+                e.wildcardSlotID = slotID -- retains slot identity for ordering and instant-remove
+                table.insert(entries, e)
+            end
         end
     end
 
@@ -580,22 +546,31 @@ function ItemsData:GetTracker2Entries(owned)
     local ownedItems = owned and owned.items or {}
     local ownedSpells = owned and owned.spells or {}
     local ownedWildcardSlots = owned and owned.wildcardSlots or {}
+    local addedItemIDs = {} -- prevent duplicate entries when a wildcard item is also explicitly tracked
 
     for itemID, settings in pairs(db.itemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER2 and ownedItems[itemID] then
-            table.insert(entries, MakeEntry("item", itemID))
+        if settings.state == ITEM_STATE_TRACKER2 and (ownedItems[itemID] or settings.alwaysShow) then
+            local e = MakeEntry("item", itemID)
+            addedItemIDs[itemID] = true
+            table.insert(entries, e)
         end
     end
 
     for spellID, settings in pairs(db.spellItemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER2 and ownedSpells[spellID] then
-            table.insert(entries, MakeEntry("spell", spellID))
+        if settings.state == ITEM_STATE_TRACKER2 and (ownedSpells[spellID] or settings.alwaysShow) then
+            local e = MakeEntry("spell", spellID)
+            table.insert(entries, e)
         end
     end
 
     for slotID, settings in pairs(db.wildcardSlotSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER2 and ownedWildcardSlots[slotID] and IsTrackableWildcardSlot(slotID) then
-            table.insert(entries, MakeEntry(ENTRY_KIND_WILDCARD_SLOTS, slotID))
+        if settings.state == ITEM_STATE_TRACKER2 and (ownedWildcardSlots[slotID] or settings.alwaysShow) and IsTrackableWildcardSlot(slotID) then
+            local itemID = GetWildcardSlotItemID(slotID)
+            if itemID and not addedItemIDs[itemID] then
+                local e = MakeEntry("item", itemID)
+                e.wildcardSlotID = slotID
+                table.insert(entries, e)
+            end
         end
     end
 
@@ -613,6 +588,10 @@ ItemsData.WILDCARD_SLOT_TRINKET2 = WILDCARD_SLOT_TRINKET2
 
 function ItemsData:GetWildcardSlotItemID(slotID)
     return GetWildcardSlotItemID(slotID)
+end
+
+function ItemsData:GetEntryOrder(entry)
+    return GetEntryOrder(entry)
 end
 
 function ItemsData:IsTrackableItem(itemID)

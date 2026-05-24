@@ -292,8 +292,8 @@ local function AddSpellToTracking(spellID, state)
     local target = state or ns.TrackerItemsData.ITEM_STATE_TRACKER1
     ns.TrackerItemsData:SetEntryState("spell", baseSpellID, target)
 
-    if ns.MiscPanel and ns.MiscPanel.RefreshMiscPanel then
-        ns.MiscPanel:RefreshMiscPanel()
+    if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
+        ns.TrackerAssignmentPanel:RefreshMiscPanel()
     end
     if ns.TrackerItemViewer and ns.TrackerItemViewer.RefreshItemViewerFrames then
         ns.TrackerItemViewer:RefreshItemViewerFrames()
@@ -315,8 +315,8 @@ local function AddItemToTracking(itemID, state)
     local target = state or ns.TrackerItemsData.ITEM_STATE_TRACKER1
     ns.TrackerItemsData:SetEntryState("item", itemID, target)
 
-    if ns.MiscPanel and ns.MiscPanel.RefreshMiscPanel then
-        ns.MiscPanel:RefreshMiscPanel()
+    if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
+        ns.TrackerAssignmentPanel:RefreshMiscPanel()
     end
     if ns.TrackerItemViewer and ns.TrackerItemViewer.RefreshItemViewerFrames then
         ns.TrackerItemViewer:RefreshItemViewerFrames()

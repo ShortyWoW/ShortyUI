@@ -360,7 +360,19 @@ local function GetDimCurve(toDimOpacity)
     end
     _dimCurve = C_CurveUtil.CreateCurve()
     _dimCurve:AddPoint(0.0, toDimOpacity)
-    _dimCurve:AddPoint(0.1, 1)
+    _dimCurve:AddPoint(0.0001, 1)
+    _dimCurveOpacity = toDimOpacity
+    return _dimCurve
+end
+
+local function GetDimCurveDH(toDimOpacity)
+    if _dimCurve and _dimCurveOpacity == toDimOpacity then
+        return _dimCurve
+    end
+    _dimCurve = C_CurveUtil.CreateCurve()
+    _dimCurve:AddPoint(0.0, toDimOpacity)
+    _dimCurve:AddPoint(1.0000, toDimOpacity)
+    _dimCurve:AddPoint(1.001, 1)
     _dimCurveOpacity = toDimOpacity
     return _dimCurve
 end
@@ -382,18 +394,25 @@ function ViewerAdapters.UpdateUtilityDimming()
             if child.cooldownID then
                 local info = C_CooldownViewer.GetCooldownViewerCooldownInfo(child.cooldownID)
                 local spellID = info.overrideSpellID or info.spellID
-                if not C_Spell.GetSpellCooldown(spellID).isOnGCD then
-                    local cd = nil
-                    if not issecretvalue(child.cooldownChargesShown) and child.cooldownChargesShown then
-                        cd = ns.CooldownTracker:getChargeCD(spellID)
-                    else
-                        cd = ns.CooldownTracker:getSpellCD(spellID)
-                    end
-                    if cd and cd.EvaluateRemainingDuration then
-                        local curve = GetDimCurve(toDimOpacity)
-                        local EvaluateDuration = cd:EvaluateRemainingDuration(curve)
+                local spellCD = C_Spell.GetSpellCooldown(spellID)
+                if not spellCD.isOnGCD then
+                    local spellCharges = C_Spell.GetSpellCharges(spellID)
+                    local hasCharges = spellCharges and spellCharges.maxCharges > 1
+                    if hasCharges and spellCharges.isActive then
+                        child:SetAlpha(1)
+                    elseif spellCD.isActive then
+                        if info.spellID == 198793 or info.spellID == 195072 or info.spellID == 232893 then
+                            local cd = C_Spell.GetSpellCooldownDuration(spellID)
 
-                        child:SetAlpha(EvaluateDuration)
+                            local curve = GetDimCurveDH(toDimOpacity)
+
+                            local EvaluateDuration = cd:EvaluateRemainingDuration(curve)
+                            child:SetAlpha(EvaluateDuration)
+                        else
+                            child:SetAlpha(1)
+                        end
+                    else
+                        child:SetAlpha(toDimOpacity)
                     end
                 else
                     child:SetAlpha(toDimOpacity)
@@ -609,11 +628,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             local currentRowHeight = h
 
             local yOffset = cumulativeOffset * rowOffsetModifier
-            if
-                ns.db.profile.cooldownManager_experimental_layoutOptimizations
-                and fromDirection == "TOP"
-                and iRow == 1
-            then
+            if fromDirection == "TOP" and iRow == 1 then
                 -- omit - redundant calculations for the first row when growing from top, as it's the most common case and often doesn't need adjustments
             else
                 PositionRowHorizontal(viewer, row, yOffset, w, padding, iconDirectionModifier, rowAnchor, maxIcons)
@@ -632,11 +647,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             local currentColWidth = w
 
             local xOffset = cumulativeOffset * rowOffsetModifier
-            if
-                ns.db.profile.cooldownManager_experimental_layoutOptimizations
-                and fromDirection == "TOP"
-                and iRow == 1
-            then
+            if fromDirection == "TOP" and iRow == 1 then
                 -- omit - redundant calculations for the first row when growing from top, as it's the most common case and often doesn't need adjustments
             else
                 PositionRowVertical(viewer, row, xOffset, h, padding, iconDirectionModifier, colAnchor, maxIcons)

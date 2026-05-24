@@ -78,36 +78,6 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
-[37] = {
-["37:677700000:580600000:Stone Cairn Lake"] = {
-37,
-0.6777,
-0.5806,
-["arrivaldistance"] = 15,
-["crazy"] = true,
-["persistent"] = true,
-["minimap"] = true,
-["cleardistance"] = 0,
-["title"] = "Stone Cairn Lake",
-["from"] = "Dystinct Earthen Skyriding",
-["callbacks"] = {
-["distance"] = {
-[15] = nil --[[ skipped inline function ]],
-},
-["world"] = {
-["onclick"] = nil --[[ skipped inline function ]],
-["tooltip_update"] = nil --[[ skipped inline function ]],
-["tooltip_show"] = nil --[[ skipped inline function ]],
-},
-["minimap"] = {
-["onclick"] = nil --[[ skipped inline function ]],
-["tooltip_update"] = nil --[[ skipped inline function ]],
-["tooltip_show"] = nil --[[ skipped inline function ]],
-},
-},
-["world"] = true,
-},
-},
 },
 ["Callmeshorty - Area 52"] = {
 },

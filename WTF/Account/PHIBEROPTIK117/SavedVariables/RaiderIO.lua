@@ -55,13 +55,15 @@ RaiderIO_Config = {
 ["mplusHeadlineMode"] = 0,
 ["showClientGuildBest"] = true,
 }
-RaiderIO_LastCharacter = "us-Shortcannon-illidan"
+RaiderIO_LastCharacter = "us-Callmeshorty-illidan"
 RaiderIO_MissingCharacters = {
-["us-Iwntu-whisperwind"] = true,
-["us-Shortyshamm-illidan"] = true,
-["us-Aulhucar-illidan"] = true,
-["us-Shortcannon-illidan"] = true,
-["us-Callmeshawte-area-52"] = true,
+["us-Arcoeris-eldrethalas"] = true,
+["us-Illumi-akama"] = true,
+["us-Sasto-mugthol"] = true,
+["us-Note-eldrethalas"] = true,
+["us-Antidentite-eldrethalas"] = true,
+["us-Hronntar-spirestone"] = true,
+["us-party5-illidan"] = true,
 }
 RaiderIO_MissingServers = {
 }

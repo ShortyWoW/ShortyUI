@@ -34,6 +34,20 @@ CooldownManagerCenteredDB = {
 },
 ["profiles"] = {
 ["Default"] = {
+["cooldownManager_visibility_perViewer"] = {
+["BuffIconCooldownViewer"] = {
+},
+["CMCTracker2"] = {
+},
+["CMCTracker1"] = {
+},
+["UtilityCooldownViewer"] = {
+},
+["EssentialCooldownViewer"] = {
+},
+["BuffBarCooldownViewer"] = {
+},
+},
 ["_bug_warning_displayed"] = 20260309,
 },
 ["Luxthos"] = {

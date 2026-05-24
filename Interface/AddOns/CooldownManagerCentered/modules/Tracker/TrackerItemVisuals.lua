@@ -26,65 +26,6 @@ local function BuildEntryKey(kind, id)
     return kind .. ":" .. tostring(id)
 end
 
-local function NormalizeSpellID(spellID)
-    if not spellID then
-        return nil
-    end
-    return C_Spell.GetBaseSpell(spellID) or spellID
-end
-
-local function SpellIDsMatch(a, b)
-    if not a or not b then
-        return false
-    end
-    if a == b then
-        return true
-    end
-    local baseA = NormalizeSpellID(a)
-    local baseB = NormalizeSpellID(b)
-    return baseA ~= nil and baseB ~= nil and baseA == baseB
-end
-
-local function CollectTrackedItemCandidates()
-    local tracked = {}
-    local db = DB.GetDB and DB.GetDB() or nil
-
-    if db and db.itemSettings then
-        for itemID, settings in pairs(db.itemSettings) do
-            if settings and settings.state then
-                tracked[itemID] = true
-            end
-        end
-    end
-
-    if ItemsData and ItemsData.GetWildcardSlotItemID and DB.GetWildcardSlotState then
-        local slotIDs = { WILDCARD_SLOT_TRINKET1, WILDCARD_SLOT_TRINKET2 }
-        for _, slotID in ipairs(slotIDs) do
-            if DB.GetWildcardSlotState(slotID) ~= nil then
-                local itemID = ItemsData:GetWildcardSlotItemID(slotID)
-                if itemID then
-                    tracked[itemID] = true
-                end
-            end
-        end
-    end
-
-    return tracked
-end
-
-local function GetCustomActiveSwipeColor()
-    return {
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_r)
-            or DB.DEFAULT_AURA_SWIPE_COLOR[1],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_g)
-            or DB.DEFAULT_AURA_SWIPE_COLOR[2],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_b)
-            or DB.DEFAULT_AURA_SWIPE_COLOR[3],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_a)
-            or DB.DEFAULT_AURA_SWIPE_COLOR[4],
-    }
-end
-
 local function GetCooldownSwipeColor()
     return {
         (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_r)
@@ -108,7 +49,12 @@ local function ApplyCustomActiveOverlay(frame, startTime, duration)
         return
     end
 
-    frame.Cooldown:SetSwipeColor(unpack(GetCustomActiveSwipeColor()))
+    frame.Cooldown:SetSwipeColor(
+        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_r) or DB.DEFAULT_AURA_SWIPE_COLOR[1],
+        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_g) or DB.DEFAULT_AURA_SWIPE_COLOR[2],
+        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_b) or DB.DEFAULT_AURA_SWIPE_COLOR[3],
+        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_a) or DB.DEFAULT_AURA_SWIPE_COLOR[4]
+    )
     frame.Cooldown:SetCooldown(startTime, duration)
     frame.Cooldown:SetDrawSwipe(true)
 end
@@ -232,12 +178,39 @@ function ItemVisuals:MarkItemCastActive(spellID)
     end
 
     local matched = false
-    local itemCandidates = CollectTrackedItemCandidates()
+    local db = DB.GetDB and DB.GetDB() or nil
+    local itemCandidates = {}
+
+    if db and db.itemSettings then
+        for itemID, settings in pairs(db.itemSettings) do
+            if settings and settings.state then
+                itemCandidates[itemID] = true
+            end
+        end
+    end
+
+    if ItemsData and ItemsData.GetWildcardSlotItemID and DB.GetWildcardSlotState then
+        for _, slotID in ipairs({ WILDCARD_SLOT_TRINKET1, WILDCARD_SLOT_TRINKET2 }) do
+            if DB.GetWildcardSlotState(slotID) ~= nil then
+                local itemID = ItemsData:GetWildcardSlotItemID(slotID)
+                if itemID then
+                    itemCandidates[itemID] = true
+                end
+            end
+        end
+    end
+
     for itemID in pairs(itemCandidates) do
         if self:GetCustomActiveDuration("item", itemID) > 0 then
             local _, itemSpellID = C_Item.GetItemSpell(itemID)
-            if itemSpellID and SpellIDsMatch(itemSpellID, spellID) then
-                if self:SetEntryActiveNow("item", itemID) then
+            if itemSpellID then
+                local matches = itemSpellID == spellID
+                if not matches then
+                    local baseItem = C_Spell.GetBaseSpell(itemSpellID) or itemSpellID
+                    local baseCast = C_Spell.GetBaseSpell(spellID) or spellID
+                    matches = baseItem == baseCast
+                end
+                if matches and self:SetEntryActiveNow("item", itemID) then
                     matched = true
                 end
             end
@@ -303,9 +276,12 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
     end
     local count = 0
     local classID = select(6, GetItemInfoInstant(itemID))
-    if classID == Enum.ItemClass.Consumable then
+    local isConsumable = (classID == Enum.ItemClass.Consumable)
+    if isConsumable then
         count = C_Item.GetItemCount(itemID, false, true)
     end
+    -- Consumable with no charges: always show as unusable regardless of cooldown
+    local forceDesaturated = isConsumable and count == 0
 
     if count > 1 then
         frame.count:SetText(count)
@@ -340,7 +316,7 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
     if hasCustomActive and self:IsEntryActive("item", itemID) then
         local entryKey = BuildEntryKey("item", itemID)
         local startTime = entryKey and activeStartByEntry[entryKey] or nil
-        frame.Icon:SetDesaturation(0)
+        frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
         ApplyCustomActiveOverlay(frame, startTime, customDuration)
         return true
     end
@@ -351,12 +327,13 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
     if isCDEnabled and (not isOnGCD or frame.showGCD or cooldownRemaining > 2) then
         frame.Cooldown:SetCooldown(startTime, duration)
         frame.Cooldown:SetDrawSwipe(true)
-        if cooldownRemaining > 2 then
+        -- Desaturate only while the long cooldown is clearly active; clear when ≤2s or expired
+        if cooldownRemaining <= 0 then
+            frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
+        elseif (forceDesaturated or cooldownRemaining > 2) then
             frame.Icon:SetDesaturation(1)
         end
-        if cooldownRemaining <= 0 then
-            frame.Icon:SetDesaturation(0)
-        end
+
         return true
     end
     if not isCDEnabled and cooldownRemaining > 0 and cooldownRemaining <= 0.1 then
@@ -365,7 +342,7 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
         frame.Icon:SetDesaturation(1)
     elseif not isCDEnabled then
         frame.Cooldown:Clear()
-        frame.Icon:SetDesaturation(0)
+        frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
     end
 
     return true

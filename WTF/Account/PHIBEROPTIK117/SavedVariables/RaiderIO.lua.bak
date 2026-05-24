@@ -55,18 +55,9 @@ RaiderIO_Config = {
 ["enableCombatLogTracking"] = false,
 ["showClientGuildBest"] = true,
 }
-RaiderIO_LastCharacter = "us-Callmeshorty-illidan"
+RaiderIO_LastCharacter = "us-Shortcannon-illidan"
 RaiderIO_MissingCharacters = {
-["us-Frostyakd-illidan"] = true,
-["us-Dookramaaj-illidan"] = true,
-["us-Brodiator-illidan"] = true,
-["us-Centurydruid-thrall"] = true,
-["us-Okwhofortd-illidan"] = true,
-["us-Destruktz-illidan"] = true,
-["us-Grungor-illidan"] = true,
-["us-Vampirevamp-illidan"] = true,
-["us-Pumpydumpie-illidan"] = true,
-["us-Fantaberry-illidan"] = true,
+["us-Shortcannon-illidan"] = true,
 }
 RaiderIO_MissingServers = {
 }

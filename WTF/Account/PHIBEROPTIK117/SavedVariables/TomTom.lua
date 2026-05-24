@@ -78,17 +78,18 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
-[76] = {
-["76:237600000:770000000:The Ancient Grove"] = {
-76,
-0.2376,
-0.77,
+[85] = {
+["85:532700000:904700000:Return to the portal room"] = {
+85,
+0.5327000000000001,
+0.9047,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["minimap"] = true,
+["desc"] = "Return to the portal room",
+["silent"] = true,
 ["cleardistance"] = 0,
-["title"] = "The Ancient Grove",
+["title"] = "Return to the portal room",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -105,6 +106,7 @@ TomTomWaypointsM = {
 ["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
+["minimap"] = true,
 ["world"] = true,
 },
 },

@@ -32,6 +32,7 @@ nil,
 },
 },
 ["block"] = {
+["fontsize"] = 16,
 ["position"] = {
 "BOTTOM",
 nil,
@@ -78,6 +79,29 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
+[634] = {
+["634:784200000:567000000:Morheim"] = {
+634,
+0.7842,
+0.5670000000000001,
+["arrivaldistance"] = 15,
+["crazy"] = true,
+["persistent"] = true,
+["minimap"] = true,
+["cleardistance"] = 0,
+["title"] = "Morheim",
+["from"] = "Dystinct Earthen Skyriding",
+["callbacks"] = {
+["distance"] = {
+},
+["minimap"] = {
+},
+["world"] = {
+},
+},
+["world"] = true,
+},
+},
 [85] = {
 ["85:532700000:904700000:Return to the portal room"] = {
 85,
@@ -93,17 +117,10 @@ TomTomWaypointsM = {
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
-[15] = nil --[[ skipped inline function ]],
-},
-["world"] = {
-["onclick"] = nil --[[ skipped inline function ]],
-["tooltip_update"] = nil --[[ skipped inline function ]],
-["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 ["minimap"] = {
-["onclick"] = nil --[[ skipped inline function ]],
-["tooltip_update"] = nil --[[ skipped inline function ]],
-["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+["world"] = {
 },
 },
 ["minimap"] = true,

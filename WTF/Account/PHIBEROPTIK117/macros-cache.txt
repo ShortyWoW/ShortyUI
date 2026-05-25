@@ -8,7 +8,7 @@ VER 3 0000000000000064 "AFK Level" "134400"
 /run local f=CreateFrame("Frame")f:RegisterEvent("PLAYER_CAMPING")f:SetScript("OnEvent", function() local p=StaticPopup_Visible("CAMP")_G[p.."Button1"]:Click()end)
 END
 VER 3 000000000000007E "Guild" "413580"
-/2 |cffffd200|HclubFinder:ClubFinder-1-619856-127-69207736|h[Guild: PI Me Bro]|h|r - 9/9H - Seeking 1 healer for raid team. Fri & Sun 9pm-12am EST. DM with any questions.
+/2 |cffffd200|HclubFinder:ClubFinder-1-619856-127-69207736|h[Guild: PI Me Bro]|h|r [9/9H] - Seeking healers & dps for Friday/Sunday 9pm-12am EST push into Mythic content. Slide into my DMs if interested, or you have questions.
 END
 VER 3 000000000000005D "Lust" "134400"
 #showtooltip

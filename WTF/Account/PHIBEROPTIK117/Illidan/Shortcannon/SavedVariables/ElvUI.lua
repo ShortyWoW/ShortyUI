@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/dyses",
-"/leave service",
 "/leave services",
 "/reload",
 "/g |cff71d5ff|Hmount:278966:87741:|h[Fiery Hearthsteed]|h|r",
+"/tomtom",
+"/dyses",
 },
 ["ChatHistoryLog"] = {
 {

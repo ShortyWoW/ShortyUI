@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
 ["lastSanitation"] = 3,
-["session"] = 6,
+["session"] = 8,
 ["errors"] = {
 {
 ["message"] = "[ADDON_ACTION_BLOCKED] AddOn 'Dystinct_EarthenSkyriding' tried to call the protected function 'Frame:Hide()'.",

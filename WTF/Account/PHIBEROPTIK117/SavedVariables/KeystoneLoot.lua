@@ -1,23 +1,24 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
-["version"] = 6,
 ["settings"] = {
 ["hideOtherItems"] = false,
-["highlighting"] = {
-["mastery"] = true,
-["comboMode"] = false,
-["versatility"] = true,
-["haste"] = true,
-["crit"] = true,
-["noStats"] = true,
-},
-["keystoneTooltip"] = true,
 ["hiddenCharacters"] = {
 },
-["wideMode"] = false,
+["keystoneTooltip"] = true,
 ["favoriteTooltip"] = true,
+["wideMode"] = false,
+["highlighting"] = {
+["versatility"] = true,
+["crit"] = true,
+["mastery"] = true,
+["haste"] = true,
+["comboMode"] = false,
+["noStats"] = true,
+},
 ["lootReminder"] = {
+["whisperMessage"] = "Can I have {item} please?",
+["dropAlert"] = true,
 ["dungeons"] = true,
 },
 ["minimap"] = {
@@ -25,6 +26,7 @@ KeystoneLootDB = {
 ["degrees"] = 195,
 },
 },
+["version"] = 7,
 ["favorites"] = {
 ["Illidan-Shortlight-2"] = {
 },
@@ -36,9 +38,9 @@ KeystoneLootDB = {
 },
 ["Illidan-Shortlite-2"] = {
 },
-["Vashj-Shortbeef-10"] = {
+["Illidan-Shortybear-11"] = {
 },
-["Illidan-Shortyshamm-7"] = {
+["Vashj-Shortbeef-10"] = {
 },
 ["Illidan-Shortytest-11"] = {
 },
@@ -48,7 +50,7 @@ KeystoneLootDB = {
 },
 ["Area 52-Shortbowjob-3"] = {
 },
-["Illidan-Shortybear-11"] = {
+["Illidan-Shortyshamm-7"] = {
 },
 },
 }

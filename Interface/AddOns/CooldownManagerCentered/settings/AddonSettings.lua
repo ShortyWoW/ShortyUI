@@ -11,7 +11,6 @@ local SettingsLib = LibStub("LibEQOLSettingsMode-1.0")
 local LSM = LibStub("LibSharedMedia-3.0", true)
 
 local function AddonSettings_BuildCooldown(category, layout)
-
     SettingsLib:CreateHeader(category, {
         name = "Set how it grows and from where",
     })
@@ -840,7 +839,7 @@ local function AddonSettings_BuildCooldown(category, layout)
             if value["OUTLINE"] or value["THICKOUTLINE"] or value["MONOCHROME"] then
                 ns.db.profile.cooldownManager_cooldownFontFlags = value
             else
-                ns.db.profile.cooldownManager_cooldownFontFlags = {OUTLINE = false}
+                ns.db.profile.cooldownManager_cooldownFontFlags = { OUTLINE = false }
             end
             ns.CooldownFont:RefreshAll()
             if ns.TrackerItemViewer then
@@ -1405,13 +1404,12 @@ local function AddonSettings_BuildCooldown(category, layout)
             return ns.db.profile.cooldownManager_stackFontFlags or {}
         end,
         setSelection = function(value)
-            
             if value["OUTLINE"] or value["THICKOUTLINE"] or value["MONOCHROME"] then
                 ns.db.profile.cooldownManager_stackFontFlags = value
             else
-                ns.db.profile.cooldownManager_stackFontFlags = {OUTLINE = false}
+                ns.db.profile.cooldownManager_stackFontFlags = { OUTLINE = false }
             end
-            
+
             ns.Stacks:OnSettingChanged()
             if ns.TrackerItemViewer then
                 ns.TrackerItemViewer:RefreshStyling()
@@ -1993,7 +1991,7 @@ local function AddonSettings_BuildCooldown(category, layout)
             if value["OUTLINE"] or value["THICKOUTLINE"] or value["MONOCHROME"] then
                 ns.db.profile.cooldownManager_keybindFontFlags = value
             else
-                ns.db.profile.cooldownManager_keybindFontFlags = {OUTLINE = false}
+                ns.db.profile.cooldownManager_keybindFontFlags = { OUTLINE = false }
             end
             ns.Keybinds:OnSettingChanged()
             if ns.TrackerItemViewer then
@@ -2437,7 +2435,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         ["SHOW_WITH_ENEMY_TARGET"] = "Show with Enemy Target ",
         ["SHOW_WITH_TARGET"] = "Show with any Target ",
         ["HIDE_WHEN_FLYING"] = "Hide when Flying ",
-        ["HIDE_WHEN_MOUNTED"] = "Hide when Mounted ",
+        ["HIDE_WHEN_MOUNTED"] = "Hide when Mounted & Travel Form",
         ["HIDE_WHEN_RESTING"] = "Hide when Resting ",
         ["HIDE_OUT_OF_COMBAT"] = "Hide out of Combat ",
     }
@@ -2692,7 +2690,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_utility_dimWhenNotOnCD = value
             ns.CooldownManager.ForceRefresh({ utility = true })
-            if (not value) then
+            if not value then
                 ns.API:ShowReloadUIConfirmation()
             end
         end,

@@ -6,8 +6,8 @@ ns.CMCVisibility = CMCVisibility
 -- Per-viewer data: driver frames, cached attribute-driver state, and instance override flag
 local inInstance = false
 local miniGameSceneActive = false
-local driverFrames = {}  -- [viewerName] = Frame with RegisterAttributeDriver
-local driverState  = {}  -- [viewerName] = "show" | "hide"  (last value from attribute driver)
+local driverFrames = {} -- [viewerName] = Frame with RegisterAttributeDriver
+local driverState = {} -- [viewerName] = "show" | "hide"  (last value from attribute driver)
 
 local viewers = {
     { viewerName = "BuffIconCooldownViewer" },
@@ -21,12 +21,12 @@ local viewers = {
 -- Rules that map directly to macro conditionals supported by RegisterAttributeDriver.
 -- SHOW_IN_INSTANCE has no macro conditional equivalent and is handled via events.
 local RULE_CONDITIONALS = {
-    SHOW_IN_COMBAT         = "[combat] show",
-    HIDE_IN_VEHICLES       = "[unithasvehicleui] hide;[overridebar] hide;[possessbar] hide",
-    HIDE_WHEN_FLYING       = "[flying] hide",
-    HIDE_WHEN_MOUNTED      = "[mounted] hide",
-    HIDE_WHEN_RESTING      = "[resting] hide",
-    HIDE_OUT_OF_COMBAT     = "[nocombat] hide",
+    SHOW_IN_COMBAT = "[combat] show",
+    HIDE_IN_VEHICLES = "[unithasvehicleui] hide;[overridebar] hide;[possessbar] hide",
+    HIDE_WHEN_FLYING = "[flying] hide",
+    HIDE_WHEN_MOUNTED = "[mounted] hide",
+    HIDE_WHEN_RESTING = "[resting] hide",
+    HIDE_OUT_OF_COMBAT = "[nocombat] hide",
 }
 
 -- Priority order: SHOW overrides are evaluated first, HIDE rules after.
@@ -46,7 +46,9 @@ end
 
 local function HasAnyRule(rules)
     for _, v in pairs(rules) do
-        if v then return true end
+        if v then
+            return true
+        end
     end
     return false
 end
@@ -77,7 +79,9 @@ end
 local function ApplyViewerAlpha(viewerData)
     local viewerName = viewerData.viewerName
     local viewer = viewerData.viewer
-    if not viewer then return end
+    if not viewer then
+        return
+    end
 
     local rules = GetViewerRules(viewerName)
     local alpha = GetViewerAlpha(viewerData)
@@ -89,6 +93,11 @@ local function ApplyViewerAlpha(viewerData)
 
     if rules.SHOW_IN_INSTANCE and inInstance then
         viewer:SetAlpha(alpha)
+        return
+    end
+    local shapeshiftFormID = GetShapeshiftFormID()
+    if rules.HIDE_WHEN_MOUNTED and (shapeshiftFormID == 3 or shapeshiftFormID == 29 or shapeshiftFormID == 27) then
+        viewer:SetAlpha(0)
         return
     end
     if rules.HIDE_IN_VEHICLES and miniGameSceneActive then
@@ -171,7 +180,7 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
         if pendingInitialize then
             pendingInitialize = false
             CMCVisibility:Initialize()
-            return  -- Initialize calls UpdateAll internally via SetupViewerDriver
+            return -- Initialize calls UpdateAll internally via SetupViewerDriver
         end
     end
     CMCVisibility:UpdateAll()
@@ -214,10 +223,12 @@ function CMCVisibility:Initialize()
     EventFrame:RegisterEvent("CLIENT_SCENE_OPENED")
     EventFrame:RegisterEvent("CLIENT_SCENE_CLOSED")
     EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
+    EventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 end
 
 function CMCVisibility:DeInitialize()
     EventFrame:UnregisterAllEvents()
+    EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 
     for _, viewerData in ipairs(viewers) do
         local viewerName = viewerData.viewerName
@@ -242,7 +253,7 @@ function CMCVisibility:MigrateSettings()
 
     profile.cooldownManager_visibility_perViewer = {}
 
-    local globalRules    = profile.cooldownManager_visibility_enabled_rules    or {}
+    local globalRules = profile.cooldownManager_visibility_enabled_rules or {}
     local affectedViewers = profile.cooldownManager_visibility_enabled_viewers or {}
 
     local viewerNames = {

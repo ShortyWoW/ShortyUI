@@ -1,1 +1,0 @@
--- Removed: replaced with direct C_Spell.GetSpellCooldownDuration / C_Spell.GetSpellChargeDuration calls in cooldownManager.lua

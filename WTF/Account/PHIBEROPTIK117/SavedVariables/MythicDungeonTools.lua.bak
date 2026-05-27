@@ -4,20 +4,27 @@ MythicDungeonToolsDB = {
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 },
 ["global"] = {
+["focusMarker"] = {
+["disableTargetMarkerInRaid"] = false,
+},
 ["scale"] = 1.4,
-["latestDungeonSeen"] = 150,
+["minimap"] = {
+["minimapPos"] = 252.8475054978408,
+["showInCompartment"] = true,
+["hide"] = true,
+},
 ["maximized"] = false,
 ["presets"] = {
 [150] = {
@@ -43,10 +50,6 @@ MythicDungeonToolsDB = {
 },
 },
 ["version"] = 607,
-["minimap"] = {
-["minimapPos"] = 252.8475054978408,
-["showInCompartment"] = true,
-["hide"] = true,
-},
+["latestDungeonSeen"] = 150,
 },
 }

@@ -14,11 +14,11 @@ TomTomDB = {
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
 ["Shortlite - Illidan"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -31,11 +31,6 @@ nil,
 118.0003814697266,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 ["block"] = {
 ["fontsize"] = 16,
 ["position"] = {
@@ -44,6 +39,11 @@ nil,
 "BOTTOM",
 10.00003242492676,
 175.0008544921875,
+},
+},
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
 },
 },
 },
@@ -65,11 +65,11 @@ TomTomWaypointsM = {
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -79,17 +79,17 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
-[634] = {
-["634:784200000:567000000:Morheim"] = {
-634,
-0.7842,
-0.5670000000000001,
+[641] = {
+["641:830000000:664600000:Suramar"] = {
+641,
+0.83,
+0.6646,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
 ["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Morheim",
+["title"] = "Suramar",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
@@ -160,16 +160,16 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["world"] = true,
 },
 },
 },
-["Shortytest - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 ["Callmeshawte - Area 52"] = {
 },
@@ -182,27 +182,32 @@ TomTomWaypointsM = {
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["desc"] = "Jotunheim",
-["silent"] = true,
+["minimap"] = true,
 ["cleardistance"] = 0,
 ["title"] = "Jotunheim",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
+[15] = nil --[[ skipped inline function ]],
 },
 ["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 ["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
-["minimap"] = true,
 ["world"] = true,
 },
 },
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortytest - Illidan"] = {
 },
 },
 }

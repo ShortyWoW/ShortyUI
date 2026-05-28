@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DemonHunter-Devourer',}
-local provider = {region='US',realm='Malfurion',name='US',type='subscribers',zone=46,date='2026-05-26',data={Pa='Paraclete:BAEALgAFFAMJAwAAAA==.',Se='Seagulls:BAEBLgAECn8jAAIBAAkJQh+KEACoAgloDAAABgBTAGkMAAAFAFQAawwAAAUASgBqDAAABABeAGwMAAADAFMAbQwAAAIAPQDqDAAABgBXAG4MAAADAFAAbwwAAAEAVAABAAkJQh+KEACoAgloDAAABgBTAGkMAAAFAFQAawwAAAUASgBqDAAABABeAGwMAAADAFMAbQwAAAIAPQDqDAAABgBXAG4MAAADAFAAbwwAAAEAVAAAAA==.',},}
+local lookup = {'Priest-Holy','DemonHunter-Devourer',}
+local provider = {region='US',realm='Malfurion',name='US',type='subscribers',zone=46,date='2026-05-27',data={Pa='Paraclete:BAEBLgAECn8UAAIBAAUJQhYQNAAaAQVoDAAABwBeAGkMAAAGADcAawwAAAMAWQBqDAAAAQAPAOoMAAADAB8AAQAFCUIWEDQAGgEFaAwAAAcAXgBpDAAABgA3AGsMAAADAFkAagwAAAEADwDqDAAAAwAfAAAA.',Se='Seagulls:BAEBLgAECn8sAAICAAkJFSDPCQDnAgloDAAABwBdAGkMAAAGAFQAawwAAAYAUQBqDAAABQBeAGwMAAAEAFMAbQwAAAMAPQDqDAAABwBXAG4MAAAEAFAAbwwAAAIAVAACAAkJFSDPCQDnAgloDAAABwBdAGkMAAAGAFQAawwAAAYAUQBqDAAABQBeAGwMAAAEAFMAbQwAAAMAPQDqDAAABwBXAG4MAAAEAFAAbwwAAAIAVAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

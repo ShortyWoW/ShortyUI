@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Evoker-Preservation',}
-local provider = {region='US',realm='Anetheron',name='US',type='subscribers',zone=46,date='2026-05-26',data={Ex='Excalibes:BAEALgAECgkJAwABLgAECgkJSgABANQXAA==.',},}
+local provider = {region='US',realm='Anetheron',name='US',type='subscribers',zone=46,date='2026-05-27',data={Ex='Excalibes:BAEALgAECgkJAwABLgAECgkJTQABANQXAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

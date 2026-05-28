@@ -5,7 +5,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 ["Raiding"] = {
 },
@@ -13,7 +13,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 },
 ["raid"] = {
@@ -25,7 +25,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 ["Raiding"] = {
 },
@@ -33,7 +33,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 },
 ["raid"] = {
@@ -45,7 +45,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 ["Raiding"] = {
 },
@@ -53,7 +53,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 },
 ["raid"] = {
@@ -65,7 +65,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 ["Raiding"] = {
 },
@@ -73,7 +73,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 },
 ["raid"] = {
@@ -85,7 +85,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 ["Raiding"] = {
 },
@@ -93,7 +93,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 },
 ["raid"] = {
@@ -105,7 +105,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 ["Raiding"] = {
 },
@@ -113,7 +113,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 },
 ["raid"] = {
@@ -125,13 +125,10 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 [77471229] = true,
-[73107620] = true,
 [79455480] = true,
+[73107620] = true,
 },
-["Dungeons"] = {
-[77471229] = true,
-[73107620] = true,
-[79455480] = true,
+["BGs"] = {
 },
 ["Raiding"] = {
 [73104413] = true,
@@ -139,21 +136,24 @@ ShortyTalentsDB = {
 [78033587] = true,
 [82242175] = true,
 [73107914] = true,
-[73107827] = true,
+[79949606] = true,
 [77471231] = true,
 [79455491] = true,
-[79455492] = true,
 [78033697] = true,
-[79949606] = true,
+[79455492] = true,
+[73107827] = true,
 },
 ["Arena"] = {
 },
 ["Delves"] = {
 [77471229] = true,
-[73107917] = true,
 [79455480] = true,
+[73107917] = true,
 },
-["BGs"] = {
+["Dungeons"] = {
+[77471229] = true,
+[79455480] = true,
+[73107620] = true,
 },
 },
 ["raid"] = {
@@ -161,23 +161,19 @@ ShortyTalentsDB = {
 },
 },
 },
-[104] = {
+[264] = {
 ["allowed"] = {
 ["Mythic+"] = {
-[82143104] = true,
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 ["Raiding"] = {
-[81643784] = true,
 },
 ["Arena"] = {
 },
 ["Delves"] = {
-[82143110] = true,
 },
-["Dungeons"] = {
-[82143104] = true,
+["BGs"] = {
 },
 },
 ["raid"] = {
@@ -189,7 +185,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 ["Raiding"] = {
 },
@@ -197,7 +193,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 },
 ["raid"] = {
@@ -205,7 +201,7 @@ ShortyTalentsDB = {
 },
 },
 },
-[0] = {
+[268] = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
@@ -229,7 +225,7 @@ ShortyTalentsDB = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 ["Raiding"] = {
 },
@@ -237,7 +233,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 },
 ["raid"] = {
@@ -245,7 +241,7 @@ ShortyTalentsDB = {
 },
 },
 },
-[268] = {
+[0] = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
@@ -265,19 +261,23 @@ ShortyTalentsDB = {
 },
 },
 },
-[264] = {
+[104] = {
 ["allowed"] = {
 ["Mythic+"] = {
+[82143104] = true,
 },
-["BGs"] = {
+["Dungeons"] = {
+[82143104] = true,
 },
 ["Raiding"] = {
+[81643784] = true,
 },
 ["Arena"] = {
 },
 ["Delves"] = {
+[82143110] = true,
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 },
 ["raid"] = {

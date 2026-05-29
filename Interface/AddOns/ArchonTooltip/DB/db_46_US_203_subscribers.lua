@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown',}
-local provider = {region='US',realm='Staghelm',name='US',type='subscribers',zone=46,date='2026-05-27',data={Sh='Shmoon:BAEALgAECgIJAgABLgAECgQJBAABAAAAAA==.',Vi='Viperc:BAEALgADCgMJAwABLgAECgUJEgABAAAAAA==.',},}
+local lookup = {'Unknown-Unknown','Warlock-Affliction',}
+local provider = {region='US',realm='Staghelm',name='US',type='subscribers',zone=46,date='2026-05-28',data={Sh='Shmoon:BAEALgAECgIJAgABLgAECgQJBAABAAAAAA==.',Vi='Viperc:BAEALgADCgMJAwABLgAECgYJFQACAPsDAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

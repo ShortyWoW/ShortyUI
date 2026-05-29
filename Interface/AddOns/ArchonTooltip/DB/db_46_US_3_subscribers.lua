@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Unholy',}
-local provider = {region='US',realm='Agamaggan',name='US',type='subscribers',zone=46,date='2026-05-27',data={Ri='Rixin:BAECLgAFFH8WAAIBAAYJOBm5GwCxAQZoDAAAAwAvAGkMAAAGAFoAawwAAAQASgBqDAAAAQA4AG0MAAABAA8A6gwAAAcAXwABAAYJOBm5GwCxAQZoDAAAAwAvAGkMAAAGAFoAawwAAAQASgBqDAAAAQA4AG0MAAABAA8A6gwAAAcAXwAuAAQKfzwAAgEACQk3JvEDAFYDAAEACQk3JvEDAFYDAAAA.Rixryu:BAEALgADCgkJFgABLgAFFAYJFgABADgZAA==.',},}
+local provider = {region='US',realm='Agamaggan',name='US',type='subscribers',zone=46,date='2026-05-28',data={Ri='Rixin:BAECLgAFFH8YAAIBAAgJTRlOBgBrAghoDAAAAwAvAGkMAAAGAFkAawwAAAQASgBqDAAAAQA4AGwMAAABADsAbQwAAAEADwDqDAAABwBfAG4MAAABAEcAAQAICU0ZTgYAawIIaAwAAAMALwBpDAAABgBZAGsMAAAEAEoAagwAAAEAOABsDAAAAQA7AG0MAAABAA8A6gwAAAcAXwBuDAAAAQBHAC4ABAp/PAACAQAJCTcmGwQAVAMAAQAJCTcmGwQAVAMAAAA=.Rixryu:BAEALgADCgkJFgABLgAFFAgJGAABAE0ZAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

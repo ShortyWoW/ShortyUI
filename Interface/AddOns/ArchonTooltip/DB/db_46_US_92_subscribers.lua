@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Unknown-Unknown','Evoker-Devastation',}
-local provider = {region='US',realm='Exodar',name='US',type='subscribers',zone=46,date='2026-05-27',data={Fr='Frostyhatesu:BAEALgADCgMJAwABLgAECgIJAwABAAAAAA==.',['Nô']='Nôwôrries:BAEALgAECgIJAwAAAA==.',Ta='Tanazir:BAEBLgAECn8WAAICAAgJxg34CwA9AQhoDAAABABEAGkMAAAFADAAawwAAAQAGQBqDAAAAwBBAGwMAAABAAUAbQwAAAEAIADqDAAAAwA9AG4MAAABAAQAAgAICcYN+AsAPQEIaAwAAAQARABpDAAABQAwAGsMAAAEABkAagwAAAMAQQBsDAAAAQAFAG0MAAABACAA6gwAAAMAPQBuDAAAAQAEAAAA.',Te='Tenebris:BAEALgAECgMJAwABLgAECggJFgACAMYNAA==.',},}
+local provider = {region='US',realm='Exodar',name='US',type='subscribers',zone=46,date='2026-05-28',data={Fr='Frostyhatesu:BAEALgADCgMJAwABLgAECgIJAwABAAAAAA==.',['Nô']='Nôwôrries:BAEALgAECgIJAwAAAA==.',Ta='Tanazir:BAEBLgAECn8WAAICAAgJxg0NDAA8AQhoDAAABABEAGkMAAAFADAAawwAAAQAGQBqDAAAAwBBAGwMAAABAAUAbQwAAAEAIADqDAAAAwA9AG4MAAABAAQAAgAICcYNDQwAPAEIaAwAAAQARABpDAAABQAwAGsMAAAEABkAagwAAAMAQQBsDAAAAQAFAG0MAAABACAA6gwAAAMAPQBuDAAAAQAEAAAA.',Te='Tenebris:BAEALgAECgMJAwABLgAECggJFgACAMYNAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

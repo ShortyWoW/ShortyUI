@@ -39,7 +39,7 @@ local CONFIG_KEY_TO_NAME = {
 }
 
 local function GetIconHeight(iconSize)
-    if (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_rectangularIcons) then
+    if ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_rectangularIcons then
         local percent = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_rectangularIcons_percent) or 0.8
         return math.floor(iconSize * percent)
     end
@@ -414,56 +414,6 @@ function TrackerInstance:UpdateCooldowns()
 end
 
 function TrackerInstance:ApplyStabilityGuard(newEntries)
-    local newKeySet = {}
-    for _, entry in ipairs(newEntries) do
-        newKeySet[entry.kind .. ":" .. tostring(entry.id)] = entry
-    end
-
-    local confirmedRemoved = {}
-    local toRemove = {}
-    for key, data in pairs(self.pendingHide) do
-        if newKeySet[key] then
-            toRemove[key] = true
-        elseif data.entry.wildcardSlotID and ItemsData:GetWildcardSlotItemID(data.entry.wildcardSlotID) ~= data.entry.id then
-            -- Wildcard slot changed: skip the miss threshold.
-            toRemove[key] = true
-            confirmedRemoved[key] = true
-        else
-            data.misses = data.misses + 1
-            if data.misses >= 3 then
-                toRemove[key] = true
-                confirmedRemoved[key] = true -- blocks re-entry into pendingHide this pass
-            end
-        end
-    end
-    for key in pairs(toRemove) do
-        self.pendingHide[key] = nil
-    end
-
-    for key, entry in pairs(self.shownKeys) do
-        if not newKeySet[key] and not self.pendingHide[key] and not confirmedRemoved[key] then
-            if entry.wildcardSlotID and ItemsData:GetWildcardSlotItemID(entry.wildcardSlotID) ~= entry.id then
-                confirmedRemoved[key] = true
-            else
-                self.pendingHide[key] = { entry = entry, misses = 1 }
-            end
-        end
-    end
-
-    if next(self.pendingHide) ~= nil then
-        C_Timer.After(0.1, function()
-            if self.anchor then self:DoRefreshEntries() end
-        end)
-    end
-
-    local allEntries = {}
-    for _, entry in ipairs(newEntries) do
-        table.insert(allEntries, entry)
-    end
-    for _, data in pairs(self.pendingHide) do
-        table.insert(allEntries, data.entry)
-    end
-
     local prevPos = {}
     for i, key in ipairs(self.shownOrder) do
         prevPos[key] = i
@@ -473,37 +423,46 @@ function TrackerInstance:ApplyStabilityGuard(newEntries)
         return e.kind .. ":" .. tostring(e.id)
     end
 
-    table.sort(allEntries, function(a, b)
+    table.sort(newEntries, function(a, b)
         local aOrder, bOrder = ItemsData:GetEntryOrder(a), ItemsData:GetEntryOrder(b)
         if aOrder ~= bOrder then
-            if aOrder == nil then return false end
-            if bOrder == nil then return true end
+            if aOrder == nil then
+                return false
+            end
+            if bOrder == nil then
+                return true
+            end
             return aOrder < bOrder
         end
         local aPrev, bPrev = prevPos[entryKey(a)], prevPos[entryKey(b)]
         if aPrev ~= bPrev then
-            if aPrev == nil then return false end
-            if bPrev == nil then return true end
+            if aPrev == nil then
+                return false
+            end
+            if bPrev == nil then
+                return true
+            end
             return aPrev < bPrev
         end
         local aName = ItemsData:GetEntryName(a.kind, a.id) or tostring(a.id)
         aName = aName == "" and tostring(a.id) or aName:lower()
         local bName = ItemsData:GetEntryName(b.kind, b.id) or tostring(b.id)
         bName = bName == "" and tostring(b.id) or bName:lower()
-        if aName ~= bName then return aName < bName end
-        if a.kind ~= b.kind then return a.kind < b.kind end
+        if aName ~= bName then
+            return aName < bName
+        end
+        if a.kind ~= b.kind then
+            return a.kind < b.kind
+        end
         return tostring(a.id) < tostring(b.id)
     end)
 
-    self.shownKeys = {}
     self.shownOrder = {}
-    for _, entry in ipairs(allEntries) do
-        local key = entryKey(entry)
-        self.shownKeys[key] = entry
-        table.insert(self.shownOrder, key)
+    for _, entry in ipairs(newEntries) do
+        table.insert(self.shownOrder, entryKey(entry))
     end
 
-    return allEntries
+    return newEntries
 end
 
 function TrackerInstance:RefreshEntries()

@@ -2490,7 +2490,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                     ns.db.profile.cooldownManager_visibility_perViewer = {}
                 end
                 ns.db.profile.cooldownManager_visibility_perViewer[viewerName] = value
-                ns.CMCVisibility:Initialize()
+                ns.CMCVisibility:Initialize({ [viewerName] = true })
             end,
             summary = function(selectionMap, labels)
                 local HIDE_RULES = {

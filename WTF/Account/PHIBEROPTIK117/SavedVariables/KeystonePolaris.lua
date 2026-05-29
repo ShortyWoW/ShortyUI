@@ -9,12 +9,12 @@ KeystonePolarisDB = {
 ["Shortcannon - Illidan"] = "Default",
 ["Shortbowjob - Area 52"] = "Default",
 ["Drewishlaser - Dalaran"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Shortlite - Illidan"] = "Default",
 ["Shortlight - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlite - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {

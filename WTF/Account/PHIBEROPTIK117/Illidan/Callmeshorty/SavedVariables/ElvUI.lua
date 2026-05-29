@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/keys",
-"/2 |cffffd200|HclubFinder:ClubFinder-1-619856-127-69207736|h[Guild: PI Me Bro]|h|r [9/9H] - Seeking healers & dps for Friday/Sunday 9pm-12am EST push into Mythic content. Slide into my DMs if interested, or you have questions.",
-"/macro",
-"/simc",
-"/g Did you name change your druid Obe?",
+"/g Friday / Sunday 9pm EST",
+"/2 LF someone to roleplay as my father and tell me you're proud of me.",
+"/g I'm living vicariously through Tricket's M+ run",
+"/g on my druid? I think it's 268",
+"/g let me go check",
 },
 ["ChatHistoryLog"] = {
 {

@@ -39,14 +39,29 @@ local RULE_ORDER = {
     "HIDE_OUT_OF_COMBAT",
 }
 
+local HIDE_RULES = {
+    HIDE_IN_VEHICLES = true,
+    HIDE_WHEN_FLYING = true,
+    HIDE_WHEN_MOUNTED = true,
+    HIDE_WHEN_RESTING = true,
+    HIDE_OUT_OF_COMBAT = true,
+}
+
 local function GetViewerRules(viewerName)
     local perViewer = ns.db and ns.db.profile.cooldownManager_visibility_perViewer
     return (perViewer and perViewer[viewerName]) or {}
 end
 
-local function HasAnyRule(rules)
-    for _, v in pairs(rules) do
-        if v then
+local function ResolveViewer(viewerData)
+    if not viewerData.viewer then
+        viewerData.viewer = _G[viewerData.viewerName]
+    end
+    return viewerData.viewer
+end
+
+local function HasAnyHideRule(rules)
+    for ruleName, enabled in pairs(rules) do
+        if enabled and HIDE_RULES[ruleName] then
             return true
         end
     end
@@ -65,7 +80,7 @@ local function BuildConditionalString(rules)
 end
 
 local function GetViewerAlpha(viewerData)
-    local viewer = viewerData.viewer
+    local viewer = ResolveViewer(viewerData)
     local settingsKey = viewerData.settingsKey
     if settingsKey then
         local editMode = ns.db and ns.db.profile.editMode
@@ -76,9 +91,9 @@ local function GetViewerAlpha(viewerData)
     return 1
 end
 
-local function ApplyViewerAlpha(viewerData)
+local function ApplyViewerAlpha(viewerData, forceAlphaReset)
     local viewerName = viewerData.viewerName
-    local viewer = viewerData.viewer
+    local viewer = ResolveViewer(viewerData)
     if not viewer then
         return
     end
@@ -86,8 +101,10 @@ local function ApplyViewerAlpha(viewerData)
     local rules = GetViewerRules(viewerName)
     local alpha = GetViewerAlpha(viewerData)
 
-    if not HasAnyRule(rules) then
-        viewer:SetAlpha(alpha)
+    if not HasAnyHideRule(rules) then
+        if forceAlphaReset then
+            viewer:SetAlpha(alpha)
+        end
         return
     end
 
@@ -119,23 +136,20 @@ local function ApplyViewerAlpha(viewerData)
     viewer:SetAlpha(state == "show" and alpha or 0)
 end
 
-local function SetupViewerDriver(viewerData)
+local function SetupViewerDriver(viewerData, forceAlphaReset)
     local viewerName = viewerData.viewerName
 
-    -- Lazily resolve the viewer frame reference
-    if not viewerData.viewer and _G[viewerName] then
-        viewerData.viewer = _G[viewerName]
-    end
+    ResolveViewer(viewerData)
 
     local rules = GetViewerRules(viewerName)
 
-    if not HasAnyRule(rules) then
+    if not HasAnyHideRule(rules) then
         -- Unregister any existing driver but keep the frame for reuse later
         if driverFrames[viewerName] then
-            UnregisterAttributeDriver(driverFrames[viewerName], "state-vis")
+            UnregisterAttributeDriver(driverFrames[viewerName], "cmc-state-vis")
         end
         driverState[viewerName] = "show"
-        ApplyViewerAlpha(viewerData)
+        ApplyViewerAlpha(viewerData, forceAlphaReset)
         return
     end
 
@@ -146,25 +160,46 @@ local function SetupViewerDriver(viewerData)
         driverFrames[viewerName] = frame
         -- viewerData / viewerName captured by closure — stable for the lifetime of the addon
         frame:SetScript("OnAttributeChanged", function(self, name, value)
-            if name == "state-vis" then
+            if name == "cmc-state-vis" then
                 driverState[viewerName] = value
                 ApplyViewerAlpha(viewerData)
             end
         end)
     else
-        UnregisterAttributeDriver(frame, "state-vis")
+        UnregisterAttributeDriver(frame, "cmc-state-vis")
     end
 
     local conditionalStr = BuildConditionalString(rules)
-    RegisterAttributeDriver(frame, "state-vis", conditionalStr)
+    RegisterAttributeDriver(frame, "cmc-state-vis", conditionalStr)
+    driverState[viewerName] = SecureCmdOptionParse(conditionalStr) or "show"
 
     -- Ensure alpha is applied even if OnAttributeChanged has not yet fired
     ApplyViewerAlpha(viewerData)
 end
 
--- Pending-initialize flag: set when Initialize() is called during combat lockdown.
+-- Pending initialize request: set when Initialize() is called during combat lockdown.
 -- SetupViewerDriver calls RegisterAttributeDriver which is combat-restricted.
-local pendingInitialize = false
+local pendingInitializeRequest
+
+local function QueuePendingInitialize(forceViewers)
+    pendingInitializeRequest = pendingInitializeRequest or {}
+
+    if not forceViewers then
+        return
+    end
+
+    local pendingForceViewers = pendingInitializeRequest.forceViewers
+    if not pendingForceViewers then
+        pendingForceViewers = {}
+        pendingInitializeRequest.forceViewers = pendingForceViewers
+    end
+
+    for viewerName, shouldForce in pairs(forceViewers) do
+        if shouldForce then
+            pendingForceViewers[viewerName] = true
+        end
+    end
+end
 
 -- Event frame: handles SHOW_IN_INSTANCE (event-based) and deferred post-combat init.
 local EventFrame = CreateFrame("Frame")
@@ -177,9 +212,10 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
     elseif event == "CLIENT_SCENE_CLOSED" then
         miniGameSceneActive = false
     elseif event == "PLAYER_REGEN_ENABLED" then
-        if pendingInitialize then
-            pendingInitialize = false
-            CMCVisibility:Initialize()
+        if pendingInitializeRequest then
+            local request = pendingInitializeRequest
+            pendingInitializeRequest = nil
+            CMCVisibility:Initialize(request.forceViewers)
             return -- Initialize calls UpdateAll internally via SetupViewerDriver
         end
     end
@@ -188,29 +224,26 @@ end)
 
 function CMCVisibility:UpdateAll()
     for _, viewerData in ipairs(viewers) do
-        if not viewerData.viewer and _G[viewerData.viewerName] then
-            viewerData.viewer = _G[viewerData.viewerName]
-        end
         ApplyViewerAlpha(viewerData)
     end
 end
 
-function CMCVisibility:Initialize()
+function CMCVisibility:Initialize(forceViewers)
     self:MigrateSettings()
 
     -- RegisterAttributeDriver (called by SetupViewerDriver) is combat-restricted.
     -- Defer the full driver setup until after combat; UpdateAll still runs so
     -- the current alpha stays correct based on already-registered drivers.
     if InCombatLockdown() then
-        pendingInitialize = true
+        QueuePendingInitialize(forceViewers)
         EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
         return
     end
 
-    pendingInitialize = false
+    pendingInitializeRequest = nil
 
     for _, viewerData in ipairs(viewers) do
-        SetupViewerDriver(viewerData)
+        SetupViewerDriver(viewerData, forceViewers and forceViewers[viewerData.viewerName])
     end
 
     -- Always keep PLAYER_REGEN_ENABLED registered so a queued init is never lost.
@@ -233,7 +266,7 @@ function CMCVisibility:DeInitialize()
     for _, viewerData in ipairs(viewers) do
         local viewerName = viewerData.viewerName
         if driverFrames[viewerName] then
-            UnregisterAttributeDriver(driverFrames[viewerName], "state-vis")
+            UnregisterAttributeDriver(driverFrames[viewerName], "cmc-state-vis")
             -- Keep the frame in driverFrames so it can be reused on re-Initialize
         end
         driverState[viewerName] = "show"
@@ -256,16 +289,8 @@ function CMCVisibility:MigrateSettings()
     local globalRules = profile.cooldownManager_visibility_enabled_rules or {}
     local affectedViewers = profile.cooldownManager_visibility_enabled_viewers or {}
 
-    local viewerNames = {
-        "BuffIconCooldownViewer",
-        "BuffBarCooldownViewer",
-        "EssentialCooldownViewer",
-        "UtilityCooldownViewer",
-        "CMCTracker1",
-        "CMCTracker2",
-    }
-
-    for _, viewerName in ipairs(viewerNames) do
+    for _, viewerData in ipairs(viewers) do
+        local viewerName = viewerData.viewerName
         local viewerRules = {}
         if affectedViewers[viewerName] then
             for rule, enabled in pairs(globalRules) do

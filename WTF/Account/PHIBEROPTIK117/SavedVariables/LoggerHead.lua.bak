@@ -228,6 +228,7 @@ true,
 [17] = true,
 },
 ["Onyxia's Lair"] = {
+[4] = false,
 },
 ["The Dreamrift"] = {
 [14] = true,

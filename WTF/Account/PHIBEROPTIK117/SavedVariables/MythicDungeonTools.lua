@@ -8,18 +8,19 @@ MythicDungeonToolsDB = {
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 },
 ["global"] = {
+["latestDungeonSeen"] = 150,
 ["focusMarker"] = {
 ["disableTargetMarkerInRaid"] = false,
 },
-["scale"] = 1.4,
+["version"] = 607,
 ["minimap"] = {
 ["minimapPos"] = 252.8475054978408,
 ["showInCompartment"] = true,
@@ -49,7 +50,6 @@ MythicDungeonToolsDB = {
 },
 },
 },
-["version"] = 607,
-["latestDungeonSeen"] = 150,
+["scale"] = 1.4,
 },
 }

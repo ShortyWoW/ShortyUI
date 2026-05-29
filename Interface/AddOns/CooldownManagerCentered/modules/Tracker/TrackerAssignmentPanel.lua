@@ -129,7 +129,9 @@ StaticPopupDialogs["CMC_SET_CUSTOM_ACTIVE"] = {
         local currentValue = DB.GetCustomActiveDuration(data.kind, data.id) or 0
         local textWidget = self.text or _G[self:GetName() .. "Text"]
         if textWidget then
-            textWidget:SetText("Set custom active time (seconds).\nCurrent value: " .. FormatCustomActiveValue(currentValue))
+            textWidget:SetText(
+                "Set custom active time (seconds).\nCurrent value: " .. FormatCustomActiveValue(currentValue)
+            )
         end
 
         local editBox = self.editBox or (self.GetEditBox and self:GetEditBox())
@@ -710,28 +712,23 @@ local function ShowItemContextMenu(button)
                 label = "Set Custom Active (equip trinket first)"
             end
 
-            rootDescription:CreateButton(
-                label,
-                function()
-                    local popupKind, popupID = ResolveCustomActiveTarget(kind, id)
-                    if not popupKind or not popupID then
-                        local wildcardName = ItemsData:GetEntryName(kind, id) or tostring(id)
-                        ns.Addon:Print(wildcardName .. ": no equipped trinket to set custom active.")
-                        return
-                    end
-                    StaticPopup_Show("CMC_SET_CUSTOM_ACTIVE", nil, nil, { kind = popupKind, id = popupID })
+            rootDescription:CreateButton(label, function()
+                local popupKind, popupID = ResolveCustomActiveTarget(kind, id)
+                if not popupKind or not popupID then
+                    local wildcardName = ItemsData:GetEntryName(kind, id) or tostring(id)
+                    ns.Addon:Print(wildcardName .. ": no equipped trinket to set custom active.")
+                    return
                 end
-            )
+                StaticPopup_Show("CMC_SET_CUSTOM_ACTIVE", nil, nil, { kind = popupKind, id = popupID })
+            end)
         end
         if currentState == ITEM_STATE_TRACKER1 or currentState == ITEM_STATE_TRACKER2 then
-            rootDescription:CreateCheckbox(
-                "Always Show",
-                function() return DB.GetAlwaysShow(kind, id) end,
-                function()
-                    DB.SetAlwaysShow(kind, id, not DB.GetAlwaysShow(kind, id))
-                    RefreshTrackerPanels()
-                end
-            )
+            rootDescription:CreateCheckbox("Always Show", function()
+                return DB.GetAlwaysShow(kind, id)
+            end, function()
+                DB.SetAlwaysShow(kind, id, not DB.GetAlwaysShow(kind, id))
+                RefreshTrackerPanels()
+            end)
         end
         rootDescription:CreateButton("Untrack", function()
             ItemsData:SetEntryState(kind, id, nil)
@@ -1449,9 +1446,10 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
 
     -- Do not parent the miscTab to settingsFrame! Doing so will add it to its .TabButtons list and will taint everything inside CooldownViewer as a result.
     local miscTab = CreateFrame("Button", "$parent.MiscTab", UIParent, "CooldownViewerSettingsTabTemplate")
-    miscTab:SetFrameStrata("HIGH")
+
     miscTab._CMCTracker_IsTabButton = true
-    miscTab.tooltipText = "CMC Tracker"
+    miscTab.tooltipText =
+        "|cff008945Cool|r|cff1e9a4e|r|cff3faa4fdownMa|r|cff5fb64anag|r|cff7ac243erCe|r|cff8ccd00ntered|r Trackers"
     miscTab.displayMode = "tracker"
     miscTab.activeAtlas = "GreenCross"
     miscTab.inactiveAtlas = "GreenCross"

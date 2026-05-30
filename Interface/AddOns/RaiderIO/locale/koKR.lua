@@ -188,6 +188,8 @@ L["MINIMAP_SHORTCUT_MINIMAP_ENABLE_DESC"] = "미니맵 주변에 아이콘을 �
 L["MINIMAP_SHORTCUT_MINIMAP_LOCK"] = "미니맵 버튼 고정"
 L["MISC_SETTINGS"] = "기타"
 L["MODULE_AMERICAS"] = "북미"
+--[[Translation missing --]]
+--[[ L["MODULE_CHINA"] = ""--]] 
 L["MODULE_EUROPE"] = "유럽"
 L["MODULE_KOREA"] = "한국"
 L["MODULE_TAIWAN"] = "대만"
@@ -406,6 +408,34 @@ L["RAID_BOSS_SOD_6"] = "고통장이 라즈날"
 L["RAID_BOSS_SOD_7"] = "태초의 존재의 수호자"
 L["RAID_BOSS_SOD_8"] = "운명필경사 로칼로"
 L["RAID_BOSS_SOD_9"] = "켈투자드"
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_1"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_10"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_11"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_12"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_13"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_14"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_2"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_3"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_4"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_5"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_6"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_7"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_8"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["RAID_BOSS_SOO_9"] = ""--]] 
 L["RAID_BOSS_ToES_1"] = "영원의 수호병"
 L["RAID_BOSS_TOES_1"] = "영원의 수호병"
 L["RAID_BOSS_TOES_2"] = "출롱"
@@ -480,6 +510,8 @@ L["RAID_MQD"] = "쿠엘다나스 진격로"
 L["RAID_MSV"] = "모구샨 금고"
 L["RAID_NP"] = "네룹아르 궁전"
 L["RAID_RS"] = "루비 성소"
+--[[Translation missing --]]
+--[[ L["RAID_SOO"] = ""--]] 
 L["RAID_ToES"] = "영원한 봄의 정원"
 L["RAID_TOES"] = "영원한 봄의 정원"
 L["RAID_TOT"] = "천둥의 왕좌"

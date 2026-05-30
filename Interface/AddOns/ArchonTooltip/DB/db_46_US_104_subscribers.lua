@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Protection',}
-local provider = {region='US',realm='Garona',name='US',type='subscribers',zone=46,date='2026-05-29',data={Io='Iock:BAEALgAECgUJCAAAAA==.',Ne='Nedgamingttv:BAEALgAECgkJCQAAAA==.',Ni='Nikor:BAEBLgAECn8gAAIBAAgJBh5/BwBLAghoDAAABwBhAGkMAAAHAFYAawwAAAUASABqDAAABABAAGwMAAACAEYAbQwAAAEAOQDqDAAABABKAG4MAAACAE4AAQAICQYefwcASwIIaAwAAAcAYQBpDAAABwBWAGsMAAAFAEgAagwAAAQAQABsDAAAAgBGAG0MAAABADkA6gwAAAQASgBuDAAAAgBOAAAA.',},}
+local provider = {region='US',realm='Garona',name='US',type='subscribers',zone=46,date='2026-05-30',data={Io='Iock:BAEALgAECgUJCAAAAA==.',Ne='Nedgamingttv:BAEALgAECgkJCQAAAA==.',Ni='Nikor:BAEBLgAECn8gAAIBAAgJBh6RBwBLAghoDAAABwBhAGkMAAAHAFYAawwAAAUASABqDAAABABAAGwMAAACAEYAbQwAAAEAOQDqDAAABABKAG4MAAACAE4AAQAICQYekQcASwIIaAwAAAcAYQBpDAAABwBWAGsMAAAFAEgAagwAAAQAQABsDAAAAgBGAG0MAAABADkA6gwAAAQASgBuDAAAAgBOAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

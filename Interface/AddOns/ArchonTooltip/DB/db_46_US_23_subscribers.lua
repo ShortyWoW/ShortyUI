@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Paladin-Retribution','Monk-Windwalker','DeathKnight-Unholy',}
-local provider = {region='US',realm='Azgalor',name='US',type='subscribers',zone=46,date='2026-05-30',data={Ee='Eetha:BAEALgAECgkJBQABLgAFFAMJBQABAIoUAA==.',Ka='Kappainc:BAEALgAECggJCAAAAA==.',Pe='Pengwei:BAECLgAFFH8VAAICAAQJZiQIBQCnAQRoDAAABwBiAGkMAAAFAFoAawwAAAIAWwDqDAAABwBcAAIABAlmJAgFAKcBBGgMAAAHAGIAaQwAAAUAWgBrDAAAAgBbAOoMAAAHAFwALgAECn9MAAICAAkJ9yWZAAB+AwACAAkJ9yWZAAB+AwABLgAFFAcJEQADANQkAA==.',},}
+local lookup = {'Paladin-Retribution','Monk-Windwalker','Hunter-BeastMastery',}
+local provider = {region='US',realm='Azgalor',name='US',type='subscribers',zone=46,date='2026-05-31',data={Ee='Eetha:BAEALgAECgkJBQABLgAFFAMJBQABAIoUAA==.',Ka='Kappainc:BAEALgAECgkJCQAAAA==.',Pe='Pengwei:BAECLgAFFH8VAAICAAQJZiQuBQCmAQRoDAAABwBiAGkMAAAFAFoAawwAAAIAWwDqDAAABwBcAAIABAlmJC4FAKYBBGgMAAAHAGIAaQwAAAUAWgBrDAAAAgBbAOoMAAAHAFwALgAECn9MAAICAAkJ9yWdAAB+AwACAAkJ9yWdAAB+AwABLgAFFAUJFAADAGMmAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

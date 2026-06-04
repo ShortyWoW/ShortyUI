@@ -1,16 +1,164 @@
 # BigWigs
 
-## [v415.3](https://github.com/BigWigsMods/BigWigs/tree/v415.3) (2026-05-14)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v415.2...v415.3) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v416](https://github.com/BigWigsMods/BigWigs/tree/v416) (2026-06-01)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v415.3...v416) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- TheVoidspire/Crown: Add a Castbar for Interrupting Tremor  
+- Enable renames notification  
 - Bump version  
-- Loader: Fix renames getting wiped  
-- Update koKR (#2540)  
-- Update zhCN (#2538)  
-- Update deDE (#2537)  
-- Plugins/Statistics: Add support for Mythic Flex  
-- Sporefall cleanups  
-- Add Sporefall/Rotmire  
-- Cleanup LibSpecialization usage  
-- Update ruRU (#2536)  
+- Update esMX (#2614)  
+- MidnightWorld/Thormbelan: Locale cleanup  
+- Update deDE (#2613)  
+- Update frFR (#2612)  
+- Locales: Add more common locale  
+- Update zhCN (#2611)  
+- Update koKR (#2610)  
+- Update deDE (#2609)  
+- Locales: Add more common locale  
+- Update koKR (#2608)  
+- Update deDE (#2607)  
+- Update zhCN (#2606)  
+- Locales: Add more common locale  
+- Locales: Add more common locale  
+- Update zhCN (#2604)  
+- Update zhTW (#2603)  
+- Update zhTW (#2601)  
+- Update deDE (#2602)  
+- Update koKR (#2600)  
+- Update zhCN (#2599)  
+- TheVoidspire/Salhadaar: Ignore a cancelled Shattering Twilight timer  
+- Locales: Add more common locale  
+- TheVoidspire/VaelgorAndEzzorak: Reset Gloom counter so it bounces between 1 and 2  
+- Locales: Add more common locale  
+- Update deDE (#2598)  
+- Loader: Enable locale print  
+- Locales: Fix comments  
+- Update koKR (#2597)  
+- Update zhCN (#2596)  
+- Locales: Add more common locale  
+- Revert "TheVoidspire/Crown: Fix the icon for the Interrupting Tremor cast bar"  
+- Core/BossPrototype: Fix castbar usage with renames  
+- Tools/AutoInvite: Fix sending whispers when declining a group conversion  
+- TheVoidspire/Crown: Fix the icon for the Interrupting Tremor cast bar  
+- Update original spell names for modules with renames set  
+- Options: Allow original spell names for all rename entries  
+- Core: Add `GetBossModulesForInstanceID`  
+- Options: Tweak  
+- Improve file loading (#2595)  
+- Tools/Keystones: Tweak  
+- TheVoidspire/VaelgorAndEzzorak: Lock the intermission check to below stage 3  
+- Update deDE (#2594)  
+- Update koKR (#2593)  
+- Update zhCN (#2592)  
+- Update esES (#2581)  
+- Tools/Keystones: Improve stats display  
+- Loader: Remove locale print  
+- MarchOnQuelDanas/Beloren: Locale cleanup  
+- Locales: Add more common locale  
+- Core/BossPrototype: Allow `PersonalMessageFromBlizzMessage` to only work if a target is defined, and to trigger a callback  
+- Update zhCN (#2591)  
+- TheVoidspire/Crown: Fix initial Interrupting Tremor cast bar  
+- Update deDE (#2590)  
+- Update esMX (#2589)  
+- Update esMX (#2588)  
+- Update zhCN (#2583)  
+- Update esMX (#2584)  
+- Update esMX (#2585)  
+- Update esMX (#2587)  
+- Update esMX  
+- Tools/Keystones: Fix auto slot keystone option not showing  
+- Update esMX (#2582)  
+- Tools/Keystones: Attempt 2 at fixing no spec info  
+- API: Add `GetProfileName` and `SwapProfile`  
+- Update esES (#2580)  
+- Update esMX (#2579)  
+- Update koKR (#2578)  
+- Update deDE (#2577)  
+- Update zhCN (#2576)  
+- TheVoidspire/VaelgorAndEzzorak: Move fallback logic into the backup scheduler  
+- Locales: Add more common locale  
+- TheVoidspire: Fix locale  
+- MidnightWorld: Fix locale  
+- Tools/AutoInvite: Fix some specific invites not working  
+- Loader: Remove ptBR print  
+- Tools/Keystones: Maybe fix spec info sometimes not being available in the guild list  
+- Update deDE (#2575)  
+- Update ptBR (#2574)  
+- Update esMX (#2571)  
+- MarchOnQuelDanas/MidnightFalls: Move dropdown to stage 3 tab  
+- Option validation for renames  
+- MarchOnQuelDanas/Beloren: Fix notes  
+- MidnightWorld/Cragpine: Fix typo  
+- Update zhCN (#2572)  
+- Improve renames for personal messages  
+- Core/BossPrototype: Change how renames work with the targetmessage API  
+- Update koKR (#2573)  
+- Locale cleanups  
+- Update zhCN (#2568)  
+- TheVoidspire/Crown: Fix some notes  
+- TheVoidspire: Fix bad copy/paste  
+- TheVoidspire: Enable renames  
+- Locales: Add more common locale  
+- Plugins/Countdown: Fix a validation check  
+- Update zhCN (#2564)  
+- Update koKR (#2566)  
+- Update deDE (#2565)  
+- Options: Add Renames to the export strings for instance configurations (#2555)  
+- Plugins/Countdown: Allow each ability to have its own countdown start time (#2554)  
+- Update deDE (#2562)  
+- Update koKR (#2563)  
+- TheVoidspire: Locale cleanup  
+- Locales: Add more common locale  
+- TheVoidspire: Update to new locale system  
+- MarchOnQuelDanas/Beloren: Change the key for soaks  
+- MarchOnQuelDanas/MidnightFalls: Use CDBars  
+- Core: Allow replacing the name of a spell ID key  
+- Update ptBR (#2561)  
+- MarchOnQuelDanas/MidnightFalls: Emphasize beams on you  
+- MarchOnQuelDanas/Beloren: Change how soaks/adds are displayed, cleanups  
+- Core/BossPrototype: Allow unit events in modern modules  
+- Loader: Tweak  
+- Update zhCN (#2560)  
+- Update koKR (#2559)  
+- Update zhCN (#2556)  
+- Update deDE (#2553)  
+- TheDreamrift/Chimaerus: Enable rename for the cast bar  
+- Locales: Add more common locale  
+- Core/BossPrototype: Rename support in cast bars  
+- TheDreamrift/Chimaerus: Add missing castbar flag  
+- TheDreamrift/Chimaerus: Implement renames, cleanups  
+- MarchOnQuelDanas/MidnightFalls: Locale cleanup  
+- Locales: Add more common locale  
+- Update koKR (#2552)  
+- Core/BossPrototype: Add debug for stopbar  
+- Core/BossPrototype: Tweak error message  
+- Options: Error on zones with no name  
+- Loader: Don't load Sporefall menu on live  
+- Update zhTW (#2551)  
+- Update frFR (#2550)  
+- Update deDE (#2549)  
+- TheVoidspire/VaelgorAndEzzorak: Fix a typo  
+- TheVoidspire/VaelgorAndEzzorak: Add possible fallbacks for missing tank timers (closes #2548, #2529)  
+- Parser: Improve options file error handling  
+- Parser: Allow root-level options file  
+- Update zhCN (#2547)  
+- Core/BossPrototype: Allow messages to handle renames  
+- MidnightWorld: Enable renames  
+- Locale: Add more rename notes  
+- MidnightWorld: Update locale  
+- Prep renames announcement  
+- Options: Move Private Auras into a tab on the boss panel (#2546)  
+- Add options for boss ability renames (#2539)  
+- Update zhCN (#2545)  
+- Update deDE (#2544)  
+- Locales: Add more common locale  
+- TheDreamrift/Chimaerus: Cleanup  
+- Locales: Add more common locale  
+- Tweaks  
+- Update zhCN (#2543)  
+- Update deDE (#2542)  
+- Core/BossPrototype: More rename plumbing  
+- Locales: Add a "not yet implemented" entry  
+- Update deDE (#2541)  
+- Sporefall/Rotmire: Initial PTR updates  
+- MarchOnQuelDanas/MidnightFalls: Add a note for stage 1 also  
+- MarchOnQuelDanas/MidnightFalls: Dark Quasar now has it's separate settings for stage 1 and intermission  

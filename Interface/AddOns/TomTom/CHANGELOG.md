@@ -1,8 +1,10 @@
 # TomTom
 
-## [v4.3.1-release](https://github.com/jnwhiteh/TomTom/tree/v4.3.1-release) (2026-04-26)
-[Full Changelog](https://github.com/jnwhiteh/TomTom/commits/v4.3.1-release) [Previous Releases](https://github.com/jnwhiteh/TomTom/releases)
+## [v4.3.3-release](https://github.com/jnwhiteh/TomTom/tree/v4.3.3-release) (2026-06-04)
+[Full Changelog](https://github.com/jnwhiteh/TomTom/commits/v4.3.3-release) [Previous Releases](https://github.com/jnwhiteh/TomTom/releases)
 
+- Update for retail  
+- Update TOC  
 - Revert Wrath interface version to 30403  
 - Update TOC interface versions  
 - Clean up paste window: remove dead code and redundant size calls  
@@ -693,5 +695,3 @@
     * Callbacks will now properly be fired when the minimap icon isn't enabled  
 - * Changed code for GetCursorPosition() thanks to ckknight  
 - Guard for an odd error when a waypoint's angle can't be determined  
-- Removed old property  
-- * Next time, make the change in PerfectRaid, not TomTom  

@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 77 -- the real minor version is 145
+local MINOR_VERSION = 78 -- the real minor version is 145
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1509,7 +1509,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if WoWRetail or WoWBCC or WoWWrath then -- hasEditMode
+	if WoWRetail or WoWBCC or WoWWrath or WoWMists then -- hasEditMode
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 	else
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")

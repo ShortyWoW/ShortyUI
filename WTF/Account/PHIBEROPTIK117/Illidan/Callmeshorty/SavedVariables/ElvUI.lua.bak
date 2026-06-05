@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/sfalls hide",
 "/raid depends on how many hand of reckonings there are",
 "/sfalls show",
 "/rc",
 "/giggle",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

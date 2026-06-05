@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Paladin-Holy','Warlock-Demonology','DemonHunter-Devourer',}
-local provider = {region='US',realm='Greymane',name='US',type='subscribers',zone=46,date='2026-06-03',data={De='Demeco:BAEALgAECgcJDgABLgAFFAgJGQABAJwcAA==.',Dr='Driver:BAEALgAFFAIJBAABLgAFFAUJDwACALYLAA==.',Ne='Neonarc:BAEALgADCgkJGwAAAA==.',Xa='Xallie:BAECLgAFFH8GAAIDAAMJaQgMYgC0AANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAADAAMJaQgMYgC0AANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAAuAAQKfz0AAgMACQl8GmAeAFMCAAMACQl8GmAeAFMCAAAA.',},}
+local lookup = {'Warlock-Demonology','DemonHunter-Devourer',}
+local provider = {region='US',realm='Greymane',name='US',type='subscribers',zone=46,date='2026-06-04',data={De='Demeco:BAEALgAECgcJDgAAAA==.',Dr='Driver:BAEALgAFFAIJBAABLgAFFAUJDwABALYLAA==.',Ne='Neonarc:BAEALgADCgkJGwAAAA==.',Xa='Xallie:BAECLgAFFH8GAAICAAMJaQiiYwCwAANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAACAAMJaQiiYwCwAANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAAuAAQKfz0AAgIACQl8Gp8eAFECAAIACQl8Gp8eAFECAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

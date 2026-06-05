@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Paladin-Retribution','Paladin-Holy','Unknown-Unknown',}
-local provider = {region='US',realm='Doomhammer',name='US',type='subscribers',zone=46,date='2026-06-03',data={De='Demonstein:BAEALgAECgMJAwABLgAFFAcJHgABAAkeAA==.',Fe='Ferdaan:BAEALgADCgYJCgAAAA==.',Ne='Nerissa:BAEBLgAECn8VAAICAAcJYRJAOACZAQdoDAAABAALAGkMAAAEACsAawwAAAMARgBqDAAAAwAuAGwMAAACAEoA6gwAAAQAHwBuDAAAAQAyAAIABwlhEkA4AJkBB2gMAAAEAAsAaQwAAAQAKwBrDAAAAwBGAGoMAAADAC4AbAwAAAIASgDqDAAABAAfAG4MAAABADIAAS4AAwoGCQYAAwAAAAA=.',},}
+local lookup = {'Paladin-Holy','Unknown-Unknown',}
+local provider = {region='US',realm='Doomhammer',name='US',type='subscribers',zone=46,date='2026-06-04',data={De='Demonstein:BAEALgAECgMJAwAAAA==.',Fe='Ferdaan:BAEALgADCgYJCgAAAA==.',Ne='Nerissa:BAEBLgAECn8VAAIBAAcJYRJAOACZAQdoDAAABAALAGkMAAAEACsAawwAAAMARgBqDAAAAwAuAGwMAAACAEoA6gwAAAQAHwBuDAAAAQAyAAEABwlhEkA4AJkBB2gMAAAEAAsAaQwAAAQAKwBrDAAAAwBGAGoMAAADAC4AbAwAAAIASgDqDAAABAAfAG4MAAABADIAAS4AAwoGCQYAAgAAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -4,31 +4,31 @@ SimulationCraftDB = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Cyword - Area 52"] = "Cyword - Area 52",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
 ["Callmeshorty - Area 52"] = "Callmeshorty - Area 52",
 ["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshortÿ - Moon Guard",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
-["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
+["Shortonheals - Area 52"] = "Shortonheals - Area 52",
 ["Rndylikehoof - Dalaran"] = "Rndylikehoof - Dalaran",
-["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
+["Shortlite - Dalaran"] = "Shortlite - Dalaran",
 ["Shortbreath - Area 52"] = "Shortbreath - Area 52",
 ["Randuhrr - Dalaran"] = "Randuhrr - Dalaran",
 ["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
-["Shortonheals - Area 52"] = "Shortonheals - Area 52",
+["Chugmonk - Mal'Ganis"] = "Chugmonk - Mal'Ganis",
 ["Randysmells - Dalaran"] = "Randysmells - Dalaran",
-["Udderstorm - Mal'Ganis"] = "Udderstorm - Mal'Ganis",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
+["Udderstorm - Mal'Ganis"] = "Udderstorm - Mal'Ganis",
 ["Medimilk - Mal'Ganis"] = "Medimilk - Mal'Ganis",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
-["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshorte - Area 52"] = "Callmeshorte - Area 52",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
-["Shortlite - Dalaran"] = "Shortlite - Dalaran",
+["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
 ["Lildotnrg - Stormrage"] = "Lildotnrg - Stormrage",
 },
@@ -42,7 +42,7 @@ SimulationCraftDB = {
 },
 ["Shortbeef - Area 52"] = {
 },
-["Shortbowjob - Area 52"] = {
+["Shortlight - Illidan"] = {
 },
 ["Shortypal - Dalaran"] = {
 },
@@ -54,16 +54,13 @@ SimulationCraftDB = {
 },
 ["Callmeshortÿ - Moon Guard"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Area 52"] = {
 },
-["Chugmonk - Mal'Ganis"] = {
+["Shortonheals - Area 52"] = {
 },
 ["Rndylikehoof - Dalaran"] = {
 },
-["Shortyshamm - Illidan"] = {
-["minimap"] = {
-["hide"] = true,
-},
+["Shortlite - Dalaran"] = {
 },
 ["Shortbreath - Area 52"] = {
 },
@@ -71,16 +68,16 @@ SimulationCraftDB = {
 },
 ["Drewis24EEA3 - Illidan"] = {
 },
-["Shortonheals - Area 52"] = {
+["Chugmonk - Mal'Ganis"] = {
 },
 ["Randysmells - Dalaran"] = {
-},
-["Udderstorm - Mal'Ganis"] = {
 },
 ["Shortybear - Illidan"] = {
 ["minimap"] = {
 ["hide"] = true,
 },
+},
+["Udderstorm - Mal'Ganis"] = {
 },
 ["Medimilk - Mal'Ganis"] = {
 },
@@ -89,23 +86,26 @@ SimulationCraftDB = {
 ["hide"] = true,
 },
 },
+["Callmeshorte - Area 52"] = {
+},
+["Shortytest - Illidan"] = {
+},
+["Shortlite - Illidan"] = {
+},
 ["Callmeshorty - Illidan"] = {
 ["minimap"] = {
 ["hide"] = true,
 },
-},
-["Shortlite - Illidan"] = {
-},
-["Shortytest - Illidan"] = {
-},
-["Callmeshorte - Area 52"] = {
 },
 ["Callmeshawte - Area 52"] = {
 ["minimap"] = {
 ["hide"] = true,
 },
 },
-["Shortlite - Dalaran"] = {
+["Shortyshamm - Illidan"] = {
+["minimap"] = {
+["hide"] = true,
+},
 },
 ["Shortbeef - Vashj"] = {
 ["minimap"] = {

@@ -308,6 +308,7 @@ BigWigs:AddColors("Chief Corewright Kasreth", {
 
 BigWigs:AddSounds("Chief Corewright Kasreth", {
 	[1251579] = "info",
+	[1251772] = "warning",
 	[1257509] = "long",
 	[1264048] = "alarm",
 })

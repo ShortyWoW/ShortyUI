@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Monk-Mistweaver','Monk-Windwalker','Monk-Brewmaster',}
-local provider = {region='US',realm='Blackhand',name='US',type='subscribers',zone=46,date='2026-06-03',data={Di='Dienne:BAEALgAECggJEgABLgAECgkJOAABANgaAA==.',Li='Lioele:BAEALgADCgEJAQABLgAECgkJOAABANgaAA==.',Ly='Lyralina:BAEALgADCgQJBAABLgAECgkJOAABANgaAA==.',Xi='Xiaomao:BAEBLgAECn84AAQBAAgJ2BpBFwBFAghoDAAACQBLAGkMAAAIADIAawwAAAkAUgBqDAAACABLAGwMAAAIAFYAbQwAAAUATQDqDAAACABHAG4MAAABAB4AAQAICdgaQRcARQIIaAwAAAcASwBpDAAABgAyAGsMAAAIAFIAagwAAAgASwBsDAAACABWAG0MAAAFAE0A6gwAAAcARwBuDAAAAQAeAAIAAwnDB+JkAHkAA2gMAAACABIAaQwAAAIAFwBrDAAAAQARAAMAAQlyAOKjABcAAeoMAAABAAEAAAA=.',},}
+local lookup = {'Monk-Mistweaver','Priest-Discipline','Monk-Windwalker','Monk-Brewmaster',}
+local provider = {region='US',realm='Blackhand',name='US',type='subscribers',zone=46,date='2026-06-04',data={Di='Dienne:BAEALgAECggJEgABLgAECgkJOAABANgaAA==.',Li='Lioele:BAEALgADCgEJAQABLgAECgkJOAABANgaAA==.',Ly='Lyralina:BAEALgADCgQJBAABLgAECgkJOAABANgaAA==.',Pe='Peachshock:BAEALgAFFAIJAgABLgAFFAgJGAACAPUXAA==.',Xi='Xiaomao:BAEBLgAECn84AAQBAAgJ2BqoFwBFAghoDAAACQBLAGkMAAAIADIAawwAAAkAUgBqDAAACABLAGwMAAAIAFYAbQwAAAUATQDqDAAACABHAG4MAAABAB4AAQAICdgaqBcARQIIaAwAAAcASwBpDAAABgAyAGsMAAAIAFIAagwAAAgASwBsDAAACABWAG0MAAAFAE0A6gwAAAcARwBuDAAAAQAeAAMAAwnDB7hlAHkAA2gMAAACABIAaQwAAAIAFwBrDAAAAQARAAQAAQlyALekABcAAeoMAAABAAEAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

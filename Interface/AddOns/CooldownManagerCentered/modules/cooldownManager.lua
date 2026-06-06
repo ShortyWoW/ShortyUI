@@ -13,8 +13,6 @@ local PrintDebug = function(...)
     end
 end
 
-local floor = math.floor
-
 -- Architecture:
 -- LayoutEngine: pure layout computations (no frame access)
 -- ViewerAdapters: WoW Frame interaction per viewer type
@@ -154,7 +152,7 @@ function LayoutEngine.BuildRows(iconLimit, children)
         return rows
     end
     for i = 1, #children do
-        local rowIndex = floor((i - 1) / limit) + 1
+        local rowIndex = math.floor((i - 1) / limit) + 1
         rows[rowIndex] = rows[rowIndex] or {}
         rows[rowIndex][#rows[rowIndex] + 1] = children[i]
     end
@@ -192,8 +190,8 @@ function ViewerAdapters.GetBuffIconFrames()
     return visible, total
 end
 
-function ViewerAdapters.GetBuffBarFrames()
-    -- Why: Collect active Buff Bar frames with resilience to API differences, and hook changes.
+function ViewerAdapters.GetBuffBarFrames(includeInactive)
+    -- Why: Collect Buff Bar frames with resilience to API differences, optionally including inactive frames.
     -- When: Before aligning bars vertically and whenever aura events trigger layout updates.
     if not BuffBarCooldownViewer then
         return {}
@@ -215,9 +213,10 @@ function ViewerAdapters.GetBuffBarFrames()
             end
         end
     end
+
     local active = {}
     for _, frame in ipairs(frames) do
-        if frame:IsShown() and frame:IsVisible() then
+        if includeInactive or (frame:IsShown() and frame:IsVisible()) then
             active[#active + 1] = frame
         end
         if not frame._wt_isHooked and (frame.icon or frame.Icon or frame.bar or frame.Bar) then
@@ -316,16 +315,51 @@ end
 function ViewerAdapters.UpdateBuffBars()
     -- Why: Align Buff Bar frames from chosen growth direction when enabled and changes detected.
     -- When: On aura events, settings changes, or explicit refresh calls when the feature is enabled.
-    if
-        not ns.Runtime:IsReady(BuffBarCooldownViewer)
-        or ns.db.profile.cooldownManager_alignBuffBars_growFromDirection == "Disable"
-    then
+    if not ns.Runtime:IsReady(BuffBarCooldownViewer) then
         return
     end
+
+    ns.BuffBarIconMode.RefreshAll(ViewerAdapters.GetBuffBarFrames(true))
+    ViewerAdapters.UpdateViewerSizeIfChanged(BuffBarCooldownViewer)
 
     local bars = ViewerAdapters.GetBuffBarFrames()
     local count = #bars
     if count == 0 then
+        return
+    end
+
+    local iconMode = ns.BuffBarIconMode.IsEnabled()
+    local horizontalIcons = iconMode and ns.BuffBarIconMode.IsHorizontal()
+    local growSetting = ns.db.profile.cooldownManager_alignBuffBars_growFromDirection
+
+    if horizontalIcons then
+        local refBar = bars[1]
+        local barWidth = refBar and refBar:GetWidth()
+        local spacing = BuffBarCooldownViewer.childXPadding or BuffBarCooldownViewer.childYPadding or 0
+        if not barWidth or barWidth == 0 then
+            return
+        end
+
+        local totalWidth = (count * barWidth) + (math.max(count - 1, 0) * spacing)
+        local startX = -(totalWidth / 2) + (barWidth / 2)
+        local anchor = growSetting == "TOP" and "TOP" or "BOTTOM"
+
+        for index, bar in ipairs(bars) do
+            local x = startX + ((index - 1) * (barWidth + spacing))
+            bar:ClearAllPoints()
+            bar:SetPoint(anchor, BuffBarCooldownViewer, anchor, x, 0)
+        end
+
+        ViewerAdapters.UpdateViewerSizeIfChanged(BuffBarCooldownViewer)
+        local vw = BuffBarCooldownViewer:GetWidth()
+        local vh = BuffBarCooldownViewer:GetHeight()
+        if vw and vh and vw > 0 and vh > 0 and vw < vh then
+            BuffBarCooldownViewer:SetSize(vh, vw)
+        end
+        return
+    end
+
+    if growSetting == "Disable" then
         return
     end
 
@@ -336,7 +370,7 @@ function ViewerAdapters.UpdateBuffBars()
         return
     end
 
-    local growFromBottom = ns.db.profile.cooldownManager_alignBuffBars_growFromDirection == "BOTTOM"
+    local growFromBottom = (growSetting == "BOTTOM") or (growSetting == "ICONS_VERTICAL")
 
     for index, bar in ipairs(bars) do
         local offsetIndex = index - 1
@@ -349,6 +383,7 @@ function ViewerAdapters.UpdateBuffBars()
             bar:SetPoint("TOP", BuffBarCooldownViewer, "TOP", 0, y)
         end
     end
+    ViewerAdapters.UpdateViewerSizeIfChanged(BuffBarCooldownViewer)
 end
 
 local _dimCurve = nil
@@ -539,7 +574,7 @@ function ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
     local targetWidth = (right - left)
     local targetHeight = (top - bottom)
 
-    if abs(currentWidth - targetWidth) >= 1 or abs(currentHeight - targetHeight) >= 1 then
+    if math.abs(currentWidth - targetWidth) >= 1 or math.abs(currentHeight - targetHeight) >= 1 then
         viewer:SetWidth(targetWidth)
         viewer:SetHeight(targetHeight)
         viewer:SetSize(targetWidth, targetHeight)
@@ -599,7 +634,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             local eWidth = essentialViewer:GetWidth()
             if eWidth and eWidth > 0 then
                 local iconActualWidth = (w + padding) * viewer.iconScale
-                local maxIcons = floor((eWidth + (padding * viewer.iconScale)) / iconActualWidth)
+                local maxIcons = math.floor((eWidth + (padding * viewer.iconScale)) / iconActualWidth)
                 if maxIcons > 0 then
                     iconLimit = math.max(math.min(iconLimit, maxIcons), math.min(iconLimit, 6))
                 end
@@ -628,11 +663,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             local currentRowHeight = h
 
             local yOffset = cumulativeOffset * rowOffsetModifier
-            if fromDirection == "TOP" and iRow == 1 then
-                -- omit - redundant calculations for the first row when growing from top, as it's the most common case and often doesn't need adjustments
-            else
-                PositionRowHorizontal(viewer, row, yOffset, w, padding, iconDirectionModifier, rowAnchor, maxIcons)
-            end
+            PositionRowHorizontal(viewer, row, yOffset, w, padding, iconDirectionModifier, rowAnchor, maxIcons)
 
             cumulativeOffset = cumulativeOffset + currentRowHeight + padding
         end
@@ -647,11 +678,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             local currentColWidth = w
 
             local xOffset = cumulativeOffset * rowOffsetModifier
-            if fromDirection == "TOP" and iRow == 1 then
-                -- omit - redundant calculations for the first row when growing from top, as it's the most common case and often doesn't need adjustments
-            else
-                PositionRowVertical(viewer, row, xOffset, h, padding, iconDirectionModifier, colAnchor, maxIcons)
-            end
+            PositionRowVertical(viewer, row, xOffset, h, padding, iconDirectionModifier, colAnchor, maxIcons)
 
             cumulativeOffset = cumulativeOffset + currentColWidth + padding
         end

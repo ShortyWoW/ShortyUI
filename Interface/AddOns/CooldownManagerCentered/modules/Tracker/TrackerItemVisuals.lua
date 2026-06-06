@@ -27,15 +27,23 @@ local function BuildEntryKey(kind, id)
 end
 
 local function GetCooldownSwipeColor()
+    if not (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customSwipeColor_enabled) then
+        return {
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a,
+        }
+    end
     return {
         (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_r)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[1],
+            or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
         (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_g)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[2],
+            or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
         (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_b)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[3],
+            or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
         (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customCDSwipeColor_a)
-            or DB.DEFAULT_COOLDOWN_SWIPE_COLOR[4],
+            or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a,
     }
 end
 
@@ -49,12 +57,21 @@ local function ApplyCustomActiveOverlay(frame, startTime, duration)
         return
     end
 
-    frame.Cooldown:SetSwipeColor(
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_r) or DB.DEFAULT_AURA_SWIPE_COLOR[1],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_g) or DB.DEFAULT_AURA_SWIPE_COLOR[2],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_b) or DB.DEFAULT_AURA_SWIPE_COLOR[3],
-        (ns.db and ns.db.profile and ns.db.profile.cooldownManager_customActiveColor_a) or DB.DEFAULT_AURA_SWIPE_COLOR[4]
-    )
+    if ns.db and ns.db.profile and ns.db.profile.cooldownManager_customSwipeColor_enabled then
+        frame.Cooldown:SetSwipeColor(
+            ns.db.profile.cooldownManager_customActiveColor_r or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+            ns.db.profile.cooldownManager_customActiveColor_g or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+            ns.db.profile.cooldownManager_customActiveColor_b or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+            ns.db.profile.cooldownManager_customActiveColor_a or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
+        )
+    else
+        frame.Cooldown:SetSwipeColor(
+            ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+            ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+            ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+            ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
+        )
+    end
     frame.Cooldown:SetCooldown(startTime, duration)
     frame.Cooldown:SetDrawSwipe(true)
 end
@@ -330,7 +347,7 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
         -- Desaturate only while the long cooldown is clearly active; clear when ≤2s or expired
         if cooldownRemaining <= 0 then
             frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
-        elseif (forceDesaturated or cooldownRemaining > 2) then
+        elseif forceDesaturated or cooldownRemaining > 2 then
             frame.Icon:SetDesaturation(1)
         end
 

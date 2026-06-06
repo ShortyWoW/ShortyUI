@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Windwalker','Monk-Brewmaster',}
-local provider = {region='US',realm="Aman'Thul",name='US',type='subscribers',zone=46,date='2026-06-05',data={Cr='Cristeria:BAEALgADCggJCAABLgAECggJHAABAGMXAA==.',Ev='Evimists:BAEBLgAECn8cAAMBAAgJYxeHGADhAQhoDAAABQBJAGkMAAAEAEcAawwAAAQAPQBqDAAAAwAxAGwMAAADACYAbQwAAAEAIQDqDAAABwBVAG4MAAABADgAAQAICWMXhxgA4QEIaAwAAAUASQBpDAAABABHAGsMAAAEAD0AagwAAAMAMQBsDAAAAgAmAG0MAAABACEA6gwAAAcAVQBuDAAAAQA4AAIAAQkpDoiLADIAAWwMAAABACQAAAA=.',Gu='Guzlock:BAEALgAECgQJBAAAAA==.',},}
+local provider = {region='US',realm="Aman'Thul",name='US',type='subscribers',zone=46,date='2026-06-06',data={Cr='Cristeria:BAEALgADCgkJEQABLgAECggJHAABAGMXAA==.',Ev='Evimists:BAEBLgAECn8cAAMBAAgJYxfiGADfAQhoDAAABQBJAGkMAAAEAEcAawwAAAQAPQBqDAAAAwAxAGwMAAADACYAbQwAAAEAIQDqDAAABwBVAG4MAAABADgAAQAICWMX4hgA3wEIaAwAAAUASQBpDAAABABHAGsMAAAEAD0AagwAAAMAMQBsDAAAAgAmAG0MAAABACEA6gwAAAcAVQBuDAAAAQA4AAIAAQkpDiaMADIAAWwMAAABACQAAAA=.',Gu='Guzlock:BAEALgAECgQJBAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

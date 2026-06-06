@@ -224,6 +224,7 @@ L.otherDifficultiesNote = "Dieser Text wird für alle anderen Schwierigkeitsgrad
 -- GUI notes for debuffs
 L.debuffFailureNote = "Diesen Debuff erleidest Du wenn Du scheiterst"
 L.debuffFailureMoveFromExplosionNote = "Diesen Debuff erleidest Du wenn Du Dich nicht von der Explosion entfernst"
+--L.debuffFailureInterruptNote = "This debuff will apply to you if you fail to interrupt the cast of |cFFFFFFFF%s|r" -- This debuff will apply to you if you fail to interrupt the cast of SPELL_NAME
 L.preDebuffNote = "Dies ist ein Vor-Debuff, bevor der Haupt-Debuff auf Dich wirkt"
 L.mainDebuffNote = "Dies ist der hauptsächliche Debuff der auf Dich wirkt"
 L.postDebuffNote = "Diesen Debuff erleidest Du nachdem |cFFFFFFFF%s|r abläuft" -- This debuff will apply to you after OTHER_DEBUFF expires
@@ -232,6 +233,7 @@ L.debuffDotAfterCastNote = "Dieser Debuff ist ein DoT nach dem Abschluss des Zau
 L.debuffPossibleAfterCastNote = "Diesen Debuff kannst Du erleiden nachdem der Boss |cFFFFFFFF%s|r gewirkt hat" -- This debuff might apply to you after the boss finishes casting SPELL_NAME
 L.debuffTankAfterCastNote = "Diesen Debuff erleidet der Tank nachdem der Boss |cFFFFFFFF%s|r gewirkt hat" -- This debuff will apply to the tank after the boss finishes casting SPELL_NAME
 L.debuffWalkIntoObjectNote = "Diesen Debuff erleidest Du wenn Du bewusst in die |cFFFFFFFF%s|r läufst" -- This debuff will apply to you if you purposely walk into the OBJECT_NAME (e.g. trap, mine, bomb)
+--L.debuffHitByCastNote = "This debuff will apply to you if you are hit by the the |cFFFFFFFF%s|r cast" -- This debuff will apply to you if you are hit by the the SPELL_NAME_cast
 L.debuffAddsCast = "Diesen Debuff erleidest Du von |cFFFFFFFF%s|r" -- This debuff is applied to you by NPC_NAME
 
 -- Common ability name replacements
@@ -299,6 +301,7 @@ L.grips = "Griffe" -- Plural of L.grip
 L.group_damage = "Gruppenschaden" -- Any ability that causes damage to every player in the 5 player group
 L.health_drain = "Gesundheit entziehen" -- Any ability that drains health from the player
 L.madness = "Wahn" -- Any ability that contains the word "Madness" in it e.g. "Rift Madness" (1264756) or "Burning Madness" (307013)
+L.miasma = "Miasma" -- Any ability that contains the word "Miasma" in it e.g. "Consuming Miasma" (1257087) or "Black Miasma" (1275059)
 L.missile = "Geschoss" -- Short for any ability with the name "Missile" in it e.g. "Fey Missile" (188046) or "Water Missile" (68250)
 L.missiles = "Geschosse" -- Plural of L.missile
 L.parasite = "Parasit" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc

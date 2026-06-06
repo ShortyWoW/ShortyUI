@@ -47,6 +47,26 @@ local function GetPointAndOffset(frame, growFromDirection)
         return nil
     end
 
+    if frame == BuffBarCooldownViewer then
+        if growFromDirection == "ICONS_VERTICAL" then
+            return {
+                point = "LEFT",
+                relativePoint = "BOTTOMLEFT",
+                x = frame:GetLeft(),
+                y = select(2, frame:GetCenter()),
+            }
+        elseif growFromDirection == "ICONS_HORIZONTAL" then
+            local x = frame:GetCenter()
+            local pX = UIParent:GetCenter()
+            return {
+                point = "BOTTOM",
+                relativePoint = "BOTTOM",
+                x = x - pX,
+                y = frame:GetBottom(),
+            }
+        end
+    end
+
     local y = nil
     point = nil
 
@@ -203,7 +223,7 @@ local function UpdateViewerAnchor(frame, viewerInfo)
         local currentPoint, relativeTo, relativePoint, offsetX, offsetY = frame:GetPoint()
         if currentPoint ~= data.point or math.floor(data.x - offsetX) > 0 or math.floor(data.y - offsetY) > 0 then
             frame:ClearAllPoints()
-            frame:SetPoint(data.point, UIParent, "BOTTOM", data.x, data.y)
+            frame:SetPoint(data.point, UIParent, data.relativePoint or "BOTTOM", data.x, data.y)
             EditModeManagerFrame:OnSystemPositionChange(frame)
         end
 

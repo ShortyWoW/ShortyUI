@@ -30,7 +30,12 @@ isZeroCurve:AddPoint(0.001, 0)
 
 local function ResolveGlowStyle(defaultStyle)
     local style = ns.db.profile.cooldownManager_experimental_glow_style or GLOW_STYLE_DEFAULT
-    if style ~= GLOW_STYLE_DEFAULT and style ~= GLOW_STYLE_PROC and style ~= GLOW_STYLE_AUTOCAST and style ~= GLOW_STYLE_PIXEL then
+    if
+        style ~= GLOW_STYLE_DEFAULT
+        and style ~= GLOW_STYLE_PROC
+        and style ~= GLOW_STYLE_AUTOCAST
+        and style ~= GLOW_STYLE_PIXEL
+    then
         style = GLOW_STYLE_DEFAULT
     end
     if style == GLOW_STYLE_DEFAULT then
@@ -189,7 +194,11 @@ end
 local function SetButtonGlow(cdmFrame, shouldGlow)
     if shouldGlow then
         local signature = GetGlowSignature(GLOW_STYLE_PROC)
-        if cdmFrame._CMC_CustomGlowing and cdmFrame._CMC_CustomGlowSignature == signature and GetButtonGlowFrame(cdmFrame) then
+        if
+            cdmFrame._CMC_CustomGlowing
+            and cdmFrame._CMC_CustomGlowSignature == signature
+            and GetButtonGlowFrame(cdmFrame)
+        then
             return
         end
         StopAllCustomGlows(cdmFrame)
@@ -375,10 +384,10 @@ local function ApplyCooldownSettings(cdmFrame)
         cdmFrame.Cooldown:SetReverse(CooldownStyle.GetReverseAuraSwipe(baseSpellId))
         if ns.db.profile.cooldownManager_customSwipeColor_enabled then
             cdmFrame.Cooldown:SetSwipeColor(
-                ns.db.profile.cooldownManager_customActiveColor_r or 1,
-                ns.db.profile.cooldownManager_customActiveColor_g or 0.95,
-                ns.db.profile.cooldownManager_customActiveColor_b or 0.57,
-                ns.db.profile.cooldownManager_customActiveColor_a or 0.69
+                ns.db.profile.cooldownManager_customActiveColor_r or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+                ns.db.profile.cooldownManager_customActiveColor_g or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+                ns.db.profile.cooldownManager_customActiveColor_b or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+                ns.db.profile.cooldownManager_customActiveColor_a or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
             )
         end
         if ns.db.profile.cooldownManager_desaturate_under_aura then
@@ -401,10 +410,10 @@ local function ApplyCooldownSettings(cdmFrame)
 
     if ns.db.profile.cooldownManager_customSwipeColor_enabled then
         cdmFrame.Cooldown:SetSwipeColor(
-            ns.db.profile.cooldownManager_customCDSwipeColor_r or 0,
-            ns.db.profile.cooldownManager_customCDSwipeColor_g or 0,
-            ns.db.profile.cooldownManager_customCDSwipeColor_b or 0,
-            ns.db.profile.cooldownManager_customCDSwipeColor_a or 0.69
+            ns.db.profile.cooldownManager_customCDSwipeColor_r or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+            ns.db.profile.cooldownManager_customCDSwipeColor_g or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+            ns.db.profile.cooldownManager_customCDSwipeColor_b or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+            ns.db.profile.cooldownManager_customCDSwipeColor_a or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
         )
     else
         -- from CooldownViewerConstants.ITEM_COOLDOWN_COLOR

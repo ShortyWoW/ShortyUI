@@ -47,7 +47,7 @@ local function AddonSettings_BuildCooldown(category, layout)
     SettingsLib:CreateDropdown(category, {
         prefix = "CMC_",
         key = "cooldownManager_alignBuffBars_growFromDirection",
-        name = "Tracked Bars",
+        name = "Tracked Buff Bars|cffff0000*|r",
         searchtags = {
             "Grow",
             "Direction",
@@ -59,14 +59,22 @@ local function AddonSettings_BuildCooldown(category, layout)
             "Bottom",
             "Buff",
             "Bar",
+            "Icons",
+            "Tracked",
+            "Square",
+            "Compact",
+            "Horizontal",
+            "Vertical",
         },
         default = "BOTTOM",
         values = {
             BOTTOM = "Bars grow from |cff8ccd00Bottom|r",
             TOP = "Bars grow from |cff8ccd00Top|r",
+            ICONS_VERTICAL = "Only |cfffff100Icons|r |cff8ccd00Vertical|r",
+            ICONS_HORIZONTAL = "Only |cfffff100Icons|r |cff8ccd00Horizontal|r",
             ["Disable"] = "|cffff2020Disable|r centering",
         },
-        order = { "TOP", "BOTTOM", "Disable" },
+        order = { "TOP", "BOTTOM", "ICONS_VERTICAL", "ICONS_HORIZONTAL", "Disable" },
         get = function()
             return ns.db.profile.cooldownManager_alignBuffBars_growFromDirection or "BOTTOM"
         end,
@@ -142,7 +150,7 @@ local function AddonSettings_BuildCooldown(category, layout)
     })
 
     SettingsLib:CreateText(category, {
-        name = "|cffff0000*|rTo change |cfffff100Padding|r or to change between |cfffff100columns / rows|r\n Go to |cff87bbcaEdit Mode|r and change |cfffff100Icon Padding & Orientation|r.",
+        name = "|cffff0000*|rTo change |cfffff100Size, Padding|r or to change between |cfffff100columns / rows|r\n Go to |cff87bbcaEdit Mode|r and change |cfffff100Icon Size, Padding & Orientation|r.",
     })
 
     SettingsLib:CreateButton(category, {
@@ -250,7 +258,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         parentSection = squareIconsSection,
         prefix = "CMC_",
         key = "cooldownManager_experimental_enableRectangularIcons_buffIcons",
-        name = "Enable for Buff Icons",
+        name = "Rectangular Ratio",
         searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
         default = false,
         get = function()
@@ -263,7 +271,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.API:ShowReloadUIConfirmation()
             end
         end,
-        desc = "Enable for Buff Icons viewer. |cffff0000Experimental feature, may cause issues!|r",
+        desc = "Enable rectangular icons for Buff Icons viewer. |cffff0000Experimental feature, may cause issues!|r",
 
         sliderKey = "cooldownManager_experimental_enableRectangularIcons_buffIcons_percent",
         sliderName = "Height to Width Ratio",
@@ -362,7 +370,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         parentSection = squareIconsSection,
         prefix = "CMC_",
         key = "cooldownManager_experimental_enableRectangularIcons_essential",
-        name = "Enable for Essential",
+        name = "Rectangular Ratio",
         searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
         default = false,
         get = function()
@@ -475,7 +483,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         parentSection = squareIconsSection,
         prefix = "CMC_",
         key = "cooldownManager_experimental_enableRectangularIcons_utility",
-        name = "Enable Rectangular Icons for Utility",
+        name = "Rectangular Ratio",
         searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
         default = false,
         get = function()
@@ -669,10 +677,10 @@ local function AddonSettings_BuildCooldown(category, layout)
         hasOpacity = true,
         getColor = function(key)
             if key == "active" then
-                return ns.db.profile.cooldownManager_customActiveColor_r or 1,
-                    ns.db.profile.cooldownManager_customActiveColor_g or 0.95,
-                    ns.db.profile.cooldownManager_customActiveColor_b or 0.57,
-                    ns.db.profile.cooldownManager_customActiveColor_a or 0.69
+                return ns.db.profile.cooldownManager_customActiveColor_r or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+                    ns.db.profile.cooldownManager_customActiveColor_g or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+                    ns.db.profile.cooldownManager_customActiveColor_b or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+                    ns.db.profile.cooldownManager_customActiveColor_a or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
             end
         end,
         setColor = function(key, r, g, b, a)
@@ -688,7 +696,10 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         getDefaultColor = function(key)
             if key == "active" then
-                return 1, 0.95, 0.57, 0.69 -- Default black swipe
+                return ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+                    ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+                    ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+                    ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
             end
         end,
         parentSection = cooldownSection,
@@ -702,10 +713,10 @@ local function AddonSettings_BuildCooldown(category, layout)
         hasOpacity = true,
         getColor = function(key)
             if key == "active" then
-                return ns.db.profile.cooldownManager_customCDSwipeColor_r or 0,
-                    ns.db.profile.cooldownManager_customCDSwipeColor_g or 0,
-                    ns.db.profile.cooldownManager_customCDSwipeColor_b or 0,
-                    ns.db.profile.cooldownManager_customCDSwipeColor_a or 0.69
+                return ns.db.profile.cooldownManager_customCDSwipeColor_r or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+                    ns.db.profile.cooldownManager_customCDSwipeColor_g or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+                    ns.db.profile.cooldownManager_customCDSwipeColor_b or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+                    ns.db.profile.cooldownManager_customCDSwipeColor_a or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
             end
         end,
         setColor = function(key, r, g, b, a)
@@ -721,7 +732,10 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         getDefaultColor = function(key)
             if key == "active" then
-                return 0, 0, 0, 0.69 -- Default black swipe
+                return ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+                    ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+                    ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+                    ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
             end
         end,
         parentSection = cooldownSection,
@@ -730,14 +744,14 @@ local function AddonSettings_BuildCooldown(category, layout)
     SettingsLib:CreateButton(category, {
         text = "Set default colors",
         func = function()
-            ns.db.profile.cooldownManager_customActiveColor_r = 1
-            ns.db.profile.cooldownManager_customActiveColor_g = 0.95
-            ns.db.profile.cooldownManager_customActiveColor_b = 0.57
-            ns.db.profile.cooldownManager_customActiveColor_a = 0.69
-            ns.db.profile.cooldownManager_customCDSwipeColor_r = 0
-            ns.db.profile.cooldownManager_customCDSwipeColor_g = 0
-            ns.db.profile.cooldownManager_customCDSwipeColor_b = 0
-            ns.db.profile.cooldownManager_customCDSwipeColor_a = 0.69
+            ns.db.profile.cooldownManager_customActiveColor_r = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r
+            ns.db.profile.cooldownManager_customActiveColor_g = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g
+            ns.db.profile.cooldownManager_customActiveColor_b = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b
+            ns.db.profile.cooldownManager_customActiveColor_a = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
+            ns.db.profile.cooldownManager_customCDSwipeColor_r = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r
+            ns.db.profile.cooldownManager_customCDSwipeColor_g = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g
+            ns.db.profile.cooldownManager_customCDSwipeColor_b = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b
+            ns.db.profile.cooldownManager_customCDSwipeColor_a = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
             ReloadUI()
         end,
         parentSection = cooldownSection,

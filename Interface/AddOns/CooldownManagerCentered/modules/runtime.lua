@@ -200,21 +200,20 @@ EventHandler.events["PLAYER_ENTERING_WORLD"] = function(self, event, ...)
     -- end)
 end
 
--- EventHandler.events["EDIT_MODE_LAYOUTS_UPDATED"] = function(self, event, ...)
--- print("Edit Mode Layouts Updated")
--- if not Runtime:IsAllReady() then
---     return
--- end
--- C_Timer.After(0, function()
---     if ns.StyledIcons then
---         ns.StyledIcons:RefreshAll()
---     end
+EventHandler.events["EDIT_MODE_LAYOUTS_UPDATED"] = function(self, event, ...)
+    if not Runtime:IsAllReady() then
+        return
+    end
+    C_Timer.After(0.1, function()
+        if ns.StyledIcons then
+            ns.StyledIcons:RefreshAll()
+        end
 
---     if ns.CooldownManager then
---         ns.CooldownManager.ForceRefreshAll()
---     end
--- end)
--- end
+        if ns.CooldownManager then
+            ns.CooldownManager.ForceRefreshAll()
+        end
+    end)
+end
 
 -- EventHandler.events["TRAIT_CONFIG_UPDATED"] = function(self, event, ...)
 --     print("Trait Config Updated")

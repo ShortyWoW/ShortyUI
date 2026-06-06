@@ -4,6 +4,20 @@ ns.Addon = CooldownManagerCentered
 local L = LibStub("AceLocale-3.0"):GetLocale("CooldownManagerCentered")
 ns.L = L
 
+ns.CONSTANTS = ns.CONSTANTS or {}
+ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR = {
+    r = 1,
+    g = 0.95,
+    b = 0.57,
+    a = 0.69,
+}
+ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR = {
+    r = 0,
+    g = 0,
+    b = 0,
+    a = 0.69,
+}
+
 -- Default Settings
 ns.DEFAULT_SETTINGS = {
     profile = {
@@ -35,18 +49,18 @@ ns.DEFAULT_SETTINGS = {
 
         cooldownManager_stackAnchorEssential_enabled = false,
         cooldownManager_stackAnchorEssential_point = "BOTTOMRIGHT",
-        cooldownManager_stackAnchorEssential_offsetX = 0,
-        cooldownManager_stackAnchorEssential_offsetY = 0,
+        cooldownManager_stackAnchorEssential_offsetX = -2,
+        cooldownManager_stackAnchorEssential_offsetY = 2,
 
         cooldownManager_stackAnchorUtility_enabled = false,
         cooldownManager_stackAnchorUtility_point = "BOTTOMRIGHT",
-        cooldownManager_stackAnchorUtility_offsetX = 0,
-        cooldownManager_stackAnchorUtility_offsetY = 0,
+        cooldownManager_stackAnchorUtility_offsetX = -2,
+        cooldownManager_stackAnchorUtility_offsetY = 2,
 
         cooldownManager_stackAnchorBuffIcons_enabled = false,
         cooldownManager_stackAnchorBuffIcons_point = "BOTTOMRIGHT",
-        cooldownManager_stackAnchorBuffIcons_offsetX = 0,
-        cooldownManager_stackAnchorBuffIcons_offsetY = 0,
+        cooldownManager_stackAnchorBuffIcons_offsetX = -2,
+        cooldownManager_stackAnchorBuffIcons_offsetY = 2,
 
         -- Square Icons Styling
         cooldownManager_squareIcons_Essential = false,
@@ -103,14 +117,14 @@ ns.DEFAULT_SETTINGS = {
         -- cooldownManager_visibility_perViewer = {},
 
         cooldownManager_customSwipeColor_enabled = false,
-        cooldownManager_customActiveColor_r = 1,
-        cooldownManager_customActiveColor_g = 0.95,
-        cooldownManager_customActiveColor_b = 0.57,
-        cooldownManager_customActiveColor_a = 0.69,
-        cooldownManager_customCDSwipeColor_r = 0,
-        cooldownManager_customCDSwipeColor_g = 0,
-        cooldownManager_customCDSwipeColor_b = 0,
-        cooldownManager_customCDSwipeColor_a = 0.69,
+        cooldownManager_customActiveColor_r = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+        cooldownManager_customActiveColor_g = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+        cooldownManager_customActiveColor_b = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+        cooldownManager_customActiveColor_a = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a,
+        cooldownManager_customCDSwipeColor_r = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+        cooldownManager_customCDSwipeColor_g = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+        cooldownManager_customCDSwipeColor_b = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+        cooldownManager_customCDSwipeColor_a = ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a,
 
         cooldownManager_desaturate_under_aura = false,
         cooldownManager_hide_gcd = false,

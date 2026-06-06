@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Holy','Paladin-Retribution','DeathKnight-Frost','DeathKnight-Blood','DeathKnight-Unholy',}
-local provider = {region='US',realm='Crushridge',name='US',type='subscribers',zone=46,date='2026-06-05',data={Al='Aliyah:BAEALgADCgIJAgABLgAECgkJJgABAMoZAA==.',La='Lanas:BAEALgAECgkJAwABLgAFFAQJDwACAO8PAA==.',Sh='Shamshielder:BAECLgAFFH8KAAQDAAUJFA98DgAHAQVoDAAAAwBaAGkMAAACABYAawwAAAIAEABqDAAAAQA9AOoMAAACABgAAwAECbgIfA4ABwEEaAwAAAIAGQBpDAAAAgAWAGsMAAABABAA6gwAAAIAGAAEAAIJhiMfMwBUAAJoDAAAAQBaAGoMAAABAD0ABQABCekDk/wAQAABawwAAAEACgAuAAQKfy0ABAQACQmZIwUFANUCAAQACQmZIwUFANUCAAMABgmlG80MAJYBAAUAAQm5CZNzASkAAAAA.',},}
+local provider = {region='US',realm='Crushridge',name='US',type='subscribers',zone=46,date='2026-06-06',data={Al='Aliyah:BAEALgADCgIJAgABLgAECgkJJgABAMoZAA==.',La='Lanas:BAEALgAECgkJAwABLgAFFAQJDwACAO8PAA==.',Sh='Shamshielder:BAECLgAFFH8KAAQDAAUJFA/fDgAEAQVoDAAAAwBaAGkMAAACABYAawwAAAIAEABqDAAAAQA9AOoMAAACABgAAwAECbgI3w4ABAEEaAwAAAIAGQBpDAAAAgAWAGsMAAABABAA6gwAAAIAGAAEAAIJhiPQMwBTAAJoDAAAAQBaAGoMAAABAD0ABQABCekD//4AQAABawwAAAEACgAuAAQKfy0ABAQACQmZIxMFANUCAAQACQmZIxMFANUCAAMABgmlG/0MAJYBAAUAAQm5Ce11ASkAAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -75,7 +75,7 @@ local function ApplyCooldownFontToFrame(frame)
         return
     end
     fontString:SetAlpha(1)
-    fontString:SetTextColor(1, 1, 1, 1)
+    -- fontString:SetTextColor(1, 1, 1, 1)
     if not enabled or size == "NIL" or size == nil then
         numericSize = select(2, fontString:GetFont()) or 16
     else

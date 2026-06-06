@@ -1,15 +1,15 @@
 
 BugGrabberDB = {
+["session"] = 1,
 ["lastSanitation"] = 3,
-["session"] = 7,
 ["errors"] = {
 {
 ["message"] = "attempt to perform string conversion on a secret string value (execution tainted by 'Dystinct_EarthenSkyriding')",
-["time"] = 1780114769,
+["time"] = 1780718243,
 ["locals"] = "self=<table>{\n waypoint=<table>\n data=<table>\n Localized=<table>\n note_active=false\n minimapButton=DysES_MinimapButton <Minimap.lua:119>\n changelogs=<table>\n readme=<table>\n guides=<table>\n segment=<table>\n ui=DysES_Frame <Dystinct_EarthenSkyriding.xml:3>\n importExportEnabled=true\n dropdown=RouteViewerDropDown <Dropdown.lua:142>\n menu=<table>\n}\nmsg=<no value>\npattern=\"Discovered (.+): (%d+) experience gained\"\naddon=<table>{\n waypoint=<table>\n data=<table>\n Localized=<table>\n note_active=false\n minimapButton=DysES_MinimapButton <Minimap.lua:119>\n changelogs=<table>\n readme=<table>\n guides=<table>\n segment=<table>\n ui=DysES_Frame <Dystinct_EarthenSkyriding.xml:3>\n importExportEnabled=true\n dropdown=RouteViewerDropDown <Dropdown.lua:142>\n menu=<table>\n}\n",
 ["stack"] = "[Interface/AddOns/Dystinct_EarthenSkyriding/Util/Discovery.lua]:17: in function 'HandleChatMsgSystem'\n[Interface/AddOns/Dystinct_EarthenSkyriding/Dystinct_EarthenSkyriding.lua]:192: in function <...tinct_EarthenSkyriding/Dystinct_EarthenSkyriding.lua:190>\n",
 ["session"] = 1,
-["counter"] = 5,
+["counter"] = 6,
 },
 },
 }

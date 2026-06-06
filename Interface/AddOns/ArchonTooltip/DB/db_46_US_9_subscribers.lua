@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Protection','Monk-Windwalker',}
-local provider = {region='US',realm='AlteracMountains',name='US',type='subscribers',zone=46,date='2026-06-04',data={Ka='Kain:BAECLgAFFH8iAAIBAAcJyx8xAACnAgdoDAAACABbAGkMAAAHAGAAawwAAAcASwBsDAAAAQAzAG0MAAABAF8A6gwAAAkAYwBuDAAAAQA7AAEABwnLHzEAAKcCB2gMAAAIAFsAaQwAAAcAYABrDAAABwBLAGwMAAABADMAbQwAAAEAXwDqDAAACQBjAG4MAAABADsALgAECn8vAAIBAAgJaCbdAABoAwABAAgJaCbdAABoAwAAAA==.',Mk='Mk:BAEALgAECgUJBgABLgAECgkJQQACAIAgAA==.',},}
+local provider = {region='US',realm='AlteracMountains',name='US',type='subscribers',zone=46,date='2026-06-05',data={Ka='Kain:BAECLgAFFH8jAAIBAAcJzR83AACnAgdoDAAACABbAGkMAAAHAGAAawwAAAcASwBsDAAAAQAzAG0MAAABAF8A6gwAAAoAYwBuDAAAAQA7AAEABwnNHzcAAKcCB2gMAAAIAFsAaQwAAAcAYABrDAAABwBLAGwMAAABADMAbQwAAAEAXwDqDAAACgBjAG4MAAABADsALgAECn8vAAIBAAgJaCbdAABoAwABAAgJaCbdAABoAwAAAA==.',Mk='Mk:BAEALgAECgUJBgABLgAECgkJQQACAIAgAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Warrior-Fury',}
-local provider = {region='US',realm="Quel'dorei",name='US',type='subscribers',zone=46,date='2026-06-04',data={Am='Amgrod:BAEBLgAECn8fAAIBAAkJ5waCOgBQAQloDAAABQAGAGkMAAAEABwAawwAAAQAFwBqDAAAAwARAGwMAAADABMAbQwAAAEACQDqDAAABwAaAG4MAAADAAgAbwwAAAEAEwABAAkJ5waCOgBQAQloDAAABQAGAGkMAAAEABwAawwAAAQAFwBqDAAAAwARAGwMAAADABMAbQwAAAEACQDqDAAABwAaAG4MAAADAAgAbwwAAAEAEwAAAA==.',},}
+local provider = {region='US',realm="Quel'dorei",name='US',type='subscribers',zone=46,date='2026-06-05',data={Am='Amgrod:BAEBLgAECn8fAAIBAAkJ5wb5OgBQAQloDAAABQAGAGkMAAAEABwAawwAAAQAFwBqDAAAAwARAGwMAAADABMAbQwAAAEACQDqDAAABwAaAG4MAAADAAgAbwwAAAEAEwABAAkJ5wb5OgBQAQloDAAABQAGAGkMAAAEABwAawwAAAQAFwBqDAAAAwARAGwMAAADABMAbQwAAAEACQDqDAAABwAaAG4MAAADAAgAbwwAAAEAEwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

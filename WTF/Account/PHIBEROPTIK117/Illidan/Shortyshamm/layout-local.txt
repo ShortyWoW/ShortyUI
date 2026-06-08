@@ -1,4 +1,11 @@
 Version: 1
+Frame: CommunitiesFrame
+FrameLevel: 1
+Anchor: TOPLEFT
+X: 16
+Y: -116
+W: 814
+H: 426
 Frame: DysES_Frame
 FrameLevel: 1
 Anchor: LEFT
@@ -76,10 +83,3 @@ X: 16
 Y: -116
 W: 385
 H: 424
-Frame: CommunitiesFrame
-FrameLevel: 1
-Anchor: TOPLEFT
-X: 16
-Y: -116
-W: 814
-H: 426

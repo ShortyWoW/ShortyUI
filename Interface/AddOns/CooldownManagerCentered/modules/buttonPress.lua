@@ -335,15 +335,15 @@ function ButtonPress:HookAllDominosButtons()
     isDominosHooked = true
 end
 
+local isGlobalHooksSetUp = false
 local isInitialized = false
-function ButtonPress:Initialize()
-    if isInitialized then
+
+local function SetupGlobalHooks()
+    if isGlobalHooksSetUp then
         return
     end
-    if not ns.db.profile.cooldownManager_buttonPress then
-        return
-    end
-    isInitialized = true
+    isGlobalHooksSetUp = true
+
     hooksecurefunc("ActionButtonDown", function(id)
         if not ns.db.profile.cooldownManager_buttonPress then
             return
@@ -399,6 +399,52 @@ function ButtonPress:Initialize()
         end
         cleanupToHide()
     end)
+end
+
+function ButtonPress:Initialize()
+    if not ns.db.profile.cooldownManager_buttonPress then
+        -- Clean up any stale highlights when feature is disabled
+        self:Disable()
+        return
+    end
+    if isInitialized then
+        return
+    end
+    isInitialized = true
+    SetupGlobalHooks()
     RegisterLABCallbacks()
     HookAllLABButtons()
+end
+
+function ButtonPress:Reinitialize()
+    isInitialized = false
+    self:Initialize()
+end
+
+function ButtonPress:Disable()
+    cleanupToHide()
+    for _, viewerName in ipairs(viewerTypes) do
+        local viewerFrame = _G[viewerName]
+        if viewerFrame then
+            local children = { viewerFrame:GetChildren() }
+            for _, icon in ipairs(children) do
+                DisableHighlight(icon)
+            end
+        end
+    end
+end
+
+function ButtonPress:RefreshTextures()
+    for _, viewerName in ipairs(viewerTypes) do
+        local viewerFrame = _G[viewerName]
+        if viewerFrame then
+            local children = { viewerFrame:GetChildren() }
+            for _, icon in ipairs(children) do
+                if icon.HighlightTexture then
+                    icon.HighlightTexture:Hide()
+                    icon.HighlightTexture = nil
+                end
+            end
+        end
+    end
 end

@@ -3,6 +3,7 @@ local _, ns = ...
 local BuffBarIconMode = {}
 ns.BuffBarIconMode = BuffBarIconMode
 
+local LSM_font = LibStub and LibStub("LibSharedMedia-3.0", true)
 local BASE_SQUARE_MASK = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\Square"
 local DEFAULT_MASK_TEXTURE = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\CooldownManager"
 
@@ -47,10 +48,16 @@ local function GetZoom()
     return ns.db.profile.cooldownManager_squareIconsZoom_BuffIcons or 0
 end
 
-local BUFF_ICON_DEFAULT_SIZE = 35 -- WHY NOT 40?! what did I fucked up
+local BUFF_ICON_DEFAULT_SIZE = 35
+local BUFF_ICON_DEFAULT_SQUARE_SIZE = 40
 local function GetTargetIconSize()
-    local width = BUFF_ICON_DEFAULT_SIZE
-    local height = BUFF_ICON_DEFAULT_SIZE
+    local square = IsSquare()
+    local size = BUFF_ICON_DEFAULT_SIZE
+    if square then
+        size = BUFF_ICON_DEFAULT_SQUARE_SIZE
+    end
+    local width = size
+    local height = size
     if ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons then
         local pct = ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons_percent or 0.8
         height = math.floor(height * pct)
@@ -84,51 +91,9 @@ local function GetIconTexTarget(iconHost, iconTexture)
     return nil
 end
 
-local function CapturePoints(region)
-    local points = {}
-    if not region or not region.GetNumPoints then
-        return points
-    end
-    for i = 1, region:GetNumPoints() do
-        local point, relativeTo, relativePoint, x, y = region:GetPoint(i)
-        points[i] = {
-            point = point,
-            relativeTo = relativeTo,
-            relativePoint = relativePoint,
-            x = x,
-            y = y,
-        }
-    end
-    return points
-end
-
-local function RestorePoints(region, points)
-    if not region or not points then
-        return
-    end
-    region:ClearAllPoints()
-    for _, p in ipairs(points) do
-        region:SetPoint(p.point, p.relativeTo, p.relativePoint, p.x, p.y)
-    end
-end
--- ─── Font & stack styling ───────────────────────────────────────────────────
--- Applies BuffIcons cooldown-number font and stack-count positioning to a bar
--- frame that has been morphed into an icon, so it inherits the same text
--- settings as the Buff Icons viewer.
-
-local LSM_font = LibStub and LibStub("LibSharedMedia-3.0", true)
-local DEFAULT_FONT_PATH = "Fonts\\FRIZQT__.TTF"
-local BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH = DEFAULT_FONT_PATH
-local BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 16
-local BUFF_ICON_DEFAULT_STACK_FONT_PATH = "Fonts\\ARIALN.TTF"
-local BUFF_ICON_DEFAULT_STACK_FONT_SIZE = 14
-local BUFF_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT"
-local BUFF_ICON_DEFAULT_STACK_OFFSET_X = -2
-local BUFF_ICON_DEFAULT_STACK_OFFSET_Y = 2
-
 local function GetFontPath(fontName)
     if not fontName or fontName == "" then
-        return DEFAULT_FONT_PATH
+        return ns.CONSTANTS.DEFAULT_FONT_PATH
     end
     if LSM_font then
         local p = LSM_font:Fetch("font", fontName)
@@ -136,14 +101,14 @@ local function GetFontPath(fontName)
             return p
         end
     end
-    return DEFAULT_FONT_PATH
+    return ns.CONSTANTS.DEFAULT_FONT_PATH
 end
 
 local function GetBuffIconDefaultFontPath(fontName)
     if fontName and fontName ~= "" then
         return GetFontPath(fontName)
     end
-    return BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH
+    return ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH
 end
 
 local function ApplyFontStyling(frame)
@@ -155,19 +120,19 @@ local function ApplyFontStyling(frame)
     local borderLevel = (frame.cmcBorder and frame.cmcBorder:GetFrameLevel())
         or ((iconHost and iconHost:GetFrameLevel() or frame:GetFrameLevel()) + 4)
 
-    local cooldownFS = frame.Bar.Duration
+    -- local cooldownFS = frame.Bar.Duration
     local stackFS = frame.Icon.Applications
 
-    if frame.Bar then
-        frame.Bar:SetFrameLevel(borderLevel + 1)
-    end
-    if frame.Bar.Name then
-        frame.Bar.Name:Hide()
-    end
+    -- if frame.Bar then
+    --     frame.Bar:SetFrameLevel(borderLevel + 1)
+    -- end
+    -- if frame.Bar.Name then
+    --     frame.Bar.Name:Hide()
+    -- end
 
-    if cooldownFS then
-        cooldownFS:Hide()
-    end
+    -- if cooldownFS then
+    --     cooldownFS:Hide()
+    -- end
 
     -- Apply cooldown font to _CMC_Cooldown's countdown FontString
     if frame._CMC_Cooldown and frame._CMC_Cooldown.GetCountdownFontString then
@@ -175,13 +140,13 @@ local function ApplyFontStyling(frame)
         if cdFS and p.cooldownManager_cooldownFontSizeBuffIcons_enabled then
             local size = p.cooldownManager_cooldownFontSizeBuffIcons
             if size == "NIL" then
-                size = BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE
+                size = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE
             end
             if size == 0 then
                 cdFS:SetFontHeight(0)
             else
                 if not size then
-                    size = select(2, cdFS:GetFont()) or BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE
+                    size = select(2, cdFS:GetFont()) or ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE
                 end
                 local fontName = p.cooldownManager_cooldownFontName
                 local fontFlags = p.cooldownManager_cooldownFontFlags or {}
@@ -199,16 +164,16 @@ local function ApplyFontStyling(frame)
     if stackFS and p.cooldownManager_stackAnchorBuffIcons_enabled then
         local size = p.cooldownManager_stackFontSizeBuffIcons
         if size == "NIL" or not size then
-            size = BUFF_ICON_DEFAULT_STACK_FONT_SIZE
+            size = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE
         end
-        local point = p.cooldownManager_stackAnchorBuffIcons_point or BUFF_ICON_DEFAULT_STACK_POINT
+        local point = p.cooldownManager_stackAnchorBuffIcons_point or ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT
         local offsetX = p.cooldownManager_stackAnchorBuffIcons_offsetX
         if offsetX == nil then
-            offsetX = BUFF_ICON_DEFAULT_STACK_OFFSET_X
+            offsetX = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_X
         end
         local offsetY = p.cooldownManager_stackAnchorBuffIcons_offsetY
         if offsetY == nil then
-            offsetY = BUFF_ICON_DEFAULT_STACK_OFFSET_Y
+            offsetY = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_Y
         end
         stackFS:SetFontObject("NumberFontNormal")
         local fontName = p.cooldownManager_stackFontName
@@ -223,7 +188,7 @@ local function ApplyFontStyling(frame)
             stackFS:SetFontHeight(0)
         else
             local stackFontPath = fontName and fontName ~= "" and GetFontPath(fontName)
-                or BUFF_ICON_DEFAULT_STACK_FONT_PATH
+                or ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_PATH
             stackFS:SetFont(stackFontPath, size, table.concat(flags, ","))
         end
         if not frame._cmcStackAnchor then
@@ -258,16 +223,20 @@ local function ApplyFontStyling(frame)
         stackFS:SetJustifyV("MIDDLE")
         stackFS:ClearAllPoints()
         stackFS:SetPoint(
-            BUFF_ICON_DEFAULT_STACK_POINT,
+            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT,
             frame._cmcStackAnchor,
-            BUFF_ICON_DEFAULT_STACK_POINT,
-            BUFF_ICON_DEFAULT_STACK_OFFSET_X,
-            BUFF_ICON_DEFAULT_STACK_OFFSET_Y
+            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT,
+            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_X,
+            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_Y
         )
         local _fontPath, _fontSize, fontFlags = stackFS:GetFont()
-        stackFS:SetFont(BUFF_ICON_DEFAULT_STACK_FONT_PATH, BUFF_ICON_DEFAULT_STACK_FONT_SIZE, fontFlags)
+        stackFS:SetFont(
+            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_PATH,
+            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE,
+            fontFlags
+        )
         stackFS:SetDrawLayer("OVERLAY", 7)
-        stackFS:SetSize(30, BUFF_ICON_DEFAULT_STACK_FONT_SIZE)
+        stackFS:SetSize(30, ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE)
     end
 end
 
@@ -335,10 +304,11 @@ local function ApplyIconStyling(frame, iconHost, iconTexture)
                             region:SetAlpha(frame._cmcHiddenIconHostRegions[region])
                             frame._cmcHiddenIconHostRegions[region] = nil
                         end
-                        local width, height = frame:GetSize()
+                        local _w, _h = frame:GetSize()
+                        local _ratio = (_w and _h and _w > 0) and (_h / _w) or 1.0
                         region:ClearAllPoints()
-                        region:SetPoint("CENTER", iconHost, "CENTER", 0, 0)
-                        region:SetSize(width * 1.5, height * 1.5)
+                        region:SetPoint("TOPLEFT", iconHost, "TOPLEFT", -9, 8 * _ratio)
+                        region:SetPoint("BOTTOMRIGHT", iconHost, "BOTTOMRIGHT", 9, -8 * _ratio)
                     end
                 end
             end
@@ -351,7 +321,7 @@ local function EnsureBackup(frame)
         return
     end
 
-    local iconHost, iconTexture, bar = GetBuffBarParts(frame)
+    local iconHost, iconTexture = GetBuffBarParts(frame)
     local hiddenState = {}
 
     for _, child in ipairs({ frame:GetChildren() }) do
@@ -366,12 +336,7 @@ local function EnsureBackup(frame)
     end
 
     frame._cmcBuffBarIconBackup = {
-        width = frame:GetWidth(),
-        height = frame:GetHeight(),
-        framePoints = CapturePoints(frame),
-        iconPoints = CapturePoints(iconHost),
         hiddenState = hiddenState,
-        barAlpha = bar and bar:GetAlpha() or nil,
     }
 end
 
@@ -489,18 +454,21 @@ function BuffBarIconMode.Restore(frame)
         return
     end
 
+    local settings = BuffBarCooldownViewer.settingMap
+    local opacity = settings[Enum.EditModeCooldownViewerSetting.Opacity]
+    local barWidthScale = (50 + settings[Enum.EditModeCooldownViewerSetting.BarWidthScale].value) / 100
     local iconHost, iconTexture, bar = GetBuffBarParts(frame)
 
-    if backup.width and backup.height and backup.width > 0 and backup.height > 0 then
-        frame:SetSize(backup.width, backup.height)
+    local isIconHidden = settings[Enum.EditModeCooldownViewerSetting.BarContent].value == 2
+    frame:SetSize(220 * barWidthScale, 30)
+    iconHost:SetSize(30, 30)
+    iconHost:ClearAllPoints()
+    iconHost:SetPoint("LEFT", frame, "LEFT", 0, 0)
+    if isIconHidden and iconHost.Hide then
+        iconHost:Hide()
     end
 
-    RestorePoints(frame, backup.framePoints)
-    RestorePoints(iconHost, backup.iconPoints)
-
-    if bar and backup.barAlpha ~= nil then
-        bar:SetAlpha(backup.barAlpha)
-    end
+    bar:SetAlpha(1)
 
     if backup.hiddenState then
         for region, wasShown in pairs(backup.hiddenState) do
@@ -560,26 +528,6 @@ function BuffBarIconMode.RefreshAll(barFrames)
             end
         elseif frame._cmcBuffBarIconBackup then
             BuffBarIconMode.Restore(frame)
-        end
-    end
-end
-
-function BuffBarIconMode.OnStyleChanged()
-    if not BuffBarIconMode.IsEnabled() then
-        return
-    end
-    if not BuffBarCooldownViewer then
-        return
-    end
-    local children = { BuffBarCooldownViewer:GetChildren() }
-    for _, frame in ipairs(children) do
-        if frame._cmcBuffBarIconModeApplied then
-            local iconHost, iconTexture = GetBuffBarParts(frame)
-            iconHost:Show()
-            ApplyIconStyling(frame, iconHost, iconTexture)
-            local bt = IsSquare() and GetBorderThickness(frame) or 0
-
-            ApplyFontStyling(frame)
         end
     end
 end

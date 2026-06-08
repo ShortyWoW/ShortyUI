@@ -95,7 +95,12 @@ function addon:RefreshConfig()
         ns.TrackerDB:InitializeDB()
     end
     if ns.TrackerItemViewer then
-        ns.TrackerItemViewer:Initialize()
+        if ns.db.profile.tracker_enabled then
+            ns.TrackerItemViewer:Initialize()
+            ns.TrackerItemViewer:ShowAll()
+        else
+            ns.TrackerItemViewer:HideAll()
+        end
     end
     if ns.CooldownStyle then
         ns.CooldownStyle:Initialize()
@@ -109,7 +114,6 @@ function addon:RefreshConfig()
     end
 
     ns.API:RefreshCooldownManager()
-    ns.API:ShowReloadUIConfirmation()
     self:Print("Profile settings applied.")
 end
 
@@ -197,6 +201,7 @@ end
 function addon:OnEnable()
     _cleanup()
     C_CVar.SetCVar("cooldownViewerEnabled", "1")
+
     if ns.StyledIcons then
         ns.StyledIcons:Initialize()
     end
@@ -219,7 +224,12 @@ function addon:OnEnable()
         ns.TrackerDB:InitializeDB()
     end
     if ns.TrackerItemViewer then
-        ns.TrackerItemViewer:Initialize()
+        if ns.db.profile.tracker_enabled then
+            ns.TrackerItemViewer:Initialize()
+            ns.TrackerItemViewer:ShowAll()
+        else
+            ns.TrackerItemViewer:HideAll()
+        end
     end
     if ns.CooldownStyle then
         ns.CooldownStyle:Initialize()

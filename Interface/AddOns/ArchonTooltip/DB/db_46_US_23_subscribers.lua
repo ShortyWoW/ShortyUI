@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown','Monk-Windwalker','DeathKnight-Unholy','Shaman-Restoration','Shaman-Elemental',}
-local provider = {region='US',realm='Azgalor',name='US',type='subscribers',zone=46,date='2026-06-06',data={Ee='Eetha:BAEALgAECgkJBQABLgAFFAMJAwABAAAAAA==.',Ka='Kappainc:BAEALgAECgkJEAAAAA==.',Pe='Pengwei:BAECLgAFFH8XAAICAAQJZiS+BQCrAQRoDAAACABiAGkMAAAGAFoAawwAAAIAWwDqDAAABwBcAAIABAlmJL4FAKsBBGgMAAAIAGIAaQwAAAYAWgBrDAAAAgBbAOoMAAAHAFwALgAECn9XAAICAAkJdiZXAACMAwACAAkJdiZXAACMAwABLgAFFAcJFwADAC4kAA==.Petmeimtame:BAEALgAECgQJAwABLgAECgkJKQAEAJQdAA==.',St='Striikes:BAEBLgAECn8pAAMEAAkJlB3qBwAoAwloDAAABgBbAGkMAAAGAF0AawwAAAYAVABqDAAABABQAGwMAAAEAFoAbQwAAAIAHwDqDAAABgBdAG4MAAAFAGEAbwwAAAIAEgAEAAkJlB3qBwAoAwloDAAABgBbAGkMAAAGAF0AawwAAAYAVABqDAAAAwBQAGwMAAADAFoAbQwAAAIAHwDqDAAABQBdAG4MAAAEAGEAbwwAAAIAEgAFAAQJvwNkggBbAARqDAAAAQAJAGwMAAABAAcA6gwAAAEACQBuDAAAAQALAAAA.',},}
+local lookup = {'Unknown-Unknown','Shaman-Restoration','Shaman-Elemental',}
+local provider = {region='US',realm='Azgalor',name='US',type='subscribers',zone=46,date='2026-06-07',data={Ee='Eetha:BAEALgAECgkJBQABLgAFFAMJAwABAAAAAA==.',Ka='Kappainc:BAEALgAECgkJEAAAAA==.',Pe='Petmeimtame:BAEALgAECgQJAwABLgAECgkJKQACAJQdAA==.',St='Striikes:BAEBLgAECn8pAAMCAAkJlB36BwAoAwloDAAABgBbAGkMAAAGAF0AawwAAAYAVABqDAAABABQAGwMAAAEAFoAbQwAAAIAHwDqDAAABgBdAG4MAAAFAGEAbwwAAAIAEgACAAkJlB36BwAoAwloDAAABgBbAGkMAAAGAF0AawwAAAYAVABqDAAAAwBQAGwMAAADAFoAbQwAAAIAHwDqDAAABQBdAG4MAAAEAGEAbwwAAAIAEgADAAQJvwNjgwBbAARqDAAAAQAJAGwMAAABAAcA6gwAAAEACQBuDAAAAQALAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

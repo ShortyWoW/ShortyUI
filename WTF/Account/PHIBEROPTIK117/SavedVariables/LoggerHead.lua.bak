@@ -13,12 +13,13 @@ LoggerHeadDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
-["Shortlite - Illidan"] = "Default",
 ["Shortlight - Illidan"] = "Default",
+["Shortlite - Illidan"] = "Default",
+["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortytest - Illidan"] = "Default",
+["Shortbowjob - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -45,6 +46,9 @@ true,
 [8] = true,
 },
 ["End Time"] = {
+[24] = true,
+},
+["Black Rook Hold"] = {
 [24] = true,
 },
 ["Utgarde Keep"] = {

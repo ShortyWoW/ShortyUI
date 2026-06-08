@@ -35,6 +35,8 @@ KeystoneLootDB = {
 },
 ["Dalaran-Callmeshorty-12"] = {
 },
+["Illidan-Shortbowjob-3"] = {
+},
 ["Dalaran-Drewishlaser-11"] = {
 },
 ["Illidan-Shortlite-2"] = {

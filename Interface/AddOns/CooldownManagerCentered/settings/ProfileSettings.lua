@@ -207,6 +207,9 @@ function ProfileSettings:BuildSettings(parentCategory)
             return ns.ProfileAPI:GetCurrentProfile()
         end,
         set = function(value)
+            if InCombatLockdown() then
+                return
+            end
             if value and value ~= ns.ProfileAPI:GetCurrentProfile() then
                 ns.ProfileAPI:SetProfile(value)
             end
@@ -216,6 +219,9 @@ function ProfileSettings:BuildSettings(parentCategory)
     SettingsLib:CreateButton(profileCategory, {
         text = "Create New",
         func = function()
+            if InCombatLockdown() then
+                return
+            end
             StaticPopup_Show("CMC_CREATE_NEW_PROFILE")
         end,
         desc = "Create a new profile with a custom name.",
@@ -228,6 +234,9 @@ function ProfileSettings:BuildSettings(parentCategory)
     SettingsLib:CreateButton(profileCategory, {
         text = "Export",
         func = function()
+            if InCombatLockdown() then
+                return
+            end
             local exportString = ns.ProfileAPI:GetExportString()
             if exportString and exportString ~= "" then
                 ns.ProfileSettings._pendingExportString = exportString
@@ -243,6 +252,9 @@ function ProfileSettings:BuildSettings(parentCategory)
     SettingsLib:CreateButton(profileCategory, {
         text = "Import",
         func = function()
+            if InCombatLockdown() then
+                return
+            end
             StaticPopup_Show("CMC_IMPORT_PROFILE_STRING")
         end,
         desc = "Import a profile from an export string.",
@@ -272,6 +284,9 @@ function ProfileSettings:BuildSettings(parentCategory)
             return ""
         end,
         set = function(value)
+            if InCombatLockdown() then
+                return
+            end
             if value and value ~= "" then
                 StaticPopup_Show("CMC_CONFIRM_DELETE_PROFILE", value, nil, value)
             end

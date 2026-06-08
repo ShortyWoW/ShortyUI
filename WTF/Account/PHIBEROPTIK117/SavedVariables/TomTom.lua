@@ -13,6 +13,7 @@ TomTomDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
+["Shortbowjob - Illidan"] = "Default",
 ["Shortlite - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
@@ -64,6 +65,7 @@ TomTomWaypointsM = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
@@ -87,18 +89,20 @@ TomTomWaypointsM = {
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["minimap"] = true,
+["desc"] = "Suramar",
+["silent"] = true,
 ["cleardistance"] = 0,
 ["title"] = "Suramar",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
 },
+["minimap"] = {
 },
+},
+["minimap"] = true,
 ["world"] = true,
 },
 },
@@ -118,9 +122,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["minimap"] = true,
@@ -143,6 +147,8 @@ TomTomWaypointsM = {
 ["Shortybear - Illidan"] = {
 },
 ["Drewishlazer - Dalaran"] = {
+},
+["Shortbowjob - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 [862] = {

@@ -286,6 +286,11 @@ function Assistant:UpdateViewerHighlights(viewerName)
         return
     end
 
+    -- Track per-viewer enabled state so Initialize can compare desired vs current
+    local enabledKey = "cooldownManager_showHighlight_" .. settingName
+    local isEnabled = ns.db and ns.db.profile and ns.db.profile[enabledKey] or false
+    viewerFrame._cmc_assistant_enabled = isEnabled
+
     local children = { viewerFrame:GetChildren() }
     for _, child in ipairs(children) do
         if child.Icon then -- Only process icon-like children
@@ -396,6 +401,7 @@ function Assistant:Shutdown()
     for viewerName, _ in pairs(viewersSettingKey) do
         local viewerFrame = _G[viewerName]
         if viewerFrame then
+            viewerFrame._cmc_assistant_enabled = false
             local children = { viewerFrame:GetChildren() }
             for _, child in ipairs(children) do
                 HideHighlights(child)
@@ -452,51 +458,35 @@ function Assistant:Enable()
 end
 
 function Assistant:Disable()
-    if not isModuleAssistantEnabled then
-        return
-    end
     PrintDebug("Disabling module")
 
     self:Shutdown()
 end
 
 function Assistant:Initialize()
-    if not IsAssistantEnabledForAnyViewer() then
-        PrintDebug("Not initializing - no viewers enabled")
-        return
-    end
-
-    PrintDebug("Initializing module")
-    self:Enable()
-
+    self:OnSettingChanged()
     ns.db.profile.assistantCache = nil
 end
 
 function Assistant:OnSettingChanged(viewerSettingName)
-    -- Check if module should be enabled or disabled
     local shouldBeEnabled = IsAssistantEnabledForAnyViewer()
 
     if shouldBeEnabled and not isModuleAssistantEnabled then
         self:Enable()
     elseif not shouldBeEnabled and isModuleAssistantEnabled then
         self:Disable()
-    elseif isModuleAssistantEnabled then
-        -- Already enabled, just update display
-        if viewerSettingName then
-            for viewerName, settingName in pairs(viewersSettingKey) do
-                if settingName == viewerSettingName then
-                    -- if not ns.API:IsSomeAddOnRestrictionActive() then
-                    self:PrepareRotationBorders()
-                    -- end
-                    self:UpdateViewerHighlights(viewerName)
-                    return
-                end
+    end
+
+    -- Module remains enabled; update every viewer matching the changed setting (or all if unspecified)
+    if viewerSettingName then
+        for viewerName, settingName in pairs(viewersSettingKey) do
+            if settingName == viewerSettingName then
+                BuildIconSpellCacheForViewer(viewerName)
+                self:UpdateViewerHighlights(viewerName)
             end
         end
-        -- If no specific viewer, update all
-        -- if not ns.API:IsSomeAddOnRestrictionActive() then
+    else
         self:PrepareRotationBorders()
-        -- end
         self:UpdateAllHighlights()
     end
 end

@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Retribution','DeathKnight-Blood',}
-local provider = {region='US',realm='Gundrak',name='US',type='subscribers',zone=46,date='2026-06-06',data={De='Deki:BAEALgAECgYJBgABLgAFFAYJFgABAG4aAA==.',Ex='Exo:BAECLgAFFH8jAAICAAcJIhq3CADZAQdoDAAACABbAGkMAAAGAGAAawwAAAYAUgBqDAAAAwAcAGwMAAABABYAbQwAAAEAFwDqDAAACgBUAAIABwkiGrcIANkBB2gMAAAIAFsAaQwAAAYAYABrDAAABgBSAGoMAAADABwAbAwAAAEAFgBtDAAAAQAXAOoMAAAKAFQALgAECn8rAAICAAkJHCJCBADrAgACAAkJHCJCBADrAgAAAA==.',},}
+local provider = {region='US',realm='Gundrak',name='US',type='subscribers',zone=46,date='2026-06-07',data={De='Deki:BAEALgAECgYJBgABLgAFFAYJFgABAG4aAA==.',Ex='Exo:BAECLgAFFH8mAAICAAcJIhr0CADXAQdoDAAACQBbAGkMAAAHAGAAawwAAAcAUgBqDAAAAwAcAGwMAAABABYAbQwAAAEAFwDqDAAACgBUAAIABwkiGvQIANcBB2gMAAAJAFsAaQwAAAcAYABrDAAABwBSAGoMAAADABwAbAwAAAEAFgBtDAAAAQAXAOoMAAAKAFQALgAECn8rAAICAAkJHCJQBADpAgACAAkJHCJQBADpAgAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

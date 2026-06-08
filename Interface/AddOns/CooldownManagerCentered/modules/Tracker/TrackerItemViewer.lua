@@ -172,6 +172,10 @@ local function RestoreDefaultStyle(frame)
         frame.Cooldown:SetAllPoints(frame)
     end
 
+    if frame.mask then
+        frame.mask:SetTexture(DEFAULT_MASK_TEXTURE)
+        frame.mask:Show()
+    end
     if frame.cmcBorder then
         frame.cmcBorder:Hide()
     end
@@ -179,7 +183,7 @@ local function RestoreDefaultStyle(frame)
 end
 
 local function ApplyStyleToFrame(frame)
-    local isSquare = (ns.db and ns.db.profile and ns.db.profile.trinketRacialTracker_squareIcons) or false
+    local isSquare = ns.db.profile.trinketRacialTracker_squareIcons or false
 
     if isSquare then
         ApplySquareStyle(frame)
@@ -197,7 +201,7 @@ local function ApplyStyleToFrame(frame)
 end
 
 local function ApplyStackFontToFrame(frame)
-    local fontName = (ns.db and ns.db.profile and ns.db.profile.cooldownManager_stackFontName) or "Friz Quadrata TT"
+    local fontName = ns.db.profile.cooldownManager_stackFontName or "Friz Quadrata TT"
     local fontPath = GetFontPath(fontName)
     local fontFlagTable = ns.db.profile.cooldownManager_stackFontFlags or {}
     local fontFlagStr = ""
@@ -243,7 +247,6 @@ function ItemViewerFrame:Initialize()
         frame.IconOverlay:SetAtlas("UI-HUD-CoolDownManager-IconOverlay")
         frame.IconOverlay:SetSize(width * 1.5, height * 1.5)
         frame.IconOverlay:SetPoint("Center", frame.Icon, "CENTER")
-
         frame.IconOverlay:Hide()
     end
     if not frame.Cooldown then
@@ -330,6 +333,9 @@ function ItemViewerFrame:UpdateEntry(entry)
 end
 
 function ItemViewerFrame:UpdateCooldown()
+    if not ns.db.profile.tracker_enabled then
+        return
+    end
     local frame = self.frame
     if not frame:IsShown() or not frame._CMCTracker_EntryKind or not frame._CMCTracker_EntryID then
         return
@@ -400,6 +406,9 @@ function TrackerInstance:UpdateIconPosition(frame, visibleIndex)
 end
 
 function TrackerInstance:UpdateCooldowns()
+    if not ns.db.profile.tracker_enabled then
+        return
+    end
     if
         self.lastUpdateTimes.UpdateCooldownsThrottle
         and (GetTime() - self.lastUpdateTimes.UpdateCooldownsThrottle) < UPDATE_THROTTLE_DELAY
@@ -996,9 +1005,6 @@ function TrackerInstance:Create()
             end,
             set = function(layoutName, value)
                 ns.db.profile.cooldownManager_cooldownFontSizeTracker_enabled = value
-                if not value and ns.API and ns.API.ShowReloadUIConfirmation then
-                    ns.API:ShowReloadUIConfirmation()
-                end
                 if ns.TrackerItemViewer then
                     ns.TrackerItemViewer:RefreshStyling()
                 end
@@ -1060,9 +1066,6 @@ function TrackerInstance:Create()
                 if ns.Keybinds then
                     ns.Keybinds:OnSettingChanged("CMCTracker1")
                     ns.Keybinds:OnSettingChanged("CMCTracker2")
-                end
-                if not value and ns.API and ns.API.ShowReloadUIConfirmation then
-                    ns.API:ShowReloadUIConfirmation()
                 end
             end,
         },
@@ -1264,5 +1267,21 @@ function ItemViewer:Initialize()
 
     for _, tracker in ipairs(trackers) do
         tracker:Create()
+    end
+end
+
+function ItemViewer:HideAll()
+    for _, tracker in ipairs(trackers) do
+        if tracker.anchor then
+            tracker.anchor:Hide()
+        end
+    end
+end
+
+function ItemViewer:ShowAll()
+    for _, tracker in ipairs(trackers) do
+        if tracker.anchor then
+            tracker:RefreshEntries()
+        end
     end
 end

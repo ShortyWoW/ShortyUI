@@ -99,6 +99,9 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnShow", function(arg1, s
     if not Runtime:IsAllReady() then
         return
     end
+    if ns.CMCVisibility then
+        ns.CMCVisibility:UpdateAll()
+    end
     C_Timer.After(0, function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
@@ -119,6 +122,9 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnHide", function()
     if not Runtime:IsAllReady() then
         return
     end
+    if ns.CMCVisibility then
+        ns.CMCVisibility:UpdateAll()
+    end
     C_Timer.After(0, function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
@@ -138,6 +144,10 @@ EventRegistry:RegisterCallback("EditMode.Enter", function()
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefreshAll()
     end
+    if ns.CMCVisibility then
+        ns.CMCVisibility:UpdateAll()
+    end
+
     C_Timer.After(0, function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
@@ -162,6 +172,9 @@ EventRegistry:RegisterCallback("EditMode.Exit", function()
 
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefreshAll()
+    end
+    if ns.CMCVisibility then
+        ns.CMCVisibility:UpdateAll()
     end
     C_Timer.After(0, function()
         if ns.StyledIcons then

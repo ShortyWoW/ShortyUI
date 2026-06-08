@@ -407,12 +407,17 @@ local function UpdateIconKeybind(icon, viewerSettingName, keybind)
     if not ns.db.profile[enabledKey] then
         if icon.cmcKeybindText then
             icon.cmcKeybindText:Hide()
+            if icon.cmcKeybindText.text then
+                icon.cmcKeybindText.text:Hide()
+            end
         end
+
         return
     end
 
     local keybindText = GetOrCreateKeybindText(icon, viewerSettingName)
     icon.cmcKeybindText:Show()
+
     keybindText:SetText(keybind)
     keybindText:Show()
     if not keybind or keybind == "" then
@@ -575,14 +580,7 @@ function Keybinds:Disable()
 end
 
 function Keybinds:Initialize()
-    if not IsKeybindEnabledForAnyViewer() then
-        PrintDebug("Not initializing - no viewers enabled")
-        return
-    end
-
-    PrintDebug("Initializing module")
-    self:Enable()
-
+    self:OnSettingChanged()
     -- Cleanup old DB cache if present
     if ns.db and ns.db.profile then
         ns.db.profile.keybindCache = nil
@@ -596,16 +594,13 @@ function Keybinds:OnSettingChanged(viewerSettingName)
         self:Enable()
     elseif not shouldBeEnabled and isModuleEnabled then
         self:Disable()
-    elseif isModuleEnabled then
-        if viewerSettingName then
-            for viewerName, settingName in pairs(viewersSettingKey) do
-                if settingName == viewerSettingName then
-                    UpdateViewerKeybinds(viewerName)
-                    self:ApplyKeybindSettings(viewerName)
-                    return
-                end
-            end
+    end
+
+    -- Module remains enabled; update every viewer matching the changed setting (or all if unspecified)
+    for viewerName, settingName in pairs(viewersSettingKey) do
+        if not viewerSettingName or settingName == viewerSettingName then
+            UpdateViewerKeybinds(viewerName)
+            self:ApplyKeybindSettings(viewerName)
         end
-        self:UpdateAllKeybinds()
     end
 end

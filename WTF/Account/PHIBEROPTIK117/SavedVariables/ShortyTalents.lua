@@ -61,6 +61,26 @@ ShortyTalentsDB = {
 },
 },
 },
+[1454] = {
+["allowed"] = {
+["Mythic+"] = {
+},
+["Dungeons"] = {
+},
+["Raiding"] = {
+},
+["Arena"] = {
+},
+["Delves"] = {
+},
+["BGs"] = {
+},
+},
+["raid"] = {
+["bossAllowedByNPCID"] = {
+},
+},
+},
 [266] = {
 ["allowed"] = {
 ["Mythic+"] = {
@@ -101,7 +121,7 @@ ShortyTalentsDB = {
 },
 },
 },
-[1454] = {
+[268] = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
@@ -245,11 +265,11 @@ ShortyTalentsDB = {
 },
 },
 },
-[268] = {
+[1448] = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
-["Dungeons"] = {
+["BGs"] = {
 },
 ["Raiding"] = {
 },
@@ -257,7 +277,7 @@ ShortyTalentsDB = {
 },
 ["Delves"] = {
 },
-["BGs"] = {
+["Dungeons"] = {
 },
 },
 ["raid"] = {

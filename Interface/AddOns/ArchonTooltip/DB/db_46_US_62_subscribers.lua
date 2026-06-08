@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Shaman-Elemental',}
-local provider = {region='US',realm="Dath'Remar",name='US',type='subscribers',zone=46,date='2026-06-06',data={Bj='Bjornshockz:BAEBLgAECn80AAIBAAkJMRciGQAMAgloDAAACABTAGkMAAAJAEMAawwAAAkANgBqDAAABgAuAGwMAAAGADkAbQwAAAMAMQDqDAAACQA3AG4MAAABAEwAbwwAAAEAHgABAAkJMRciGQAMAgloDAAACABTAGkMAAAJAEMAawwAAAkANgBqDAAABgAuAGwMAAAGADkAbQwAAAMAMQDqDAAACQA3AG4MAAABAEwAbwwAAAEAHgAAAA==.Bjornstormz:BAEALgAECgEJAgABLgAECgkJNAABADEXAA==.',El='Elorisse:BAEALgAECgQJBwAAAA==.',},}
+local provider = {region='US',realm="Dath'Remar",name='US',type='subscribers',zone=46,date='2026-06-07',data={Bj='Bjornshockz:BAEBLgAECn80AAIBAAkJMRdNGQAMAgloDAAACABTAGkMAAAJAEMAawwAAAkANgBqDAAABgAuAGwMAAAGADkAbQwAAAMAMQDqDAAACQA3AG4MAAABAEwAbwwAAAEAHgABAAkJMRdNGQAMAgloDAAACABTAGkMAAAJAEMAawwAAAkANgBqDAAABgAuAGwMAAAGADkAbQwAAAMAMQDqDAAACQA3AG4MAAABAEwAbwwAAAEAHgAAAA==.Bjornstormz:BAEALgAECgEJAgABLgAECgkJNAABADEXAA==.',El='Elorisse:BAEALgAECgQJBwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

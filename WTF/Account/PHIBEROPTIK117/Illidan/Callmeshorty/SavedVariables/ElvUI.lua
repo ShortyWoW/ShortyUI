@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/cw Return-Vashj fs fs no cap rizz ohio skibbidie toilet",
-"/cw Return-Vashj i'm gonna go neck myself now for typing that",
 "/s Repairs friendos",
 "/cw Return I'm going to play the game through your stream, if you could keep my character in frame at all times that would be great, thanks.",
 "/raid Good job guys, we lived all the way up to the adds coming out, we got this team!",
+"/g what's everyone up to this evening",
+"/g don't hurt yourself",
 },
 ["ChatHistoryLog"] = {
 {

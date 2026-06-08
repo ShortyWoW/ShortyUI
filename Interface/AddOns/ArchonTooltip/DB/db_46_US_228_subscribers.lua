@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Priest-Shadow','Warlock-Demonology',}
-local provider = {region='US',realm='Uldaman',name='US',type='subscribers',zone=46,date='2026-06-05',data={Eq='Equinoxis:BAEALgAECgYJCwABLgAFFAgJJQABAKQZAA==.',Mu='Muffin:BAEALgADCgYJBgABLgAECgYJEwACAE8gAA==.',Ni='Nishikki:BAECLgAFFH8lAAIBAAgJpBnRAgBZAghoDAAACABKAGkMAAAHAFcAawwAAAYAOgBqDAAABQAqAGwMAAACADcAbQwAAAEAGgDqDAAABwBfAG4MAAABAD0AAQAICaQZ0QIAWQIIaAwAAAgASgBpDAAABwBXAGsMAAAGADoAagwAAAUAKgBsDAAAAgA3AG0MAAABABoA6gwAAAcAXwBuDAAAAQA9AC4ABAp/PAACAQAJCZgjvQIAOQMAAQAJCZgjvQIAOQMAAAA=.',},}
+local provider = {region='US',realm='Uldaman',name='US',type='subscribers',zone=46,date='2026-06-07',data={Eq='Equinoxis:BAEALgAECgYJCwABLgAFFAgJJQABAKQZAA==.',Mu='Muffin:BAEALgADCgYJBgABLgAECgYJGQACAOYgAA==.',Ni='Nishikki:BAECLgAFFH8lAAIBAAgJpBn/AgBXAghoDAAACABKAGkMAAAHAFcAawwAAAYAOgBqDAAABQAqAGwMAAACADcAbQwAAAEAGgDqDAAABwBfAG4MAAABAD0AAQAICaQZ/wIAVwIIaAwAAAgASgBpDAAABwBXAGsMAAAGADoAagwAAAUAKgBsDAAAAgA3AG0MAAABABoA6gwAAAcAXwBuDAAAAQA9AC4ABAp/PAACAQAJCZgj0AIAOAMAAQAJCZgj0AIAOAMAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

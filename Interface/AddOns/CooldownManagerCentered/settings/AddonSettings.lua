@@ -145,7 +145,16 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         set = function(value)
             ns.db.profile.tracker_enabled = value
-            ns.API:ShowReloadUIConfirmation()
+            if value then
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:Initialize()
+                    ns.TrackerItemViewer:ShowAll()
+                end
+            else
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:HideAll()
+                end
+            end
         end,
     })
 
@@ -199,7 +208,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_squareIcons_BuffIcons = value
             ns.StyledIcons:OnSettingChanged()
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Apply square icon styling to Buff Icons viewer.",
     })
@@ -267,16 +275,13 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons = value
             ns.StyledIcons:OnSettingChanged()
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
         end,
         desc = "Enable rectangular icons for Buff Icons viewer. |cffff0000Experimental feature, may cause issues!|r",
 
         sliderKey = "cooldownManager_experimental_enableRectangularIcons_buffIcons_percent",
         sliderName = "Height to Width Ratio",
         sliderMin = 0.6,
-        sliderMax = 1,
+        sliderMax = 0.9,
         sliderStep = 0.01,
         sliderDefault = 0.8,
         sliderGet = function()
@@ -309,7 +314,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_squareIcons_Essential = value
             ns.StyledIcons:OnSettingChanged()
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Apply square icon styling to Essential Cooldowns viewer.",
     })
@@ -379,16 +383,13 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential = value
             ns.StyledIcons:OnSettingChanged()
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
         end,
         desc = "Enable rectangular icons for Essential viewer. |cffff0000Experimental feature, may cause issues!|r",
 
         sliderKey = "cooldownManager_experimental_enableRectangularIcons_essential_percent",
         sliderName = "Height to Width Ratio",
         sliderMin = 0.6,
-        sliderMax = 1,
+        sliderMax = 0.9,
         sliderStep = 0.01,
         sliderDefault = 0.8,
         sliderGet = function()
@@ -422,7 +423,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_squareIcons_Utility = value
             ns.StyledIcons:OnSettingChanged()
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Apply square icon styling to Utility Cooldowns viewer.",
     })
@@ -492,16 +492,13 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility = value
             ns.StyledIcons:OnSettingChanged()
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
         end,
         desc = "Enable rectangular icons for Utility viewer. |cffff0000Experimental feature, may cause issues!|r",
 
         sliderKey = "cooldownManager_experimental_enableRectangularIcons_utility_percent",
         sliderName = "Height to Width Ratio",
         sliderMin = 0.6,
-        sliderMax = 1,
+        sliderMax = 0.9,
         sliderStep = 0.01,
         sliderDefault = 0.8,
         sliderGet = function()
@@ -529,7 +526,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_normalizeUtilitySize = value
             ns.StyledIcons:OnSettingChanged()
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Set base Utility Cooldown Icons |cffff0000base|r size as Essential Cooldowns Icons\nIt helps to have a more uniform look when both viewers are used together.",
     })
@@ -632,7 +628,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         sliderKey = "trinketRacialTracker_rectangularIcons_percent",
         sliderName = "Height to Width Ratio",
         sliderMin = 0.3,
-        sliderMax = 1,
+        sliderMax = 0.9,
         sliderStep = 0.01,
         sliderDefault = 0.8,
         sliderGet = function()
@@ -953,9 +949,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         function(value)
             ns.db.profile.cooldownManager_cooldownFontSizeEssential_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             ns.CooldownFont:RefreshAll()
         end
     )
@@ -983,9 +976,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         function(value)
             ns.db.profile.cooldownManager_cooldownFontSizeUtility_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             ns.CooldownFont:RefreshAll()
         end
     )
@@ -1013,9 +1003,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         function(value)
             ns.db.profile.cooldownManager_cooldownFontSizeBuffIcons_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             ns.CooldownFont:RefreshAll()
         end
     )
@@ -1045,9 +1032,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         function(value)
             ns.db.profile.cooldownManager_cooldownFontSizeTracker_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             if ns.TrackerItemViewer then
                 ns.TrackerItemViewer:RefreshStyling()
             end
@@ -1082,8 +1066,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Set one global glow style used by cooldown style glows and glow overrides.",
     })
@@ -1104,8 +1086,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
     })
 
@@ -1131,8 +1111,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
         getDefaultColor = function()
             return 0.95, 0.95, 0.32, 1
@@ -1172,8 +1150,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = 'Controls glow animation speed (frequency) for Auto Cast and Pixel Glow.\n0 is not "zero", it\'s Default speed.',
     })
@@ -1205,8 +1181,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = 'Controls glow animation density for Auto Cast and Pixel Glow.\n0 is not "zero", it\'s Default density.',
     })
@@ -1247,8 +1221,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Controls Auto Cast glow ring scale. 1.0 is default.",
     })
@@ -1289,8 +1261,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
         desc = "Controls Pixel glow line thickness. 1 is default.",
     })
@@ -1320,8 +1290,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.CooldownStyle then
                 ns.CooldownStyle:RefreshHooks()
             end
-
-            ns.API:ShowReloadUIConfirmation()
         end,
     })
 
@@ -1522,9 +1490,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         set = function(value)
             ns.db.profile.cooldownManager_stackAnchorBuffIcons_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             ns.Stacks:ApplyStackFonts("BuffIconCooldownViewer")
         end,
         dropdownGet = function()
@@ -1546,7 +1511,6 @@ local function AddonSettings_BuildCooldown(category, layout)
     end, function(value)
         if value == "NIL" then
             ns.db.profile.cooldownManager_stackFontSizeBuffIcons = nil
-            ns.API:ShowReloadUIConfirmation()
         else
             local n = tonumber(value)
             ns.db.profile.cooldownManager_stackFontSizeBuffIcons = n and math.floor(n + 0.5) or nil
@@ -1614,9 +1578,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         set = function(value)
             ns.db.profile.cooldownManager_stackAnchorEssential_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             ns.Stacks:ApplyStackFonts("EssentialCooldownViewer")
         end,
         dropdownGet = function()
@@ -1638,7 +1599,6 @@ local function AddonSettings_BuildCooldown(category, layout)
     end, function(value)
         if value == "NIL" then
             ns.db.profile.cooldownManager_stackFontSizeEssential = nil
-            ns.API:ShowReloadUIConfirmation()
         else
             local n = tonumber(value)
             ns.db.profile.cooldownManager_stackFontSizeEssential = n and math.floor(n + 0.5) or nil
@@ -1706,9 +1666,6 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         set = function(value)
             ns.db.profile.cooldownManager_stackAnchorUtility_enabled = value
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
             ns.Stacks:ApplyStackFonts("UtilityCooldownViewer")
         end,
         dropdownGet = function()
@@ -1730,7 +1687,6 @@ local function AddonSettings_BuildCooldown(category, layout)
     end, function(value)
         if value == "NIL" then
             ns.db.profile.cooldownManager_stackFontSizeUtility = nil
-            ns.API:ShowReloadUIConfirmation()
         else
             local n = tonumber(value)
             ns.db.profile.cooldownManager_stackFontSizeUtility = n and math.floor(n + 0.5) or nil
@@ -2084,9 +2040,6 @@ local function AddonSettings_BuildCooldown(category, layout)
             if ns.Keybinds then
                 ns.Keybinds:OnSettingChanged("Essential")
             end
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
-            end
         end,
         dropdownGet = function()
             return ns.db.profile.cooldownManager_keybindAnchor_Essential or "TOPRIGHT"
@@ -2201,10 +2154,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_showKeybinds_Utility = value
             if ns.Keybinds then
-                ns.Keybinds:OnSettingChanged("UtilityCooldownViewer")
-            end
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
+                ns.Keybinds:OnSettingChanged("Utility")
             end
         end,
         dropdownGet = function()
@@ -2317,11 +2267,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_showKeybinds_CMCTracker = value
             if ns.Keybinds then
-                ns.Keybinds:OnSettingChanged("CMCTracker1")
-                ns.Keybinds:OnSettingChanged("CMCTracker2")
-            end
-            if not value then
-                ns.API:ShowReloadUIConfirmation()
+                ns.Keybinds:OnSettingChanged("CMCTracker")
             end
         end,
         dropdownGet = function()
@@ -2443,20 +2389,22 @@ local function AddonSettings_BuildCooldown(category, layout)
     })
 
     local VISIBILITY_RULE_VALUES = {
-        ["SHOW_IN_COMBAT"] = "Always show in Combat ",
+        ["SHOW_IN_COMBAT"] = "Always show in Combat",
         ["SHOW_IN_INSTANCE"] = "Always show in Instances",
-        ["HIDE_IN_VEHICLES"] = "Hide in Vehicles & Mini-games ",
-        ["SHOW_WITH_ENEMY_TARGET"] = "Show with Enemy Target ",
-        ["SHOW_WITH_TARGET"] = "Show with any Target ",
-        ["HIDE_WHEN_FLYING"] = "Hide when Flying ",
+        ["HIDE_IN_VEHICLES"] = "Hide in Vehicles & Mini-games",
+        ["ALWAYS_HIDE_WHEN_FLYING"] = "Always hide when Flying",
+        ["SHOW_WITH_ENEMY_TARGET"] = "Show with Enemy Target",
+        ["SHOW_WITH_TARGET"] = "Show with any Target",
+        ["HIDE_WHEN_FLYING"] = "Hide when Flying",
         ["HIDE_WHEN_MOUNTED"] = "Hide when Mounted & Travel Form",
-        ["HIDE_WHEN_RESTING"] = "Hide when Resting ",
-        ["HIDE_OUT_OF_COMBAT"] = "Hide out of Combat ",
+        ["HIDE_WHEN_RESTING"] = "Hide when Resting",
+        ["HIDE_OUT_OF_COMBAT"] = "Hide out of Combat",
     }
     local VISIBILITY_RULE_ORDER = {
         "SHOW_IN_COMBAT",
         "SHOW_IN_INSTANCE",
         "HIDE_IN_VEHICLES",
+        "ALWAYS_HIDE_WHEN_FLYING",
         "SHOW_WITH_ENEMY_TARGET",
         "SHOW_WITH_TARGET",
         "HIDE_WHEN_FLYING",
@@ -2513,6 +2461,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                     HIDE_WHEN_MOUNTED = true,
                     HIDE_WHEN_RESTING = true,
                     HIDE_OUT_OF_COMBAT = true,
+                    ALWAYS_HIDE_WHEN_FLYING = true,
                 }
                 local hasHide = false
                 for rule in pairs(selectionMap) do
@@ -2602,7 +2551,17 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         set = function(value)
             ns.db.profile.cooldownManager_buttonPress = value
-            ns.API:ShowReloadUIConfirmation()
+            if value then
+                ns.ButtonPress:Reinitialize()
+                if C_AddOns.IsAddOnLoaded("Dominos") then
+                    ns.ButtonPress:HookAllDominosButtons()
+                end
+                if C_AddOns.IsAddOnLoaded("ElvUI") then
+                    ns.ButtonPress:RegisterElvUICallbacks()
+                end
+            else
+                ns.ButtonPress:Disable()
+            end
         end,
         desc = "Show an overlay on cooldown icons when the corresponding action button is pressed.",
 
@@ -2618,7 +2577,9 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         dropdownSet = function(value)
             ns.db.profile.cooldownManager_buttonPress_texture = value
-            ns.API:ShowReloadUIConfirmation()
+            if ns.ButtonPress then
+                ns.ButtonPress:RefreshTextures()
+            end
         end,
         dropdownDesc = "Select the texture for the button press overlay.",
         dropdownOrder = {
@@ -2705,7 +2666,7 @@ local function AddonSettings_BuildCooldown(category, layout)
             ns.db.profile.cooldownManager_utility_dimWhenNotOnCD = value
             ns.CooldownManager.ForceRefresh({ utility = true })
             if not value then
-                ns.API:ShowReloadUIConfirmation()
+                ns.CooldownManager.RestoreUtilityAlpha()
             end
         end,
         desc = "Dim Utility Cooldown icons when they are not on cooldown.\n|cffff0000Higher CPU usage|r",

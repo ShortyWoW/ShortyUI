@@ -149,7 +149,9 @@ function WilduUICore.ApplyFramePosition(frame, configKey, shouldHide)
         frame:SetPoint(config.point or "CENTER", UIParent, config.point or "CENTER", config.x or 0, config.y or 0)
     end
 
-    frame:SetScale(config.scale)
+    if config.scale ~= nil then
+        frame:SetScale(config.scale)
+    end
     if frame.SetAlpha and config.alpha ~= nil then
         frame:SetAlpha(config.alpha)
     end

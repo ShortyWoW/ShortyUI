@@ -6,32 +6,9 @@ ns.CooldownFont = CooldownFont
 local Stacks = {}
 ns.Stacks = Stacks
 
+local unpack = unpack or table.unpack
+
 local LSM = LibStub("LibSharedMedia-3.0", true)
-local DEFAULT_FONT_PATH = "Fonts\\FRIZQT__.TTF"
-local DEFAULT_STACK_FONT_PATH = "Fonts\\ARIALN.TTF"
-local BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH = DEFAULT_FONT_PATH
-local BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 16
-local BUFF_ICON_DEFAULT_STACK_FONT_PATH = DEFAULT_STACK_FONT_PATH
-local BUFF_ICON_DEFAULT_STACK_FONT_SIZE = 14
-local BUFF_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT"
-local BUFF_ICON_DEFAULT_STACK_OFFSET_X = -2
-local BUFF_ICON_DEFAULT_STACK_OFFSET_Y = 2
-
-local ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_PATH = DEFAULT_FONT_PATH
-local ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 20
-local ESSENTIAL_ICON_DEFAULT_STACK_FONT_PATH = DEFAULT_STACK_FONT_PATH
-local ESSENTIAL_ICON_DEFAULT_STACK_FONT_SIZE = 14
-local ESSENTIAL_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT"
-local ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_X = -2
-local ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_Y = 2
-
-local UTILITY_ICON_DEFAULT_COOLDOWN_FONT_PATH = DEFAULT_FONT_PATH
-local UTILITY_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 12
-local UTILITY_ICON_DEFAULT_STACK_FONT_PATH = DEFAULT_STACK_FONT_PATH
-local UTILITY_ICON_DEFAULT_STACK_FONT_SIZE = 12
-local UTILITY_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT"
-local UTILITY_ICON_DEFAULT_STACK_OFFSET_X = -2
-local UTILITY_ICON_DEFAULT_STACK_OFFSET_Y = 2
 
 local viewersSettingKey = {
     EssentialCooldownViewer = "Essential",
@@ -41,7 +18,7 @@ local viewersSettingKey = {
 
 local function GetFontPath(fontName)
     if not fontName or fontName == "" then
-        return DEFAULT_FONT_PATH
+        return nil
     end
     if LSM then
         local fontPath = LSM:Fetch("font", fontName)
@@ -49,25 +26,18 @@ local function GetFontPath(fontName)
             return fontPath
         end
     end
-    return DEFAULT_FONT_PATH
+    return nil
 end
 
-local function GetDefaultFontPathForViewer(viewerName)
-    if viewerName == "BuffIconCooldownViewer" then
-        return BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH
-    elseif viewerName == "EssentialCooldownViewer" then
-        return ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_PATH
-    elseif viewerName == "UtilityCooldownViewer" then
-        return UTILITY_ICON_DEFAULT_COOLDOWN_FONT_PATH
+local function GetConfiguredFontPath(fontName, viewerName, defaults)
+    local fontPath = GetFontPath(fontName)
+    if fontPath then
+        return fontPath
     end
-    return DEFAULT_FONT_PATH
-end
-
-local function GetConfiguredFontPath(fontName, viewerName)
-    if fontName and fontName ~= "" then
-        return GetFontPath(fontName)
+    if defaults and defaults[1] then
+        return defaults[1]
     end
-    return GetDefaultFontPathForViewer(viewerName)
+    return ns.CONSTANTS.DEFAULT_FONT_PATH
 end
 
 -- Cooldown number font
@@ -77,17 +47,17 @@ local function GetViewerCooldownSettings(viewerName)
         EssentialCooldownViewer = {
             size = ns.db.profile.cooldownManager_cooldownFontSizeEssential,
             enabled = ns.db.profile.cooldownManager_cooldownFontSizeEssential_enabled,
-            default = ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_SIZE,
+            default = ns.CONSTANTS.FONT.ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_SIZE,
         },
         UtilityCooldownViewer = {
             size = ns.db.profile.cooldownManager_cooldownFontSizeUtility,
             enabled = ns.db.profile.cooldownManager_cooldownFontSizeUtility_enabled,
-            default = UTILITY_ICON_DEFAULT_COOLDOWN_FONT_SIZE,
+            default = ns.CONSTANTS.FONT.UTILITY_ICON_DEFAULT_COOLDOWN_FONT_SIZE,
         },
         BuffIconCooldownViewer = {
             size = ns.db.profile.cooldownManager_cooldownFontSizeBuffIcons,
             enabled = ns.db.profile.cooldownManager_cooldownFontSizeBuffIcons_enabled,
-            default = BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE,
+            default = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE,
         },
     }
     local cfg = map[viewerName]
@@ -103,8 +73,20 @@ local function SetIconCooldownFont(icon, viewerName)
         if not fontString then
             return
         end
+        -- Capture original font before first modification
+        if not icon._cmcCooldownFontBackup then
+            local fp, fsz, ffl = fontString:GetFont()
+            if fp and fsz and fsz > 0 then
+                icon._cmcCooldownFontBackup = { fp, fsz, ffl or "" }
+            end
+        end
         local size, enabled, _size = GetViewerCooldownSettings(viewerName)
         if not enabled then
+            if fontString.defaults then
+                fontString:SetFont(unpack(fontString.defaults))
+            else
+                fontString:SetFont(ns.CONSTANTS.DEFAULT_FONT_PATH, _size, "OUTLINE")
+            end
             return
         end
         if size == "NIL" then
@@ -118,10 +100,12 @@ local function SetIconCooldownFont(icon, viewerName)
             size = select(2, fontString:GetFont()) or _size
         end
 
-        -- fontString:SetTextColor(1, 1, 1, 1)
-
         local fontName = ns.db.profile.cooldownManager_cooldownFontName
-        local fontPath = GetConfiguredFontPath(fontName, viewerName)
+        if not fontString.defaults then
+            local fp, fsz, ffl = fontString:GetFont()
+            fontString.defaults = { fp, fsz, ffl or "" }
+        end
+        local fontPath = GetConfiguredFontPath(fontName, viewerName, fontString.defaults)
         local fontFlags = ns.db.profile.cooldownManager_cooldownFontFlags or {}
         local fontFlag = {}
         for n, v in pairs(fontFlags) do
@@ -162,7 +146,7 @@ end
 
 -- Stack count font
 
-local function GetViewerStackSettings(viewerName)
+local function GetViewerStackSettings(viewerName, forceDefaults)
     local map = {
         EssentialCooldownViewer = {
             size = ns.db.profile.cooldownManager_stackFontSizeEssential,
@@ -170,10 +154,10 @@ local function GetViewerStackSettings(viewerName)
             point = ns.db.profile.cooldownManager_stackAnchorEssential_point,
             x = ns.db.profile.cooldownManager_stackAnchorEssential_offsetX,
             y = ns.db.profile.cooldownManager_stackAnchorEssential_offsetY,
-            default = ESSENTIAL_ICON_DEFAULT_STACK_FONT_SIZE,
-            defaultPoint = ESSENTIAL_ICON_DEFAULT_STACK_POINT,
-            defaultX = ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_X,
-            defaultY = ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_Y,
+            default = ns.CONSTANTS.FONT.ESSENTIAL_ICON_DEFAULT_STACK_FONT_SIZE,
+            defaultPoint = ns.CONSTANTS.FONT.ESSENTIAL_ICON_DEFAULT_STACK_POINT,
+            defaultX = ns.CONSTANTS.FONT.ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_X,
+            defaultY = ns.CONSTANTS.FONT.ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_Y,
         },
         UtilityCooldownViewer = {
             size = ns.db.profile.cooldownManager_stackFontSizeUtility,
@@ -181,10 +165,10 @@ local function GetViewerStackSettings(viewerName)
             point = ns.db.profile.cooldownManager_stackAnchorUtility_point,
             x = ns.db.profile.cooldownManager_stackAnchorUtility_offsetX,
             y = ns.db.profile.cooldownManager_stackAnchorUtility_offsetY,
-            default = UTILITY_ICON_DEFAULT_STACK_FONT_SIZE,
-            defaultPoint = UTILITY_ICON_DEFAULT_STACK_POINT,
-            defaultX = UTILITY_ICON_DEFAULT_STACK_OFFSET_X,
-            defaultY = UTILITY_ICON_DEFAULT_STACK_OFFSET_Y,
+            default = ns.CONSTANTS.FONT.UTILITY_ICON_DEFAULT_STACK_FONT_SIZE,
+            defaultPoint = ns.CONSTANTS.FONT.UTILITY_ICON_DEFAULT_STACK_POINT,
+            defaultX = ns.CONSTANTS.FONT.UTILITY_ICON_DEFAULT_STACK_OFFSET_X,
+            defaultY = ns.CONSTANTS.FONT.UTILITY_ICON_DEFAULT_STACK_OFFSET_Y,
         },
         BuffIconCooldownViewer = {
             size = ns.db.profile.cooldownManager_stackFontSizeBuffIcons,
@@ -192,15 +176,18 @@ local function GetViewerStackSettings(viewerName)
             point = ns.db.profile.cooldownManager_stackAnchorBuffIcons_point,
             x = ns.db.profile.cooldownManager_stackAnchorBuffIcons_offsetX,
             y = ns.db.profile.cooldownManager_stackAnchorBuffIcons_offsetY,
-            default = BUFF_ICON_DEFAULT_STACK_FONT_SIZE,
-            defaultPoint = BUFF_ICON_DEFAULT_STACK_POINT,
-            defaultX = BUFF_ICON_DEFAULT_STACK_OFFSET_X,
-            defaultY = BUFF_ICON_DEFAULT_STACK_OFFSET_Y,
+            default = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE,
+            defaultPoint = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT,
+            defaultX = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_X,
+            defaultY = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_Y,
         },
     }
     local cfg = map[viewerName]
     if not cfg then
         return nil, false, "BOTTOMRIGHT", 0, 0
+    end
+    if forceDefaults then
+        return cfg.default, cfg.enabled, cfg.defaultPoint, cfg.defaultX, cfg.defaultY
     end
     return cfg.size or cfg.default,
         cfg.enabled,
@@ -213,15 +200,14 @@ local function ApplyStackFont(fontString, size, viewerName)
     if not fontString then
         return
     end
-    local fontName = ns.db and ns.db.profile and ns.db.profile.cooldownManager_stackFontName
-    local fontPath = GetConfiguredFontPath(fontName, viewerName)
-    if viewerName == "BuffIconCooldownViewer" and (not fontName or fontName == "") then
-        fontPath = BUFF_ICON_DEFAULT_STACK_FONT_PATH
-    elseif viewerName == "EssentialCooldownViewer" and (not fontName or fontName == "") then
-        fontPath = ESSENTIAL_ICON_DEFAULT_STACK_FONT_PATH
-    elseif viewerName == "UtilityCooldownViewer" and (not fontName or fontName == "") then
-        fontPath = UTILITY_ICON_DEFAULT_STACK_FONT_PATH
+    if not fontString.defaults then
+        local fp, fsz, ffl = fontString:GetFont()
+        fontString.defaults = { fp, fsz, ffl or "" }
     end
+
+    local fontName = ns.db and ns.db.profile and ns.db.profile.cooldownManager_stackFontName
+    local fontPath = GetConfiguredFontPath(fontName, viewerName, fontString.defaults)
+
     local fontFlags = ns.db.profile.cooldownManager_stackFontFlags or {}
     local fontFlag = {}
     for n, v in pairs(fontFlags) do
@@ -234,17 +220,32 @@ local function ApplyStackFont(fontString, size, viewerName)
         return
     end
     if not size or size == "NIL" then
-        if viewerName == "BuffIconCooldownViewer" then
-            size = select(2, fontString:GetFont()) or BUFF_ICON_DEFAULT_STACK_FONT_SIZE
-        elseif viewerName == "EssentialCooldownViewer" then
-            size = select(2, fontString:GetFont()) or ESSENTIAL_ICON_DEFAULT_STACK_FONT_SIZE
-        elseif viewerName == "UtilityCooldownViewer" then
-            size = select(2, fontString:GetFont()) or UTILITY_ICON_DEFAULT_STACK_FONT_SIZE
-        else
-            size = select(2, fontString:GetFont()) or BUFF_ICON_DEFAULT_STACK_FONT_SIZE
+        size = fontString.defaults[2] or 14
+    end
+
+    fontString:SetFont(fontPath, size, table.concat(fontFlag, ","))
+end
+
+function Stacks:RestoreStackPositions(viewerName)
+    local viewer = _G[viewerName]
+    if not viewer then
+        return
+    end
+    local children = { viewer:GetChildren() }
+    local fontSize, _, stackPoint, stackX, stackY = GetViewerStackSettings(viewerName, true)
+    for _, child in ipairs(children) do
+        local fs = child and child.Applications and child.Applications.Applications
+            or child.ChargeCount and child.ChargeCount.Current
+        if fs and child._cmc_affected and child._cmc_affected.stack then
+            fs:ClearAllPoints()
+            fs:SetPoint(stackPoint, child, stackPoint, stackX, stackY)
+            if fs.defaults then
+                fs:SetFont(unpack(fs.defaults))
+            else
+                fs:SetFont(ns.CONSTANTS.DEFAULT_STACK_FONT_PATH, fontSize, "OUTLINE")
+            end
         end
     end
-    fontString:SetFont(fontPath, size, table.concat(fontFlag, ","))
 end
 
 function Stacks:ApplyStackFonts(viewerName)
@@ -253,7 +254,10 @@ function Stacks:ApplyStackFonts(viewerName)
         return
     end
     local fontSize, stackEnabled, stackPoint, stackX, stackY = GetViewerStackSettings(viewerName)
+    -- Track per-viewer state so Initialize can compare desired vs current
+    viewer._cmc_stack_enabled = stackEnabled or false
     if not stackEnabled then
+        self:RestoreStackPositions(viewerName)
         return
     end
     local children = { viewer:GetChildren() }
@@ -269,6 +273,8 @@ function Stacks:ApplyStackFonts(viewerName)
             child.ChargeCount:SetFrameLevel(20)
         end
         if fs then
+            child._cmc_affected = child._cmc_affected or {}
+            child._cmc_affected.stack = true
             ApplyStackFont(fs, fontSize, viewerName)
             fs:ClearAllPoints()
             fs:SetPoint(stackPoint, child, stackPoint, stackX, stackY)
@@ -293,7 +299,7 @@ function Stacks:OnSettingChanged()
 end
 
 function Stacks:Initialize()
-    self:ApplyAllStackFonts()
+    self:OnSettingChanged()
 end
 
 EventRegistry:RegisterCallback("CooldownViewerSettings.OnDataChanged", function()

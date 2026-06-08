@@ -13,6 +13,7 @@ LoggerHeadDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
+["Shortbowjob - Illidan"] = "Default",
 ["Shortlite - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
@@ -35,6 +36,9 @@ false,
 [2] = false,
 [23] = true,
 },
+["Court of Stars"] = {
+[24] = true,
+},
 ["The Stonecore"] = {
 [24] = false,
 },
@@ -45,6 +49,9 @@ true,
 [8] = true,
 },
 ["End Time"] = {
+[24] = true,
+},
+["Black Rook Hold"] = {
 [24] = true,
 },
 ["Utgarde Keep"] = {
@@ -85,6 +92,9 @@ false,
 [8] = true,
 [2] = false,
 [23] = true,
+},
+["Eye of Azshara"] = {
+[24] = true,
 },
 ["Throne of the Tides"] = {
 [24] = false,

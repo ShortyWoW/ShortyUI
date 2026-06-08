@@ -13,6 +13,7 @@ HandyNotesDB = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
@@ -44,6 +45,8 @@ HandyNotesDB = {
 ["Shortybear - Illidan"] = {
 },
 ["Drewishlazer - Dalaran"] = {
+},
+["Shortbowjob - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 },
@@ -73,6 +76,7 @@ HandyNotes_HandyNotesDB = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
@@ -104,6 +108,8 @@ HandyNotes_HandyNotesDB = {
 ["Shortybear - Illidan"] = {
 },
 ["Drewishlazer - Dalaran"] = {
+},
+["Shortbowjob - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 },

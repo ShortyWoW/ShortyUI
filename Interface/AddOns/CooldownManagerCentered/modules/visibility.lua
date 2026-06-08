@@ -22,7 +22,10 @@ local viewers = {
 -- SHOW_IN_INSTANCE has no macro conditional equivalent and is handled via events.
 local RULE_CONDITIONALS = {
     SHOW_IN_COMBAT = "[combat] show",
+    ALWAYS_HIDE_WHEN_FLYING = "[flying] hide",
     HIDE_IN_VEHICLES = "[unithasvehicleui] hide;[overridebar] hide;[possessbar] hide",
+    SHOW_WITH_TARGET = "[@target,exists] show",
+    SHOW_WITH_ENEMY_TARGET = "[@target,exists,harm] show",
     HIDE_WHEN_FLYING = "[flying] hide",
     HIDE_WHEN_MOUNTED = "[mounted] hide",
     HIDE_WHEN_RESTING = "[resting] hide",
@@ -32,7 +35,10 @@ local RULE_CONDITIONALS = {
 -- Priority order: SHOW overrides are evaluated first, HIDE rules after.
 local RULE_ORDER = {
     "SHOW_IN_COMBAT",
+    "ALWAYS_HIDE_WHEN_FLYING",
     "HIDE_IN_VEHICLES",
+    "SHOW_WITH_TARGET",
+    "SHOW_WITH_ENEMY_TARGET",
     "HIDE_WHEN_FLYING",
     "HIDE_WHEN_MOUNTED",
     "HIDE_WHEN_RESTING",
@@ -108,10 +114,16 @@ local function ApplyViewerAlpha(viewerData, forceAlphaReset)
         return
     end
 
+    if ns.Runtime and (ns.Runtime.isInEditMode or ns.Runtime.hasSettingsOpened) then
+        viewer:SetAlpha(alpha)
+        return
+    end
+
     if rules.SHOW_IN_INSTANCE and inInstance then
         viewer:SetAlpha(alpha)
         return
     end
+
     local shapeshiftFormID = GetShapeshiftFormID()
     if rules.HIDE_WHEN_MOUNTED and (shapeshiftFormID == 3 or shapeshiftFormID == 29 or shapeshiftFormID == 27) then
         viewer:SetAlpha(0)
@@ -119,16 +131,6 @@ local function ApplyViewerAlpha(viewerData, forceAlphaReset)
     end
     if rules.HIDE_IN_VEHICLES and miniGameSceneActive then
         viewer:SetAlpha(0)
-        return
-    end
-    local hasTarget = UnitExists("target")
-    local targetIsEnemy = UnitCanAttack("player", "target")
-    if rules.SHOW_WITH_TARGET and hasTarget then
-        viewer:SetAlpha(alpha)
-        return
-    end
-    if rules.SHOW_WITH_ENEMY_TARGET and hasTarget and targetIsEnemy then
-        viewer:SetAlpha(alpha)
         return
     end
 
@@ -218,6 +220,7 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
             CMCVisibility:Initialize(request.forceViewers)
             return -- Initialize calls UpdateAll internally via SetupViewerDriver
         end
+        return
     end
     CMCVisibility:UpdateAll()
 end)
@@ -230,6 +233,7 @@ end
 
 function CMCVisibility:Initialize(forceViewers)
     self:MigrateSettings()
+    self:DeInitialize()
 
     -- RegisterAttributeDriver (called by SetupViewerDriver) is combat-restricted.
     -- Defer the full driver setup until after combat; UpdateAll still runs so
@@ -255,7 +259,6 @@ function CMCVisibility:Initialize(forceViewers)
     EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
     EventFrame:RegisterEvent("CLIENT_SCENE_OPENED")
     EventFrame:RegisterEvent("CLIENT_SCENE_CLOSED")
-    EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
     EventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 end
 
@@ -266,7 +269,9 @@ function CMCVisibility:DeInitialize()
     for _, viewerData in ipairs(viewers) do
         local viewerName = viewerData.viewerName
         if driverFrames[viewerName] then
-            UnregisterAttributeDriver(driverFrames[viewerName], "cmc-state-vis")
+            if not InCombatLockdown() then
+                UnregisterAttributeDriver(driverFrames[viewerName], "cmc-state-vis")
+            end
             -- Keep the frame in driverFrames so it can be reused on re-Initialize
         end
         driverState[viewerName] = "show"

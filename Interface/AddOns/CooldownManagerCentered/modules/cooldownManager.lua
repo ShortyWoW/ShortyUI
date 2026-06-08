@@ -318,9 +318,9 @@ function ViewerAdapters.UpdateBuffBars()
     if not ns.Runtime:IsReady(BuffBarCooldownViewer) then
         return
     end
+    local iconMode = ns.BuffBarIconMode.IsEnabled()
 
     ns.BuffBarIconMode.RefreshAll(ViewerAdapters.GetBuffBarFrames(true))
-    ViewerAdapters.UpdateViewerSizeIfChanged(BuffBarCooldownViewer)
 
     local bars = ViewerAdapters.GetBuffBarFrames()
     local count = #bars
@@ -328,7 +328,12 @@ function ViewerAdapters.UpdateBuffBars()
         return
     end
 
-    local iconMode = ns.BuffBarIconMode.IsEnabled()
+    if iconMode then
+        local scale = BuffBarCooldownViewer.iconScale
+        BuffBarCooldownViewer:SetSize(35 * scale, 35 * scale)
+    else
+        BuffBarCooldownViewer:Layout()
+    end
     local horizontalIcons = iconMode and ns.BuffBarIconMode.IsHorizontal()
     local growSetting = ns.db.profile.cooldownManager_alignBuffBars_growFromDirection
 
@@ -342,7 +347,7 @@ function ViewerAdapters.UpdateBuffBars()
 
         local totalWidth = (count * barWidth) + (math.max(count - 1, 0) * spacing)
         local startX = -(totalWidth / 2) + (barWidth / 2)
-        local anchor = growSetting == "TOP" and "TOP" or "BOTTOM"
+        local anchor = "BOTTOM"
 
         for index, bar in ipairs(bars) do
             local x = startX + ((index - 1) * (barWidth + spacing))
@@ -350,12 +355,6 @@ function ViewerAdapters.UpdateBuffBars()
             bar:SetPoint(anchor, BuffBarCooldownViewer, anchor, x, 0)
         end
 
-        ViewerAdapters.UpdateViewerSizeIfChanged(BuffBarCooldownViewer)
-        local vw = BuffBarCooldownViewer:GetWidth()
-        local vh = BuffBarCooldownViewer:GetHeight()
-        if vw and vh and vw > 0 and vh > 0 and vw < vh then
-            BuffBarCooldownViewer:SetSize(vh, vw)
-        end
         return
     end
 
@@ -383,7 +382,6 @@ function ViewerAdapters.UpdateBuffBars()
             bar:SetPoint("TOP", BuffBarCooldownViewer, "TOP", 0, y)
         end
     end
-    ViewerAdapters.UpdateViewerSizeIfChanged(BuffBarCooldownViewer)
 end
 
 local _dimCurve = nil
@@ -419,42 +417,59 @@ function ViewerAdapters.UpdateUtilityDimming()
     end
     local toDim = ns.db.profile.cooldownManager_utility_dimWhenNotOnCD
     if not toDim then
+        -- Restore alphas if dimming was previously applied
+        if viewer._cmc_dimmed then
+            viewer._cmc_dimmed = false
+            local children = { viewer:GetChildren() }
+            for _, child in ipairs(children) do
+                if child and child.Icon then
+                    child:SetAlpha(1)
+                end
+            end
+        end
         return
     end
+    local shouldForceShow = ns.Runtime and (ns.Runtime.isInEditMode or ns.Runtime.hasSettingsOpened)
+
     local toDimOpacity = ns.db.profile.cooldownManager_utility_dimOpacity or 0.3
 
     local children = { viewer:GetChildren() }
     for _, child in ipairs(children) do
         if child and child:IsShown() and child.Icon then
-            if child.cooldownID then
-                local info = C_CooldownViewer.GetCooldownViewerCooldownInfo(child.cooldownID)
-                local spellID = info.overrideSpellID or info.spellID
-                local spellCD = C_Spell.GetSpellCooldown(spellID)
-                if not spellCD.isOnGCD then
-                    local spellCharges = C_Spell.GetSpellCharges(spellID)
-                    local hasCharges = spellCharges and spellCharges.maxCharges > 1
-                    if hasCharges and spellCharges.isActive then
-                        child:SetAlpha(1)
-                    elseif spellCD.isActive then
-                        if info.spellID == 198793 or info.spellID == 195072 or info.spellID == 232893 then
-                            local cd = C_Spell.GetSpellCooldownDuration(spellID)
-
-                            local curve = GetDimCurveDH(toDimOpacity)
-
-                            local EvaluateDuration = cd:EvaluateRemainingDuration(curve)
-                            child:SetAlpha(EvaluateDuration)
-                        else
+            if shouldForceShow then
+                child:SetAlpha(1)
+            else
+                if child.cooldownID then
+                    local info = C_CooldownViewer.GetCooldownViewerCooldownInfo(child.cooldownID)
+                    local spellID = info.overrideSpellID or info.spellID
+                    local spellCD = C_Spell.GetSpellCooldown(spellID)
+                    if not spellCD.isOnGCD then
+                        local spellCharges = C_Spell.GetSpellCharges(spellID)
+                        local hasCharges = spellCharges and spellCharges.maxCharges > 1
+                        if hasCharges and spellCharges.isActive then
                             child:SetAlpha(1)
+                        elseif spellCD.isActive then
+                            if info.spellID == 198793 or info.spellID == 195072 or info.spellID == 232893 then
+                                local cd = C_Spell.GetSpellCooldownDuration(spellID)
+
+                                local curve = GetDimCurveDH(toDimOpacity)
+
+                                local EvaluateDuration = cd:EvaluateRemainingDuration(curve)
+                                child:SetAlpha(EvaluateDuration)
+                            else
+                                child:SetAlpha(1)
+                            end
+                        else
+                            child:SetAlpha(toDimOpacity)
                         end
                     else
                         child:SetAlpha(toDimOpacity)
                     end
-                else
-                    child:SetAlpha(toDimOpacity)
                 end
             end
         end
     end
+    viewer._cmc_dimmed = true
 end
 
 function ViewerAdapters.CollectViewerChildren(viewer)
@@ -610,7 +625,17 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
     end
 
     local children = ViewerAdapters.CollectViewerChildren(viewer)
-    if fromDirection == "Disable" or #children == 0 then
+    if fromDirection == "Disable" then
+        if viewer._cmc_aligned and viewer.Layout then
+            viewer._cmc_aligned = false
+            -- if not InCombatLockdown() then
+            viewer:Layout()
+            -- end
+        end
+        ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
+        return
+    end
+    if #children == 0 then
         return
     end
 
@@ -683,6 +708,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             cumulativeOffset = cumulativeOffset + currentColWidth + padding
         end
     end
+    viewer._cmc_aligned = true
     ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
 end
 
@@ -715,6 +741,19 @@ end
 
 function CooldownManager.UpdateUtilityDimming()
     ViewerAdapters.UpdateUtilityDimming()
+end
+
+function CooldownManager.RestoreUtilityAlpha()
+    local viewer = UtilityCooldownViewer
+    if not viewer then
+        return
+    end
+    local children = { viewer:GetChildren() }
+    for _, child in ipairs(children) do
+        if child and child.Icon then
+            child:SetAlpha(1)
+        end
+    end
 end
 
 local viewerReasonPartsMap = {

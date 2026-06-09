@@ -36,6 +36,9 @@ false,
 [2] = false,
 [23] = true,
 },
+["Court of Stars"] = {
+[24] = true,
+},
 ["The Stonecore"] = {
 [24] = false,
 },
@@ -90,6 +93,9 @@ false,
 [2] = false,
 [23] = true,
 },
+["Eye of Azshara"] = {
+[24] = true,
+},
 ["Throne of the Tides"] = {
 [24] = false,
 },
@@ -101,17 +107,20 @@ true,
 [23] = true,
 [8] = true,
 },
-["Algeth'ar Academy"] = {
-[23] = true,
-[8] = true,
-},
 ["Mogu'shan Palace"] = {
 [24] = false,
 },
-["Upper Blackrock Spire"] = {
+["Gate of the Setting Sun"] = {
+[24] = false,
 },
 ["Lower Blackrock Spire"] = {
 false,
+},
+["Magisters' Terrace"] = {
+true,
+true,
+[23] = true,
+[8] = true,
 },
 ["The Blinding Vale"] = {
 true,
@@ -126,16 +135,12 @@ true,
 true,
 [23] = true,
 },
-["Magisters' Terrace"] = {
+["Voidscar Arena"] = {
 true,
 true,
 [23] = true,
-[8] = true,
 },
 ["Blackrock Caverns"] = {
-[24] = false,
-},
-["Scholomance"] = {
 [24] = false,
 },
 ["The Nexus"] = {
@@ -144,25 +149,26 @@ false,
 ["Darkflame Cleft"] = {
 true,
 },
+["Scholomance"] = {
+[24] = false,
+},
 ["Halls of Stone"] = {
 false,
 },
 ["Zul'Farrak"] = {
 false,
 },
-["Voidscar Arena"] = {
-true,
-true,
-[23] = true,
-},
 ["Utgarde Pinnacle"] = {
 false,
+},
+["Upper Blackrock Spire"] = {
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Gate of the Setting Sun"] = {
-[24] = false,
+["Algeth'ar Academy"] = {
+[23] = true,
+[8] = true,
 },
 ["Murder Row"] = {
 true,

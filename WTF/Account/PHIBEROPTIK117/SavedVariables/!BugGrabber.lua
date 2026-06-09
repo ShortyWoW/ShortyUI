@@ -1,7 +1,7 @@
 
 BugGrabberDB = {
 ["lastSanitation"] = 3,
-["session"] = 1,
+["session"] = 3,
 ["errors"] = {
 {
 ["message"] = "attempt to perform string conversion on a secret string value (execution tainted by 'Dystinct_EarthenSkyriding')",

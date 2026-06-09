@@ -9,8 +9,8 @@ KeystoneLootDB = {
 },
 ["hideOtherItems"] = false,
 ["keystoneTooltip"] = true,
-["wideMode"] = false,
 ["multiSlotFilter"] = false,
+["wideMode"] = false,
 ["highlighting"] = {
 ["versatility"] = true,
 ["crit"] = true,
@@ -41,11 +41,11 @@ KeystoneLootDB = {
 },
 ["Illidan-Shortlite-2"] = {
 },
-["Illidan-Shortybear-11"] = {
-},
-["Vashj-Shortbeef-10"] = {
-},
 ["Illidan-Shortytest-11"] = {
+},
+["Illidan-Shortyshamm-7"] = {
+},
+["Illidan-Shortybear-11"] = {
 },
 ["Area 52-Callmeshawte-9"] = {
 },
@@ -53,7 +53,7 @@ KeystoneLootDB = {
 },
 ["Area 52-Shortbowjob-3"] = {
 },
-["Illidan-Shortyshamm-7"] = {
+["Vashj-Shortbeef-10"] = {
 },
 },
 }

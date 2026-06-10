@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DemonHunter-Devourer','DemonHunter-Vengeance','Mage-Frost',}
-local provider = {region='US',realm='Bloodscalp',name='US',type='subscribers',zone=46,date='2026-06-08',data={Cr='Crash:BAECLgAFFH8QAAIBAAYJMBhUKQBwAQZoDAAABABTAGkMAAACADEAawwAAAIATABqDAAAAQAJAGwMAAABACgA6gwAAAYAOQABAAYJMBhUKQBwAQZoDAAABABTAGkMAAACADEAawwAAAIATABqDAAAAQAJAGwMAAABACgA6gwAAAYAOQAuAAQKfzgAAwEACAn2JOEMANkCAAEACAn2JOEMANkCAAIAAQkwGUsuAEAAAAAA.',Fi='Fireg:BAEALgADCgEJAQABLgAFFAQJBQADADULAA==.',},}
+local provider = {region='US',realm='Bloodscalp',name='US',type='subscribers',zone=46,date='2026-06-09',data={Cr='Crash:BAECLgAFFH8QAAIBAAYJMBjVKQBwAQZoDAAABABTAGkMAAACADEAawwAAAIATABqDAAAAQAJAGwMAAABACgA6gwAAAYAOQABAAYJMBjVKQBwAQZoDAAABABTAGkMAAACADEAawwAAAIATABqDAAAAQAJAGwMAAABACgA6gwAAAYAOQAuAAQKfzgAAwEACAn2JPcMANkCAAEACAn2JPcMANkCAAIAAQkwGZMuAEAAAAAA.',Fi='Fireg:BAEALgADCgEJAQABLgAFFAQJBQADADULAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

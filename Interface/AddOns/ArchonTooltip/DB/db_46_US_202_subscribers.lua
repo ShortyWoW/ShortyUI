@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Unholy','DeathKnight-Blood',}
-local provider = {region='US',realm='Spirestone',name='US',type='subscribers',zone=46,date='2026-06-08',data={Ax='Ax:BAECLgAFFH8YAAMBAAYJwA8ePABxAQZoDAAABAA8AGkMAAAFADsAawwAAAMAGgBqDAAABAAKAOoMAAAHADEAbgwAAAEABgABAAUJwA8ePABxAQVoDAAABAA8AGkMAAAFADsAawwAAAMAGgDqDAAABwAxAG4MAAABAAYAAgABCQAAYl4AAAABagwAAAQACgAuAAQKfxwAAgEABwmMHGBlAJcBAAEABwmMHGBlAJcBAAAA.',},}
+local lookup = {'DeathKnight-Unholy','DeathKnight-Blood','Warlock-Demonology',}
+local provider = {region='US',realm='Spirestone',name='US',type='subscribers',zone=46,date='2026-06-09',data={Ax='Ax:BAECLgAFFH8YAAMBAAYJwA8UPQBwAQZoDAAABAA8AGkMAAAFADsAawwAAAMAGgBqDAAABAAKAOoMAAAHADEAbgwAAAEABgABAAUJwA8UPQBwAQVoDAAABAA8AGkMAAAFADsAawwAAAMAGgDqDAAABwAxAG4MAAABAAYAAgABCQAAPl8AAAABagwAAAQACgAuAAQKfxwAAgEABwmMHMplAJcBAAEABwmMHMplAJcBAAAA.',Li='Lilboothang:BAEBLgAECn8ZAAIDAAgJaRNKVQCZAQhoDAAABQA0AGkMAAAEACUAawwAAAQAPwBqDAAAAwA/AGwMAAADABoAbQwAAAEAPQDqDAAABAAiAG4MAAABAEYAAwAICWkTSlUAmQEIaAwAAAUANABpDAAABAAlAGsMAAAEAD8AagwAAAMAPwBsDAAAAwAaAG0MAAABAD0A6gwAAAQAIgBuDAAAAQBGAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

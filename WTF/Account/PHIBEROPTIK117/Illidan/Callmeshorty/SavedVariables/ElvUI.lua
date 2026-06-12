@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/raid Good job guys, we lived all the way up to the adds coming out, we got this team!",
-"/g what's everyone up to this evening",
-"/g don't hurt yourself",
-"/g hello friends",
 "/g if not friend, why friend shaped?",
+"/console SpellQueueWindow 300",
+"/dump GetCVar(\"SpellQueueWindow\")",
+"/g Hello friends.",
+"/g Meowdy",
 },
 ["ChatHistoryLog"] = {
 {

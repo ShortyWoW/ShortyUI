@@ -1,9 +1,9 @@
 # BigWigs
 
-## [v416.5](https://github.com/BigWigsMods/BigWigs/tree/v416.5) (2026-06-10)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v416.4...v416.5) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v416.6](https://github.com/BigWigsMods/BigWigs/tree/v416.6) (2026-06-11)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v416.5...v416.6) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- Update frFR (#2629)  
-- MarchOnQuelDanas/MidnightFalls: Convert Heaven's Lance into a target warning based on threat  
-- Update zhCN (#2628)  
-- Update deDE (#2627)  
+- Locales: Tweak comments  
+- MarchOnQuelDanas/MidnightFalls: Tweak  
+- Core/BossPrototype: Define player names and unit tokens separately for role checking API  
+- MarchOnQuelDanas/MidnightFalls: Show a normal message for Heaven's Lance on mythic stage 3  

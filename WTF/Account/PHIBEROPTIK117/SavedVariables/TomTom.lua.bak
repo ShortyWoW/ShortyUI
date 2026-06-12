@@ -13,13 +13,13 @@ TomTomDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
-["Shortbowjob - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Shortlite - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortbowjob - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -28,13 +28,8 @@ TomTomDB = {
 "CENTER",
 nil,
 "CENTER",
-93.00040435791016,
-118.0003814697266,
-},
-},
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
+133.0015411376953,
+171.0001525878906,
 },
 },
 ["block"] = {
@@ -45,6 +40,11 @@ nil,
 "BOTTOM",
 10.00003242492676,
 175.0008544921875,
+},
+},
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
 },
 },
 },
@@ -65,13 +65,13 @@ TomTomWaypointsM = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
-["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -81,32 +81,35 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
-[641] = {
-["641:830000000:664600000:Suramar"] = {
-641,
-0.83,
-0.6646,
+[85] = {
+["85:562500000:916800000:Take the portal to Dalaran"] = {
+85,
+0.5625,
+0.9168000000000001,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["desc"] = "Suramar",
-["silent"] = true,
+["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Suramar",
+["title"] = "Take the portal to Dalaran",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
+[15] = nil --[[ skipped inline function ]],
 },
 ["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 ["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
-["minimap"] = true,
 ["world"] = true,
 },
-},
-[85] = {
 ["85:532700000:904700000:Return to the portal room"] = {
 85,
 0.5327000000000001,
@@ -121,10 +124,17 @@ TomTomWaypointsM = {
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
+[15] = nil --[[ skipped inline function ]],
 },
 ["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 ["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
 ["minimap"] = true,
@@ -148,7 +158,7 @@ TomTomWaypointsM = {
 },
 ["Drewishlazer - Dalaran"] = {
 },
-["Shortbowjob - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 [862] = {
@@ -166,9 +176,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["world"] = true,
@@ -195,9 +205,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["world"] = true,
@@ -206,7 +216,7 @@ TomTomWaypointsM = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Illidan"] = {
 },
 },
 }

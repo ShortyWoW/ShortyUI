@@ -90,3 +90,17 @@ X: -4
 Y: 130
 W: 268
 H: 94
+Frame: HeroTalentsSelectionDialog
+FrameLevel: 1
+Anchor: TOP
+X: 0
+Y: -70
+W: 970
+H: 832
+Frame: PlayerSpellsFrame
+FrameLevel: 1
+Anchor: TOP
+X: 0
+Y: -41
+W: 1618
+H: 883

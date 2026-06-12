@@ -137,6 +137,14 @@ L.focus_only = "|cffff0000Alertes de la cible de focalisation uniquement.|r "
 L.trash = "Trash"
 L.affixes = "Affixes" -- Seasonal affixes for raids and mythic+ dungeons
 
+-- GUI boss dropdown for cast counters (Usually a dropdown menu in the boss options that lets you choose when a spell counter should reset back to 1)
+L.counter_reset_name = "%s compteur d'incantation" -- SPELL_NAME cast counter
+L.counter_reset_desc = "Choisissez quand réinitialiser le compteur."
+L.reset_casts = "Se réinitialise toutes les %d incantations" -- Reset every 3 casts
+L.reset_stages = "Se réinitialise sur les changements de phase"
+L.reset_casts_and_stages = "Se réinitialise toutes les %d incantations et en changement de phase"
+L.reset_never = "Ne se réinitialise pas"
+
 -- Common raid marking locale
 L.marker = "Marquage %s"
 L.marker_player_desc = "Marque les joueurs affectés par %s avec %s. Nécessite d'être assistant ou chef de raid." -- Mark players affected by 'SPELL_NAME' with SKULL_ICON
@@ -215,6 +223,7 @@ L.castTimerNote = "Ce texte ne sera utilisé que pour les CàR d'incantation"
 L.messageCastOverNote = "Ce texte sera utilisé pour afficher un message à la fin de l'incantation"
 L.messageCastStartNote = "Ce texte sera utilisé pour afficher un message au début de l'incantation"
 L.messageBeforeCastStartNote = "Ce texte sera utilisé pour afficher un message avant le début de l'incantation"
+--L.messageDuringCastNote = "This text will be used for showing messages during the cast"
 L.messageNote = "Ce texte sera utilisé pour les messages"
 L.messageOnYouNote = "Le message affiché lorsque la technique vous cible"
 L.messageSpecificHealth = "Le message affiché lorsque le boss est à %d%% de vie"

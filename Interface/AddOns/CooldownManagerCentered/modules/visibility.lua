@@ -27,6 +27,7 @@ local RULE_CONDITIONALS = {
     SHOW_WITH_TARGET = "[@target,exists] show",
     SHOW_WITH_ENEMY_TARGET = "[@target,exists,harm] show",
     HIDE_WHEN_FLYING = "[flying] hide",
+    HIDE_WHEN_NOT_FLYING = "[noflying] hide",
     HIDE_WHEN_MOUNTED = "[mounted] hide",
     HIDE_WHEN_RESTING = "[resting] hide",
     HIDE_OUT_OF_COMBAT = "[nocombat] hide",
@@ -40,14 +41,17 @@ local RULE_ORDER = {
     "SHOW_WITH_TARGET",
     "SHOW_WITH_ENEMY_TARGET",
     "HIDE_WHEN_FLYING",
+    "HIDE_WHEN_NOT_FLYING",
     "HIDE_WHEN_MOUNTED",
     "HIDE_WHEN_RESTING",
     "HIDE_OUT_OF_COMBAT",
 }
 
 local HIDE_RULES = {
+    ALWAYS_HIDE_WHEN_FLYING = true,
     HIDE_IN_VEHICLES = true,
     HIDE_WHEN_FLYING = true,
+    HIDE_WHEN_NOT_FLYING = true,
     HIDE_WHEN_MOUNTED = true,
     HIDE_WHEN_RESTING = true,
     HIDE_OUT_OF_COMBAT = true,

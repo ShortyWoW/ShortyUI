@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Monk-Brewmaster','Monk-Windwalker','Unknown-Unknown',}
-local provider = {region='US',realm='TheScryers',name='US',type='subscribers',zone=46,date='2026-06-09',data={Ny='Nyfaria:BAEALgAECgQJBAABLgAFFAUJIQABAMIcAA==.',Tt='Ttattoo:BAEBLgAECn8YAAMBAAYJ5QdYTgDBAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAACABUA6gwAAAUACQABAAYJ5QdYTgDBAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAABABUA6gwAAAUACQACAAEJqALatwAXAAFsDAAAAQAGAAEuAAQKCAkMAAMAAAAA.Ttattooz:BAEALgAECggJDAAAAA==.',},}
+local provider = {region='US',realm='TheScryers',name='US',type='subscribers',zone=46,date='2026-06-11',data={Ny='Nyfaria:BAEALgAECgQJBAABLgAFFAUJJAABAMIcAA==.',Tt='Ttattoo:BAEBLgAECn8YAAMBAAYJ5QfvTgDBAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAACABUA6gwAAAUACQABAAYJ5QfvTgDBAAZoDAAABQAdAGkMAAAEABcAawwAAAUAEABqDAAAAwATAGwMAAABABUA6gwAAAUACQACAAEJqALKugAXAAFsDAAAAQAGAAEuAAQKCAkMAAMAAAAA.Ttattooz:BAEALgAECggJDAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

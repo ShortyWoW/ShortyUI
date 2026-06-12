@@ -416,8 +416,12 @@ local function ApplyCooldownSettings(cdmFrame)
             ns.db.profile.cooldownManager_customCDSwipeColor_a or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
         )
     else
-        -- from CooldownViewerConstants.ITEM_COOLDOWN_COLOR
-        cdmFrame.Cooldown:SetSwipeColor(0, 0, 0, 0.7)
+        cdmFrame.Cooldown:SetSwipeColor(
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
+        )
     end
 
     cdmFrame._CMCTracker_Desaturation = nil

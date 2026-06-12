@@ -231,8 +231,9 @@ end
 ---@param configKey string The database key
 ---@param defaultValue number Default scale value
 ---@param frame Frame The frame to apply the scale toggle
+---@param onPositionChangedCallback? function Optional custom position callback used after scaling
 ---@return table setting LEM setting configuration
-function WilduUICore.CreateScaleSetting(configKey, defaultValue, frame)
+function WilduUICore.CreateScaleSetting(configKey, defaultValue, frame, onPositionChangedCallback)
     defaultValue = defaultValue or DEFAULT_SCALE
     return {
         name = "Scale",
@@ -242,10 +243,17 @@ function WilduUICore.CreateScaleSetting(configKey, defaultValue, frame)
             return ns.Addon.db.profile.editMode[configKey].scale or defaultValue
         end,
         set = function(layoutName, value)
-            local scaleDiff = (ns.Addon.db.profile.editMode[configKey].scale or defaultValue) / value
-            ns.Addon.db.profile.editMode[configKey].scale = value
-            ns.Addon.db.profile.editMode[configKey].x = ns.Addon.db.profile.editMode[configKey].x * scaleDiff
-            ns.Addon.db.profile.editMode[configKey].y = ns.Addon.db.profile.editMode[configKey].y * scaleDiff
+            local config = ns.Addon.db.profile.editMode[configKey]
+            local previousScale = config.scale or defaultValue
+            config.scale = value
+            local scaleDiff = previousScale / value
+            config.x = (config.x or 0) * scaleDiff
+            config.y = (config.y or 0) * scaleDiff
+
+            if onPositionChangedCallback then
+                onPositionChangedCallback(frame, layoutName, config.point or "CENTER", config.x or 0, config.y or 0)
+                return
+            end
             WilduUICore.ApplyFramePosition(frame, configKey, false)
         end,
         minValue = 0.1,
@@ -299,7 +307,7 @@ function WilduUICore.RegisterFrameWithLEM(frame, configKey, additionalSettings, 
     LEM:AddFrame(frame, onPositionChangedCallback or WilduUICore.CreateOnPositionChanged(configKey), defaultTable)
 
     local settings = {
-        WilduUICore.CreateScaleSetting(configKey, FRAME_DEFAULT_CONFIG.scale, frame),
+        WilduUICore.CreateScaleSetting(configKey, FRAME_DEFAULT_CONFIG.scale, frame, onPositionChangedCallback),
         WilduUICore.CreateStrataSetting(configKey, FRAME_DEFAULT_CONFIG.strata, frame),
     }
 

@@ -187,7 +187,7 @@ local function HookActionButtonSpellAlertManager()
     if not ActionButtonSpellAlertManager then
         return
     end
-    if ActionButtonSpellAlertManager._CMC_Hooked then
+    if ns.API:GetIsAffected(ActionButtonSpellAlertManager, "spellAlertHooked") then
         return
     end
 
@@ -239,7 +239,7 @@ local function HookActionButtonSpellAlertManager()
         activeGlowTarget.CMCActiveGlowSignature = nil
         StopCustomGlows(activeGlowTarget)
     end)
-    ActionButtonSpellAlertManager._CMC_Hooked = true
+    ns.API:SetAffected(ActionButtonSpellAlertManager, "spellAlertHooked")
 end
 
 function GlowStyle.Initialize()

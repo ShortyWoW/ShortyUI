@@ -44,6 +44,18 @@ function ProfileAPI:CreateProfile(profileName)
     return true
 end
 
+function ProfileAPI:CopyProfile(targetProfileName)
+    if not ns.db then
+        return false
+    end
+    if not targetProfileName or targetProfileName == "" then
+        return false
+    end
+
+    ns.db:CopyProfile(targetProfileName)
+    return true
+end
+
 function ProfileAPI:DeleteProfile(profileName)
     if not ns.db then
         return false
@@ -67,6 +79,18 @@ function ProfileAPI:DeleteProfile(profileName)
     end
     ns.db:DeleteProfile(profileName)
     return true
+end
+
+function ProfileAPI:CheckAutoSwitch()
+    if ns.db.global.autoSwitchProfiles then
+        local _, playerClassId = UnitClassBase("player")
+        local currentProfile = ProfileAPI:GetCurrentProfile()
+        local currentSpecIndex = C_SpecializationInfo.GetSpecialization()
+        local expectedProfile = ns.db.global["autoSwitchProfile" .. playerClassId .. "Spec" .. currentSpecIndex]
+        if expectedProfile and expectedProfile ~= currentProfile then
+            ProfileAPI:SetProfile(expectedProfile)
+        end
+    end
 end
 
 function ProfileAPI:GetExportString()

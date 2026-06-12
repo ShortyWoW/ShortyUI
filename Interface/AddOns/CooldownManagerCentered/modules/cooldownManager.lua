@@ -175,8 +175,8 @@ function ViewerAdapters.GetBuffIconFrames()
             if child:IsShown() then
                 visible[#visible + 1] = child
             end
-            if not child._wt_isHooked then
-                child._wt_isHooked = true
+            if not ns.API:GetIsAffected(child, "cooldownManagerHooked") then
+                ns.API:SetAffected(child, "cooldownManagerHooked")
                 hooksecurefunc(child, "OnActiveStateChanged", ViewerAdapters.UpdateBuffIcons)
                 hooksecurefunc(child, "OnUnitAuraAddedEvent", ViewerAdapters.UpdateBuffIcons)
                 hooksecurefunc(child, "OnUnitAuraRemovedEvent", ViewerAdapters.UpdateBuffIcons)
@@ -219,8 +219,11 @@ function ViewerAdapters.GetBuffBarFrames(includeInactive)
         if includeInactive or (frame:IsShown() and frame:IsVisible()) then
             active[#active + 1] = frame
         end
-        if not frame._wt_isHooked and (frame.icon or frame.Icon or frame.bar or frame.Bar) then
-            frame._wt_isHooked = true
+        if
+            not ns.API:GetIsAffected(frame, "cooldownManagerHooked")
+            and (frame.icon or frame.Icon or frame.bar or frame.Bar)
+        then
+            ns.API:SetAffected(frame, "cooldownManagerHooked")
             hooksecurefunc(frame, "OnActiveStateChanged", ViewerAdapters.UpdateBuffBars)
             hooksecurefunc(frame, "OnUnitAuraAddedEvent", ViewerAdapters.UpdateBuffBars)
             hooksecurefunc(frame, "OnUnitAuraRemovedEvent", ViewerAdapters.UpdateBuffBars)
@@ -418,8 +421,8 @@ function ViewerAdapters.UpdateUtilityDimming()
     local toDim = ns.db.profile.cooldownManager_utility_dimWhenNotOnCD
     if not toDim then
         -- Restore alphas if dimming was previously applied
-        if viewer._cmc_dimmed then
-            viewer._cmc_dimmed = false
+        if ns.API:GetIsAffected(viewer, "dimmed") then
+            ns.API:UnsetAffected(viewer, "dimmed")
             local children = { viewer:GetChildren() }
             for _, child in ipairs(children) do
                 if child and child.Icon then
@@ -469,7 +472,7 @@ function ViewerAdapters.UpdateUtilityDimming()
             end
         end
     end
-    viewer._cmc_dimmed = true
+    ns.API:SetAffected(viewer, "dimmed")
 end
 
 function ViewerAdapters.CollectViewerChildren(viewer)
@@ -626,8 +629,8 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
 
     local children = ViewerAdapters.CollectViewerChildren(viewer)
     if fromDirection == "Disable" then
-        if viewer._cmc_aligned and viewer.Layout then
-            viewer._cmc_aligned = false
+        if ns.API:GetIsAffected(viewer, "aligned") and viewer.Layout then
+            ns.API:UnsetAffected(viewer, "aligned")
             -- if not InCombatLockdown() then
             viewer:Layout()
             -- end
@@ -708,7 +711,7 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             cumulativeOffset = cumulativeOffset + currentColWidth + padding
         end
     end
-    viewer._cmc_aligned = true
+    ns.API:SetAffected(viewer, "aligned")
     ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
 end
 

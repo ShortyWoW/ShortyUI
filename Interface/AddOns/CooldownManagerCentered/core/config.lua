@@ -6,53 +6,25 @@ ns.L = L
 
 ns.CONSTANTS = ns.CONSTANTS or {}
 ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR = {
-    r = 1,
-    g = 0.95,
-    b = 0.57,
-    a = 0.69,
+    r = CooldownViewerConstants.ITEM_AURA_COLOR.r,
+    g = CooldownViewerConstants.ITEM_AURA_COLOR.g,
+    b = CooldownViewerConstants.ITEM_AURA_COLOR.b,
+    a = CooldownViewerConstants.ITEM_AURA_COLOR.a,
 }
 ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR = {
-    r = 0,
-    g = 0,
-    b = 0,
-    a = 0.69,
+    r = CooldownViewerConstants.ITEM_COOLDOWN_COLOR.r,
+    g = CooldownViewerConstants.ITEM_COOLDOWN_COLOR.g,
+    b = CooldownViewerConstants.ITEM_COOLDOWN_COLOR.b,
+    a = CooldownViewerConstants.ITEM_COOLDOWN_COLOR.a,
 }
 
-ns.CONSTANTS.ORIGINAL_SIZES_CONFIG = {
-    Essential = { width = 50, height = 50 },
-    Utility = { width = 30, height = 30 },
-    UtilityNormalized = { width = 50, height = 50 },
-    BuffIcons = { width = 40, height = 40 },
-    BuffBarIcons = { width = 30, height = 30 },
-    CustomTracker = { width = 50, height = 50 },
-}
-ns.CONSTANTS.DEFAULT_FONT_PATH = "Fonts\\FRIZQT__.TTF"
-ns.CONSTANTS.DEFAULT_STACK_FONT_PATH = "Fonts\\ARIALN.TTF"
+ns.CONSTANTS.DEFAULT_FONT = { SystemFont_Outline:GetFont() }
+ns.CONSTANTS.DEFAULT_NUMBER_FONT = { NumberFontNormal:GetFont() }
 
 ns.CONSTANTS.FONT = {
-    BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH = ns.CONSTANTS.DEFAULT_FONT_PATH,
-    BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 16,
-    BUFF_ICON_DEFAULT_STACK_FONT_PATH = ns.CONSTANTS.DEFAULT_STACK_FONT_PATH,
-    BUFF_ICON_DEFAULT_STACK_FONT_SIZE = 14,
-    BUFF_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT",
-    BUFF_ICON_DEFAULT_STACK_OFFSET_X = -2,
-    BUFF_ICON_DEFAULT_STACK_OFFSET_Y = 2,
-
-    ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_PATH = ns.CONSTANTS.DEFAULT_FONT_PATH,
-    ESSENTIAL_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 20,
-    ESSENTIAL_ICON_DEFAULT_STACK_FONT_PATH = ns.CONSTANTS.DEFAULT_STACK_FONT_PATH,
-    ESSENTIAL_ICON_DEFAULT_STACK_FONT_SIZE = 14,
-    ESSENTIAL_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT",
-    ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_X = -2,
-    ESSENTIAL_ICON_DEFAULT_STACK_OFFSET_Y = 2,
-
-    UTILITY_ICON_DEFAULT_COOLDOWN_FONT_PATH = ns.CONSTANTS.DEFAULT_FONT_PATH,
-    UTILITY_ICON_DEFAULT_COOLDOWN_FONT_SIZE = 12,
-    UTILITY_ICON_DEFAULT_STACK_FONT_PATH = ns.CONSTANTS.DEFAULT_STACK_FONT_PATH,
-    UTILITY_ICON_DEFAULT_STACK_FONT_SIZE = 12,
-    UTILITY_ICON_DEFAULT_STACK_POINT = "BOTTOMRIGHT",
-    UTILITY_ICON_DEFAULT_STACK_OFFSET_X = -2,
-    UTILITY_ICON_DEFAULT_STACK_OFFSET_Y = 2,
+    DEFAULT_STACK_POINT = "BOTTOMRIGHT",
+    DEFAULT_STACK_OFFSET_X = -2,
+    DEFAULT_STACK_OFFSET_Y = 2,
 }
 
 -- Default Settings
@@ -66,7 +38,7 @@ ns.DEFAULT_SETTINGS = {
         cooldownManager_utility_dimWhenNotOnCD = false,
         cooldownManager_utility_dimOpacity = 0.3,
 
-        cooldownManager_cooldownFontName = "Friz Quadrata TT",
+        cooldownManager_cooldownFontName = "NIL",
         cooldownManager_cooldownFontFlags = { OUTLINE = true },
         cooldownManager_cooldownFontSizeEssential_enabled = false,
         cooldownManager_cooldownFontSizeEssential = "NIL",
@@ -77,7 +49,7 @@ ns.DEFAULT_SETTINGS = {
         cooldownManager_cooldownFontSizeTracker_enabled = false,
         cooldownManager_cooldownFontSizeTracker = "NIL",
 
-        cooldownManager_stackFontName = "Friz Quadrata TT",
+        cooldownManager_stackFontName = "NIL",
         cooldownManager_stackFontFlags = { OUTLINE = true },
 
         cooldownManager_stackFontSizeEssential = nil,
@@ -116,7 +88,7 @@ ns.DEFAULT_SETTINGS = {
         cooldownManager_squareIconsZoom_BuffIcons = 0.3,
 
         -- Keybinds Display
-        cooldownManager_keybindFontName = "Friz Quadrata TT",
+        cooldownManager_keybindFontName = "NIL",
         cooldownManager_keybindFontFlags = { OUTLINE = true },
 
         cooldownManager_showKeybinds_Essential = false,

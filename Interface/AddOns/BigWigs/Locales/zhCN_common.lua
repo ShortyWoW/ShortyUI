@@ -136,6 +136,14 @@ L.focus_only = "|cffff0000仅焦点目标。|r "
 L.trash = "小怪"
 L.affixes = "词缀" -- Seasonal affixes for raids and mythic+ dungeons
 
+-- GUI boss dropdown for cast counters (Usually a dropdown menu in the boss options that lets you choose when a spell counter should reset back to 1)
+L.counter_reset_name = "%s 施法次数" -- SPELL_NAME cast counter
+L.counter_reset_desc = "选择施法次数的重置条件。"
+L.reset_casts = "每 %d 次施法后重置" -- Reset every 3 casts
+L.reset_stages = "转阶段时重置"
+L.reset_casts_and_stages = "每 %d 次施法及转阶段时重置"
+L.reset_never = "永不重置"
+
 -- Common raid marking locale
 L.marker = "%s标记"
 L.marker_player_desc = "将受到%s影响的玩家标记为%s，需要权限。" -- Mark players affected by 'SPELL_NAME' with SKULL_ICON
@@ -146,15 +154,15 @@ L.none = "无"
 L.markers = "标记" -- Plural of marker
 
 -- Ability where two players have to move close to each other
-L.link = "连接"
-L.link_with = "与%s连接"
-L.link_with_icon = "与|T13700%d:0|t%s连接"
-L.link_with_rticon = "{rt%d}与%s连接"
-L.link_both = "%s与%s连接"
-L.link_both_icon = "|T13700%d:0|t%s与|T13700%d:0|t%s连接"
-L.link_removed = "连接已移除"
-L.link_say_option_name = "重复“连接”信息"
-L.link_say_option_desc = "以重复喊话方式来发送信息，说明正在与谁连接。"
+L.link = "链接"
+L.link_with = "与%s链接"
+L.link_with_icon = "与|T13700%d:0|t%s链接"
+L.link_with_rticon = "{rt%d}与%s链接"
+L.link_both = "%s与%s链接"
+L.link_both_icon = "|T13700%d:0|t%s与|T13700%d:0|t%s链接"
+L.link_removed = "链接已移除"
+L.link_say_option_name = "重复“链接”喊话"
+L.link_say_option_desc = "重复喊话，告知与你链接的玩家。"
 
 -- Abbreviated numbers
 L.amount_one = "%.2f亿" -- Billions 1,000,000,000
@@ -208,18 +216,19 @@ L.stage2Only = "仅第二阶段"
 L.stage3Only = "仅第三阶段"
 
 -- GUI notes for renames
-L.generalNote = "通用说明文本"
-L.timerNote = "计时条显示文本"
-L.castTimerNote = "施法计时条显示文本"
-L.messageCastOverNote = "施法结束时的信息文本"
-L.messageCastStartNote = "施法开始时的信息文本"
-L.messageBeforeCastStartNote = "施法开始前的信息文本"
-L.messageNote = "消息中显示的文本"
+L.generalNote = "通用信息"
+L.timerNote = "计时条信息"
+L.castTimerNote = "施法计时条信息"
+L.messageCastOverNote = "施法结束时显示的信息"
+L.messageCastStartNote = "施法开始时显示的信息"
+L.messageBeforeCastStartNote = "施法开始前显示的信息"
+L.messageDuringCastNote = "施法期间显示的信息"
+L.messageNote = "信息文本"
 L.messageOnYouNote = "点名你时显示的信息"
 L.messageSpecificHealth = "首领生命值%d%%时显示的信息"
-L.timerOnYouNote = "点名你时计时条显示文本"
-L.mythicOnlyNote = "史诗难度下显示文本"
-L.otherDifficultiesNote = "非史诗难度下显示文本"
+L.timerOnYouNote = "点名你时计时条显示的信息"
+L.mythicOnlyNote = "史诗难度下显示的信息"
+L.otherDifficultiesNote = "非史诗难度下显示的信息"
 
 -- GUI notes for debuffs
 L.debuffFailureNote = "失误时获得此减益效果"

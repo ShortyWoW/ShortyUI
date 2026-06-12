@@ -136,6 +136,14 @@ L.focus_only = "|cffff0000Warnungen nur für Fokusziel.|r "
 L.trash = "Trash"
 L.affixes = "Affixe" -- Seasonal affixes for raids and mythic+ dungeons
 
+-- GUI boss dropdown for cast counters (Usually a dropdown menu in the boss options that lets you choose when a spell counter should reset back to 1)
+L.counter_reset_name = "%s Zauber-Zähler" -- SPELL_NAME cast counter
+L.counter_reset_desc = "Wähle wann der Zähler zurückgesetzt werden soll."
+L.reset_casts = "Nach %d Zaubern zurücksetzen" -- Reset every 3 casts
+L.reset_stages = "Beim Phasenwechsel zurücksetzen"
+L.reset_casts_and_stages = "Nach %d Zaubern und beim Phasenwechsel zurücksetzen"
+L.reset_never = "Nie zurücksetzen"
+
 -- Common raid marking locale
 L.marker = "%s markieren"
 L.marker_player_desc = "Markiert Spieler, die von %s betroffen sind, mit %s. Benötigt Leiter oder Assistent." -- Mark players affected by 'SPELL_NAME' with SKULL_ICON
@@ -214,6 +222,7 @@ L.castTimerNote = "Dieser Text wird nur für Zauber Timer genutzt"
 L.messageCastOverNote = "Dieser Text wird zur Anzeige einer Nachricht am Ende des Zaubers genutzt"
 L.messageCastStartNote = "Dieser Text wird zur Anzeige einer Nachricht zu Beginn des Zaubers genutzt"
 L.messageBeforeCastStartNote = "Dieser Text wird zur Anzeige einer Nachricht bevor ein Zauber startet genutzt"
+L.messageDuringCastNote = "Dieser Text wird zur Anzeige einer Nachricht während des Zaubers genutzt"
 L.messageNote = "Dieser Text wird für Nachrichten genutzt"
 L.messageOnYouNote = "Die anzuzeigende Nachricht wenn diese Fähigkeit auf Dir ist"
 L.messageSpecificHealth = "Die anzuzeigende Nachricht wenn der Boss bei %d%% Gesundheit ist"
@@ -224,7 +233,7 @@ L.otherDifficultiesNote = "Dieser Text wird für alle anderen Schwierigkeitsgrad
 -- GUI notes for debuffs
 L.debuffFailureNote = "Diesen Debuff erleidest Du wenn Du scheiterst"
 L.debuffFailureMoveFromExplosionNote = "Diesen Debuff erleidest Du wenn Du Dich nicht von der Explosion entfernst"
---L.debuffFailureInterruptNote = "This debuff will apply to you if you fail to interrupt the cast of |cFFFFFFFF%s|r" -- This debuff will apply to you if you fail to interrupt the cast of SPELL_NAME
+L.debuffFailureInterruptNote = "Diesen Debuff erleidest Du wenn Du das Wirken des Zaubers |cFFFFFFFF%s|r nicht unterbrichst" -- This debuff will apply to you if you fail to interrupt the cast of SPELL_NAME
 L.preDebuffNote = "Dies ist ein Vor-Debuff, bevor der Haupt-Debuff auf Dich wirkt"
 L.mainDebuffNote = "Dies ist der hauptsächliche Debuff der auf Dich wirkt"
 L.postDebuffNote = "Diesen Debuff erleidest Du nachdem |cFFFFFFFF%s|r abläuft" -- This debuff will apply to you after OTHER_DEBUFF expires
@@ -233,7 +242,7 @@ L.debuffDotAfterCastNote = "Dieser Debuff ist ein DoT nach dem Abschluss des Zau
 L.debuffPossibleAfterCastNote = "Diesen Debuff kannst Du erleiden nachdem der Boss |cFFFFFFFF%s|r gewirkt hat" -- This debuff might apply to you after the boss finishes casting SPELL_NAME
 L.debuffTankAfterCastNote = "Diesen Debuff erleidet der Tank nachdem der Boss |cFFFFFFFF%s|r gewirkt hat" -- This debuff will apply to the tank after the boss finishes casting SPELL_NAME
 L.debuffWalkIntoObjectNote = "Diesen Debuff erleidest Du wenn Du bewusst in die |cFFFFFFFF%s|r läufst" -- This debuff will apply to you if you purposely walk into the OBJECT_NAME (e.g. trap, mine, bomb)
---L.debuffHitByCastNote = "This debuff will apply to you if you are hit by the the |cFFFFFFFF%s|r cast" -- This debuff will apply to you if you are hit by the the SPELL_NAME_cast
+L.debuffHitByCastNote = "Diesen Debuff erleidest Du wenn Du vom |cFFFFFFFF%s|r Zauber getroffen wirst" -- This debuff will apply to you if you are hit by the the SPELL_NAME_cast
 L.debuffAddsCast = "Diesen Debuff erleidest Du von |cFFFFFFFF%s|r" -- This debuff is applied to you by NPC_NAME
 
 -- Common ability name replacements

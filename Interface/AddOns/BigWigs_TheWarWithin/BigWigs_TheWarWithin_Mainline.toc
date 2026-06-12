@@ -1,4 +1,4 @@
-## Interface: 120001, 120005, 120000
+## Interface: 120001, 120005, 120007
 
 ## Title: BigWigs [|cffeda55fThe War Within|r]
 ## Title-zhCN: BigWigs [|cffeda55f地心之战|r]
@@ -25,7 +25,7 @@
 
 ## LoadOnDemand: 1
 ## Dependencies: BigWigs
-## Version: v12.0.2
+## Version: v12.0.3
 ## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_legacy.tga
 
 ## X-Category: Raid
@@ -46,9 +46,6 @@ NerubarPalace\Ovinax.lua
 NerubarPalace\Kyveza.lua
 NerubarPalace\TheSilkenCourt.lua
 NerubarPalace\Ansurek.lua
-NerubarPalace\Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
-NerubarPalace\!Options.lua
-
 LiberationOfUndermine\Vexie.lua
 LiberationOfUndermine\Cauldron.lua
 LiberationOfUndermine\Rik.lua
@@ -57,9 +54,6 @@ LiberationOfUndermine\Lockenstock.lua
 LiberationOfUndermine\Bandit.lua
 LiberationOfUndermine\MugZee.lua
 LiberationOfUndermine\Gallywix.lua
-LiberationOfUndermine\Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
-LiberationOfUndermine\!Options.lua
-
 ManaforgeOmega\Sentinel.lua
 ManaforgeOmega\Loomithar.lua
 ManaforgeOmega\Naazindhri.lua
@@ -68,14 +62,12 @@ ManaforgeOmega\Hunters.lua
 ManaforgeOmega\Fractillus.lua
 ManaforgeOmega\Salhadaar.lua
 ManaforgeOmega\Dimensius.lua
-ManaforgeOmega\Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
-ManaforgeOmega\!Options.lua
-
 KhazAlgar\AggregationOfHorrors.lua
 KhazAlgar\Shurrai.lua
 KhazAlgar\Orta.lua
 KhazAlgar\Kordac.lua
 KhazAlgar\Gobfather.lua
 KhazAlgar\Reshanor.lua
-KhazAlgar\Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
-KhazAlgar\!Options.lua
+
+!Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
+!Options.lua

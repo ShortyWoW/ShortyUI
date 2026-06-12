@@ -135,6 +135,14 @@ L.focus_only = "|cffff0000Focus target alerts only.|r "
 L.trash = "Trash"
 L.affixes = "Affixes" -- Seasonal affixes for raids and mythic+ dungeons
 
+-- GUI boss dropdown for cast counters (Usually a dropdown menu in the boss options that lets you choose when a spell counter should reset back to 1)
+L.counter_reset_name = "%s cast counter" -- SPELL_NAME cast counter
+L.counter_reset_desc = "Choose when to reset the counter."
+L.reset_casts = "Reset every %d casts" -- Reset every 3 casts
+L.reset_stages = "Reset on stage change"
+L.reset_casts_and_stages = "Reset every %d casts and on stage change"
+L.reset_never = "Never reset"
+
 -- Common raid marking locale
 L.marker = "%s marker"
 L.marker_player_desc = "Mark players affected by '%s' with %s, requires promoted or leader." -- Mark players affected by 'SPELL_NAME' with SKULL_ICON
@@ -213,6 +221,7 @@ L.castTimerNote = "This text will only be used for cast timers"
 L.messageCastOverNote = "This text will be used for showing a message when the cast ends"
 L.messageCastStartNote = "This text will be used for showing a message when the cast starts"
 L.messageBeforeCastStartNote = "This text will be used for showing a message before a cast starts"
+L.messageDuringCastNote = "This text will be used for showing messages during the cast"
 L.messageNote = "This text will be used for messages"
 L.messageOnYouNote = "The message shown when this ability is on you"
 L.messageSpecificHealth = "The message shown when the boss is at %d%% health"

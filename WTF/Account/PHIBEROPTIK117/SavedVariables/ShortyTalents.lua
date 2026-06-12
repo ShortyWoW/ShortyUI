@@ -121,7 +121,7 @@ ShortyTalentsDB = {
 },
 },
 },
-[268] = {
+[1454] = {
 ["allowed"] = {
 ["Mythic+"] = {
 },
@@ -156,9 +156,9 @@ ShortyTalentsDB = {
 [78033587] = true,
 [82242175] = true,
 [73107914] = true,
-[79949606] = true,
-[77471231] = true,
 [79455491] = true,
+[77471231] = true,
+[79949606] = true,
 [78033697] = true,
 [79455492] = true,
 [73107827] = true,
@@ -285,7 +285,7 @@ ShortyTalentsDB = {
 },
 },
 },
-[1454] = {
+[268] = {
 ["allowed"] = {
 ["Mythic+"] = {
 },

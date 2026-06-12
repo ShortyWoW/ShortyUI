@@ -189,7 +189,7 @@ local function ApplySquareStyle(button, viewerSettingName)
     button.cmcBorder:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
     if borderThickness <= 0 then
         button.cmcBorder:Hide()
-        button._cmcSquareStyled = true
+        ns.API:SetAffected(button, "squareStyled")
         return
     end
     button.cmcBorder:SetBackdrop({
@@ -199,7 +199,7 @@ local function ApplySquareStyle(button, viewerSettingName)
     button.cmcBorder:SetBackdropBorderColor(0, 0, 0, 1)
     button.cmcBorder:Show()
 
-    button._cmcSquareStyled = true
+    ns.API:SetAffected(button, "squareStyled")
 end
 
 local function RestoreOriginalStyle(button, viewerSettingName)
@@ -231,7 +231,7 @@ local function RestoreOriginalStyle(button, viewerSettingName)
         end
     end
 
-    if not button._cmcSquareStyled then
+    if not ns.API:GetIsAffected(button, "squareStyled") then
         return
     end
 
@@ -250,7 +250,7 @@ local function RestoreOriginalStyle(button, viewerSettingName)
         button.cmcBorder:Hide()
     end
 
-    button._cmcSquareStyled = false
+    ns.API:UnsetAffected(button, "squareStyled")
 end
 local function ApplyNormalizedSizeToButton(button, viewerSettingName)
     local width, height = GetViewerIconSize(viewerSettingName)
@@ -271,13 +271,13 @@ local function ApplyNormalizedSizeToButton(button, viewerSettingName)
         button.Icon:SetPoint("CENTER", button, "CENTER", 0, 0)
         local settingName = viewersSettingKey[viewerSettingName]
 
-        local padding = button._cmcSquareStyled and 4 or 0
+        local padding = ns.API:GetIsAffected(button, "squareStyled") and 4 or 0
         button.Icon:SetSize(width - padding, height - padding)
     end
 end
 
 local function ApplySizeWithoutStyle(button, viewerSettingName)
-    if button._cmcSquareStyled then
+    if ns.API:GetIsAffected(button, "squareStyled") then
         RestoreOriginalStyle(button, viewerSettingName)
     end
     local width, height = GetViewerIconSize(viewerSettingName)
@@ -307,8 +307,8 @@ local function ProcessViewer(viewer, viewerSettingName, applySquareStyle)
             else
                 ApplySizeWithoutStyle(child, viewerSettingName)
             end
-            if child.TriggerPandemicAlert and not child._wt_isStyleHooked then
-                child._wt_isStyleHooked = true
+            if child.TriggerPandemicAlert and not ns.API:GetIsAffected(child, "pandemicStyleHooked") then
+                ns.API:SetAffected(child, "pandemicStyleHooked")
                 hooksecurefunc(child, "TriggerPandemicAlert", function()
                     if child.PandemicIcon then
                         if applySquareStyle then
@@ -341,15 +341,18 @@ local function ProcessViewer(viewer, viewerSettingName, applySquareStyle)
         end
     end
     -- Track per-viewer state so Initialize can compare desired vs current
-    viewer._cmc_styled_enabled = applySquareStyle
+    ns.API:SetAffected(viewer, "styledEnabled", applySquareStyle)
     if normalize then
-        viewer._cmc_styled_normalized = IsNormalizedSizeEnabled()
+        ns.API:SetAffected(viewer, "styledNormalized", IsNormalizedSizeEnabled())
     end
     local rectKeyMap = { Essential = "essential", Utility = "utility", BuffIcons = "buffIcons" }
     local rectSuffix = rectKeyMap[viewerSettingName]
-    viewer._cmc_styled_rectangular = rectSuffix
-            and (ns.db.profile["cooldownManager_experimental_enableRectangularIcons_" .. rectSuffix] or false)
-        or false
+    ns.API:SetAffected(
+        viewer,
+        "styledRectangular",
+        rectSuffix and (ns.db.profile["cooldownManager_experimental_enableRectangularIcons_" .. rectSuffix] or false)
+            or false
+    )
 end
 
 local function IsAnyStyledFeatureEnabledForViewer(viewerSettingName)
@@ -436,9 +439,9 @@ local function RestoreAllButtons()
                     RestoreOriginalStyle(button, settingName)
                 end
             end
-            viewerFrame._cmc_styled_enabled = false
-            viewerFrame._cmc_styled_normalized = false
-            viewerFrame._cmc_styled_rectangular = false
+            ns.API:UnsetAffected(viewerFrame, "styledEnabled")
+            ns.API:UnsetAffected(viewerFrame, "styledNormalized")
+            ns.API:UnsetAffected(viewerFrame, "styledRectangular")
         end
     end
 end
@@ -470,9 +473,9 @@ function StyledIcons:OnSettingChanged()
             if IsAnyStyledFeatureEnabledForViewer(settingName) then
                 ProcessViewer(viewerFrame, settingName, IsSquareIconsEnabled(settingName))
             elseif
-                viewerFrame._cmc_styled_enabled
-                or viewerFrame._cmc_styled_normalized
-                or viewerFrame._cmc_styled_rectangular
+                ns.API:GetIsAffected(viewerFrame, "styledEnabled")
+                or ns.API:GetIsAffected(viewerFrame, "styledNormalized")
+                or ns.API:GetIsAffected(viewerFrame, "styledRectangular")
             then
                 -- This viewer had features active but they are all now disabled; restore it
                 local children = { viewerFrame:GetChildren() }
@@ -481,9 +484,9 @@ function StyledIcons:OnSettingChanged()
                         RestoreOriginalStyle(button, settingName)
                     end
                 end
-                viewerFrame._cmc_styled_enabled = false
-                viewerFrame._cmc_styled_normalized = false
-                viewerFrame._cmc_styled_rectangular = false
+                ns.API:UnsetAffected(viewerFrame, "styledEnabled")
+                ns.API:UnsetAffected(viewerFrame, "styledNormalized")
+                ns.API:UnsetAffected(viewerFrame, "styledRectangular")
             end
         end
     end

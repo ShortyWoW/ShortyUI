@@ -27,7 +27,6 @@ local arcaneOutrageCount = 1
 local writhingWaveCount = 1
 
 local infusionPylonCount = 1
-local infusionPylonTimer
 
 local primalSpellstormCount = 1
 local primalSpellstormTimer
@@ -189,7 +188,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, _, spellId)
 		self:StopBar(CL.count:format(CL.pull_in, infusionTetherCount)) -- Infusion Tether
 		self:StopBar(CL.count:format(CL.tank_frontal, piercingStrandCount)) -- Piercing Strand
 		self:StopBar(CL.count:format(self:SpellName(1247672), infusionPylonCount)) -- Infused Pylon
-		self:CancelTimer(infusionPylonTimer)
 		self:StopBar(CL.count:format(CL.dodge, primalSpellstormCount)) -- Primal Spellstorm
 		self:CancelTimer(primalSpellstormTimer)
 

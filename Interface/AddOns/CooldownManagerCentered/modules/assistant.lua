@@ -142,7 +142,7 @@ local function BuildIconSpellCacheForViewer(viewerName)
                     inRotation = inRotation,
                 }
 
-                child._cmc_inRotation = inRotation
+                ns.API:SetAffected(child, "inRotation", inRotation)
             end
         end
     end
@@ -222,17 +222,17 @@ local function GetOrCreateFlipbookHighlight(icon)
     return flipbookFrame
 end
 
-local function HideHighlights(icon)
-    if icon.cmcFlipbookHighlight then
-        icon.cmcFlipbookHighlight:SetAlpha(0)
-        if icon.cmcFlipbookHighlight.Anim:IsPlaying() then
-            icon.cmcFlipbookHighlight.Anim:Stop()
+local function HideHighlights(child)
+    if child.cmcFlipbookHighlight then
+        child.cmcFlipbookHighlight:SetAlpha(0)
+        if child.cmcFlipbookHighlight.Anim:IsPlaying() then
+            child.cmcFlipbookHighlight.Anim:Stop()
         end
     end
 end
 
-local function UpdateIconHighlight(icon, viewerSettingName)
-    if not icon then
+local function UpdateIconHighlight(child, viewerSettingName)
+    if not child then
         return
     end
 
@@ -242,26 +242,26 @@ local function UpdateIconHighlight(icon, viewerSettingName)
 
     local enabledKey = "cooldownManager_showHighlight_" .. viewerSettingName
     if not ns.db.profile[enabledKey] then
-        HideHighlights(icon)
+        HideHighlights(child)
         return
     end
 
-    local iconSpellID, overrideSpellID = ExtractSpellIDFromIcon(icon)
+    local iconSpellID, overrideSpellID = ExtractSpellIDFromIcon(child)
     if not iconSpellID then
-        HideHighlights(icon)
+        HideHighlights(child)
         return
     end
 
-    local inRotation = icon._cmc_inRotation
+    local inRotation = ns.API:GetIsAffected(child, "inRotation")
     if not inRotation then
-        HideHighlights(icon)
+        HideHighlights(child)
         return
     end
 
     local isSuggested = currentSuggestedSpellID
         and (iconSpellID == currentSuggestedSpellID or (overrideSpellID and overrideSpellID == currentSuggestedSpellID))
 
-    local flipbook = GetOrCreateFlipbookHighlight(icon)
+    local flipbook = GetOrCreateFlipbookHighlight(child)
     if isSuggested then
         flipbook:SetAlpha(1)
         if not flipbook.Anim:IsPlaying() then
@@ -289,7 +289,7 @@ function Assistant:UpdateViewerHighlights(viewerName)
     -- Track per-viewer enabled state so Initialize can compare desired vs current
     local enabledKey = "cooldownManager_showHighlight_" .. settingName
     local isEnabled = ns.db and ns.db.profile and ns.db.profile[enabledKey] or false
-    viewerFrame._cmc_assistant_enabled = isEnabled
+    ns.API:SetAffected(viewerFrame, "assistant", isEnabled)
 
     local children = { viewerFrame:GetChildren() }
     for _, child in ipairs(children) do
@@ -328,7 +328,7 @@ function Assistant:PrepareRotationBorders()
                 if ns.db.profile[enabledKey] then
                     local children = { viewerFrame:GetChildren() }
                     for _, child in ipairs(children) do
-                        if child.Icon and child._cmc_inRotation then
+                        if child.Icon and ns.API:GetIsAffected(child, "inRotation") then
                             -- Pre-create flipbook highlight
                             GetOrCreateFlipbookHighlight(child)
                         end
@@ -363,6 +363,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         or event == "PLAYER_SPECIALIZATION_CHANGED"
         or event == "UPDATE_SHAPESHIFT_FORM"
         or event == "TRAIT_CONFIG_UPDATED"
+        or event == "ACTIVE_PLAYER_SPECIALIZATION_CHANGED"
     then
         rotationSpellsCacheValid = false
         Assistant:PrepareRotationBorders()
@@ -401,7 +402,7 @@ function Assistant:Shutdown()
     for viewerName, _ in pairs(viewersSettingKey) do
         local viewerFrame = _G[viewerName]
         if viewerFrame then
-            viewerFrame._cmc_assistant_enabled = false
+            ns.API:UnsetAffected(viewerFrame, "assistant")
             local children = { viewerFrame:GetChildren() }
             for _, child in ipairs(children) do
                 HideHighlights(child)
@@ -425,6 +426,7 @@ function Assistant:Enable()
     eventFrame:RegisterEvent("PLAYER_TALENT_UPDATE")
     eventFrame:RegisterEvent("SPELLS_CHANGED")
     eventFrame:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+    eventFrame:RegisterEvent("ACTIVE_PLAYER_SPECIALIZATION_CHANGED")
     eventFrame:RegisterEvent("TRAIT_CONFIG_UPDATED")
     eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
     eventFrame:RegisterEvent("EDIT_MODE_LAYOUTS_UPDATED")

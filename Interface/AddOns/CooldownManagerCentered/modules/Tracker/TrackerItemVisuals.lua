@@ -6,6 +6,8 @@ local ItemsData = ns.TrackerItemsData
 local ItemVisuals = ns.TrackerItemVisuals or {}
 ns.TrackerItemVisuals = ItemVisuals
 
+local unpack = unpack or table.unpack
+
 local FALLBACK_ICON = 134400
 local ITEM_COOLDOWN_TRIGGER_THRESHOLD = 0.1
 local WILDCARD_SLOT_TRINKET1 = ItemsData.WILDCARD_SLOT_TRINKET1 or "trinket1"

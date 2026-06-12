@@ -739,6 +739,7 @@ L["Delves Completion Reward Cap Tooltip"] = "Once you reach this account-wide ca
 L["Near Completion Tooltip"] = "This entry is visible to you because you are about to reach the weekly cap.";
 L["Inactive Currencies Tooltip"] = "These currencies are hidden because you have set them as Unused:";
 L["New Quest"] = "New Quest";
+L["Trait Points Available"] = "Points Available";
 
 
 --ExpansionSummaryMinimapButton
@@ -791,7 +792,7 @@ L["Press Key To Copy Format"] = "Press |cffffd100%s|r to Copy";
 
 --TransmogOutfitSelect
 L["ModuleName TransmogOutfitSelect"] = "Outfit Collection: Quick Access";
-L["ModuleDescription1 TransmogOutfitSelect"] = "Allows you open the outfit collection and enable saved appearance anywhere.";
+L["ModuleDescription1 TransmogOutfitSelect"] = "Allows you to open the outfit collection and enable saved appearance anywhere.";
 L["ModuleDescription2 TransmogOutfitSelect"] = "To do this: open the Transmog UI, then drag the |cffd7c0a3Quick Access|r button above the outfit list to your action bars.";
 L["Outfit Collection"] = "Outfit Collection";
 L["Quick Access Outfit Button"] = "Quick Access";

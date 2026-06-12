@@ -8,6 +8,21 @@ local SettingsLib = LibStub("LibEQOLSettingsMode-1.0")
 ProfileSettings._pendingExportString = nil
 ProfileSettings._pendingImportString = nil
 
+local playerClassName, playerClassId = UnitClassBase("player")
+
+local classSpecs = {}
+local function loadClassSpecs()
+    for i = 1, GetNumClasses() do
+        for j = 1, 4 do
+            local id, name = GetSpecializationInfoForClassID(i, j)
+            if id and name then
+                classSpecs[i] = classSpecs[i] or {}
+                classSpecs[i][j] = name
+            end
+        end
+    end
+end
+
 StaticPopupDialogs["CMC_CREATE_NEW_PROFILE"] = {
     text = "Enter a name for the new profile:",
     button1 = "Create",
@@ -64,6 +79,23 @@ StaticPopupDialogs["CMC_CONFIRM_DELETE_PROFILE"] = {
             ns.Addon:Print("Deleted profile: " .. profileName)
         else
             ns.Addon:Print("Failed to delete profile.")
+        end
+    end,
+    timeout = 0,
+    whileDead = true,
+    hideOnEscape = true,
+    preferredIndex = 3,
+}
+
+StaticPopupDialogs["CMC_CONFIRM_COPY_PROFILE"] = {
+    text = "Are you sure you want to copy the profile:\n\n|cff00ff00%s|r\n\nto the current profile?\n\nThis will overwrite your current profile settings.",
+    button1 = "Copy",
+    button2 = "Cancel",
+    OnAccept = function(self, profileName)
+        if profileName and ns.ProfileAPI:CopyProfile(profileName) then
+            ns.Addon:Print("Copied profile: " .. profileName .. " to current profile.")
+        else
+            ns.Addon:Print("Failed to copy profile.")
         end
     end,
     timeout = 0,
@@ -183,6 +215,8 @@ StaticPopupDialogs["CMC_IMPORT_PROFILE_NAME"] = {
 }
 
 function ProfileSettings:BuildSettings(parentCategory)
+    loadClassSpecs()
+
     local profileCategory = SettingsLib:CreateCategory(parentCategory, "Profiles", false)
     ns.AddonSettings.SettingsLayout.profileCategory = profileCategory
 
@@ -216,6 +250,52 @@ function ProfileSettings:BuildSettings(parentCategory)
         end,
     })
 
+    SettingsLib:CreateCheckbox(profileCategory, {
+        prefix = "CMC_",
+        key = "profile_auto_switch",
+        name = "Auto-Switch Profiles",
+        desc = "Automatically switch profiles based on your current specialization.",
+        get = function()
+            return ns.db.global.autoSwitchProfiles or false
+        end,
+        set = function(value)
+            ns.db.global.autoSwitchProfiles = value
+            if value then
+                ns.ProfileAPI:CheckAutoSwitch()
+            end
+        end,
+    })
+
+    for i = 1, #classSpecs[playerClassId] do
+        local _, specName, _, icon = C_SpecializationInfo.GetSpecializationInfo(i)
+        SettingsLib:CreateDropdown(profileCategory, {
+            prefix = "CMC_",
+            key = "profile_auto_switch_spec_" .. i,
+            name = "|T" .. icon .. ":16|t " .. specName,
+            default = "",
+            optionfunc = function()
+                local profiles = ns.ProfileAPI:GetProfiles()
+                local values = { [""] = "|cffff0000Disable auto switch for " .. specName .. "|r" }
+                for _, name in ipairs(profiles) do
+                    values[name] = name
+                end
+                return values
+            end,
+            get = function()
+                return ns.db.global["autoSwitchProfile" .. playerClassId .. "Spec" .. i] or ""
+            end,
+            set = function(value)
+                if value == "" then
+                    value = nil
+                end
+                ns.db.global["autoSwitchProfile" .. playerClassId .. "Spec" .. i] = value
+                if ns.db.global.autoSwitchProfiles then
+                    ns.ProfileAPI:CheckAutoSwitch()
+                end
+            end,
+        })
+    end
+
     SettingsLib:CreateButton(profileCategory, {
         text = "Create New",
         func = function()
@@ -228,7 +308,7 @@ function ProfileSettings:BuildSettings(parentCategory)
     })
 
     SettingsLib:CreateHeader(profileCategory, {
-        name = "Import / Export",
+        name = "Import / Export / Copy",
     })
 
     SettingsLib:CreateButton(profileCategory, {
@@ -258,6 +338,36 @@ function ProfileSettings:BuildSettings(parentCategory)
             StaticPopup_Show("CMC_IMPORT_PROFILE_STRING")
         end,
         desc = "Import a profile from an export string.",
+    })
+
+    SettingsLib:CreateDropdown(profileCategory, {
+        prefix = "CMC_",
+        key = "profile_copy",
+        name = "Copy from profile:",
+        default = "",
+        optionfunc = function()
+            local profiles = ns.ProfileAPI:GetProfiles()
+            local values = { [""] = "Select a profile..." }
+            local current = ns.ProfileAPI:GetCurrentProfile()
+            for _, name in ipairs(profiles) do
+                if name ~= current then
+                    values[name] = name
+                end
+            end
+            return values
+        end,
+        get = function()
+            return ""
+        end,
+        set = function(value)
+            if InCombatLockdown() then
+                return
+            end
+            if value and value ~= "" then
+                StaticPopup_Show("CMC_CONFIRM_COPY_PROFILE", value, nil, value)
+            end
+        end,
+        desc = "Select a profile to copy (cannot copy active profile).",
     })
 
     SettingsLib:CreateHeader(profileCategory, {
@@ -294,3 +404,15 @@ function ProfileSettings:BuildSettings(parentCategory)
         desc = "Select a profile to delete (cannot delete active profile).",
     })
 end
+
+EventRegistry:RegisterCallback("PLAYER_SPECIALIZATION_CHANGED", function()
+    C_Timer.After(0.5, function() -- Delay to ensure specialization info is updated
+        ns.ProfileAPI:CheckAutoSwitch()
+    end)
+end)
+
+EventRegistry:RegisterCallback("ACTIVE_PLAYER_SPECIALIZATION_CHANGED", function()
+    C_Timer.After(0.5, function() -- Delay to ensure specialization info is updated
+        ns.ProfileAPI:CheckAutoSwitch()
+    end)
+end)

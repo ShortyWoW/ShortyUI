@@ -3,6 +3,8 @@ local _, ns = ...
 local TrackerAssignmentPanel = {}
 ns.TrackerAssignmentPanel = TrackerAssignmentPanel
 
+local unpack = unpack or table.unpack
+
 local DB = ns.TrackerDB
 local ItemsData = ns.TrackerItemsData
 local ItemVisuals = ns.TrackerItemVisuals

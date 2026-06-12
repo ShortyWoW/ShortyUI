@@ -3,6 +3,8 @@ local _, ns = ...
 local BuffBarIconMode = {}
 ns.BuffBarIconMode = BuffBarIconMode
 
+local unpack = unpack or table.unpack
+
 local LSM_font = LibStub and LibStub("LibSharedMedia-3.0", true)
 local BASE_SQUARE_MASK = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\Square"
 local DEFAULT_MASK_TEXTURE = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\CooldownManager"
@@ -91,24 +93,8 @@ local function GetIconTexTarget(iconHost, iconTexture)
     return nil
 end
 
-local function GetFontPath(fontName)
-    if not fontName or fontName == "" then
-        return ns.CONSTANTS.DEFAULT_FONT_PATH
-    end
-    if LSM_font then
-        local p = LSM_font:Fetch("font", fontName)
-        if p then
-            return p
-        end
-    end
-    return ns.CONSTANTS.DEFAULT_FONT_PATH
-end
-
 local function GetBuffIconDefaultFontPath(fontName)
-    if fontName and fontName ~= "" then
-        return GetFontPath(fontName)
-    end
-    return ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_PATH
+    return ns.API:GetFontPath(fontName) or ns.CONSTANTS.DEFAULT_FONT[1]
 end
 
 local function ApplyFontStyling(frame)
@@ -140,56 +126,45 @@ local function ApplyFontStyling(frame)
         if cdFS and p.cooldownManager_cooldownFontSizeBuffIcons_enabled then
             local size = p.cooldownManager_cooldownFontSizeBuffIcons
             if size == "NIL" then
-                size = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE
+                size = 16
             end
             if size == 0 then
                 cdFS:SetFontHeight(0)
             else
                 if not size then
-                    size = select(2, cdFS:GetFont()) or ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_COOLDOWN_FONT_SIZE
+                    size = select(2, cdFS:GetFont()) or 16
                 end
                 local fontName = p.cooldownManager_cooldownFontName
-                local fontFlags = p.cooldownManager_cooldownFontFlags or {}
-                local flags = {}
-                for n, v in pairs(fontFlags) do
-                    if v == true then
-                        flags[#flags + 1] = n
-                    end
-                end
-                cdFS:SetFont(GetBuffIconDefaultFontPath(fontName), size, table.concat(flags, ","))
+                local fontFlags = p.cooldownManager_cooldownFontFlags
+                cdFS:SetFont(GetBuffIconDefaultFontPath(fontName), size, ns.API:GetFontFlags(fontFlags))
             end
         end
     end
 
     if stackFS and p.cooldownManager_stackAnchorBuffIcons_enabled then
+        local fp, fsz, ffl = unpack(ns.Stacks.defaultUtilityAndBuffStackFont)
         local size = p.cooldownManager_stackFontSizeBuffIcons
         if size == "NIL" or not size then
-            size = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE
+            size = fsz
         end
-        local point = p.cooldownManager_stackAnchorBuffIcons_point or ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT
+        local point = p.cooldownManager_stackAnchorBuffIcons_point or ns.CONSTANTS.FONT.DEFAULT_STACK_POINT
         local offsetX = p.cooldownManager_stackAnchorBuffIcons_offsetX
         if offsetX == nil then
-            offsetX = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_X
+            offsetX = ns.CONSTANTS.FONT.DEFAULT_STACK_OFFSET_X
         end
         local offsetY = p.cooldownManager_stackAnchorBuffIcons_offsetY
         if offsetY == nil then
-            offsetY = ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_Y
+            offsetY = ns.CONSTANTS.FONT.DEFAULT_STACK_OFFSET_Y
         end
         stackFS:SetFontObject("NumberFontNormal")
         local fontName = p.cooldownManager_stackFontName
         local fontFlags = p.cooldownManager_stackFontFlags or {}
-        local flags = {}
-        for n, v in pairs(fontFlags) do
-            if v == true then
-                flags[#flags + 1] = n
-            end
-        end
+        local flags = ns.API:GetFontFlags(fontFlags)
         if size == 0 then
             stackFS:SetFontHeight(0)
         else
-            local stackFontPath = fontName and fontName ~= "" and GetFontPath(fontName)
-                or ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_PATH
-            stackFS:SetFont(stackFontPath, size, table.concat(flags, ","))
+            local stackFontPath = ns.API:GetFontPath(fontName) or fp
+            stackFS:SetFont(stackFontPath, size, flags)
         end
         if not frame._cmcStackAnchor then
             frame._cmcStackAnchor = CreateFrame("Frame", nil, frame)
@@ -211,7 +186,7 @@ local function ApplyFontStyling(frame)
             stackFS:SetJustifyH("LEFT")
         end
     elseif stackFS then
-        stackFS:SetFontObject("NumberFontNormal")
+        stackFS:SetFontObject("NumberFontNormalSmall")
         if not frame._cmcStackAnchor then
             frame._cmcStackAnchor = CreateFrame("Frame", nil, frame)
         end
@@ -223,20 +198,15 @@ local function ApplyFontStyling(frame)
         stackFS:SetJustifyV("MIDDLE")
         stackFS:ClearAllPoints()
         stackFS:SetPoint(
-            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT,
+            ns.CONSTANTS.FONT.DEFAULT_STACK_POINT,
             frame._cmcStackAnchor,
-            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_POINT,
-            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_X,
-            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_OFFSET_Y
+            ns.CONSTANTS.FONT.DEFAULT_STACK_POINT,
+            ns.CONSTANTS.FONT.DEFAULT_STACK_OFFSET_X,
+            ns.CONSTANTS.FONT.DEFAULT_STACK_OFFSET_Y
         )
-        local _fontPath, _fontSize, fontFlags = stackFS:GetFont()
-        stackFS:SetFont(
-            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_PATH,
-            ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE,
-            fontFlags
-        )
+
         stackFS:SetDrawLayer("OVERLAY", 7)
-        stackFS:SetSize(30, ns.CONSTANTS.FONT.BUFF_ICON_DEFAULT_STACK_FONT_SIZE)
+        stackFS:SetSize(30, fsz)
     end
 end
 
@@ -444,8 +414,6 @@ function BuffBarIconMode.Apply(frame)
 
     ApplyIconStyling(frame, iconHost, iconTexture)
     ApplyFontStyling(frame)
-
-    frame._cmcBuffBarIconModeApplied = true
 end
 
 function BuffBarIconMode.Restore(frame)
@@ -512,8 +480,6 @@ function BuffBarIconMode.Restore(frame)
         end
         frame._cmcHiddenIconHostRegions = nil
     end
-
-    frame._cmcBuffBarIconModeApplied = false
 end
 
 function BuffBarIconMode.RefreshAll(barFrames)

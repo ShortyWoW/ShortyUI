@@ -54,6 +54,19 @@ local radiantBarrierCount = 1
 local grapplingMawCount = 1
 
 --------------------------------------------------------------------------------
+-- Localization
+--
+
+mod:SetDefaultLocale({ -- SetOption:skip-locale
+	custom_select_gloom_reset = CL.counter_reset_name:format(mod:SpellName(1245391)),
+	custom_select_gloom_reset_desc = CL.counter_reset_desc,
+	custom_select_gloom_reset_icon = 1245391,
+	custom_select_gloom_reset_value1 = CL.reset_casts_and_stages:format(2),
+	custom_select_gloom_reset_value2 = CL.reset_stages,
+	custom_select_gloom_reset_value3 = CL.reset_never,
+})
+
+--------------------------------------------------------------------------------
 -- Renames
 --
 
@@ -85,6 +98,7 @@ function mod:GetOptions()
 		{1265131, "TANK"}, -- Vaelwing
 		-- Ezzorak
 		1245391, -- Gloom
+		"custom_select_gloom_reset",
 		1244917, -- Void Howl
 		{1245645, "TANK"}, -- Rakfang
 	},{
@@ -202,10 +216,12 @@ function mod:TimersMythic(_, eventInfo)
 		nullbeamCount = 1
 		dreadBreathCount = 1
 		vaelwingCount = 1
-		gloomCount = 1
 		voidHowlCount = 1
 		rakfangCount = 1
 		grapplingMawCount = 1
+		if self:GetOption("custom_select_gloom_reset") < 3 then
+			gloomCount = 1
+		end
 	end
 
 	if not self:IsIntermission() then -- 1, 2, 3+
@@ -388,10 +404,12 @@ function mod:TimersHeroic(_, eventInfo)
 		nullbeamCount = 1
 		dreadBreathCount = 1
 		vaelwingCount = 1
-		gloomCount = 1
 		voidHowlCount = 1
 		rakfangCount = 1
 		grapplingMawCount = 1
+		if self:GetOption("custom_select_gloom_reset") < 3 then
+			gloomCount = 1
+		end
 	end
 
 	if not self:IsIntermission() then -- 1, 2, 3+
@@ -525,10 +543,12 @@ function mod:TimerOther(_, eventInfo)
 		nullbeamCount = 1
 		dreadBreathCount = 1
 		vaelwingCount = 1
-		gloomCount = 1
 		voidHowlCount = 1
 		rakfangCount = 1
 		grapplingMawCount = 1
+		if self:GetOption("custom_select_gloom_reset") < 3 then
+			gloomCount = 1
+		end
 	end
 
 	if not self:IsIntermission() then -- 1, 2, 3+
@@ -770,7 +790,7 @@ function mod:Gloom(eventInfo)
 		self:CDBar(1245391, eventInfo.duration, barText, nil, eventInfo.id)
 	end
 	gloomCount = gloomCount + 1
-	if gloomCount == 3 then gloomCount = 1 end -- 1, 2, 1, 2...
+	if gloomCount == 3 and self:GetOption("custom_select_gloom_reset") == 1 then gloomCount = 1 end -- 1, 2, 1, 2...
 	return {
 		msg = barText,
 		onFinished = function()

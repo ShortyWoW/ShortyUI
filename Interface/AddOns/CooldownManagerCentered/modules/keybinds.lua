@@ -25,21 +25,6 @@ local viewersSettingKey = {
     CMCTracker2 = "CMCTracker",
 }
 
-local DEFAULT_FONT_PATH = "Fonts\\FRIZQT__.TTF"
-
-local function GetFontPath(fontName)
-    if not fontName or fontName == "" then
-        return DEFAULT_FONT_PATH
-    end
-    if LSM then
-        local fontPath = LSM:Fetch("font", fontName)
-        if fontPath then
-            return fontPath
-        end
-    end
-    return DEFAULT_FONT_PATH
-end
-
 local function IsKeybindEnabledForAnyViewer()
     if not ns.db or not ns.db.profile then
         return false
@@ -374,15 +359,9 @@ local function ApplyKeybindTextSettings(icon, viewerSettingName)
     keybindText:ClearAllPoints()
     keybindText:SetPoint(settings.anchor, icon, settings.anchor, settings.offsetX, settings.offsetY)
     local fontName = GetKeybindFontName()
-    local fontPath = GetFontPath(fontName)
-    local fontFlags = ns.db.profile.cooldownManager_keybindFontFlags or {}
-    local fontFlag = {}
-    for n, v in pairs(fontFlags) do
-        if v == true then
-            table.insert(fontFlag, n)
-        end
-    end
-    keybindText:SetFont(fontPath, settings.fontSize, table.concat(fontFlag, ","))
+    local fontPath = ns.API:GetFontPath(fontName) or ns.CONSTANTS.DEFAULT_FONT[1]
+    local fontFlags = ns.db.profile.cooldownManager_keybindFontFlags
+    keybindText:SetFont(fontPath, settings.fontSize, ns.API:GetFontFlags(fontFlags))
 end
 
 local function ExtractSpellIDFromChild(child)

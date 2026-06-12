@@ -80,9 +80,11 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnDataChanged", function(
         if ns.CooldownStyle then
             ns.CooldownStyle:RefreshHooks()
         end
-
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
+        end
+        if ns.Stacks then
+            ns.Stacks:RefreshAll()
         end
         if ns.CooldownManager then
             ns.CooldownManager.ForceRefreshAll()
@@ -191,26 +193,10 @@ EventHandler.events = {}
 EventHandler.frame = CreateFrame("FRAME")
 
 EventHandler.events["PLAYER_ENTERING_WORLD"] = function(self, event, ...)
-    -- print("Player Entering World")
     if not Runtime:IsAllReady() then
         return
     end
     Runtime:ShowAll()
-
-    -- C_Timer.After(0, function()
-    --     if ns.StyledIcons then
-    --         ns.StyledIcons:RefreshAll()
-    --     end
-
-    --     if ns.CooldownManager then
-    --         ns.CooldownManager.ForceRefreshAll()
-    --     end
-    --     C_Timer.After(0, function()
-    --         if ns.CooldownManager then
-    --             ns.CooldownManager.ForceRefreshAll()
-    --         end
-    --     end)
-    -- end)
 end
 
 EventHandler.events["EDIT_MODE_LAYOUTS_UPDATED"] = function(self, event, ...)
@@ -229,7 +215,6 @@ EventHandler.events["EDIT_MODE_LAYOUTS_UPDATED"] = function(self, event, ...)
 end
 
 -- EventHandler.events["TRAIT_CONFIG_UPDATED"] = function(self, event, ...)
---     print("Trait Config Updated")
 -- if not Runtime:IsAllReady() then
 --     return
 -- end
@@ -244,7 +229,6 @@ end
 -- end)
 -- end
 -- EventHandler.events["PLAYER_SPECIALIZATION_CHANGED"] = function(self, event, ...)
--- print("Player Specialization Changed")
 -- if not Runtime:IsAllReady() then
 --     return
 -- end
@@ -327,15 +311,6 @@ hooksecurefunc(BuffIconCooldownViewer, "RefreshLayout", function()
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefresh({ icons = true })
     end
-    -- C_Timer.After(0, function()
-    --     if ns.StyledIcons then
-    --         ns.StyledIcons:RefreshViewer("BuffIcons")
-    --     end
-
-    --     if ns.CooldownManager then
-    --         ns.CooldownManager.ForceRefresh({ icons = true })
-    --     end
-    -- end)
 end)
 hooksecurefunc(BuffBarCooldownViewer, "RefreshLayout", function()
     if not Runtime:IsReady(BuffBarCooldownViewer) then
@@ -362,17 +337,8 @@ hooksecurefunc(EssentialCooldownViewer, "RefreshLayout", function()
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefresh({ essential = true })
     end
-    -- C_Timer.After(0, function()
-    --     if ns.StyledIcons then
-    --         ns.StyledIcons:RefreshViewer("Essential")
-    --     end
-    --     if ns.CooldownManager then
-    --         ns.CooldownManager.ForceRefresh({ essential = true })
-    --     end
-    -- end)
 end)
 hooksecurefunc(UtilityCooldownViewer, "RefreshLayout", function()
-    -- print("UtilityCooldownViewer RefreshLayout Hook Called")
     if not Runtime:IsReady(UtilityCooldownViewer) then
         return
     end
@@ -389,12 +355,4 @@ hooksecurefunc(UtilityCooldownViewer, "RefreshLayout", function()
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefresh({ utility = true })
     end
-    -- C_Timer.After(0, function()
-    --     if ns.StyledIcons then
-    --         ns.StyledIcons:RefreshViewer("Utility")
-    --     end
-    --     if ns.CooldownManager then
-    --         ns.CooldownManager.ForceRefresh({ utility = true })
-    --     end
-    -- end)
 end)

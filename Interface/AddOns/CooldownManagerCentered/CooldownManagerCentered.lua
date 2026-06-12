@@ -25,12 +25,8 @@ function addon:OnInitialize()
     self.db.RegisterCallback(self, "OnProfileReset", "RefreshConfig")
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self.db.RegisterCallback(self, "OnProfileDeleted", "OnProfileDeleted")
-
-    if ns.AddonSettings then
-        ns.AddonSettings:RegisterSettings()
-        ns.AddonSettings:InitializeSettings()
-    end
 end
+
 local openCooldownViewerSettings = function()
     if InCombatLockdown() then
         CooldownViewerSettings:Show()
@@ -114,7 +110,7 @@ function addon:RefreshConfig()
     end
 
     ns.API:RefreshCooldownManager()
-    self:Print("Profile settings applied.")
+    -- self:Print("Profile settings applied.")
 end
 
 function addon:OnNewProfile(event, db, profile)
@@ -201,6 +197,10 @@ end
 function addon:OnEnable()
     _cleanup()
     C_CVar.SetCVar("cooldownViewerEnabled", "1")
+    if ns.AddonSettings then
+        ns.AddonSettings:RegisterSettings()
+        ns.AddonSettings:InitializeSettings()
+    end
 
     if ns.StyledIcons then
         ns.StyledIcons:Initialize()

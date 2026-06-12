@@ -28,8 +28,8 @@ TomTomDB = {
 "CENTER",
 nil,
 "CENTER",
-93.00040435791016,
-118.0003814697266,
+133.0015411376953,
+171.0001525878906,
 },
 },
 ["block"] = {
@@ -81,32 +81,35 @@ TomTomWaypointsM = {
 ["Shortypal - Dalaran"] = {
 },
 ["Shortcannon - Illidan"] = {
-[641] = {
-["641:830000000:664600000:Suramar"] = {
-641,
-0.83,
-0.6646,
+[85] = {
+["85:562500000:916800000:Take the portal to Dalaran"] = {
+85,
+0.5625,
+0.9168000000000001,
 ["arrivaldistance"] = 15,
 ["crazy"] = true,
 ["persistent"] = true,
-["desc"] = "Suramar",
-["silent"] = true,
+["minimap"] = true,
 ["cleardistance"] = 0,
-["title"] = "Suramar",
+["title"] = "Take the portal to Dalaran",
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
-},
-["minimap"] = {
+[15] = nil --[[ skipped inline function ]],
 },
 ["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
-["minimap"] = true,
 ["world"] = true,
 },
-},
-[85] = {
 ["85:532700000:904700000:Return to the portal room"] = {
 85,
 0.5327000000000001,
@@ -121,10 +124,17 @@ TomTomWaypointsM = {
 ["from"] = "Dystinct Earthen Skyriding",
 ["callbacks"] = {
 ["distance"] = {
-},
-["minimap"] = {
+[15] = nil --[[ skipped inline function ]],
 },
 ["world"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
+},
+["minimap"] = {
+["onclick"] = nil --[[ skipped inline function ]],
+["tooltip_update"] = nil --[[ skipped inline function ]],
+["tooltip_show"] = nil --[[ skipped inline function ]],
 },
 },
 ["minimap"] = true,

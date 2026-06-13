@@ -141,8 +141,8 @@ local function ApplyFontStyling(frame)
         end
     end
 
+    local fp, fsz, ffl = unpack(ns.Stacks.defaultUtilityAndBuffStackFont)
     if stackFS and p.cooldownManager_stackAnchorBuffIcons_enabled then
-        local fp, fsz, ffl = unpack(ns.Stacks.defaultUtilityAndBuffStackFont)
         local size = p.cooldownManager_stackFontSizeBuffIcons
         if size == "NIL" or not size then
             size = fsz

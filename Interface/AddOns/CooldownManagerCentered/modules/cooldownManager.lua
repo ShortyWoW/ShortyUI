@@ -6,7 +6,7 @@ ns.db.profile = ns.db.profile or {}
 local CooldownManager = {}
 ns.CooldownManager = CooldownManager
 
-CMC_DEBUG = false
+local CMC_DEBUG = false
 local PrintDebug = function(...)
     if CMC_DEBUG then
         print("[CMC]", ...)
@@ -333,7 +333,9 @@ function ViewerAdapters.UpdateBuffBars()
 
     if iconMode then
         local scale = BuffBarCooldownViewer.iconScale
-        BuffBarCooldownViewer:SetSize(35 * scale, 35 * scale)
+        if not InCombatLockdown() then
+            BuffBarCooldownViewer:SetSize(35 * scale, 35 * scale)
+        end
     else
         BuffBarCooldownViewer:Layout()
     end
@@ -389,17 +391,6 @@ end
 
 local _dimCurve = nil
 local _dimCurveOpacity = nil
-
-local function GetDimCurve(toDimOpacity)
-    if _dimCurve and _dimCurveOpacity == toDimOpacity then
-        return _dimCurve
-    end
-    _dimCurve = C_CurveUtil.CreateCurve()
-    _dimCurve:AddPoint(0.0, toDimOpacity)
-    _dimCurve:AddPoint(0.0001, 1)
-    _dimCurveOpacity = toDimOpacity
-    return _dimCurve
-end
 
 local function GetDimCurveDH(toDimOpacity)
     if _dimCurve and _dimCurveOpacity == toDimOpacity then
@@ -713,13 +704,6 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
     end
     ns.API:SetAffected(viewer, "aligned")
     ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
-end
-
-local function ShouldDebugRefreshLog()
-    if ns.db.profile.cooldownManager_debugRefreshLogs ~= nil then
-        return ns.db.profile.cooldownManager_debugRefreshLogs
-    end
-    return false
 end
 
 function CooldownManager.ForceRefresh(parts)

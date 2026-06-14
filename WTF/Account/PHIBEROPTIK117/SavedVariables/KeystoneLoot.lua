@@ -1,6 +1,7 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
+["version"] = 8,
 ["settings"] = {
 ["favoriteTooltip"] = true,
 ["minimap"] = {
@@ -9,14 +10,15 @@ KeystoneLootDB = {
 },
 ["hideOtherItems"] = false,
 ["keystoneTooltip"] = true,
-["wideMode"] = false,
+["hiddenCharacters"] = {
+},
 ["multiSlotFilter"] = false,
 ["highlighting"] = {
-["versatility"] = true,
-["crit"] = true,
 ["mastery"] = true,
-["haste"] = true,
 ["comboMode"] = false,
+["versatility"] = true,
+["haste"] = true,
+["crit"] = true,
 ["noStats"] = true,
 },
 ["lootReminder"] = {
@@ -24,10 +26,8 @@ KeystoneLootDB = {
 ["dropAlert"] = true,
 ["dungeons"] = true,
 },
-["hiddenCharacters"] = {
+["wideMode"] = false,
 },
-},
-["version"] = 8,
 ["favorites"] = {
 ["Illidan-Shortlight-2"] = {
 },
@@ -41,13 +41,13 @@ KeystoneLootDB = {
 },
 ["Illidan-Shortlite-2"] = {
 },
-["Vashj-Shortbeef-10"] = {
-},
-["Illidan-Shortytest-11"] = {
-},
 ["Illidan-Shortyshamm-7"] = {
 },
 ["Illidan-Shortybear-11"] = {
+},
+["Vashj-Shortbeef-10"] = {
+},
+["Illidan-Shortytest-11"] = {
 },
 ["Area 52-Callmeshawte-9"] = {
 },

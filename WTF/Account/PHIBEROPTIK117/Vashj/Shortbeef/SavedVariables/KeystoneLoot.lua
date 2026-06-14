@@ -1,11 +1,14 @@
 
 KeystoneLootCharDB = {
+["version"] = 3,
 ["ui"] = {
 ["selectedCharacterKey"] = "Vashj-Shortbeef-10",
 ["selectedTab"] = "dungeons",
 ["selectedRaidTab"] = 1307,
 },
-["version"] = 1,
+["voidcoreChecked"] = false,
+["voidcore"] = {
+},
 ["filters"] = {
 ["dungeon"] = {
 ["track"] = "champion",

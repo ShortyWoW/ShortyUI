@@ -4,17 +4,17 @@ FontMagicDB = {
 ["minimapHide"] = false,
 ["combatOverrides"] = {
 },
-["floatingTextFadeDuration"] = 1,
+["combatTextOutlineTouched"] = false,
 ["extraCombatOverrides"] = {
 },
-["combatTextOutlineTouched"] = false,
+["__fmPopularFolderMigrationDone"] = true,
 ["combatTextOutlineMode"] = "NONE",
-["incomingOverrides"] = {
-},
 ["favorites"] = {
 },
-["__fmDebugCombatText"] = false,
 ["showExtraCombatToggles"] = false,
+["__fmDebugCombatText"] = false,
+["incomingOverrides"] = {
+},
 ["floatingTextGravity"] = 0.5,
-["__fmPopularFolderMigrationDone"] = true,
+["floatingTextFadeDuration"] = 1,
 }

@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Holy','DemonHunter-Devourer',}
-local provider = {region='US',realm='Greymane',name='US',type='subscribers',zone=46,date='2026-06-13',data={De='Demeco:BAEALgAECgcJDgABLgAFFAgJGQABAJwcAA==.',Ne='Neonarc:BAEALgADCgkJIQAAAA==.',Xa='Xallie:BAECLgAFFH8GAAICAAMJaQgtbQCpAANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAACAAMJaQgtbQCpAANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAAuAAQKfz0AAgIACQl8GhYgAFECAAIACQl8GhYgAFECAAAA.',},}
+local provider = {region='US',realm='Greymane',name='US',type='subscribers',zone=46,date='2026-06-14',data={De='Demeco:BAEALgAECgcJDgABLgAFFAgJGQABAJwcAA==.',Ne='Neonarc:BAEALgADCgkJIQAAAA==.',Xa='Xallie:BAECLgAFFH8GAAICAAMJaQj1bQCpAANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAACAAMJaQj1bQCpAANoDAAAAwAoAGkMAAACAA8A6gwAAAEACAAuAAQKfz0AAgIACQl8GjYgAFECAAIACQl8GjYgAFECAAAA.',},}
 provider.parse = parse
 
 local rawData = provider.data

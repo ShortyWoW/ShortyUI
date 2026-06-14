@@ -1,11 +1,12 @@
 
 KeystoneLootCharDB = {
+["version"] = 3,
 ["ui"] = {
 ["selectedCharacterKey"] = "Illidan-Shortybear-11",
 ["selectedTab"] = "dungeons",
 ["selectedRaidTab"] = 1307,
 },
-["version"] = 2,
+["voidcoreChecked"] = true,
 ["voidcore"] = {
 },
 ["filters"] = {

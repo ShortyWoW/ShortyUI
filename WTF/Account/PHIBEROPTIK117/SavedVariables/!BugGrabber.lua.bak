@@ -1,7 +1,23 @@
 
 BugGrabberDB = {
+["session"] = 1,
 ["lastSanitation"] = 3,
-["session"] = 2,
 ["errors"] = {
+{
+["message"] = "attempt to perform string conversion on a secret string value (execution tainted by 'Dystinct_EarthenSkyriding')",
+["time"] = 1781410124,
+["locals"] = "self=<table>{\n waypoint=<table>\n data=<table>\n Localized=<table>\n minimapButton=DysES_MinimapButton <Minimap.lua:119>\n changelogs=<table>\n readme=<table>\n guides=<table>\n segment=<table>\n ui=DysES_Frame <Dystinct_EarthenSkyriding.xml:3>\n importExportEnabled=true\n dropdown=RouteViewerDropDown <Dropdown.lua:142>\n menu=<table>\n}\nmsg=<no value>\npattern=\"Discovered (.+): (%d+) experience gained\"\naddon=<table>{\n waypoint=<table>\n data=<table>\n Localized=<table>\n minimapButton=DysES_MinimapButton <Minimap.lua:119>\n changelogs=<table>\n readme=<table>\n guides=<table>\n segment=<table>\n ui=DysES_Frame <Dystinct_EarthenSkyriding.xml:3>\n importExportEnabled=true\n dropdown=RouteViewerDropDown <Dropdown.lua:142>\n menu=<table>\n}\n",
+["stack"] = "[Interface/AddOns/Dystinct_EarthenSkyriding/Util/Discovery.lua]:17: in function 'HandleChatMsgSystem'\n[Interface/AddOns/Dystinct_EarthenSkyriding/Dystinct_EarthenSkyriding.lua]:192: in function <...tinct_EarthenSkyriding/Dystinct_EarthenSkyriding.lua:190>\n",
+["session"] = 1,
+["counter"] = 5,
+},
+{
+["message"] = "Interface/AddOns/BigWigs_TheVoidspire/Crown.lua:554: attempt to index local 'barInfo' (a nil value)",
+["time"] = 1781410137,
+["locals"] = "self=<table>{\n colorOptions=<table>\n privateAuraSounds=<table>\n enabled=true\n optionHeaders=<table>\n journalId=2738\n stageTime=44349.176000\n toggleOptions=<table>\n toggleDefaults=<table>\n enableMobs=<table>\n toggleDisabled=<table>\n name=\"BigWigs_Bosses_Crown of the Cosmos\"\n isEngaged=true\n instanceId=2912\n db=<table>\n sayCountdowns=<table>\n soundOptions=<table>\n useCustomTimers=true\n engageId=3181\n displayName=\"Crown of the Cosmos\"\n privateAuraSoundOptions=<table>\n stage=1\n respawnTime=30\n moduleName=\"Crown of the Cosmos\"\n}\n_=\"ENCOUNTER_TIMELINE_EVENT_ADDED\"\neventInfo=<table>{\n source=0\n id=676\n duration=4\n icons=<no value>\n iconFileID=<no value>\n isApproximate=<no value>\n color=<table>\n maxQueueDuration=6\n severity=<no value>\n spellID=<no value>\n spellName=<no value>\n}\nbarInfo=nil\nnow=44509.118000\ntimeSinceLastEvent=7.372000\nduration=4\ndurationRounded=4\nstage=1\ncount=4\n(*temporary)=<table>{\n colorOptions=<table>\n privateAuraSounds=<table>\n enabled=true\n optionHeaders=<table>\n journalId=2738\n stageTime=44349.176000\n toggleOptions=<table>\n toggleDefaults=<table>\n enableMobs=<table>\n toggleDisabled=<table>\n name=\"BigWigs_Bosses_Crown of the Cosmos\"\n isEngaged=true\n instanceId=2912\n db=<table>\n sayCountdowns=<table>\n soundOptions=<table>\n useCustomTimers=true\n engageId=3181\n displayName=\"Crown of the Cosmos\"\n privateAuraSoundOptions=<table>\n stage=1\n respawnTime=30\n moduleName=\"Crown of the Cosmos\"\n}\n(*temporary)=<table>{\n timersMode=\"enhanced\"\n blizzTimeline=false\n}\n(*temporary)=true\n(*temporary)=40\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=nil\n(*temporary)=\"attempt to index local 'barInfo' (a nil value)\"\ntimelineEventCount=43\nprev=44509.118000\ndurationEventCount=<table>{\n 4=4\n}\nvoidExpulsionCount=6\nsilverstrikeBarrageCount=1\ncallOfTheVoidCount=1\nriftSlashCount=1\ngraspOfEmptinessCount=8\nactiveBars=<table>{\n 670=<table>\n 674=<table>\n 675=<table>\n 672=<table>\n}\nbackupBars=<table>\n",
+["stack"] = "[Interface/AddOns/BigWigs_TheVoidspire/Crown.lua]:554: in function '?'\n[Interface/AddOns/BigWigs_Core/Core.lua]:53: in function <Interface/AddOns/BigWigs_Core/Core.lua:47>\n",
+["session"] = 1,
+["counter"] = 1,
+},
 },
 }

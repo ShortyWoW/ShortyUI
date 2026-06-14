@@ -51,7 +51,7 @@ PremadeGroupsFilterState = {
 ["enabled"] = true,
 ["raid"] = {
 ["difficulty"] = {
-["act"] = true,
+["act"] = false,
 ["val"] = 1,
 },
 ["heals"] = {
@@ -79,7 +79,7 @@ PremadeGroupsFilterState = {
 ["min"] = "",
 ["act"] = false,
 },
-["expression"] = "",
+["expression"] = "members>1",
 },
 },
 ["c114f6"] = {

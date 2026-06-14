@@ -2,6 +2,7 @@
 HandyNotesDB = {
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Bossbabyfan - Illidan"] = "Bossbabyfan - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
@@ -13,16 +14,18 @@ HandyNotesDB = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
-["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
+},
+["Bossbabyfan - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
 },
@@ -46,7 +49,7 @@ HandyNotesDB = {
 },
 ["Drewishlazer - Dalaran"] = {
 },
-["Shortbowjob - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 },
@@ -58,13 +61,14 @@ HandyNotesDB = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Illidan"] = {
 },
 },
 }
 HandyNotes_HandyNotesDB = {
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Bossbabyfan - Illidan"] = "Bossbabyfan - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
@@ -76,16 +80,18 @@ HandyNotes_HandyNotesDB = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
-["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
+},
+["Bossbabyfan - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
 },
@@ -109,7 +115,7 @@ HandyNotes_HandyNotesDB = {
 },
 ["Drewishlazer - Dalaran"] = {
 },
-["Shortbowjob - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 },
@@ -121,7 +127,7 @@ HandyNotes_HandyNotesDB = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Illidan"] = {
 },
 },
 }

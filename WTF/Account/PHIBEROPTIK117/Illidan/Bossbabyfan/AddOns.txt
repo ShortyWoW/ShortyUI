@@ -62,6 +62,7 @@ MythicDungeonTools: enabled
 Plater: enabled
 Plumber: enabled
 PremadeGroupsFilter: enabled
+PullPrep: enabled
 RaiderIO_DB_US_M: enabled
 RaiderIO_DB_CN_M: disabled
 RaiderIO_DB_EU_M: disabled

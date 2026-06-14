@@ -1,0 +1,8 @@
+## Interface: 120007, 120005
+## Title: PullPrep Exporter
+## Notes: Exports action bar layouts and keybindings for PullPrep.com
+## Author: PullPrep Team
+## Version: 1.0.0
+## SavedVariables: PullPrepDB
+
+PullPrep.lua

@@ -2,6 +2,7 @@
 TomTomDB = {
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Default",
+["Bossbabyfan - Illidan"] = "Default",
 ["Shortbeef - Area 52"] = "Default",
 ["Shortypal - Dalaran"] = "Default",
 ["Shortcannon - Illidan"] = "Default",
@@ -13,13 +14,13 @@ TomTomDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortbowjob - Illidan"] = "Default",
 ["Shortlite - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortbowjob - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -32,6 +33,11 @@ nil,
 171.0001525878906,
 },
 },
+["paste"] = {
+["button"] = {
+["showInCompartment"] = true,
+},
+},
 ["block"] = {
 ["fontsize"] = 16,
 ["position"] = {
@@ -42,11 +48,6 @@ nil,
 175.0008544921875,
 },
 },
-["paste"] = {
-["button"] = {
-["showInCompartment"] = true,
-},
-},
 },
 },
 }
@@ -54,6 +55,7 @@ TomTomWaypoints = nil
 TomTomWaypointsM = {
 ["profileKeys"] = {
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Bossbabyfan - Illidan"] = "Bossbabyfan - Illidan",
 ["Shortbeef - Area 52"] = "Shortbeef - Area 52",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
@@ -65,16 +67,18 @@ TomTomWaypointsM = {
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Drewishlazer - Dalaran"] = "Drewishlazer - Dalaran",
-["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
 ["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
+["Shortlight - Illidan"] = "Shortlight - Illidan",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
+},
+["Bossbabyfan - Illidan"] = {
 },
 ["Shortbeef - Area 52"] = {
 },
@@ -96,9 +100,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["world"] = true,
@@ -118,9 +122,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["minimap"] = true,
@@ -144,7 +148,7 @@ TomTomWaypointsM = {
 },
 ["Drewishlazer - Dalaran"] = {
 },
-["Shortlight - Illidan"] = {
+["Shortbowjob - Illidan"] = {
 },
 ["Shortlite - Illidan"] = {
 [862] = {
@@ -162,9 +166,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["world"] = true,
@@ -191,9 +195,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["world"] = true,
@@ -202,7 +206,7 @@ TomTomWaypointsM = {
 },
 ["Shortbeef - Vashj"] = {
 },
-["Shortbowjob - Illidan"] = {
+["Shortlight - Illidan"] = {
 },
 },
 }

@@ -1,11 +1,12 @@
 
 KeystoneLootCharDB = {
+["version"] = 3,
 ["ui"] = {
-["selectedCharacterKey"] = "Illidan-Shortyshamm-7",
+["selectedCharacterKey"] = "Illidan-Bossbabyfan-7",
 ["selectedTab"] = "dungeons",
 ["selectedRaidTab"] = 1307,
 },
-["version"] = 2,
+["voidcoreChecked"] = true,
 ["voidcore"] = {
 },
 ["filters"] = {
@@ -13,9 +14,11 @@ KeystoneLootCharDB = {
 ["track"] = "champion",
 ["rank"] = 1,
 },
-["specId"] = 262,
+["specId"] = 264,
+["slotIds"] = {
+},
 ["classId"] = 7,
-["slotId"] = -2,
+["slotId"] = 0,
 ["raid"] = {
 ["difficulty"] = "normal",
 ["rank"] = 1,

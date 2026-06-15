@@ -249,6 +249,7 @@ true,
 },
 ["Firelands"] = {
 [24] = true,
+[15] = false,
 },
 ["Molten Core"] = {
 [9] = false,

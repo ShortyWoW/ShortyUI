@@ -1,8 +1,13 @@
 
 KeystoneLootDB = {
 ["currentSeason"] = 16,
-["version"] = 8,
+["version"] = 9,
 ["settings"] = {
+["keyCommand"] = {
+["CHAT_MSG_PARTY"] = true,
+["CHAT_MSG_PARTY_LEADER"] = true,
+["CHAT_MSG_GUILD"] = true,
+},
 ["favoriteTooltip"] = true,
 ["minimap"] = {
 ["enabled"] = true,
@@ -12,7 +17,7 @@ KeystoneLootDB = {
 ["keystoneTooltip"] = true,
 ["hiddenCharacters"] = {
 },
-["multiSlotFilter"] = false,
+["wideMode"] = false,
 ["highlighting"] = {
 ["mastery"] = true,
 ["comboMode"] = false,
@@ -26,7 +31,7 @@ KeystoneLootDB = {
 ["dropAlert"] = true,
 ["dungeons"] = true,
 },
-["wideMode"] = false,
+["multiSlotFilter"] = false,
 },
 ["favorites"] = {
 ["Illidan-Shortlight-2"] = {

@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/raid Good lord",
 "/raid Why does your PC keep crashing friend",
 "/raid Yes I will.",
 "/raid Are you on voice comms somewhere, I haven't seen a link go out.",
 "/rc",
+"/reload",
 },
 ["ChatHistoryLog"] = {
 {

@@ -331,16 +331,22 @@ function ViewerAdapters.UpdateBuffBars()
         return
     end
 
+    local growSetting = ns.db.profile.cooldownManager_alignBuffBars_growFromDirection
+
     if iconMode then
         local scale = BuffBarCooldownViewer.iconScale
         if not InCombatLockdown() then
             BuffBarCooldownViewer:SetSize(35 * scale, 35 * scale)
         end
     else
-        BuffBarCooldownViewer:Layout()
+        if growSetting == "Disable" then
+            return
+        end
+        if not InCombatLockdown() then
+            BuffBarCooldownViewer:Layout()
+        end
     end
     local horizontalIcons = iconMode and ns.BuffBarIconMode.IsHorizontal()
-    local growSetting = ns.db.profile.cooldownManager_alignBuffBars_growFromDirection
 
     if horizontalIcons then
         local refBar = bars[1]
@@ -622,9 +628,9 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
     if fromDirection == "Disable" then
         if ns.API:GetIsAffected(viewer, "aligned") and viewer.Layout then
             ns.API:UnsetAffected(viewer, "aligned")
-            -- if not InCombatLockdown() then
-            viewer:Layout()
-            -- end
+            if not InCombatLockdown() then
+                viewer:Layout()
+            end
         end
         ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
         return

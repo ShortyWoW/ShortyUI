@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Warrior-Fury','Warrior-Protection','Warrior-Arms','Priest-Discipline',}
-local provider = {region='US',realm='Dawnbringer',name='US',type='subscribers',zone=46,date='2026-06-14',data={La='Lavismad:BAECLgAFFH8JAAIBAAQJuiAMDwCIAQRoDAAAAwBfAGkMAAACAFMAawwAAAEAOADqDAAAAwBiAAEABAm6IAwPAIgBBGgMAAADAF8AaQwAAAIAUwBrDAAAAQA4AOoMAAADAGIALgAECn80AAQBAAkJDCV3BAAdAwABAAkJ2CR3BAAdAwACAAcJoSBfDwDwAQADAAEJRiV3MgBpAAAAAA==.Lavoc:BAEALgADCgcJBwABLgAFFAQJCQABALogAA==.Lavv:BAEALgAECgYJCAABLgAFFAQJCQABALogAA==.Lavz:BAEALgAECgYJBgABLgAFFAQJCQABALogAA==.',Ny='Nyxsia:BAEALgAFFAEJAQABLgAFFAcJIgABAJAdAA==.',Ro='Rosefist:BAEALgADCgcJCAABLgAFFAcJEQAEAAMRAA==.Rosemourne:BAEALgAECgIJAgABLgAFFAcJEQAEAAMRAA==.',},}
+local lookup = {'Warrior-Fury','Warrior-Protection','Warrior-Arms','Priest-Discipline','Paladin-Retribution',}
+local provider = {region='US',realm='Dawnbringer',name='US',type='subscribers',zone=46,date='2026-06-16',data={La='Lavismad:BAECLgAFFH8JAAIBAAQJuiCiDwCHAQRoDAAAAwBfAGkMAAACAFMAawwAAAEAOADqDAAAAwBiAAEABAm6IKIPAIcBBGgMAAADAF8AaQwAAAIAUwBrDAAAAQA4AOoMAAADAGIALgAECn80AAQBAAkJDCWPBAAbAwABAAkJ2CSPBAAbAwACAAcJoSCDDwDvAQADAAEJRiV3MgBpAAAAAA==.Lavoc:BAEALgADCgcJBwABLgAFFAQJCQABALogAA==.Lavv:BAEALgAECgYJCAABLgAFFAQJCQABALogAA==.Lavz:BAEALgAECgYJBgABLgAFFAQJCQABALogAA==.',Ny='Nyxsia:BAEALgAFFAEJAQABLgAFFAcJIgABAJAdAA==.',Ro='Rosefist:BAEALgADCgcJCAABLgAFFAcJEQAEAAMRAA==.Rosemourne:BAEALgAECgIJAgABLgAFFAcJEQAEAAMRAA==.',St='Strunrage:BAEALgAECgcJDAABLgAECgkJQgAFAI4kAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

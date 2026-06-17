@@ -22,7 +22,7 @@ local dbDefaults = {
 	time_show=true, time_server=true, time_local=true, time_radius = 0.48, time_bottom=false, time_color={1,0.82,0,0.7},
 	mouseoverinfo_color={1,0.82,0,0.7},
 	player_dot="blizz", holdKeyForMouseOn = "_none",
-	rotation=true, SuperTrackedQuest = true, showDummy = true, showDummyBg = true,
+	rotation=true, showDummy = true, showDummyBg = true,
 	QuestArrowInfoMsg = false,
 	hideInInstance=false, hideInCombat=false,
 	background_alpha=0, background_alpha2=0.5, background_alpha_toggle=true, background_alpha_default=true,
@@ -30,11 +30,6 @@ local dbDefaults = {
 local modDB = {};
 local excludeFrames = {}
 local isAddOnsLoadedForOption = {
-	SuperTrackedQuest = {
-		addon="FarmHud_QuestArrow",
-		descLoaded=GREEN_FONT_COLOR_CODE..L["ExtraAddOnLoaded"]:format("FarmHud [QuestArrow]").."|r",
-		descNotLoaded=ORANGE_FONT_COLOR_CODE..L["ExtraAddOnNotLoaded"]:format("FarmHud [QuestArrow]").."|r"
-	}
 }
 
 local function printFrames(key,value)
@@ -201,7 +196,17 @@ local options = {
 				player_dot = {
 					type = "select", order = 15,
 					name = L["PlayerDot"], desc = L["PlayerDotDesc"],
-					values = playerDot_textures
+					values = playerDot_textures,
+					hidden = function()
+						return ns.sickMove1
+					end
+				},
+				player_dot_sickMove = {
+					type "desciption", order=15, width="normal",
+					name = L["PlayerDotNoLongerChangable"],
+					hidden = function()
+						return not ns.sickMove1
+					end
 				},
 				autohide = {
 					type="group", order = 20, inline=true,
@@ -300,25 +305,6 @@ local options = {
 					type = "toggle", order = 4,
 					name = L["BgAlphaDefault"],
 					desc = L["BgAlphaDefaultDesc"]
-				}
-			}
-		},
-		SuperTrackedQuest = {
-			type = "group", order = 1,
-			name = L["QuestArrow"],
-			args = {
-				desc = {
-					type = "description", order=1, fontSize="medium",
-					name = checkAddOnLoaded,-- ({"SuperTrackedQuest","desc"}),
-				},
-				SuperTrackedQuest = {
-					type = "toggle", order = 2, width = "full",
-					name = L["QuestArrowHide"], --desc = L["QuestArrowHideDesc"],
-					disabled = checkAddOnLoaded
-				},
-				QuestArrowInfoMsg = {
-					type = "toggle", order = 3, width = "full",
-					name = L["QuestArrowInfoMsg"], desc = L["QuestArrowInfoMsgDesc"]
 				}
 			}
 		},

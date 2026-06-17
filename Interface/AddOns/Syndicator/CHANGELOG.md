@@ -1,6 +1,7 @@
 # Syndicator
 
-## [270](https://github.com/TheMouseNest/Syndicator/tree/270) (2026-06-04)
-[Full Changelog](https://github.com/TheMouseNest/Syndicator/compare/269...270) 
+## [271](https://github.com/TheMouseNest/Syndicator/tree/271) (2026-06-16)
+[Full Changelog](https://github.com/TheMouseNest/Syndicator/compare/270...271) 
 
-- Mists: Fix for function existing, but no keyring  
+- Update toc for 12.0.7  
+- Fix incorrect TSM price source mapping (#93)  

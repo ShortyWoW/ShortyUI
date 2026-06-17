@@ -1,10 +1,11 @@
 
-local MAJOR, MINOR = "HizurosSharedTools", tonumber((gsub("r60","r",""))) or 9999;
+local MAJOR, MINOR = "HizurosSharedTools", tonumber((gsub("r63","r",""))) or 9999;
 ---@class HizurosSharedTools
 local lib = LibStub:NewLibrary(MAJOR, MINOR);
 if not lib then return end
 
 local _G,tostringall,tonumber,rawset,type = _G,tostringall,tonumber,rawset,type
+local issecretvalue,canaccessvalue = issecretvalue or function() return false end,canaccessvalue or function() return true end
 
 local LC = LibStub("LibColors-1.0");
 local C = LC.color;
@@ -64,6 +65,9 @@ do
 			c=2;
 		end
 		for i=c, #t do
+			if issecretvalue(t[i]) and not canaccessvalue(t[i]) then
+				t[i] = "[secret value]";
+			end
 			if not t[i]:find("\124c") then
 				t[i],c = "|cff"..colors[c]..t[i].."|r", c<#colors and c+1 or 1;
 			end
@@ -724,12 +728,18 @@ do
 
 	function lib.BullShitDetector(funcName,...)
 		local result
+		if issecretvalue(...) or canaccessvalue(...)==false then
+			return false;
+		end
 		if functions[funcName] then
 			result = {pcall(functions[funcName],...)};
 		elseif _G[funcName] then
 			result = {pcall(_G[funcName],...)}
 		end
 		if result and table.remove(result,1) then
+			if issecretvalue(result[1]) or canaccessvalue(result[1])==false then
+				return false;
+			end
 			return unpack(result)
 		end
 		return false;

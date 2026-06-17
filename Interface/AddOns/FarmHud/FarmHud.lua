@@ -1,17 +1,20 @@
 
 local addon,ns=...;
 local L=ns.L;
-ns.debugMode = "10.1.10-release"=="@".."project-version".."@";
+ns.debugMode = "10.1.12-release"=="@".."project-version".."@";
 LibStub("HizurosSharedTools").RegisterPrint(ns,addon,"FH");
 
 local ACD = LibStub("AceConfigDialog-3.0");
 local HBDPins = LibStub("HereBeDragons-Pins-2.0")
 
 FarmHudMixin = {};
+FarmHudWarningMixin = {};
 
 local _G,type,wipe,tinsert,unpack,tostring,C_Map = _G,type,wipe,table.insert,unpack,tostring,C_Map;
 local Minimap_OnClick = (MinimapMixin and MinimapMixin.Onclick) or Minimap_OnClick; -- TODO: check it - needed for classic 1.15 / wotlk 3.4.3
 local Minimap_UpdateRotationSetting = Minimap_UpdateRotationSetting or function() end -- TODO: check it - need for classic 1.15 / wotlk 3.4.3
+local isPingLocationForbidden = WOW_PROJECT_ID==WOW_PROJECT_MAINLINE;
+local minimapTrackedInfoIsSecure = false;
 
 ns.QuestArrowToken = {};
 local LibHijackMinimap_Token,LibHijackMinimap,_ = {},nil,nil;
@@ -26,7 +29,7 @@ local knownProblematicAddOns, knownProblematicAddOnsDetected = {BasicMinimap=tru
 local SetPointToken,SetParentToken = {},{};
 local trackingTypes,trackingTypesStates,numTrackingTypes,trackingHookLocked = {},{},0,false;
 local MinimapFunctionHijacked --= {"SetParent","ClearAllPoints","SetAllPoints","GetPoint","GetNumPoints"};
-local rotationMode,mTI
+local rotationMode
 local foreignObjects = {}
 local anchoredFrames = { -- frames there aren't childs of minimap but anchored it.
 	-- <name[string]> - Could be a path from _G delimited by dots.
@@ -125,7 +128,6 @@ ns.modules = setmetatable({},{
 		end
 	end,
 	__call = function(t,arg1,...)
-		ns:debug("<nsModulesCall>",arg1)
 		for modName,mod in pairs(t)do
 			local modObj = mod[arg1];
 			if modObj then
@@ -135,14 +137,12 @@ ns.modules = setmetatable({},{
 				elseif objType=="string" and type(mod[modObj])=="function" then
 					mod[modObj](...);
 				elseif objType=="table" then
-					ns:debug("<nsModulesCall>",arg1,objType,modObj.frame)
 					local frame = type(modObj.frame)=="string" and (_G[modObj.frame] or FarmHud[modObj.frame]) or false;
 					if frame and frame.GetObjectType and frame:GetObjectType()=="Frame" and frame[modObj.func] then
 						frame[modObj.func](frame,...)
 					end
 				end
 			elseif arg1=="Event" and mod[arg1] then
-				ns:debug("<nsModulesCall>",arg1)
 				mod[arg1](FarmHud,arg1,...);
 			end
 		end
@@ -170,7 +170,10 @@ local function SetPlayerDotTexture(bool) -- executed by FarmHud:UpdateOptions(),
 	if FarmHudDB.player_dot=="blizz" or not bool then
 		tex = playerDot_custom or playerDot_orig;
 	end
-	MinimapMT.SetPlayerTexture(Minimap,tex);
+	if MinimapMT.SetPlayerTexture then
+		-- 12.0.7 - no longer able to change the player texture on minimap.
+		MinimapMT.SetPlayerTexture(Minimap,tex);
+	end
 end
 
 -- continent id of map id
@@ -233,10 +236,27 @@ local function TrackingTypes_Update(bool, id)
 			end
 		end
 
-		if bool==false and mps.minimapTrackedInfov3 then
+		if bool and not minimapTrackedInfoIsSecure then
+			if C_CVar and C_CVar.GetCVarInfo then
+				-- test current used cvar value. blizzard has renamed minimapTrackedInfov%d other the time. (v2,v3,v4)
+				for i=10, 3, -1 do
+					local info = {}; info.value,info.defaultValue,info.isStoredServerAccount,info.isStoredServerCharacter,info.isLockedFromUser,info.isSecure,info.isReadOnly = C_CVar.GetCVarInfo("minimapTrackedInfov"..i)
+					if info then
+						if info.isSecure then
+							minimapTrackedInfoIsSecure = true;
+						elseif info.defaultValue then
+							mps.minimapTrackedInfo = { value=tonumber(info.value or info.defaultValue) or 0, version=i };
+						end
+						break;
+					end
+				end
+
+			end
+		elseif not bool and mps.minimapTrackedInfo then
 			-- try to restore on close. blizzard changing it outside the lua code area.
-			mTI = mps.minimapTrackedInfov3>0 and mps.minimapTrackedInfov3 or 1006319;
-			C_Timer.After(0.314159,function() C_CVar.SetCVar("minimapTrackedInfov3",mTI) end);
+			local mTI = mps.minimapTrackedInfo;
+			C_CVar.SetCVar("minimapTrackedInfov"..mTI.version,mTI.value);
+			C_Timer.After(0.314159,function() C_CVar.SetCVar("minimapTrackedInfov"..mTI.version,mTI.value) end);
 		end
 
 		return;
@@ -518,13 +538,21 @@ end
 FarmHudMinimapDummyMixin = {}
 
 function FarmHudMinimapDummyMixin:OnMouseUp()
-	if type(mps.OnMouseUp)~="function" then return end
+	if type(mps.OnMouseUp)~="function" then
+		return;
+	end
+	if 	(mps.OnMouseUp==_G.Minimap_OnClick or mps.OnMouseUp==Minimap.OnClick) and isPingLocationForbidden then
+		return;
+	end
 	mps.OnMouseUp(self);
 end
 
 function FarmHudMinimapDummyMixin:OnMouseDown()
 	if type(mps.OnMouseDown)~="function" and not type(mps.OnMouseUp)~="function" then
 		return -- Ignore OnMouseDown of OnMouseUp present
+	end
+	if 	(mps.OnMouseDown==_G.Minimap_OnClick or mps.OnMouseDown==Minimap.OnClick) and isPingLocationForbidden then
+		return;
 	end
 	mps.OnMouseDown(self);
 end
@@ -657,8 +685,6 @@ do
 			rotationMode = FarmHudDB.rotation and "1" or "0";
 			C_CVar.SetCVar("rotateMinimap", rotationMode);
 			Minimap_UpdateRotationSetting();
-		elseif IsKey(key,"SuperTrackedQuest") and FarmHud_ToggleSuperTrackedQuest and FarmHud:IsShown() then
-			FarmHud_ToggleSuperTrackedQuest(ns.QuestArrowToken,FarmHudDB.SuperTrackedQuest);
 		elseif IsKey(key,"hud_size") then
 			FarmHud:SetScales();
 		end
@@ -666,6 +692,10 @@ do
 end
 
 local function Minimap_OnClick(self)
+	if isPingLocationForbidden then
+		FarmHudWarning:Show();
+		return;
+	end
 	-- Copy of Minimap_OnClick. Require for replaced functions GetCenter and GetEffectiveScale
 	local x, y = GetCursorPosition();
 	local s, X,Y = MinimapMT.GetEffectiveScale(Minimap)
@@ -684,7 +714,6 @@ end
 local MinimapSetAllPoints;
 function MinimapSetAllPoints(try)
 	-- sometimes SetPoint produce error "because[SetPoint would result in anchor family connection]"
-	ns:debug("<MinimapSetAllPoints>",tostring(try))
 	if try==nil then
 		for i=1, 3 do
 			local retOK,ret1 = pcall(MinimapSetAllPoints,i);
@@ -700,6 +729,17 @@ function MinimapSetAllPoints(try)
 	else
 		MinimapMT.SetAllPoints(Minimap);
 	end
+end
+
+function FarmHudWarningMixin:OnLoad()
+end
+
+function FarmHudWarningMixin:OnShow()
+	self.Text:SetText(L["PingLocationForbidden"])
+	C_Timer.After(7,function() self:Hide() end)
+end
+
+function FarmHudWarningMixin:OnHide()
 end
 
 function FarmHudMixin:OnShow()
@@ -732,23 +772,17 @@ function FarmHudMixin:OnShow()
 	mps.mousewheel = Minimap:IsMouseWheelEnabled();
 	mps.alpha = Minimap:GetAlpha();
 	mps.backdropMouse = MinimapBackdrop:IsMouseEnabled();
-	mps.minimapTrackedInfov3 = tonumber(GetCVar("minimapTrackedInfov3"));
-
 
 	-- cache script entries
-	if WOW_PROJECT_ID==WOW_PROJECT_MAINLINE then
-		MinimapMT.SetScript(Minimap,"OnMouseUp",nil);
-	else
-		local OnMouseUp = Minimap:GetScript("OnMouseUp");
-		local OnMouseDown = Minimap:GetScript("OnMouseDown");
+	local OnMouseUp = Minimap:GetScript("OnMouseUp");
+	local OnMouseDown = Minimap:GetScript("OnMouseDown");
 
-		if OnMouseDown and OnMouseUp==nil then -- for ElvUI. They added to OnMouseUp a dummy function and using OnMouseDown instead.
-			mps.OnMouseDown = OnMouseDown;
-			MinimapMT.SetScript(Minimap,"OnMouseDown",Minimap_OnClick);
-		elseif OnMouseUp~=Minimap_OnClick then
-			mps.OnMouseUp = OnMouseUp;
-			MinimapMT.SetScript(Minimap,"OnMouseUp",Minimap_OnClick);
-		end
+	if OnMouseDown and OnMouseUp==nil then -- for ElvUI. They added to OnMouseUp a dummy function and using OnMouseDown instead.
+		mps.OnMouseDown = OnMouseDown;
+		MinimapMT.SetScript(Minimap,"OnMouseDown",Minimap_OnClick);
+	elseif OnMouseUp~=Minimap_OnClick then
+		mps.OnMouseUp = OnMouseUp;
+		MinimapMT.SetScript(Minimap,"OnMouseUp",Minimap_OnClick);
 	end
 	for name, todo in pairs(minimapScripts)do
 		local fnc
@@ -866,10 +900,6 @@ function FarmHudMixin:OnShow()
 		Minimap[k] = v;
 	end
 
-	if FarmHud_ToggleSuperTrackedQuest and FarmHudDB.SuperTrackedQuest then
-		FarmHud_ToggleSuperTrackedQuest(ns.QuestArrowToken,true); -- FarmHud_QuestArrow
-	end
-
 	SetPlayerDotTexture(true);
 	TrackingTypes_Update(true);
 
@@ -918,13 +948,17 @@ function FarmHudMixin:OnHide()
 	self.cluster:Hide();
 
 	if mps.OnMouseDown and Minimap:GetScript("OnMouseDown")==nil then
-		MinimapMT.SetScript(Minimap,"OnMouseUp",mps.OnMouseUp);
-		MinimapMT.SetScript(Minimap,"OnMouseDown",mps.OnMouseDown);
+		if not isPingLocationForbidden then
+			MinimapMT.SetScript(Minimap,"OnMouseUp",mps.OnMouseUp);
+			MinimapMT.SetScript(Minimap,"OnMouseDown",mps.OnMouseDown);
+		end
 		FarmHudMinimapDummy:SetScript("OnMouseUp",nil);
 		FarmHudMinimapDummy:SetScript("OnMouseDown",nil);
 		FarmHudMinimapDummy:EnableMouse(false);
 	elseif mps.OnMouseUp then
-		MinimapMT.SetScript(Minimap,"OnMouseUp",mps.OnMouseUp);
+		if not isPingLocationForbidden then
+			MinimapMT.SetScript(Minimap,"OnMouseUp",mps.OnMouseUp);
+		end
 		FarmHudMinimapDummy:SetScript("OnMouseUp",nil);
 		FarmHudMinimapDummy:EnableMouse(false);
 	end
@@ -979,10 +1013,6 @@ function FarmHudMixin:OnHide()
 	local maxLevels = Minimap:GetZoomLevels();
 	if mps.zoom>maxLevels then mps.zoom = maxLevels; end
 	MinimapMT.SetZoom(Minimap,mps.zoom);
-
-	if FarmHud_ToggleSuperTrackedQuest and FarmHudDB.SuperTrackedQuest then
-		FarmHud_ToggleSuperTrackedQuest(ns.QuestArrowToken,false); -- FarmHud_QuestArrow
-	end
 
 	ns.modules("OnHide");
 
@@ -1086,7 +1116,7 @@ function FarmHudMixin:ToggleOptions()
 		ACD:Close(addon);
 	else
 		ACD:Open(addon);
-		ACD.OpenFrames[addon]:SetStatusText(GAME_VERSION_LABEL..CHAT_HEADER_SUFFIX.."10.1.10-release");
+		ACD.OpenFrames[addon]:SetStatusText(GAME_VERSION_LABEL..CHAT_HEADER_SUFFIX.."10.1.12-release");
 	end
 end
 
@@ -1187,12 +1217,16 @@ function FarmHudMixin:OnLoad()
 
 	self:RegisterForeignAddOnObject(Minimap,addon);
 
-	hooksecurefunc(Minimap,"SetPlayerTexture",function(_,texture)
-		if FarmHud:IsVisible() then
-			playerDot_custom = texture;
-			SetPlayerDotTexture(true);
-		end
-	end);
+	if Minimap.SetPlayerTexture then
+		hooksecurefunc(Minimap,"SetPlayerTexture",function(_,texture)
+			if FarmHud:IsVisible() then
+				playerDot_custom = texture;
+				SetPlayerDotTexture(true);
+			end
+		end);
+	else
+		ns.sickMove1 = true
+	end
 
 	hooksecurefunc(Minimap,"SetZoom",function(_,level)
 		if FarmHud:IsVisible() and level~=0 then
@@ -1238,12 +1272,11 @@ function FarmHudMixin:OnLoad()
 	end
 
 	if not ns.IsClassic() then
-		local function hookSetTracking(index,bool)
+		hooksecurefunc(C_Minimap,"SetTracking",function(index,bool)
 			if not trackingHookLocked and FarmHud:IsVisible() and trackingTypesStates[index]~=nil then
-				trackingTypesStates[index]=nil;
+				trackingTypesStates[index]=bool;
 			end
-		end
-		hooksecurefunc(C_Minimap,"SetTracking",hookSetTracking);
+		end);
 	end
 
 	function self.cluster:GetZoom()

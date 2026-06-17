@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Evoker-Augmentation','Druid-Guardian',}
-local provider = {region='US',realm='Misha',name='US',type='subscribers',zone=46,date='2026-06-14',data={Ma='Math:BAEALgAFFAEJAQABLgAFFAYJCwABAAYPAA==.Matheney:BAEBLgAFFH8QAAICAAcJCA7PBQCaAQdoDAAAAwBJAGkMAAADAD0AawwAAAIAKABsDAAAAwAKAG0MAAABAA8A6gwAAAMAJwBuDAAAAQALAAIABwkIDs8FAJoBB2gMAAADAEkAaQwAAAMAPQBrDAAAAgAoAGwMAAADAAoAbQwAAAEADwDqDAAAAwAnAG4MAAABAAsAAS4ABRQGCQsAAQAGDwA=.',Me='Menöpaws:BAEALgAFFAMJAwAAAA==.',},}
+local provider = {region='US',realm='Misha',name='US',type='subscribers',zone=46,date='2026-06-17',data={Ma='Math:BAEALgAFFAEJAQABLgAFFAYJCwABAAYPAA==.Matheney:BAEBLgAFFH8QAAICAAcJCA4MBgCaAQdoDAAAAwBJAGkMAAADAD0AawwAAAIAKABsDAAAAwAKAG0MAAABAA8A6gwAAAMAJwBuDAAAAQALAAIABwkIDgwGAJoBB2gMAAADAEkAaQwAAAMAPQBrDAAAAgAoAGwMAAADAAoAbQwAAAEADwDqDAAAAwAnAG4MAAABAAsAAS4ABRQGCQsAAQAGDwA=.',Me='Menöpaws:BAEALgAFFAMJAwAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

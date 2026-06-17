@@ -1,15 +1,8 @@
 Version: 1
-Frame: FriendsFrame
-FrameLevel: 1
-Anchor: TOPLEFT
-X: 16
-Y: -116
-W: 385
-H: 424
 Frame: CommunitiesFrame
 FrameLevel: 1
 Anchor: TOPLEFT
-X: 433
+X: 16
 Y: -116
 W: 814
 H: 426
@@ -83,3 +76,10 @@ X: 535
 Y: 83
 W: 600
 H: 314
+Frame: FriendsFrame
+FrameLevel: 1
+Anchor: TOPLEFT
+X: 16
+Y: -116
+W: 385
+H: 424

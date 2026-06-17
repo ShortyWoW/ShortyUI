@@ -1,8 +1,7 @@
 # BadBoy
 
-## [v12.0.0](https://github.com/funkydude/BadBoy/tree/v12.0.0) (2026-04-14)
-[Full Changelog](https://github.com/funkydude/BadBoy/compare/v11.2.1...v12.0.0) [Previous Releases](https://github.com/funkydude/BadBoy/releases)
+## [v12.0.1](https://github.com/funkydude/BadBoy/tree/v12.0.1) (2026-06-16)
+[Full Changelog](https://github.com/funkydude/BadBoy/compare/v12.0.0...v12.0.1) [Previous Releases](https://github.com/funkydude/BadBoy/releases)
 
-- Compat code  
 - Bump toc  
-- Compat code  
+- Update workflow  

@@ -442,13 +442,23 @@ function DropDownMetaFunctions:NoOptionSelected()
 	self.last_select = nil
 end
 
+--customize the text shown when the dropdown has zero options
+--example: dropdown:SetNoOptionsText("No profiles available")
+---@param text string
+function DropDownMetaFunctions:SetNoOptionsText(text)
+	self.no_options_text = text
+	if (self.no_options) then
+		self.label:SetText(text)
+	end
+end
+
 --this is called internally and isn't a user api
 function DropDownMetaFunctions:NoOption(state)
 	if (state) then
 		self:Disable()
 		self:SetAlpha(0.5)
 		self.no_options = true
-		self.label:SetText("no options")
+		self.label:SetText(self.no_options_text or "no options")
 		self.label:SetPoint("left", self.icon, "right", 2, 0)
 		self.label:SetTextColor(1, 1, 1, 0.4)
 		self.icon:SetTexture([[Interface\CHARACTERFRAME\UI-Player-PlayTimeUnhealthy]])
@@ -712,11 +722,22 @@ function DropDownMetaFunctions:Selected(thisOption)
 		self.label:SetFont(thisOption.font, 10)
 
 	else
-		if select(4, GetBuildInfo()) >= 120005 then
-			local fontFace, fontSize, fontFlags = GameFontHighlightSmall:GetFont()
-			DF:SetFont(self.label, fontFace, fontSize, fontFlags)
+		if (self.__languageAddonId) then
+			local languageId = DF.Language.GetLanguageIdForAddonId(self.__languageAddonId)
+			local font = DF.Language.GetFontForLanguageID(languageId)
+			local _, _, flags = self.label:GetFont()
+			if DF.IsMidnightWowAPI() then
+				DF:SetFont(self.label, font, 10, flags)
+			else
+				self.label:SetFont(font, 10, flags)
+			end
 		else
-			self.label:SetFont("GameFontHighlightSmall", 10)
+			if DF.IsMidnightWowAPI() then
+				local fontFace, fontSize, fontFlags = GameFontHighlightSmall:GetFont()
+				DF:SetFont(self.label, fontFace, fontSize, fontFlags)
+			else
+				self.label:SetFont("GameFontHighlightSmall", 10)
+			end
 		end
 	end
 
@@ -1337,6 +1358,13 @@ function DF:CreateOutlineListGenerator(callback)
 		for index, outlineInfo in pairs(DF.FontOutlineFlags) do
 			local outlineValue = outlineInfo[1]
 			local outlineName = outlineInfo[2]
+
+			if DF:IsAddonApocalypseWow() then
+				if outlineValue == "None" or outlineValue == "NONE" then
+					outlineValue = ""
+				end
+			end
+
 			table.insert(dropdownOptions, {
 				label = outlineName,
 				value = outlineValue,

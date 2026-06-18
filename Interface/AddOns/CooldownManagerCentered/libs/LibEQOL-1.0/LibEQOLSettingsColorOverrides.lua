@@ -1,4 +1,4 @@
-local MODULE_MAJOR, EXPECTED_MINOR = "LibEQOLSettingsMode-1.0", 20000001
+local MODULE_MAJOR, EXPECTED_MINOR = "WildForkLibEQOLSettingsMode-1.0", 20000001
 local ok, lib = pcall(LibStub, MODULE_MAJOR)
 if not ok or not lib then
 	return

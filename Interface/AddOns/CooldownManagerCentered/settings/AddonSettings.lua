@@ -1,4 +1,5 @@
 local _, ns = ...
+local Affected = ns.API.Affected
 
 --- AddonSettings - Settings Management System
 local AddonSettings = {}
@@ -8,10 +9,14 @@ local L = LibStub("AceLocale-3.0"):GetLocale("CooldownManagerCentered")
 ns.AddonSettings.settingPreview = {}
 ns.AddonSettings.SettingsLayout = {}
 
-local SettingsLib = LibStub("LibEQOLSettingsMode-1.0")
+local SettingsLib = LibStub("WildForkLibEQOLSettingsMode-1.0")
 local LSM = LibStub("LibSharedMedia-3.0", true)
 
 local function AddonSettings_BuildCooldown(category, layout)
+    -- When Masque skins the icons, its skin owns all icon styling, glow and font
+    -- options, so the affected sections below are omitted from the panel.
+    local masqueStylingActive = ns.MasqueModule and ns.MasqueModule:IsActive()
+
     SettingsLib:CreateDropdown(category, {
         prefix = "CMC_",
         key = "cooldownManager_alignBuffIcons_growFromDirection",
@@ -132,7 +137,7 @@ local function AddonSettings_BuildCooldown(category, layout)
     SettingsLib:CreateCheckbox(category, {
         prefix = "CMC_",
         key = "tracker_enabled",
-        name = "Enable Custom |cff8ccd00Tracker|r|cffff0000*|r",
+        name = "Enable Custom |cff8ccd00Tracker|r",
         searchtags = { "Dynamic", "Alignment", "Position", "Layout", "Anchor", "Auto", "Center", "Adaptive" },
         default = true,
         get = function()
@@ -148,6 +153,9 @@ local function AddonSettings_BuildCooldown(category, layout)
             else
                 if ns.TrackerItemViewer then
                     ns.TrackerItemViewer:HideAll()
+                end
+                if ns.TrackerAssignmentPanel then
+                    ns.TrackerAssignmentPanel:OnTrackerDisabled()
                 end
             end
         end,
@@ -183,471 +191,474 @@ local function AddonSettings_BuildCooldown(category, layout)
         name = "You can write |cfffff100/cds|r or |cfffff100/cdm|r Go to |cfffff100Cooldown Settings|r",
     })
 
-    local squareIconsSection = SettingsLib:CreateExpandableSection(category, {
-        name = "|cff5fb64aIco|r|cff8ccd00ns|r Styling",
-        expanded = false,
-        colorizeTitle = true,
-    })
-    SettingsLib:CreateText(category, {
-        name = "|cfffff100Padding|r can no longer be set within addon, please use |cff87bbcaEdit Mode|r",
-        parentSection = squareIconsSection,
-    })
+    if not masqueStylingActive then
+        local squareIconsSection = SettingsLib:CreateExpandableSection(category, {
+            name = "|cff5fb64aIco|r|cff8ccd00ns|r Styling",
+            expanded = false,
+            colorizeTitle = true,
+        })
+        SettingsLib:CreateText(category, {
+            name = "|cfffff100Padding|r can no longer be set within addon, please use |cff87bbcaEdit Mode|r",
+            parentSection = squareIconsSection,
+        })
 
-    SettingsLib:CreateCheckbox(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIcons_BuffIcons",
-        name = "Square Buff Icons",
-        searchtags = { "Square", "Shape", "Style", "Rectangular", "Flat", "Modern", "Buff", "Icon", "Texture" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIcons_BuffIcons
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIcons_BuffIcons = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Apply square icon styling to Buff Icons viewer.",
-    })
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIconsBorder_BuffIcons",
-        name = "Border Thickness",
-        searchtags = { "Border", "Thickness", "Width", "Edge", "Frame", "Outline", "Buff", "Size" },
-        default = 4,
-        min = 0,
-        max = 6,
-        step = 1,
-        formatter = function(value)
-            return string.format("%.0fpx", value)
-        end,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIconsBorder_BuffIcons or 4
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIconsBorder_BuffIcons = value
-            if ns.StyledIcons then
+        SettingsLib:CreateCheckbox(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIcons_BuffIcons",
+            name = "Square Buff Icons",
+            searchtags = { "Square", "Shape", "Style", "Rectangular", "Flat", "Modern", "Buff", "Icon", "Texture" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIcons_BuffIcons
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIcons_BuffIcons = value
                 ns.StyledIcons:OnSettingChanged()
-            end
-        end,
-        desc = "Border thickness for square Buff Icons (space between icon edge and texture).",
-        -- isEnabled = function()
-        --     return not ns.API:IsSomeAddOnRestrictionActive()
-        -- end,
-    })
+            end,
+            desc = "Apply square icon styling to Buff Icons viewer.",
+        })
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIconsBorder_BuffIcons",
+            name = "Border Thickness",
+            searchtags = { "Border", "Thickness", "Width", "Edge", "Frame", "Outline", "Buff", "Size" },
+            default = 4,
+            min = 0,
+            max = 6,
+            step = 1,
+            formatter = function(value)
+                return string.format("%.0fpx", value)
+            end,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIconsBorder_BuffIcons or 4
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIconsBorder_BuffIcons = value
+                if ns.StyledIcons then
+                    ns.StyledIcons:OnSettingChanged()
+                end
+            end,
+            desc = "Border thickness for square Buff Icons (space between icon edge and texture).",
+            -- isEnabled = function()
+            --     return not ns.API:IsSomeAddOnRestrictionActive()
+            -- end,
+        })
 
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIconsZoom_BuffIcons",
-        name = "Zoom",
-        searchtags = { "Zoom", "Scale", "Crop", "Magnify", "Enlarge", "Texture", "Buff", "Icon" },
-        default = 0,
-        min = 0,
-        max = 0.5,
-        step = 0.01,
-        formatter = function(value)
-            return string.format("%.2f", value)
-        end,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIconsZoom_BuffIcons or 0
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIconsZoom_BuffIcons = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Zoom level for square Buff Icons (0 = no zoom, 0.5 = maximum zoom).",
-    })
-
-    SettingsLib:CreateCheckboxSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_experimental_enableRectangularIcons_buffIcons",
-        name = "Rectangular Ratio",
-        searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Enable rectangular icons for Buff Icons viewer. |cffff0000Experimental feature, may cause issues!|r",
-
-        sliderKey = "cooldownManager_experimental_enableRectangularIcons_buffIcons_percent",
-        sliderName = "Height to Width Ratio",
-        sliderMin = 0.6,
-        sliderMax = 0.9,
-        sliderStep = 0.01,
-        sliderDefault = 0.8,
-        sliderGet = function()
-            return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons_percent
-        end,
-        sliderSet = function(value)
-            local rounded = math.floor((value or 0) * 100 + 0.5) / 100
-            ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons_percent = rounded
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        sliderFormatter = function(value)
-            return string.format("%.0f%%", value * 100)
-        end,
-    })
-    SettingsLib:CreateText(category, {
-        name = "",
-        parentSection = squareIconsSection,
-    })
-
-    SettingsLib:CreateCheckbox(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIcons_Essential",
-        name = "Square Essential Cooldowns",
-        searchtags = { "Square", "Shape", "Style", "Rectangular", "Flat", "Modern", "Essential", "Icon", "Texture" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIcons_Essential
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIcons_Essential = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Apply square icon styling to Essential Cooldowns viewer.",
-    })
-
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIconsBorder_Essential",
-        name = "Border Thickness",
-        searchtags = { "Border", "Thickness", "Width", "Edge", "Frame", "Outline", "Essential", "Size" },
-        default = 4,
-        min = 0,
-        max = 6,
-        step = 1,
-        formatter = function(value)
-            return string.format("%.0fpx", value)
-        end,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIconsBorder_Essential or 4
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIconsBorder_Essential = value
-
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Border thickness for square Essential Icons (space between icon edge and texture).",
-        -- isEnabled = function()
-        --     return not ns.API:IsSomeAddOnRestrictionActive()
-        -- end,
-    })
-
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIconsZoom_Essential",
-        name = "Icon Zoom",
-        searchtags = { "Zoom", "Scale", "Crop", "Magnify", "Enlarge", "Texture", "Essential", "Icon" },
-        default = 0,
-        min = 0,
-        max = 0.5,
-        step = 0.01,
-        formatter = function(value)
-            return string.format("%.2f", value)
-        end,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIconsZoom_Essential or 0
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIconsZoom_Essential = value
-            if ns.StyledIcons then
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIconsZoom_BuffIcons",
+            name = "Zoom",
+            searchtags = { "Zoom", "Scale", "Crop", "Magnify", "Enlarge", "Texture", "Buff", "Icon" },
+            default = 0,
+            min = 0,
+            max = 0.5,
+            step = 0.01,
+            formatter = function(value)
+                return string.format("%.2f", value)
+            end,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIconsZoom_BuffIcons or 0
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIconsZoom_BuffIcons = value
                 ns.StyledIcons:OnSettingChanged()
-            end
-        end,
-        desc = "Zoom level for square Essential Icons (0 = no zoom, 0.5 = maximum zoom).",
-    })
+            end,
+            desc = "Zoom level for square Buff Icons (0 = no zoom, 0.5 = maximum zoom).",
+        })
 
-    SettingsLib:CreateCheckboxSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_experimental_enableRectangularIcons_essential",
-        name = "Rectangular Ratio",
-        searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Enable rectangular icons for Essential viewer. |cffff0000Experimental feature, may cause issues!|r",
-
-        sliderKey = "cooldownManager_experimental_enableRectangularIcons_essential_percent",
-        sliderName = "Height to Width Ratio",
-        sliderMin = 0.6,
-        sliderMax = 0.9,
-        sliderStep = 0.01,
-        sliderDefault = 0.8,
-        sliderGet = function()
-            return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential_percent
-        end,
-        sliderSet = function(value)
-            local rounded = math.floor((value or 0) * 100 + 0.5) / 100
-            ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential_percent = rounded
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        sliderFormatter = function(value)
-            return string.format("%.0f%%", value * 100)
-        end,
-    })
-
-    SettingsLib:CreateText(category, {
-        name = "",
-        parentSection = squareIconsSection,
-    })
-
-    SettingsLib:CreateCheckbox(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIcons_Utility",
-        name = "Square Utility Cooldowns",
-        searchtags = { "Square", "Shape", "Style", "Rectangular", "Flat", "Modern", "Utility", "Icon", "Texture" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIcons_Utility
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIcons_Utility = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Apply square icon styling to Utility Cooldowns viewer.",
-    })
-
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIconsBorder_Utility",
-        name = "Border Thickness",
-        searchtags = { "Border", "Thickness", "Width", "Edge", "Frame", "Outline", "Utility", "Size" },
-        default = 4,
-        min = 0,
-        max = 6,
-        step = 1,
-        formatter = function(value)
-            return string.format("%.0fpx", value)
-        end,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIconsBorder_Utility or 4
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIconsBorder_Utility = value
-            if ns.StyledIcons then
+        SettingsLib:CreateCheckboxSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_experimental_enableRectangularIcons_buffIcons",
+            name = "Rectangular Ratio",
+            searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons = value
                 ns.StyledIcons:OnSettingChanged()
-            end
-        end,
-        desc = "Border thickness for square Utility Icons (space between icon edge and texture).",
-        -- isEnabled = function()
-        --     return not ns.API:IsSomeAddOnRestrictionActive()
-        -- end,
-    })
+            end,
+            desc = "Enable rectangular icons for Buff Icons viewer. |cffff0000Experimental feature, may cause issues!|r",
 
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_squareIconsZoom_Utility",
-        name = "Icon Zoom",
-        searchtags = { "Zoom", "Scale", "Crop", "Magnify", "Enlarge", "Texture", "Utility", "Icon" },
-        default = 0,
-        min = 0,
-        max = 0.5,
-        step = 0.01,
-        formatter = function(value)
-            return string.format("%.2f", value)
-        end,
-        get = function()
-            return ns.db.profile.cooldownManager_squareIconsZoom_Utility or 0
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_squareIconsZoom_Utility = value
-            if ns.StyledIcons then
+            sliderKey = "cooldownManager_experimental_enableRectangularIcons_buffIcons_percent",
+            sliderName = "Height to Width Ratio",
+            sliderMin = 0.6,
+            sliderMax = 0.9,
+            sliderStep = 0.01,
+            sliderDefault = 0.8,
+            sliderGet = function()
+                return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons_percent
+            end,
+            sliderSet = function(value)
+                local rounded = math.floor((value or 0) * 100 + 0.5) / 100
+                ns.db.profile.cooldownManager_experimental_enableRectangularIcons_buffIcons_percent = rounded
                 ns.StyledIcons:OnSettingChanged()
-            end
-        end,
-        desc = "Zoom level for square Utility Icons (0 = no zoom, 0.5 = maximum zoom).",
-    })
-    SettingsLib:CreateCheckboxSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_experimental_enableRectangularIcons_utility",
-        name = "Rectangular Ratio",
-        searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Enable rectangular icons for Utility viewer. |cffff0000Experimental feature, may cause issues!|r",
+            end,
+            sliderFormatter = function(value)
+                return string.format("%.0f%%", value * 100)
+            end,
+        })
+        SettingsLib:CreateText(category, {
+            name = "",
+            parentSection = squareIconsSection,
+        })
 
-        sliderKey = "cooldownManager_experimental_enableRectangularIcons_utility_percent",
-        sliderName = "Height to Width Ratio",
-        sliderMin = 0.6,
-        sliderMax = 0.9,
-        sliderStep = 0.01,
-        sliderDefault = 0.8,
-        sliderGet = function()
-            return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility_percent
-        end,
-        sliderSet = function(value)
-            local rounded = math.floor((value or 0) * 100 + 0.5) / 100
-            ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility_percent = rounded
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        sliderFormatter = function(value)
-            return string.format("%.0f%%", value * 100)
-        end,
-    })
-    SettingsLib:CreateCheckbox(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "cooldownManager_normalizeUtilitySize",
-        name = "Normalize Utility Icons Scaling",
-        searchtags = { "Fix", "Normalize", "Size", "Uniform", "Match", "Equal", "Same", "Utility", "Icon" },
-        default = false,
-        get = function()
-            return ns.db.profile.cooldownManager_normalizeUtilitySize
-        end,
-        set = function(value)
-            ns.db.profile.cooldownManager_normalizeUtilitySize = value
-            ns.StyledIcons:OnSettingChanged()
-        end,
-        desc = "Set base Utility Cooldown Icons |cffff0000base|r size as Essential Cooldowns Icons\nIt helps to have a more uniform look when both viewers are used together.",
-    })
+        SettingsLib:CreateCheckbox(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIcons_Essential",
+            name = "Square Essential Cooldowns",
+            searchtags = { "Square", "Shape", "Style", "Rectangular", "Flat", "Modern", "Essential", "Icon", "Texture" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIcons_Essential
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIcons_Essential = value
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            desc = "Apply square icon styling to Essential Cooldowns viewer.",
+        })
 
-    SettingsLib:CreateText(category, {
-        name = "",
-        parentSection = squareIconsSection,
-    })
-    SettingsLib:CreateHeader(category, {
-        parentSection = squareIconsSection,
-        name = "Tracker Icons",
-    })
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIconsBorder_Essential",
+            name = "Border Thickness",
+            searchtags = { "Border", "Thickness", "Width", "Edge", "Frame", "Outline", "Essential", "Size" },
+            default = 4,
+            min = 0,
+            max = 6,
+            step = 1,
+            formatter = function(value)
+                return string.format("%.0fpx", value)
+            end,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIconsBorder_Essential or 4
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIconsBorder_Essential = value
 
-    SettingsLib:CreateCheckbox(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "trinketRacialTracker_squareIcons",
-        name = "Square Icons",
-        searchtags = { "Trinket", "Racial", "Tracker", "Square", "Icons", "Style" },
-        default = false,
-        get = function()
-            return ns.db.profile.trinketRacialTracker_squareIcons
-        end,
-        set = function(value)
-            ns.db.profile.trinketRacialTracker_squareIcons = value
-            if ns.TrackerItemViewer then
-                ns.TrackerItemViewer:RefreshStyling()
-            end
-        end,
-        desc = "Apply square icon styling to the Trinket, Potion & Racial Tracker. When disabled, the default cooldown manager mask (texture 6707800) is used.",
-    })
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            desc = "Border thickness for square Essential Icons (space between icon edge and texture).",
+            -- isEnabled = function()
+            --     return not ns.API:IsSomeAddOnRestrictionActive()
+            -- end,
+        })
 
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "trinketRacialTracker_borderThickness",
-        name = "Border Thickness",
-        searchtags = { "Trinket", "Racial", "Tracker", "Border", "Thickness", "Width" },
-        default = 1,
-        min = 0,
-        max = 6,
-        step = 1,
-        formatter = function(value)
-            return string.format("%.0fpx", value)
-        end,
-        get = function()
-            return ns.db.profile.trinketRacialTracker_borderThickness or 1
-        end,
-        set = function(value)
-            ns.db.profile.trinketRacialTracker_borderThickness = value
-            if ns.TrackerItemViewer then
-                ns.TrackerItemViewer:RefreshStyling()
-            end
-        end,
-        desc = "Border thickness for tracker icons (space between icon edge and texture).",
-    })
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIconsZoom_Essential",
+            name = "Icon Zoom",
+            searchtags = { "Zoom", "Scale", "Crop", "Magnify", "Enlarge", "Texture", "Essential", "Icon" },
+            default = 0,
+            min = 0,
+            max = 0.5,
+            step = 0.01,
+            formatter = function(value)
+                return string.format("%.2f", value)
+            end,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIconsZoom_Essential or 0
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIconsZoom_Essential = value
+                if ns.StyledIcons then
+                    ns.StyledIcons:OnSettingChanged()
+                end
+            end,
+            desc = "Zoom level for square Essential Icons (0 = no zoom, 0.5 = maximum zoom).",
+        })
 
-    SettingsLib:CreateSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "trinketRacialTracker_iconZoom",
-        name = "Icon Zoom",
-        searchtags = { "Trinket", "Racial", "Tracker", "Zoom", "Scale", "Crop" },
-        default = 0.3,
-        min = 0,
-        max = 0.5,
-        step = 0.01,
-        formatter = function(value)
-            return string.format("%.2f", value)
-        end,
-        get = function()
-            return ns.db.profile.trinketRacialTracker_iconZoom or 0.3
-        end,
-        set = function(value)
-            ns.db.profile.trinketRacialTracker_iconZoom = value
-            if ns.TrackerItemViewer then
-                ns.TrackerItemViewer:RefreshStyling()
-            end
-        end,
-        desc = "Zoom level for tracker icons (0 = no zoom, 0.5 = maximum zoom).",
-    })
+        SettingsLib:CreateCheckboxSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_experimental_enableRectangularIcons_essential",
+            name = "Rectangular Ratio",
+            searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential = value
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            desc = "Enable rectangular icons for Essential viewer. |cffff0000Experimental feature, may cause issues!|r",
 
-    SettingsLib:CreateCheckboxSlider(category, {
-        parentSection = squareIconsSection,
-        prefix = "CMC_",
-        key = "trinketRacialTracker_rectangularIcons",
-        name = "Rectangular Icons",
-        searchtags = { "Trinket", "Racial", "Tracker", "Rectangular", "Icons", "Aspect", "Ratio", "Height" },
-        default = false,
-        get = function()
-            return ns.db.profile.trinketRacialTracker_rectangularIcons
-        end,
-        set = function(value)
-            ns.db.profile.trinketRacialTracker_rectangularIcons = value
-            if ns.TrackerItemViewer then
-                ns.TrackerItemViewer:RefreshItemViewerFrames()
-            end
-        end,
-        desc = "Enable rectangular icons for Custom Tracker 1 and Custom Tracker 2.\nCan be combined with Square Icons styling.",
-        sliderKey = "trinketRacialTracker_rectangularIcons_percent",
-        sliderName = "Height to Width Ratio",
-        sliderMin = 0.3,
-        sliderMax = 0.9,
-        sliderStep = 0.01,
-        sliderDefault = 0.8,
-        sliderGet = function()
-            return ns.db.profile.trinketRacialTracker_rectangularIcons_percent or 0.8
-        end,
-        sliderSet = function(value)
-            ns.db.profile.trinketRacialTracker_rectangularIcons_percent = math.floor(value * 100 + 0.5) / 100
-            if ns.TrackerItemViewer then
-                ns.TrackerItemViewer:RefreshItemViewerFrames()
-            end
-        end,
-        sliderFormatter = function(value)
-            return string.format("%.0f%%", value * 100)
-        end,
-    })
+            sliderKey = "cooldownManager_experimental_enableRectangularIcons_essential_percent",
+            sliderName = "Height to Width Ratio",
+            sliderMin = 0.6,
+            sliderMax = 0.9,
+            sliderStep = 0.01,
+            sliderDefault = 0.8,
+            sliderGet = function()
+                return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential_percent
+            end,
+            sliderSet = function(value)
+                local rounded = math.floor((value or 0) * 100 + 0.5) / 100
+                ns.db.profile.cooldownManager_experimental_enableRectangularIcons_essential_percent = rounded
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            sliderFormatter = function(value)
+                return string.format("%.0f%%", value * 100)
+            end,
+        })
+
+        SettingsLib:CreateText(category, {
+            name = "",
+            parentSection = squareIconsSection,
+        })
+
+        SettingsLib:CreateCheckbox(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIcons_Utility",
+            name = "Square Utility Cooldowns",
+            searchtags = { "Square", "Shape", "Style", "Rectangular", "Flat", "Modern", "Utility", "Icon", "Texture" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIcons_Utility
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIcons_Utility = value
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            desc = "Apply square icon styling to Utility Cooldowns viewer.",
+        })
+
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIconsBorder_Utility",
+            name = "Border Thickness",
+            searchtags = { "Border", "Thickness", "Width", "Edge", "Frame", "Outline", "Utility", "Size" },
+            default = 4,
+            min = 0,
+            max = 6,
+            step = 1,
+            formatter = function(value)
+                return string.format("%.0fpx", value)
+            end,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIconsBorder_Utility or 4
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIconsBorder_Utility = value
+                if ns.StyledIcons then
+                    ns.StyledIcons:OnSettingChanged()
+                end
+            end,
+            desc = "Border thickness for square Utility Icons (space between icon edge and texture).",
+            -- isEnabled = function()
+            --     return not ns.API:IsSomeAddOnRestrictionActive()
+            -- end,
+        })
+
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_squareIconsZoom_Utility",
+            name = "Icon Zoom",
+            searchtags = { "Zoom", "Scale", "Crop", "Magnify", "Enlarge", "Texture", "Utility", "Icon" },
+            default = 0,
+            min = 0,
+            max = 0.5,
+            step = 0.01,
+            formatter = function(value)
+                return string.format("%.2f", value)
+            end,
+            get = function()
+                return ns.db.profile.cooldownManager_squareIconsZoom_Utility or 0
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_squareIconsZoom_Utility = value
+                if ns.StyledIcons then
+                    ns.StyledIcons:OnSettingChanged()
+                end
+            end,
+            desc = "Zoom level for square Utility Icons (0 = no zoom, 0.5 = maximum zoom).",
+        })
+        SettingsLib:CreateCheckboxSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_experimental_enableRectangularIcons_utility",
+            name = "Rectangular Ratio",
+            searchtags = { "Rectangular", "Icons", "Experimental", "Rectangle", "Wide", "Aspect Ratio" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility = value
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            desc = "Enable rectangular icons for Utility viewer. |cffff0000Experimental feature, may cause issues!|r",
+
+            sliderKey = "cooldownManager_experimental_enableRectangularIcons_utility_percent",
+            sliderName = "Height to Width Ratio",
+            sliderMin = 0.6,
+            sliderMax = 0.9,
+            sliderStep = 0.01,
+            sliderDefault = 0.8,
+            sliderGet = function()
+                return ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility_percent
+            end,
+            sliderSet = function(value)
+                local rounded = math.floor((value or 0) * 100 + 0.5) / 100
+                ns.db.profile.cooldownManager_experimental_enableRectangularIcons_utility_percent = rounded
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            sliderFormatter = function(value)
+                return string.format("%.0f%%", value * 100)
+            end,
+        })
+        SettingsLib:CreateCheckbox(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "cooldownManager_normalizeUtilitySize",
+            name = "Normalize Utility Icons Scaling",
+            searchtags = { "Fix", "Normalize", "Size", "Uniform", "Match", "Equal", "Same", "Utility", "Icon" },
+            default = false,
+            get = function()
+                return ns.db.profile.cooldownManager_normalizeUtilitySize
+            end,
+            set = function(value)
+                ns.db.profile.cooldownManager_normalizeUtilitySize = value
+                ns.StyledIcons:OnSettingChanged()
+            end,
+            desc = "Set base Utility Cooldown Icons |cffff0000base|r size as Essential Cooldowns Icons\nIt helps to have a more uniform look when both viewers are used together.",
+        })
+
+        SettingsLib:CreateText(category, {
+            name = "",
+            parentSection = squareIconsSection,
+        })
+        SettingsLib:CreateHeader(category, {
+            parentSection = squareIconsSection,
+            name = "Tracker Icons",
+        })
+
+        SettingsLib:CreateCheckbox(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "trinketRacialTracker_squareIcons",
+            name = "Square Icons",
+            searchtags = { "Trinket", "Racial", "Tracker", "Square", "Icons", "Style" },
+            default = false,
+            get = function()
+                return ns.db.profile.trinketRacialTracker_squareIcons
+            end,
+            set = function(value)
+                ns.db.profile.trinketRacialTracker_squareIcons = value
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshStyling()
+                end
+            end,
+            desc = "Apply square icon styling to the Trinket, Potion & Racial Tracker. When disabled, the default cooldown manager mask (texture 6707800) is used.",
+        })
+
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "trinketRacialTracker_borderThickness",
+            name = "Border Thickness",
+            searchtags = { "Trinket", "Racial", "Tracker", "Border", "Thickness", "Width" },
+            default = 1,
+            min = 0,
+            max = 6,
+            step = 1,
+            formatter = function(value)
+                return string.format("%.0fpx", value)
+            end,
+            get = function()
+                return ns.db.profile.trinketRacialTracker_borderThickness or 1
+            end,
+            set = function(value)
+                ns.db.profile.trinketRacialTracker_borderThickness = value
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshStyling()
+                end
+            end,
+            desc = "Border thickness for tracker icons (space between icon edge and texture).",
+        })
+
+        SettingsLib:CreateSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "trinketRacialTracker_iconZoom",
+            name = "Icon Zoom",
+            searchtags = { "Trinket", "Racial", "Tracker", "Zoom", "Scale", "Crop" },
+            default = 0.3,
+            min = 0,
+            max = 0.5,
+            step = 0.01,
+            formatter = function(value)
+                return string.format("%.2f", value)
+            end,
+            get = function()
+                return ns.db.profile.trinketRacialTracker_iconZoom or 0.3
+            end,
+            set = function(value)
+                ns.db.profile.trinketRacialTracker_iconZoom = value
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshStyling()
+                end
+            end,
+            desc = "Zoom level for tracker icons (0 = no zoom, 0.5 = maximum zoom).",
+        })
+
+        SettingsLib:CreateCheckboxSlider(category, {
+            parentSection = squareIconsSection,
+            prefix = "CMC_",
+            key = "trinketRacialTracker_rectangularIcons",
+            name = "Rectangular Icons",
+            searchtags = { "Trinket", "Racial", "Tracker", "Rectangular", "Icons", "Aspect", "Ratio", "Height" },
+            default = false,
+            get = function()
+                return ns.db.profile.trinketRacialTracker_rectangularIcons
+            end,
+            set = function(value)
+                ns.db.profile.trinketRacialTracker_rectangularIcons = value
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshItemViewerFrames()
+                end
+            end,
+            desc = "Enable rectangular icons for all Custom Trackers.\nCan be combined with Square Icons styling.",
+            sliderKey = "trinketRacialTracker_rectangularIcons_percent",
+            sliderName = "Height to Width Ratio",
+            sliderMin = 0.3,
+            sliderMax = 0.9,
+            sliderStep = 0.01,
+            sliderDefault = 0.8,
+            sliderGet = function()
+                return ns.db.profile.trinketRacialTracker_rectangularIcons_percent or 0.8
+            end,
+            sliderSet = function(value)
+                ns.db.profile.trinketRacialTracker_rectangularIcons_percent = math.floor(value * 100 + 0.5) / 100
+                if ns.TrackerItemViewer then
+                    ns.TrackerItemViewer:RefreshItemViewerFrames()
+                end
+            end,
+            sliderFormatter = function(value)
+                return string.format("%.0f%%", value * 100)
+            end,
+        })
+    end -- not masqueStylingActive (icon styling section only)
 
     local cooldownSection = SettingsLib:CreateExpandableSection(category, {
         name = "|cffeeeeeeCooldown|r Settings",
         expanded = false,
         colorizeTitle = true,
     })
+
     local customSwipeColorCheckbox = SettingsLib:CreateCheckbox(category, {
         prefix = "CMC_",
         key = "cooldownManager_customSwipeColor_enabled",
@@ -745,6 +756,24 @@ local function AddonSettings_BuildCooldown(category, layout)
         parentSection = cooldownSection,
     })
 
+    SettingsLib:CreateCheckbox(category, {
+        prefix = "CMC_",
+        key = "cooldownManager_hideCooldownFlash",
+        name = "Hide cooldown flash",
+        default = false,
+        get = function()
+            return ns.db.profile.cooldownManager_hideCooldownFlash or false
+        end,
+        set = function(value)
+            ns.db.profile.cooldownManager_hideCooldownFlash = value
+            if ns.CooldownStyle and ns.CooldownStyle.RefreshHooks then
+                ns.CooldownStyle:RefreshHooks()
+            end
+        end,
+        desc = "Hide the bright flash shown on Essential and Utility cooldown icons when an ability comes off cooldown.",
+        parentSection = cooldownSection,
+    })
+
     SettingsLib:CreateHeader(category, {
         name = "Cooldown Number Settings",
         parentSection = cooldownSection,
@@ -775,13 +804,13 @@ local function AddonSettings_BuildCooldown(category, layout)
         desc = "Select the font for ability cooldown numbers. Uses SharedMedia fonts if available.",
         generator = function(dropdown, rootDescription)
             dropdown.fontPool = {}
-            if not dropdown._CMC_FontFace_Dropdown_OnMenuClosed_hooked then
+            if not Affected(dropdown).fontfaceDropdownOnMenuClosedHooked then
                 hooksecurefunc(dropdown, "OnMenuClosed", function()
                     for _, fontDisplay in pairs(dropdown.fontPool) do
                         fontDisplay:Hide()
                     end
                 end)
-                dropdown._CMC_FontFace_Dropdown_OnMenuClosed_hooked = true
+                Affected(dropdown).fontfaceDropdownOnMenuClosedHooked = true
             end
             local fonts = LSM:HashTable(LSM.MediaType.FONT)
             local sortedFonts = {}
@@ -935,6 +964,44 @@ local function AddonSettings_BuildCooldown(category, layout)
         })
     end
 
+    -- Countdown text X/Y position offset sliders (separate per viewer, one
+    -- shared pair for trackers). refreshFn re-applies the affected viewer(s).
+    local function CreateCooldownTextOffsetSliders(parentSection, xKey, yKey, refreshFn)
+        local function makeSlider(key, name)
+            SettingsLib:CreateSlider(category, {
+                parentSection = parentSection,
+                prefix = "CMC_",
+                key = key,
+                name = name,
+                default = 0,
+                min = -40,
+                max = 40,
+                step = 1,
+                formatter = function(value)
+                    return string.format("%.0f", value)
+                end,
+                get = function()
+                    return ns.db.profile[key] or 0
+                end,
+                set = function(value)
+                    ns.db.profile[key] = math.floor((value or 0) + 0.5)
+                    refreshFn()
+                end,
+            })
+        end
+        makeSlider(xKey, "Cooldown Text X Offset")
+        makeSlider(yKey, "Cooldown Text Y Offset")
+    end
+
+    local function RefreshCooldownFontAll()
+        ns.CooldownFont:RefreshAll()
+    end
+    local function RefreshCooldownFontTracker()
+        if ns.TrackerItemViewer then
+            ns.TrackerItemViewer:RefreshStyling()
+        end
+    end
+
     CreateCooldownFontSizeDropdown(
         cooldownSection,
         "cooldownManager_cooldownFontSizeEssential",
@@ -961,6 +1028,12 @@ local function AddonSettings_BuildCooldown(category, layout)
             ns.db.profile.cooldownManager_cooldownFontSizeEssential_enabled = value
             ns.CooldownFont:RefreshAll()
         end
+    )
+    CreateCooldownTextOffsetSliders(
+        cooldownSection,
+        "cooldownManager_cooldownTextEssential_offsetX",
+        "cooldownManager_cooldownTextEssential_offsetY",
+        RefreshCooldownFontAll
     )
     CreateCooldownFontSizeDropdown(
         cooldownSection,
@@ -989,6 +1062,12 @@ local function AddonSettings_BuildCooldown(category, layout)
             ns.CooldownFont:RefreshAll()
         end
     )
+    CreateCooldownTextOffsetSliders(
+        cooldownSection,
+        "cooldownManager_cooldownTextUtility_offsetX",
+        "cooldownManager_cooldownTextUtility_offsetY",
+        RefreshCooldownFontAll
+    )
     CreateCooldownFontSizeDropdown(
         cooldownSection,
         "cooldownManager_cooldownFontSizeBuffIcons",
@@ -1015,6 +1094,12 @@ local function AddonSettings_BuildCooldown(category, layout)
             ns.db.profile.cooldownManager_cooldownFontSizeBuffIcons_enabled = value
             ns.CooldownFont:RefreshAll()
         end
+    )
+    CreateCooldownTextOffsetSliders(
+        cooldownSection,
+        "cooldownManager_cooldownTextBuffIcons_offsetX",
+        "cooldownManager_cooldownTextBuffIcons_offsetY",
+        RefreshCooldownFontAll
     )
     CreateCooldownFontSizeDropdown(
         cooldownSection,
@@ -1047,6 +1132,12 @@ local function AddonSettings_BuildCooldown(category, layout)
             end
         end
     )
+    CreateCooldownTextOffsetSliders(
+        cooldownSection,
+        "cooldownManager_cooldownTextTracker_offsetX",
+        "cooldownManager_cooldownTextTracker_offsetY",
+        RefreshCooldownFontTracker
+    )
     local customProcSection = SettingsLib:CreateExpandableSection(category, {
         name = "Custom |cfffff100Glow|r Styles",
         expanded = false,
@@ -1058,15 +1149,16 @@ local function AddonSettings_BuildCooldown(category, layout)
         prefix = "CMC_",
         key = "cooldownManager_experimental_glow_style",
         name = "Custom Glow Style",
-        searchtags = { "Glow", "Style", "Proc", "Auto Cast", "Pixel", "Default" },
+        searchtags = { "Glow", "Style", "Proc", "Auto Cast", "Pixel", "Ants", "Default" },
         default = "DEFAULT",
         values = {
             DEFAULT = "Default",
             PROC = "Proc Glow",
             AUTOCAST = "Auto Cast Glow",
             PIXEL = "Pixel Glow",
+            ANTS = "Ants Style Glow",
         },
-        order = { "DEFAULT", "PROC", "AUTOCAST", "PIXEL" },
+        order = { "DEFAULT", "PROC", "AUTOCAST", "PIXEL", "ANTS" },
         get = function()
             return ns.db.profile.cooldownManager_experimental_glow_style or "DEFAULT"
         end,
@@ -1332,17 +1424,20 @@ local function AddonSettings_BuildCooldown(category, layout)
         set = function(value)
             ns.db.profile.cooldownManager_stackFontName = value
             ns.Stacks:RefreshAll()
+            if ns.TrackerItemViewer then
+                ns.TrackerItemViewer:RefreshStyling()
+            end
         end,
         desc = "Select the font for ability stack numbers. Uses SharedMedia fonts if available.",
         generator = function(dropdown, rootDescription)
             dropdown.fontPool = {}
-            if not dropdown._CMC_FontFace_Dropdown_OnMenuClosed_hooked then
+            if not Affected(dropdown).fontfaceDropdownOnMenuClosedHooked then
                 hooksecurefunc(dropdown, "OnMenuClosed", function()
                     for _, fontDisplay in pairs(dropdown.fontPool) do
                         fontDisplay:Hide()
                     end
                 end)
-                dropdown._CMC_FontFace_Dropdown_OnMenuClosed_hooked = true
+                Affected(dropdown).fontfaceDropdownOnMenuClosedHooked = true
             end
             local fonts = LSM:HashTable(LSM.MediaType.FONT)
             local sortedFonts = {}
@@ -1931,13 +2026,13 @@ local function AddonSettings_BuildCooldown(category, layout)
         desc = "Select the font for ability keybind text. Uses SharedMedia fonts if available.",
         generator = function(dropdown, rootDescription)
             dropdown.fontPool = {}
-            if not dropdown._CMC_FontFace_Dropdown_OnMenuClosed_hooked then
+            if not Affected(dropdown).fontfaceDropdownOnMenuClosedHooked then
                 hooksecurefunc(dropdown, "OnMenuClosed", function()
                     for _, fontDisplay in pairs(dropdown.fontPool) do
                         fontDisplay:Hide()
                     end
                 end)
-                dropdown._CMC_FontFace_Dropdown_OnMenuClosed_hooked = true
+                Affected(dropdown).fontfaceDropdownOnMenuClosedHooked = true
             end
             local fonts = LSM:HashTable(LSM.MediaType.FONT)
             local sortedFonts = {}
@@ -2324,8 +2419,9 @@ local function AddonSettings_BuildCooldown(category, layout)
         dropdownSet = function(value)
             ns.db.profile.cooldownManager_keybindAnchor_CMCTracker = value
             if ns.Keybinds then
-                ns.Keybinds:ApplyKeybindSettings("CMCTracker1")
-                ns.Keybinds:ApplyKeybindSettings("CMCTracker2")
+                for i = 1, (ns.CONSTANTS.MAX_TRACKERS or 10) do
+                    ns.Keybinds:ApplyKeybindSettings("CMCTracker" .. i)
+                end
             end
         end,
         dropdownValues = {
@@ -2359,8 +2455,9 @@ local function AddonSettings_BuildCooldown(category, layout)
         local n = tonumber(value)
         ns.db.profile.cooldownManager_keybindFontSize_CMCTracker = n and math.floor(n + 0.5) or 14
         if ns.Keybinds then
-            ns.Keybinds:ApplyKeybindSettings("CMCTracker1")
-            ns.Keybinds:ApplyKeybindSettings("CMCTracker2")
+            for i = 1, (ns.CONSTANTS.MAX_TRACKERS or 10) do
+                ns.Keybinds:ApplyKeybindSettings("CMCTracker" .. i)
+            end
         end
     end)
     SettingsLib:CreateSlider(category, {
@@ -2382,8 +2479,9 @@ local function AddonSettings_BuildCooldown(category, layout)
             local v = math.floor((value or 0) + 0.5)
             ns.db.profile.cooldownManager_keybindOffsetX_CMCTracker = v
             if ns.Keybinds then
-                ns.Keybinds:ApplyKeybindSettings("CMCTracker1")
-                ns.Keybinds:ApplyKeybindSettings("CMCTracker2")
+                for i = 1, (ns.CONSTANTS.MAX_TRACKERS or 10) do
+                    ns.Keybinds:ApplyKeybindSettings("CMCTracker" .. i)
+                end
             end
         end,
     })
@@ -2406,8 +2504,9 @@ local function AddonSettings_BuildCooldown(category, layout)
             local v = math.floor((value or 0) + 0.5)
             ns.db.profile.cooldownManager_keybindOffsetY_CMCTracker = v
             if ns.Keybinds then
-                ns.Keybinds:ApplyKeybindSettings("CMCTracker1")
-                ns.Keybinds:ApplyKeybindSettings("CMCTracker2")
+                for i = 1, (ns.CONSTANTS.MAX_TRACKERS or 10) do
+                    ns.Keybinds:ApplyKeybindSettings("CMCTracker" .. i)
+                end
             end
         end,
     })
@@ -2538,8 +2637,12 @@ local function AddonSettings_BuildCooldown(category, layout)
     CreateViewerVisibilityDropdown("BuffBarCooldownViewer", "Buff Bars")
     CreateViewerVisibilityDropdown("EssentialCooldownViewer", "Essential Cooldowns")
     CreateViewerVisibilityDropdown("UtilityCooldownViewer", "Utility Cooldowns")
-    CreateViewerVisibilityDropdown("CMCTracker1", "CMC Tracker 1")
-    CreateViewerVisibilityDropdown("CMCTracker2", "CMC Tracker 2")
+    local trackerCount = (ns.TrackerItemViewer and ns.TrackerItemViewer:GetTrackerCount())
+        or ns.db.profile.tracker_count
+        or 2
+    for i = 1, trackerCount do
+        CreateViewerVisibilityDropdown("CMCTracker" .. i, "CMC Tracker " .. i)
+    end
 
     local tweaksHeader = SettingsLib:CreateHeader(category, {
         name = "|cff8ccd00Tweaks|r for Cooldown Manager",
@@ -2568,6 +2671,24 @@ local function AddonSettings_BuildCooldown(category, layout)
             "Icon",
         },
     })
+
+    if ns.MasqueModule and ns.MasqueModule:IsAvailable() then
+        SettingsLib:CreateCheckbox(category, {
+            prefix = "CMC_",
+            key = "masque_enabled",
+            name = "Masque skinning |cffff0000**|r",
+            searchtags = { "Masque", "Skin", "Border", "Icon", "Style", "Theme" },
+            default = false,
+            get = function()
+                return ns.db.global.masque_enabled or false
+            end,
+            set = function(value)
+                ns.db.global.masque_enabled = value
+                ns.API:ShowReloadUIConfirmation()
+            end,
+            desc = "|cffff0000Not recommended\nMasque doesn't go well with CDM|r\nLet |cff00ccffMasque|r skin the Cooldown Manager (Essential, Utility, Tracked Buffs) and custom Tracker icons.\n\nWhile enabled, Cooldown Manager Centered's own icon styling and font |cffff0000options are disabled|r so they don't conflict with Masque.\n\n|cffff0000Requires a UI reload to take effect.|r",
+        })
+    end
 
     SettingsLib:CreateCheckbox(category, {
         prefix = "CMC_",
@@ -2654,6 +2775,24 @@ local function AddonSettings_BuildCooldown(category, layout)
             ns.CooldownManager.ForceRefreshAll()
         end,
         desc = "Set |cffff0000maximum|r Utility width to the width of Essential\nIt will |cffff0000not get narrower than 6|r icons or limit you set in |cff87bbcaEdit Mode|r",
+    })
+
+    SettingsLib:CreateCheckbox(category, {
+        prefix = "CMC_",
+        key = "cooldownManager_hideRangeCheck",
+        name = "Hide Range Check",
+        searchtags = { "Range", "Out of Range", "OOR", "Red", "Dim", "Desaturate", "Essential", "Utility" },
+        default = false,
+        get = function()
+            return ns.db.profile.cooldownManager_hideRangeCheck or false
+        end,
+        set = function(value)
+            ns.db.profile.cooldownManager_hideRangeCheck = value
+            if ns.RangeCheck then
+                ns.RangeCheck:RefreshAll()
+            end
+        end,
+        desc = "Stop Essential and Utility icons from dimming when the target is out of range.",
     })
 
     SettingsLib:CreateCheckbox(category, {

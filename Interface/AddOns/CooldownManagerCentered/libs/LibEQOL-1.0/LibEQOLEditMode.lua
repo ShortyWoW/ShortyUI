@@ -1,4 +1,4 @@
-local MODULE_MAJOR, BASE_MAJOR, MINOR = "LibEQOLEditMode-1.0", "LibEQOL-1.0", 20000001
+local MODULE_MAJOR, BASE_MAJOR, MINOR = "WildForkLibEQOLEditMode-1.0", "WildForkLibEQOL-1.0", 20000002
 local LibStub = _G.LibStub
 assert(LibStub, MODULE_MAJOR .. " requires LibStub")
 local C_Timer = _G.C_Timer
@@ -4228,7 +4228,7 @@ function Internal.CreateDialog()
 	end
 
 	dialog:HookScript("OnHide", function(self)
-		if self.mode == "standalone" then
+		if self.mode == "standalone" or self.mode == "attached" then
 			local context = self.context
 			self.context = nil
 			self.mode = nil
@@ -4908,6 +4908,87 @@ function lib:IsStandaloneSettingsDialogShown(frame)
 	return true
 end
 
+-- Attached settings panel ----------------------------------------------------------
+-- A standalone-style settings dialog that, unlike ShowStandaloneSettingsDialog, IS
+-- allowed while Blizzard edit mode is active. It renders into its own dedicated
+-- dialog instance (Internal.attachedDialog) so it never disturbs the edit-mode
+-- selection dialog (Internal.dialog), and it is meant to be anchored to an external
+-- frame (e.g. EditModeSystemSettingsDialog) via the point/relativeTo options.
+function Internal:EnsureAttachedDialog(forceNew)
+	-- Make sure the shared dialog infrastructure (combat watcher, edit-mode hooks,
+	-- widget pools) has been created at least once.
+	self:EnsureDialog()
+	-- forceNew discards the previous panel frame and builds a fresh one. This is
+	-- used when the panel switches to a different attached frame so no widgets,
+	-- collapse state, or layout can leak across frames (the shared widget pool's
+	-- leftover-child cleanup only services Internal.dialog, not this one).
+	if forceNew and self.attachedDialog then
+		self.attachedDialog:Hide()
+		self.attachedDialog = nil
+	end
+	if not self.attachedDialog then
+		self.attachedDialog = self.CreateDialog()
+	end
+	return self.attachedDialog
+end
+
+function lib:ShowAttachedSettingsPanel(frame, options)
+	assert(frame, "frame is required")
+	assert(options == nil or type(options) == "table", "options must be a table")
+
+	options = options or {}
+	local context = normalizeDialogContext({
+		mode = "attached",
+		frame = frame,
+		title = options.title,
+		settings = options.settings,
+		buttons = options.buttons,
+		showReset = options.showReset,
+		showSettingsReset = options.showSettingsReset,
+		settingsSpacing = options.settingsSpacing,
+		settingsMaxHeight = options.settingsMaxHeight or options.maxSettingsHeight,
+		point = options.point or options.anchorPoint,
+		relativePoint = options.relativePoint or options.anchorRelativePoint,
+		relativeTo = options.relativeTo or options.anchorTo,
+		x = options.x or options.offsetX,
+		y = options.y or options.offsetY,
+		onHide = options.onHide,
+	})
+
+	local hasSettings = type(context.settings) == "table" and #context.settings > 0
+	local hasButtons = type(context.buttons) == "table" and #context.buttons > 0
+	if not hasSettings and not hasButtons then
+		return nil, "no settings or buttons were provided for the attached panel"
+	end
+
+	local dialog = Internal:EnsureAttachedDialog(options.recreate)
+	dialog:Update(context)
+	return dialog
+end
+
+function lib:HideAttachedSettingsPanel(frame)
+	local dialog = Internal.attachedDialog
+	if not (dialog and dialog:IsShown() and dialog.mode == "attached") then
+		return false
+	end
+	if frame and getDialogFrame(dialog) ~= frame then
+		return false
+	end
+	dialog:Hide()
+	return true
+end
+
+function lib:IsAttachedSettingsPanelShown(frame)
+	local dialog = Internal.attachedDialog
+	if not (dialog and dialog:IsShown() and dialog.mode == "attached") then
+		return false
+	end
+	if frame and getDialogFrame(dialog) ~= frame then
+		return false
+	end
+	return true
+end
+
 function lib:AddManagerToggle(data)
 	assert(type(data) == "table", "data must be a table")
 	local id = data.id or data.name or data.label
@@ -5205,19 +5286,15 @@ function Internal:RequestRefreshSettingValues(targetSettings)
 	self:_scheduleSettingsRefresh(0)
 end
 
-function Internal:RefreshSettings(fromDeferred)
-	if not fromDeferred and hasOpenDropdownMenu() then
-		self:RequestRefreshSettings()
+local function refreshSettingsForDialog(dialog)
+	if not (dialog and dialog:IsShown()) then
 		return
 	end
-	if not (Internal.dialog and Internal.dialog:IsShown()) then
-		return
-	end
-	local parent = Internal.dialog.Settings
+	local parent = dialog.Settings
 	if not parent then
 		return
 	end
-	local selectionParent = getDialogFrame(Internal.dialog)
+	local selectionParent = getDialogFrame(dialog)
 	local layoutName = lib.activeLayoutName
 	local layoutIndex = lib:GetActiveLayoutIndex()
 	local layoutDirty = false
@@ -5263,57 +5340,41 @@ function Internal:RefreshSettings(fromDeferred)
 		if parent.Layout then
 			parent:Layout()
 		end
-		if Internal.dialog then
-			FixScrollBarInside(Internal.dialog.SettingsScroll)
-			UpdateScrollChildWidth(Internal.dialog)
-		end
-		if Internal.dialog and Internal.dialog.Layout then
-			Internal.dialog:Layout()
+		FixScrollBarInside(dialog.SettingsScroll)
+		UpdateScrollChildWidth(dialog)
+		if dialog.Layout then
+			dialog:Layout()
 		end
 	end
 end
 
-function Internal:RefreshSettingValues(targetSettings, fromDeferred)
+function Internal:RefreshSettings(fromDeferred)
 	if not fromDeferred and hasOpenDropdownMenu() then
-		self:RequestRefreshSettingValues(targetSettings)
+		self:RequestRefreshSettings()
 		return
 	end
-	if not (Internal.dialog and Internal.dialog:IsShown()) then
+	refreshSettingsForDialog(Internal.dialog)
+	refreshSettingsForDialog(Internal.attachedDialog)
+end
+
+local function refreshSettingValuesForDialog(dialog, targets)
+	if not (dialog and dialog:IsShown()) then
 		return
 	end
-	local parent = Internal.dialog.Settings
+	local parent = dialog.Settings
 	if not parent then
 		return
 	end
-	local selection = Internal.dialog.selection
+	local selection = dialog.selection
 	if not selection then
 		return
 	end
-	local selectionParent = getDialogFrame(Internal.dialog)
+	local selectionParent = getDialogFrame(dialog)
 	local layoutName = lib.activeLayoutName
 	local layoutIndex = lib:GetActiveLayoutIndex()
-	local settings, num = getDialogSettings(Internal.dialog)
+	local settings, num = getDialogSettings(dialog)
 	if not settings or num == 0 then
 		return
-	end
-	local targets
-	if type(targetSettings) == "table" then
-		targets = {}
-		for _, entry in ipairs(targetSettings) do
-			if type(entry) == "table" then
-				targets[entry] = true
-			end
-		end
-		for key, value in pairs(targetSettings) do
-			if type(key) == "table" and value then
-				targets[key] = true
-			elseif type(value) == "table" then
-				targets[value] = true
-			end
-		end
-		if next(targets) == nil then
-			targets = nil
-		end
 	end
 	for _, child in ipairs({ parent:GetChildren() }) do
 		local data
@@ -5352,11 +5413,37 @@ function Internal:RefreshSettingValues(targetSettings, fromDeferred)
 	if parent.Layout then
 		parent:Layout()
 	end
-	if Internal.dialog then
-		FixScrollBarInside(Internal.dialog.SettingsScroll)
-		UpdateScrollChildWidth(Internal.dialog)
-		if Internal.dialog.Layout then
-			Internal.dialog:Layout()
+	FixScrollBarInside(dialog.SettingsScroll)
+	UpdateScrollChildWidth(dialog)
+	if dialog.Layout then
+		dialog:Layout()
+	end
+end
+
+function Internal:RefreshSettingValues(targetSettings, fromDeferred)
+	if not fromDeferred and hasOpenDropdownMenu() then
+		self:RequestRefreshSettingValues(targetSettings)
+		return
+	end
+	local targets
+	if type(targetSettings) == "table" then
+		targets = {}
+		for _, entry in ipairs(targetSettings) do
+			if type(entry) == "table" then
+				targets[entry] = true
+			end
+		end
+		for key, value in pairs(targetSettings) do
+			if type(key) == "table" and value then
+				targets[key] = true
+			elseif type(value) == "table" then
+				targets[value] = true
+			end
+		end
+		if next(targets) == nil then
+			targets = nil
 		end
 	end
+	refreshSettingValuesForDialog(Internal.dialog, targets)
+	refreshSettingValuesForDialog(Internal.attachedDialog, targets)
 end

@@ -1,28 +1,9 @@
 local _, ns = ...
+local Affected = ns.API.Affected
 
 local LAB = LibStub("LibActionButton-1.0", true)
 local ButtonPress = {}
 ns.ButtonPress = ButtonPress
-
-local function CreateSpellIDCollection(spellID)
-    if not spellID then
-        return nil
-    end
-
-    local collection = {}
-    collection[spellID] = true
-
-    local overrideSpell = C_Spell.GetOverrideSpell(spellID)
-    local baseSpell = C_Spell.GetBaseSpell(spellID)
-
-    if overrideSpell then
-        collection[overrideSpell] = true
-    end
-    if baseSpell then
-        collection[baseSpell] = true
-    end
-    return collection
-end
 
 local function GetSpellIDFromCooldownId(cooldownID)
     if not cooldownID then
@@ -38,51 +19,119 @@ local function GetSpellIDFromCooldownId(cooldownID)
 end
 
 local viewerTypes = { "EssentialCooldownViewer", "UtilityCooldownViewer" }
+
+-- GetViewerIconBySpellId runs on every action-button press. The old version
+-- scanned every viewer icon and allocated a lookup collection per viewer plus a
+-- C_CooldownViewer info table per icon - a heavy allocation source under spam.
+-- Instead, index every icon under all of the spell IDs it can be matched by
+-- (cooldown spellID/override, base spell, current spell) once, and reuse that map
+-- until the viewers change. A press then resolves with a few hash lookups and no
+-- allocation. Matching is preserved: two spells matched before iff their
+-- {self, override, base} sets intersected, which equals "some queried key is a
+-- map key" when each icon is indexed under its whole set.
+local iconMap = {}
+local iconMapDirty = true
+
+local function InvalidateIconMap()
+    iconMapDirty = true
+end
+
+local function IndexIcon(icon)
+    if not (icon.Icon and icon.cooldownID) then
+        return
+    end
+    local cdSpellID, cdOverride = GetSpellIDFromCooldownId(icon.cooldownID)
+    if type(cdSpellID) == "number" then
+        iconMap[cdSpellID] = icon
+    end
+    if type(cdOverride) == "number" then
+        iconMap[cdOverride] = icon
+    end
+    if icon.GetBaseSpellID then
+        local id = icon:GetBaseSpellID()
+        if id and not issecretvalue(id) then
+            iconMap[id] = icon
+        end
+    end
+    if icon.GetSpellID then
+        local id = icon:GetSpellID()
+        if id and not issecretvalue(id) then
+            iconMap[id] = icon
+        end
+    end
+end
+
+local function RebuildIconMap()
+    wipe(iconMap)
+    for _, viewerName in ipairs(viewerTypes) do
+        local viewerFrame = _G[viewerName]
+        if viewerFrame and viewerFrame.GetItemFrames then
+            for _, icon in ipairs(viewerFrame:GetItemFrames()) do
+                IndexIcon(icon)
+            end
+        end
+    end
+    iconMapDirty = false
+end
+
 local function GetViewerIconBySpellId(spellID)
     if not spellID then
         return nil
     end
+    if iconMapDirty then
+        RebuildIconMap()
+    end
 
+    local icon = iconMap[spellID]
+    if icon then
+        return icon
+    end
+    -- Mirror the pressed spell's {override, base} so an icon indexed under a
+    -- related form of the same spell still matches.
+    local override = C_Spell.GetOverrideSpell(spellID)
+    if override and iconMap[override] then
+        return iconMap[override]
+    end
+    local base = C_Spell.GetBaseSpell(spellID)
+    if base and iconMap[base] then
+        return iconMap[base]
+    end
+    return nil
+end
+
+-- Invalidate the icon map when the viewers' contents or spell overrides change.
+-- RefreshLayout (hooked once the viewers exist) covers icon add/remove/reorder;
+-- the events cover talent/spec/form changes that re-map override spells.
+local iconMapEventFrame = CreateFrame("Frame")
+local iconMapHooksInstalled = false
+local function InstallIconMapHooks()
+    if iconMapHooksInstalled then
+        return
+    end
+    local installedAny = false
     for _, viewerName in ipairs(viewerTypes) do
         local viewerFrame = _G[viewerName]
-        if viewerFrame then
-            local spellIDCollection = CreateSpellIDCollection(spellID)
-
-            local cooldownIcons = { viewerFrame:GetChildren() }
-            for _, icon in ipairs(cooldownIcons) do
-                if icon.Icon and icon.cooldownID then
-                    local cooldownIDRelatedSpellID, cooldownIDRelatedOverrideSpellID =
-                        GetSpellIDFromCooldownId(icon.cooldownID)
-
-                    if
-                        type(cooldownIDRelatedSpellID) == "number"
-                        and (
-                            spellIDCollection[cooldownIDRelatedSpellID]
-                            or spellIDCollection[cooldownIDRelatedOverrideSpellID]
-                        )
-                    then
-                        return icon
-                    end
-                    if icon.GetBaseSpellID then
-                        local id = icon:GetBaseSpellID()
-
-                        if id and not issecretvalue(id) and spellIDCollection[id] then
-                            return icon
-                        end
-                    end
-
-                    if icon.GetSpellID then
-                        local id = icon:GetSpellID()
-
-                        if id and not issecretvalue(id) and spellIDCollection[id] then
-                            return icon
-                        end
-                    end
-                end
-            end
+        if viewerFrame and viewerFrame.RefreshLayout then
+            hooksecurefunc(viewerFrame, "RefreshLayout", InvalidateIconMap)
+            installedAny = true
         end
     end
+    iconMapHooksInstalled = installedAny
 end
+for _, event in ipairs({
+    "PLAYER_ENTERING_WORLD",
+    "PLAYER_SPECIALIZATION_CHANGED",
+    "TRAIT_CONFIG_UPDATED",
+    "ACTIVE_TALENT_GROUP_CHANGED",
+    "UPDATE_SHAPESHIFT_FORM",
+    "SPELLS_CHANGED",
+}) do
+    iconMapEventFrame:RegisterEvent(event)
+end
+iconMapEventFrame:SetScript("OnEvent", function()
+    InvalidateIconMap()
+    InstallIconMapHooks()
+end)
 
 local function GetSpellIdFromMacroName(macroName)
     if not macroName then
@@ -125,9 +174,16 @@ local function CreateOrGetTextureFrame(icon)
 
     local parent = icon:GetParent()
 
+    local masqueActive = ns.MasqueModule and ns.MasqueModule:IsActive()
+
     local frame = CreateFrame("Frame", nil, icon, "BackdropTemplate")
     frame:SetFrameLevel(icon:GetFrameLevel() + 10)
     frame:SetAllPoints(icon)
+
+    -- Under Masque, clip the overlay to the skin's shape (hexagon, round, ...)
+    -- by reusing the mask Masque applied to the icon texture. Used by both the
+    -- Flat and atlas ("Blizz") textures so each follows the skin shape.
+    local masqueMask = masqueActive and ns.MasqueModule:GetIconMask(icon) or nil
 
     local tex = frame:CreateTexture(nil, "OVERLAY")
     tex:SetAllPoints(frame)
@@ -135,18 +191,24 @@ local function CreateOrGetTextureFrame(icon)
         tex:SetTexture("Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\Square")
         tex:SetBlendMode("ADD")
         tex:SetColorTexture(0.8, 0.8, 0.8, 0.3)
-        if tex.SetInside then
-            tex:SetInside()
-        end
-        local settingKey = viewerSettingMap[parent:GetName()]
-        if not ns.db.profile[settingKey] then
-            local mask = frame:CreateMaskTexture(nil, "ARTWORK")
-            mask:SetAllPoints(frame)
-            mask:SetAtlas("UI-HUD-CoolDownManager-Mask")
-            tex:AddMaskTexture(mask)
+        if masqueMask then
+            tex:AddMaskTexture(masqueMask)
+        elseif not masqueActive then
+            local settingKey = viewerSettingMap[parent:GetName()]
+            if not ns.db.profile[settingKey] then
+                local mask = frame:CreateMaskTexture(nil, "ARTWORK")
+                mask:SetAllPoints(frame)
+                mask:SetAtlas("UI-HUD-CoolDownManager-Mask")
+                tex:AddMaskTexture(mask)
+            end
         end
     else
-        tex:SetAtlas("UI-HUD-ActionBar-IconFrame-Down", true)
+        -- Without Masque the atlas keeps its native size; with Masque, let it
+        -- fill the (smaller) skinned icon frame and clip it to the skin shape.
+        tex:SetAtlas("UI-HUD-ActionBar-IconFrame-Down", not masqueActive)
+        if masqueMask then
+            tex:AddMaskTexture(masqueMask)
+        end
     end
     frame.texture = tex
     frame:Hide()
@@ -178,21 +240,6 @@ local function cleanupToHide()
         toHide[i] = nil
     end
     isCleaningUp = false
-end
-
-local function ToggleHighlight(icon, show)
-    if not ns.db.profile.cooldownManager_buttonPress then
-        return
-    end
-    if not icon then
-        return
-    end
-
-    if show then
-        EnableHighlight(icon)
-    else
-        DisableHighlight(icon)
-    end
 end
 
 local isProcessingButtonPress = false
@@ -236,7 +283,6 @@ local function HookButtonPressToPreClick(button)
         end
         self.IsCMCButtonPressHandlingPreClick = true
 
-        local currentTime = GetTimePreciseSec()
         cleanupToHide()
         if not down then
             self.IsCMCButtonPressHandlingPreClick = nil
@@ -280,7 +326,7 @@ local function HookAllLABButtons()
 
     for button in pairs(LAB.activeButtons) do
         if not button.IsCMCButtonPressHooked then
-            HookButtonPressToPreClick(button, nil)
+            HookButtonPressToPreClick(button)
         end
     end
 end
@@ -289,13 +335,13 @@ local function RegisterLABCallbacks()
     if not LAB then
         return
     end
-    if LAB.__CMCButtonPress_OnButtonUpdateRegistered then
+    if Affected(LAB).buttonPressOnButtonUpdateRegistered then
         return
     end
-    LAB.__CMCButtonPress_OnButtonUpdateRegistered = true
+    Affected(LAB).buttonPressOnButtonUpdateRegistered = true
 
     LAB:RegisterCallback("OnButtonUpdate", function(_, button)
-        HookButtonPressToPreClick(button, nil)
+        HookButtonPressToPreClick(button)
     end)
 end
 
@@ -314,7 +360,7 @@ function ButtonPress:RegisterElvUICallbacks()
         return
     end
     ElvUILAB:RegisterCallback("OnButtonUpdate", function(_, button)
-        HookButtonPressToPreClick(button, "ElvUI")
+        HookButtonPressToPreClick(button)
     end)
 end
 
@@ -426,7 +472,7 @@ function ButtonPress:Disable()
     for _, viewerName in ipairs(viewerTypes) do
         local viewerFrame = _G[viewerName]
         if viewerFrame then
-            local children = { viewerFrame:GetChildren() }
+            local children = viewerFrame:GetItemFrames()
             for _, icon in ipairs(children) do
                 DisableHighlight(icon)
             end
@@ -438,7 +484,7 @@ function ButtonPress:RefreshTextures()
     for _, viewerName in ipairs(viewerTypes) do
         local viewerFrame = _G[viewerName]
         if viewerFrame then
-            local children = { viewerFrame:GetChildren() }
+            local children = viewerFrame:GetItemFrames()
             for _, icon in ipairs(children) do
                 if icon.HighlightTexture then
                     icon.HighlightTexture:Hide()

@@ -1,4 +1,4 @@
-local MODULE_MAJOR, MINOR = "LibEQOLDebugMode-1.0", 10000
+local MODULE_MAJOR, MINOR = "WildForkLibEQOLDebugMode-1.0", 10000
 local LibStub = _G.LibStub
 assert(LibStub, MODULE_MAJOR .. " requires LibStub")
 

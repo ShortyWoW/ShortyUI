@@ -2,9 +2,10 @@
 ## Title: |cff008945Cool|r|cff1e9a4e|r|cff3faa4fdown Ma|r|cff5fb64anag|r|cff7ac243er Ce|r|cff8ccd00ntered|r
 ## Notes: Cooldown Manager tweaks and styling
 ## Author: Wildu
-## Version: 2.8.3
+## Version: 3.0.1
 ## X-Wago-ID: b6mvbYKP
 ## SavedVariables: CooldownManagerCenteredDB
+## OptionalDeps: Masque
 ## IconTexture: Interface\Addons\CooldownManagerCentered\Media\CooldownManagerCenteredIcon
 ## Category: Combat
 ## Category-deDE: Kampf
@@ -25,6 +26,7 @@ local.xml
 core/config.lua
 core/profiles.lua
 core/api.lua
+core/sizes.lua
 core/scaling.lua
 core/spellIdOverrides.lua
 core/uiCore.lua
@@ -32,10 +34,14 @@ core/uiCore.lua
 # Settings System - Centralized Settings Management
 settings/ProfileSettings.lua
 settings/AddonSettings.lua
+settings/EditModeViewerSettings.lua
 
 # Other Modules
 modules/Tracker/TrackerDB.lua
 modules/Tracker/TrackerItemsData.lua
+modules/Tracker/TrackerAutoDurations.lua
+modules/Tracker/TrackerProcTriggers.lua
+modules/Tracker/TrackerAuraDurations.lua
 modules/Tracker/TrackerItemVisuals.lua
 modules/Tracker/TrackerItemViewer.lua
 modules/Tracker/TrackerAssignmentPanel.lua
@@ -43,7 +49,9 @@ modules/Tracker/TrackerAssignmentPanel.lua
 
 modules/buffBarIconMode.lua
 modules/cooldownManager.lua
+modules/masque.lua
 modules/editModeHelp.lua
+modules/editModeViewerSettings.lua
 modules/styled.lua
 modules/cooldownStyle.lua
 modules/cooldownFont.lua
@@ -51,6 +59,7 @@ modules/keybinds.lua
 modules/assistant.lua
 modules/buttonPress.lua
 modules/visibility.lua
+modules/rangeCheck.lua
 
 # TO NOTE last one to registerCallback is called... first
 modules/runtime.lua

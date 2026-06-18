@@ -7,9 +7,9 @@ local _ = nil
 local IS_WOW_PROJECT_MAINLINE = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local IS_WOW_PROJECT_NOT_MAINLINE = WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE
 local IS_WOW_PROJECT_CLASSIC_ERA = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
---local IS_WOW_PROJECT_MIDNIGHT = DF.IsAddonApocalypseWow()
-local IS_WOW_PROJECT_MIDNIGHT = DF.IsMidnightWowAPI()
---local IS_WOW_PROJECT_MIDNIGHT_API = DF.IsMidnightWowAPI()
+local IS_WOW_PROJECT_MIDNIGHT = DF.IsAddonApocalypseWow()
+--local IS_WOW_PROJECT_MIDNIGHT = DF.IsMidnightWowAPI()
+local IS_WOW_PROJECT_MIDNIGHT_API = DF.IsMidnightWowAPI()
 
 --stop yellow lines on my editor
 local tinsert = _G.tinsert
@@ -58,7 +58,6 @@ local DB_SHOW_ENRAGE_IN_EXTRA_ICONS
 local DB_SHOW_MAGIC_IN_EXTRA_ICONS
 local DB_DEBUFF_BANNED
 local DB_AURA_SHOW_IMPORTANT
-local DB_AURA_SHOW_IMPORTANT_NEW
 local DB_AURA_SHOW_RAID
 local DB_AURA_SHOW_BYPLAYER
 local DB_AURA_SHOW_DEBUFF_BYPLAYER
@@ -1990,9 +1989,25 @@ end
 				auraIconFrame:SetBackdropBorderColor (unpack (profile.aura_border_colors.steal_or_purge))
 			
 			elseif (Plater.db.profile.aura_border_colors_by_type) then
-				-- use Blizzards color global 'DebuffTypeColor' for the actual color:
-				local color = DebuffTypeColor[dispelName or "none"] or {r=0,b=0,g=0, a=0}
-				auraIconFrame:SetBackdropBorderColor (color.r, color.g, color.b, color.a or 1)
+				if IS_WOW_PROJECT_MIDNIGHT_API then
+					local color
+					if DB_AURA_ENABLED then --check for aura testing, so actual auras
+						color = C_UnitAuras.GetAuraDispelTypeColor(auraIconFrame.unitFrame.namePlateUnitToken, i, dispelColorCurve)
+					else
+						color = DEBUFF_DISPLAY_COLOR_INFO[dispelName or "none"]
+					end
+					
+					if color then
+						--auraIconFrame:SetBackdropBorderColor(color:GetRGBA())
+						auraIconFrame:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+					else
+						auraIconFrame:SetBackdropBorderColor (unpack (profile.aura_border_colors.is_debuff))
+					end
+				else
+					-- use Blizzards color global 'DebuffTypeColor' for the actual color:
+					local color = DebuffTypeColor[dispelName or "none"] or {r=0,b=0,g=0, a=0}
+					auraIconFrame:SetBackdropBorderColor (color.r, color.g, color.b, color.a or 1)
+				end
 			
 			elseif (CROWDCONTROL_AURA_IDS [spellId]) then 
 				--> CC effects
@@ -2312,6 +2327,13 @@ end
 			end
 		else
 			startTime = expirationTime - duration
+
+			if IS_WOW_PROJECT_MIDNIGHT_API then -- using midnight api icon code
+				local tmpDuration = C_DurationUtil.CreateDuration()
+				tmpDuration:SetTimeFromEnd(expirationTime, duration, modRate)
+				duration = tmpDuration
+			end
+
 			local _, sourceUnitClassNow = UnitClass(sourceUnit or "")
 			sourceUnitClass = sourceUnitClassNow
 			if (sourceUnitClass and UnitPlayerControlled(sourceUnit)) then
@@ -2324,8 +2346,25 @@ end
 
 			elseif (profile.extra_icon_use_blizzard_border_color) then
 				-- use blizzard border colors
-				local color = DebuffTypeColor[debuffType or "none"] or {r=0, b=0, g=0, a=0} --dispelName is a global? it have been not passed | dispelName is the 5th argument
-				borderColor = {color.r, color.g, color.b, color.a or 1}
+				if IS_WOW_PROJECT_MIDNIGHT_API then
+					local color
+					if DB_AURA_ENABLED then --check for aura testing, so actual auras
+						color = C_UnitAuras.GetAuraDispelTypeColor(self.unitFrame.namePlateUnitToken, id, dispelColorCurve)
+					else
+						color = DEBUFF_DISPLAY_COLOR_INFO[debuffType or "none"]
+					end
+					
+					if color then
+						borderColor = {color.r, color.g, color.b, color.a or 1}
+					else
+						borderColor = profile.aura_border_colors.is_debuff
+					end
+
+				else
+					-- use Blizzards color global 'DebuffTypeColor' for the actual color:
+					local color = DebuffTypeColor[debuffType or "none"] or {r=0, b=0, g=0, a=0} --dispelName is a global? it have been not passed | dispelName is the 5th argument
+					borderColor = {color.r, color.g, color.b, color.a or 1}
+				end
 
 			elseif (CROWDCONTROL_AURA_IDS [spellId]) then
 				borderColor = profile.debuff_show_cc_border
@@ -2761,8 +2800,6 @@ end
 						can_show_this_debuff = false
 					elseif DB_AURA_SHOW_AS_BLIZZARD and blizzardDebuffs[id] then
 						can_show_this_debuff = true
-					elseif DB_AURA_SHOW_IMPORTANT_NEW and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, "IMPORTANT") then
-						can_show_this_debuff = true
 					elseif DB_AURA_SHOW_DISPELLABLE and self.unitFrame.namePlateUnitReaction > 4 and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, "HARMFUL|RAID_PLAYER_DISPELLABLE") then -- this requires rework. shows wl curses on enemy nameplates
 						can_show_this_debuff = true
 					elseif DB_AURA_SHOW_RAID and (not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, "HARMFUL|RAID_IN_COMBAT") or not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, "HARMFUL|RAID")) then
@@ -2905,9 +2942,6 @@ end
 						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
 						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isFromPlayerOrPlayerPet, isStealable, nameplateShowPersonal, spellId, true, nil, nil, nil, dispelName, timeMod)
 					elseif DB_AURA_SHOW_BUFFS_AS_BLIZZARD and blizzardBuffs[id] then
-						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
-						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isFromPlayerOrPlayerPet, isStealable, nameplateShowPersonal, spellId, true, nil, nil, nil, dispelName, timeMod)
-					elseif DB_AURA_SHOW_IMPORTANT_NEW and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, "HELPFUL|IMPORTANT") then
 						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
 						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isFromPlayerOrPlayerPet, isStealable, nameplateShowPersonal, spellId, true, nil, nil, nil, dispelName, timeMod)
 					elseif DB_AURA_SHOW_DISPELLABLE and self.unitFrame.namePlateUnitReaction < 4 and self.unitFrame.ActorType == "enemynpc" and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, "HELPFUL|RAID_PLAYER_DISPELLABLE") then
@@ -3376,7 +3410,6 @@ end
 		DB_AURA_SHOW_IMPORTANT = profile.aura_show_important
 		DB_AURA_SHOW_DISPELLABLE = profile.aura_show_dispellable
 		DB_AURA_SHOW_RAID = profile.aura_show_raid
-		DB_AURA_SHOW_IMPORTANT_NEW = profile.aura_show_important_new
 		DB_AURA_SHOW_ONLY_SHORT_DISPELLABLE_ON_PLAYERS = profile.aura_show_only_short_dispellable_on_players
 		DB_AURA_SHOW_ENRAGE = profile.aura_show_enrage
 		DB_AURA_SHOW_MAGIC = profile.aura_show_magic

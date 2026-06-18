@@ -3,7 +3,7 @@ local _, ns = ...
 local ProfileSettings = {}
 ns.ProfileSettings = ProfileSettings
 
-local SettingsLib = LibStub("LibEQOLSettingsMode-1.0")
+local SettingsLib = LibStub("WildForkLibEQOLSettingsMode-1.0")
 
 ProfileSettings._pendingExportString = nil
 ProfileSettings._pendingImportString = nil

@@ -1,10 +1,13 @@
 local _, ns = ...
 CooldownManagerCentered = LibStub("AceAddon-3.0"):NewAddon("CooldownManagerCentered", "AceConsole-3.0")
 ns.Addon = CooldownManagerCentered
+CooldownManagerCentered.ns = ns
 local L = LibStub("AceLocale-3.0"):GetLocale("CooldownManagerCentered")
 ns.L = L
 
 ns.CONSTANTS = ns.CONSTANTS or {}
+-- Upper bound on the number of custom trackers a profile may have (contiguous 1..N).
+ns.CONSTANTS.MAX_TRACKERS = 10
 ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR = {
     r = CooldownViewerConstants.ITEM_AURA_COLOR.r,
     g = CooldownViewerConstants.ITEM_AURA_COLOR.g,
@@ -25,6 +28,12 @@ ns.CONSTANTS.FONT = {
     DEFAULT_STACK_POINT = "BOTTOMRIGHT",
     DEFAULT_STACK_OFFSET_X = -2,
     DEFAULT_STACK_OFFSET_Y = 2,
+}
+
+local GLOBAL_SETTINGS_JUST_DEFAULTS = {
+    autoSwitchProfiles = false,
+    masque_enabled = false,
+    -- ["autoSwitchProfile" .. playerClassId .. "Spec" .. i] = "ProfileName", -- ex. autoSwitchProfile1SPec1 = "ProfileName",
 }
 
 -- Default Settings
@@ -48,6 +57,17 @@ ns.DEFAULT_SETTINGS = {
         cooldownManager_cooldownFontSizeBuffIcons = "NIL",
         cooldownManager_cooldownFontSizeTracker_enabled = false,
         cooldownManager_cooldownFontSizeTracker = "NIL",
+
+        -- Cooldown (countdown) text position offsets. Separate per viewer,
+        -- shared single pair for all custom trackers.
+        cooldownManager_cooldownTextEssential_offsetX = 0,
+        cooldownManager_cooldownTextEssential_offsetY = 0,
+        cooldownManager_cooldownTextUtility_offsetX = 0,
+        cooldownManager_cooldownTextUtility_offsetY = 0,
+        cooldownManager_cooldownTextBuffIcons_offsetX = 0,
+        cooldownManager_cooldownTextBuffIcons_offsetY = 0,
+        cooldownManager_cooldownTextTracker_offsetX = 0,
+        cooldownManager_cooldownTextTracker_offsetY = 0,
 
         cooldownManager_stackFontName = "NIL",
         cooldownManager_stackFontFlags = { OUTLINE = true },
@@ -118,12 +138,17 @@ ns.DEFAULT_SETTINGS = {
         cooldownManager_buttonPress = false,
         cooldownManager_buttonPress_texture = "Blizzard",
 
+        -- Disable Blizzard's out-of-range dimming on Essential/Utility icons.
+        cooldownManager_hideRangeCheck = false,
+
         -- Icon Size Normalization
         cooldownManager_normalizeUtilitySize = false,
 
         -- Per-viewer visibility rules (populated by CMCVisibility:MigrateSettings on first load).
         -- Intentionally absent from defaults so migration can detect first-run and copy old settings.
         -- cooldownManager_visibility_perViewer = {},
+
+        cooldownManager_hideCooldownFlash = false,
 
         cooldownManager_customSwipeColor_enabled = false,
         cooldownManager_customActiveColor_r = ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
@@ -167,6 +192,9 @@ ns.DEFAULT_SETTINGS = {
 
         tracker_enabled = false,
         tracker = {},
+        -- Number of active custom trackers (contiguous 1..N, max MAX_TRACKERS).
+        -- Auto-reconciled to keep one empty trailing tracker; defaults to 2.
+        tracker_count = 2,
         cooldownStyleSettings = {
             spellSettings = {},
         },

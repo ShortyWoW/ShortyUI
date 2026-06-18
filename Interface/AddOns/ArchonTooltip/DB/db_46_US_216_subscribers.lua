@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'Unknown-Unknown',}
-local provider = {region='US',realm='TheUnderbog',name='US',type='subscribers',zone=46,date='2026-06-17',data={Bl='Bloodydak:BAEALgAECgcJBwABLgAECgcJEAABAAAAAA==.Bluchu:BAEALgAECgEJAQABLgAECgcJEAABAAAAAA==.',Da='Dakkonix:BAEALgAECgcJEAAAAA==.Dakkonixx:BAEALgAECgUJBgABLgAECgcJEAABAAAAAA==.',Dr='Dragnaballs:BAEALgAECgcJEgAAAA==.',Sa='Sammie:BAEALgAECgUJCAABLgAECgcJEAABAAAAAA==.',},}
+local lookup = {'Unknown-Unknown','Mage-Frost',}
+local provider = {region='US',realm='TheUnderbog',name='US',type='subscribers',zone=46,date='2026-06-17',data={Bl='Bloodydak:BAEALgAECgcJBwABLgAECgcJEAABAAAAAA==.Bluchu:BAEALgAECgEJAQABLgAECgcJEAABAAAAAA==.',Da='Dakkonix:BAEALgAECgcJEAAAAA==.Dakkonixx:BAEALgAECgUJBgABLgAECgcJEAABAAAAAA==.',Dr='Dragnaballs:BAEALgAECgcJEgABLgAFFAkJRQACAJwgAA==.',Sa='Sammie:BAEALgAECgUJCAABLgAECgcJEAABAAAAAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

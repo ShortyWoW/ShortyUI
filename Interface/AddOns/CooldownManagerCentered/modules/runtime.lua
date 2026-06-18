@@ -77,11 +77,11 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnDataChanged", function(
         return
     end
     C_Timer.After(0, function()
-        if ns.CooldownStyle then
-            ns.CooldownStyle:RefreshHooks()
-        end
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
+        end
+        if ns.CooldownStyle then
+            ns.CooldownStyle:RefreshHooks()
         end
         if ns.Stacks then
             ns.Stacks:RefreshAll()
@@ -108,13 +108,11 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnShow", function(arg1, s
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
         end
-
-        if ns.CooldownManager then
-            ns.CooldownManager.ForceRefreshAll()
-        end
-
         if ns.CooldownStyle then
             ns.CooldownStyle:RefreshHooks()
+        end
+        if ns.CooldownManager then
+            ns.CooldownManager.ForceRefreshAll()
         end
     end)
 end)
@@ -130,6 +128,9 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnHide", function()
     C_Timer.After(0, function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
+        end
+        if ns.CooldownStyle then
+            ns.CooldownStyle:RefreshHooks()
         end
 
         if ns.CooldownManager then
@@ -153,6 +154,10 @@ EventRegistry:RegisterCallback("EditMode.Enter", function()
     C_Timer.After(0, function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
+        end
+
+        if ns.CooldownStyle then
+            ns.CooldownStyle:RefreshHooks()
         end
 
         if ns.CooldownManager then
@@ -182,6 +187,9 @@ EventRegistry:RegisterCallback("EditMode.Exit", function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
         end
+        if ns.CooldownStyle then
+            ns.CooldownStyle:RefreshHooks()
+        end
 
         if ns.CooldownManager then
             ns.CooldownManager.ForceRefreshAll()
@@ -206,6 +214,9 @@ EventHandler.events["EDIT_MODE_LAYOUTS_UPDATED"] = function(self, event, ...)
     C_Timer.After(0.1, function()
         if ns.StyledIcons then
             ns.StyledIcons:RefreshAll()
+        end
+        if ns.CooldownStyle then
+            ns.CooldownStyle:RefreshHooks()
         end
 
         if ns.CooldownManager then
@@ -250,6 +261,13 @@ EventHandler.events["UPDATE_SHAPESHIFT_FORM"] = function(self, event, ...)
     end
 end
 EventHandler.events["PLAYER_REGEN_DISABLED"] = function(self, event, ...)
+    -- Entering combat: drop the in-Edit-Mode CMC settings panel if it's open and
+    -- keep it from reopening while locked down. Runs regardless of viewer
+    -- readiness so the panel always closes on combat.
+    if ns.EditModeViewerPanel then
+        ns.EditModeViewerPanel:Hide()
+    end
+
     if not Runtime:IsAllReady() then
         return
     end
@@ -333,6 +351,9 @@ hooksecurefunc(EssentialCooldownViewer, "RefreshLayout", function()
     if ns.Swipe then
         ns.Swipe:RefreshViewer("EssentialCooldownViewer")
     end
+    if ns.RangeCheck then
+        ns.RangeCheck:RefreshViewer("EssentialCooldownViewer")
+    end
 
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefresh({ essential = true })
@@ -350,6 +371,9 @@ hooksecurefunc(UtilityCooldownViewer, "RefreshLayout", function()
     end
     if ns.Swipe then
         ns.Swipe:RefreshViewer("UtilityCooldownViewer")
+    end
+    if ns.RangeCheck then
+        ns.RangeCheck:RefreshViewer("UtilityCooldownViewer")
     end
 
     if ns.CooldownManager then

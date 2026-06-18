@@ -3,9 +3,6 @@ local _, ns = ...
 local TrackerDB = {}
 ns.TrackerDB = TrackerDB
 
-TrackerDB.DEFAULT_COOLDOWN_SWIPE_COLOR = { 0, 0, 0, 0.7 }
-TrackerDB.DEFAULT_AURA_SWIPE_COLOR = { 1, 0.95, 0.57, 0.7 }
-
 local function IsSupportedCustomActiveKind(kind)
     return kind == "spell" or kind == "item"
 end
@@ -108,7 +105,9 @@ function TrackerDB.InitializeDB()
     db.itemSettings = db.itemSettings or {}
     db.spellItemSettings = db.spellItemSettings or {}
     db.wildcardSlotSettings = db.wildcardSlotSettings or {}
-    if db.showUnusable == nil then db.showUnusable = false end
+    if db.showUnusable == nil then
+        db.showUnusable = false
+    end
     if not ns.db.profile._tracker_filled_with_defaults then
         for i, spellID in pairs(TrackerDB.DefaultSpells) do
             if not db.spellItemSettings[spellID] then
@@ -156,6 +155,7 @@ end
 
 function TrackerDB.GetItemSettings(itemID)
     local db = TrackerDB.GetDB()
+    db.itemSettings = db.itemSettings or {}
     return db.itemSettings[itemID]
 end
 
@@ -173,6 +173,7 @@ end
 
 function TrackerDB.EnsureItemSettings(itemID)
     local db = TrackerDB.GetDB()
+    db.itemSettings = db.itemSettings or {}
     if db.itemSettings[itemID] == nil then
         db.itemSettings[itemID] = {}
     end
@@ -214,6 +215,7 @@ end
 
 function TrackerDB.SetItemState(itemID, state)
     local db = TrackerDB.GetDB()
+    db.itemSettings = db.itemSettings or {}
     if state == nil then
         db.itemSettings[itemID] = nil
         return
@@ -226,6 +228,11 @@ end
 function TrackerDB.SetSpellItemState(spellID, state)
     local db = TrackerDB.GetDB()
     db.spellItemSettings = db.spellItemSettings or {}
+    -- owned.spells (in TrackerItemsData) is derived from the spellItemSettings keys,
+    -- so changing membership here must drop its cached ownership scan.
+    if ns.TrackerItemsData and ns.TrackerItemsData.InvalidateOwnedItemsCache then
+        ns.TrackerItemsData:InvalidateOwnedItemsCache()
+    end
     if state == nil then
         db.spellItemSettings[spellID] = nil
         return
@@ -301,6 +308,39 @@ function TrackerDB.SetCustomActiveDuration(kind, id, value)
         settings.customActiveDuration = normalized
     end
 
+    return true
+end
+
+function TrackerDB.GetUseRealAura(kind, id)
+    if not IsSupportedCustomActiveKind(kind) then
+        return false
+    end
+
+    local settings
+    if kind == "spell" then
+        settings = TrackerDB.GetSpellItemSettings(id)
+    elseif kind == "item" then
+        settings = TrackerDB.GetItemSettings(id)
+    end
+    return settings and settings.useRealAura == true or false
+end
+
+function TrackerDB.SetUseRealAura(kind, id, value)
+    if not IsSupportedCustomActiveKind(kind) then
+        return false
+    end
+
+    local settings
+    if kind == "spell" then
+        settings = TrackerDB.EnsureSpellItemSettings(id)
+    elseif kind == "item" then
+        settings = TrackerDB.EnsureItemSettings(id)
+    end
+    if not settings then
+        return false
+    end
+
+    settings.useRealAura = value and true or nil
     return true
 end
 

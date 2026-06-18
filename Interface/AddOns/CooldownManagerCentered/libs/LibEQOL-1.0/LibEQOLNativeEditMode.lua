@@ -1,4 +1,4 @@
-local MODULE_MAJOR, MINOR = "LibEQOLNativeEditMode-1.0", 10000
+local MODULE_MAJOR, MINOR = "WildForkLibEQOLNativeEditMode-1.0", 10000
 local LibStub = _G.LibStub
 assert(LibStub, MODULE_MAJOR .. " requires LibStub")
 local C_Timer = _G.C_Timer

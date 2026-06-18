@@ -279,6 +279,7 @@ GameCooltipFrame2 = {}
 ---@field CreateSimpleFrame fun(self:table, parent:frame, width:number?, height:number?, title:string?, frameName:string?, panelOptions:table?, savedVariableTable:table?) : simplepanel
 ---@field CreateAnts fun(self:table, parent:frame, antTable:df_anttable, leftOffset:number?, rightOffset:number?, topOffset:number?, bottomOffset:number?) : frame
 ---@field CreateBorder fun(self:table, parent:frame, alpha1:number?, alpha2:number?, alpha3:number?) : frame
+---@field CreateProfilePanel fun(self:table, addonObject:table, frameName:string, parentFrame:frame, options:table?) : df_profilepanel
 ---@field CreateMenuWithGridScrollBox fun(self:table, parent:frame, name:string?, refreshMeFunc:function, refreshButtonFunc:function, clickFunc:function, onCreateButton:function, gridScrollBoxOptions:df_gridscrollbox_options) : df_gridscrollbox create a scrollbox with a grid layout to be used as a menu
 ---@field CreateSearchBox fun(self:table, parent:frame, callback:function) : df_searchbox
 ---@field CreateHeader fun(self:table, parent:frame, headerTable:df_headercolumndata[], options:table?, frameName:string?) : df_headerframe
@@ -348,7 +349,7 @@ GameCooltipFrame2 = {}
 ---@field CommaValue fun(self:table, value:number) : string convert a number to a string with commas, e.g. 1000000 -> 1,000,000
 ---@field SplitTextInLines fun(self:table, text:string) : string[] split a text into lines
 ---@field SetAnchor fun(self:table, widget:uiobject, anchorTable:df_anchor, anchorTo:uiobject?) only adjust the anchors of a widget, does not save values
----@field AddTextureToText fun(self:table, text:string, textureInfo:table, bAddSpace:boolean?, bAddAfterText:any) : string textureInfo is a table with .texture .width .height .coords{left, right, top, bottom}
+---@field AddTextureToText fun(self:table, text:string, textureInfo:table, bAddSpace:boolean?, bAddAfterText:any) : string, string textureInfo is a table with .texture .width .height .coords{left, right, top, bottom}
 ---@field ApplyStandardBackdrop fun(self:table, frame:frame, bUseSolidColor:boolean?, alphaScale:number?)
 ---@field NewLabel fun(self:table, parent:frame, container:frame, name:string?, member:string?, text:string|table, font:string?, size:any?, color:any?, layer:drawlayer?) : df_label
 ---@field NewDropDown fun(self:table, parent:frame, container:frame?, name:string?, member:string?, width:number?, height:number?, func:function, default:any, template:table?) : df_dropdown

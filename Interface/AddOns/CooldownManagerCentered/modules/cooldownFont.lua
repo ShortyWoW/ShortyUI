@@ -6,10 +6,6 @@ ns.CooldownFont = CooldownFont
 local Stacks = {}
 ns.Stacks = Stacks
 
-local unpack = unpack or table.unpack
-
-local LSM = LibStub("LibSharedMedia-3.0", true)
-
 local viewersSettingKey = {
     EssentialCooldownViewer = "Essential",
     UtilityCooldownViewer = "Utility",
@@ -57,7 +53,7 @@ local function SetIconCooldownFont(icon, viewerName)
     if not enabled then
         if ns.API:GetIsAffected(icon, "cooldownfont") then
             if fontString.defaults then
-                fontString:SetFont(unpack(fontString.defaults))
+                fontString:SetFont(unpack(fontString.defaults, 1, 3))
             end
             ns.API:UnsetAffected(icon, "cooldownfont")
         end
@@ -86,15 +82,72 @@ local function SetIconCooldownFont(icon, viewerName)
     fontString:SetFont(fontPath, size, ns.API:GetFontFlags(fontFlags))
 end
 
+-- Countdown text position offsets (separate per viewer). The countdown
+-- FontString is centered on the Cooldown frame by default, so applying our
+-- offset is just a re-anchor to CENTER with the configured X/Y. An offset of
+-- 0/0 restores the default centered position.
+local function GetViewerCooldownTextOffset(viewerName)
+    local map = {
+        EssentialCooldownViewer = {
+            x = ns.db.profile.cooldownManager_cooldownTextEssential_offsetX,
+            y = ns.db.profile.cooldownManager_cooldownTextEssential_offsetY,
+        },
+        UtilityCooldownViewer = {
+            x = ns.db.profile.cooldownManager_cooldownTextUtility_offsetX,
+            y = ns.db.profile.cooldownManager_cooldownTextUtility_offsetY,
+        },
+        BuffIconCooldownViewer = {
+            x = ns.db.profile.cooldownManager_cooldownTextBuffIcons_offsetX,
+            y = ns.db.profile.cooldownManager_cooldownTextBuffIcons_offsetY,
+        },
+    }
+    local cfg = map[viewerName]
+    if not cfg then
+        return 0, 0
+    end
+    return cfg.x or 0, cfg.y or 0
+end
+
+local function SetIconCooldownTextOffset(icon, viewerName)
+    if not icon.Cooldown or not icon.Cooldown.GetCountdownFontString then
+        return
+    end
+    local fontString = icon.Cooldown:GetCountdownFontString()
+    if not fontString then
+        return
+    end
+
+    local _, enabled = GetViewerCooldownSettings(viewerName)
+    local x, y = GetViewerCooldownTextOffset(viewerName)
+
+    -- Only apply the offset when the viewer's font override is on. When it's off
+    -- (or the offset is 0/0) restore the default centered position and stop
+    -- overriding the position.
+    if not enabled or (x == 0 and y == 0) then
+        if ns.API:GetIsAffected(icon, "cooldowntextpos") then
+            fontString:ClearAllPoints()
+            fontString:SetPoint("CENTER", icon.Cooldown, "CENTER", 0, 0)
+            ns.API:UnsetAffected(icon, "cooldowntextpos")
+        end
+        return
+    end
+
+    ns.API:SetAffected(icon, "cooldowntextpos")
+    fontString:ClearAllPoints()
+    fontString:SetPoint("CENTER", icon.Cooldown, "CENTER", x, y)
+end
+CooldownFont.SetIconCooldownTextOffset = SetIconCooldownTextOffset
+
 local function ProcessCooldownFontViewer(viewerName)
     local viewer = _G[viewerName]
     if not viewer or not ns.Runtime:IsReady(viewerName) then
         return
     end
-    local children = { viewer:GetChildren() }
+    local children = viewer:GetItemFrames()
     for _, child in ipairs(children) do
         if child.Icon and child.Cooldown then
             SetIconCooldownFont(child, viewerName)
+            SetIconCooldownTextOffset(child, viewerName)
         end
     end
 end
@@ -180,7 +233,7 @@ function Stacks:RestoreStackPositions(viewerName)
     if not viewer then
         return
     end
-    local children = { viewer:GetChildren() }
+    local children = viewer:GetItemFrames()
     local stackPoint, stackX, stackY = GetViewerStackDefaults(viewerName)
     for _, child in ipairs(children) do
         local fs = child and child.Applications and child.Applications.Applications
@@ -189,7 +242,7 @@ function Stacks:RestoreStackPositions(viewerName)
             fs:ClearAllPoints()
             fs:SetPoint(stackPoint, child, stackPoint, stackX, stackY)
             if fs.defaults then
-                fs:SetFont(unpack(fs.defaults))
+                fs:SetFont(unpack(fs.defaults, 1, 3))
             end
             ns.API:UnsetAffected(child, "stack")
         end
@@ -206,7 +259,7 @@ function Stacks:ApplyStackFonts(viewerName)
         self:RestoreStackPositions(viewerName)
         return
     end
-    local children = { viewer:GetChildren() }
+    local children = viewer:GetItemFrames()
     for _, child in ipairs(children) do
         local fs = child and child.Applications and child.Applications.Applications
             or child.ChargeCount and child.ChargeCount.Current

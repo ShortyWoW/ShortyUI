@@ -4,6 +4,7 @@
 -- Shows a blue border on icons suggested by C_AssistedCombat.GetNextCastSpell()
 
 local _, ns = ...
+local Affected = ns.API.Affected
 
 local Assistant = {}
 ns.Assistant = Assistant
@@ -59,19 +60,10 @@ local iconSpellCache = {}
 local function ExtractSpellIDFromIcon(icon)
     if icon.cooldownID then
         local info = C_CooldownViewer.GetCooldownViewerCooldownInfo(icon.cooldownID)
-        -- PrintDebug("Extracted spellID from icon.cooldownID:", info.spellID)
-        -- Not secret?!
         return info.spellID, info.overrideSpellID
     end
-    -- Everything is secret below
-    -- if icon.spellID then
-    --     PrintDebug("Extracted spellID from icon.spellID:", icon.spellID)
-    --     return icon.spellID
-    -- end
-    -- if icon.GetSpellID and type(icon.GetSpellID) == "function" then
-    --     PrintDebug("Extracted spellID from icon:GetSpellID():", icon:GetSpellID())
-    --     return icon:GetSpellID()
-    -- end
+    -- icon.spellID / icon:GetSpellID() are secret values here, so cooldownID is the
+    -- only usable source.
     return nil
 end
 
@@ -123,9 +115,10 @@ local function BuildIconSpellCacheForViewer(viewerName)
         UpdateRotationSpellsCache()
     end
 
-    local children = { viewerFrame:GetChildren() }
+    local children = viewerFrame:GetItemFrames()
     for _, child in ipairs(children) do
         if child.Icon then
+            ns.Sizes.TagViewerChild(child, settingName)
             local layoutIndex = child.layoutIndex or child:GetName() or tostring(child)
 
             local rawSpellID, overrideSpellID = ExtractSpellIDFromIcon(child)
@@ -149,11 +142,6 @@ local function BuildIconSpellCacheForViewer(viewerName)
 end
 
 local function BuildAllIconSpellCaches()
-    -- if ns.API:IsSomeAddOnRestrictionActive() then
-    --     PrintDebug("Skipping cache build - not safe (combat or other restriction)")
-    --     return false
-    -- end
-
     for viewerName, _ in pairs(viewersSettingKey) do
         BuildIconSpellCacheForViewer(viewerName)
     end
@@ -161,40 +149,73 @@ local function BuildAllIconSpellCaches()
     return true
 end
 
-local function GetOrCreateFlipbookHighlight(icon)
-    if icon.cmcFlipbookHighlight then
-        if icon.cmcFlipbookHighlight.Texture then
-            local iconWidth, iconHeight = icon:GetSize()
-            icon.cmcFlipbookHighlight.Texture:SetSize(
-                iconWidth * flipbookConfig.scale,
-                iconHeight * flipbookConfig.scale
-            )
-        end
-        return icon.cmcFlipbookHighlight
+local function ApplyFlipbookShape(flipbookFrame, icon, width, height)
+    local tex = flipbookFrame.Texture
+    if not tex then
+        return
     end
 
-    -- Create the flipbook frame
+    local w, h = width, height
+    if not w or not h or issecretvalue(w) or issecretvalue(h) then
+        print("Warning: ApplyFlipbookShape called with no width/height for icon")
+        w, h = icon:GetSize()
+    end
+    tex:SetSize(w * flipbookConfig.scale, h * flipbookConfig.scale)
+
+    local acStyle = ns.MasqueModule and ns.MasqueModule:GetAssistedCombatStyle(icon)
+    local shapeKey = (acStyle and acStyle.Texture) or "default"
+    if Affected(flipbookFrame).shapeKey == shapeKey then
+        return
+    end
+    Affected(flipbookFrame).shapeKey = shapeKey
+
+    local flipAnim = flipbookFrame.FlipAnim
+    if acStyle and acStyle.Texture then
+        tex:SetTexture(acStyle.Texture)
+        if acStyle.TexCoords then
+            tex:SetTexCoord(unpack(acStyle.TexCoords))
+        end
+        if flipAnim then
+            flipAnim:SetFlipBookFrameWidth(acStyle.FrameWidth or 0)
+            flipAnim:SetFlipBookFrameHeight(acStyle.FrameHeight or 0)
+        end
+    else
+        tex:SetAtlas(flipbookConfig.atlas)
+        if flipAnim then
+            flipAnim:SetFlipBookFrameWidth(0)
+            flipAnim:SetFlipBookFrameHeight(0)
+        end
+    end
+
+    -- Re-sync the loop so the new frame geometry takes effect immediately.
+    local anim = flipbookFrame.Anim
+    if anim and anim:IsPlaying() then
+        anim:Stop()
+        anim:Play()
+    end
+end
+
+local function GetOrCreateFlipbookHighlight(icon, width, height)
+    if Affected(icon).flipbookHighlight then
+        ApplyFlipbookShape(Affected(icon).flipbookHighlight, icon, width, height)
+        return Affected(icon).flipbookHighlight
+    end
+
     local flipbookFrame = CreateFrame("Frame", nil, icon)
     flipbookFrame:SetFrameLevel(icon:GetFrameLevel() + 10)
     flipbookFrame:SetAllPoints(icon)
 
-    -- Create the flipbook texture - size to match icon
     local flipbookTexture = flipbookFrame:CreateTexture(nil, "OVERLAY")
-    flipbookTexture:SetAtlas(flipbookConfig.atlas)
     flipbookTexture:SetBlendMode("ADD")
     flipbookTexture:SetPoint("CENTER", icon, "CENTER", 0, 0)
-    -- Set size to match icon dimensions
-    local iconWidth, iconHeight = icon:GetSize()
-    flipbookTexture:SetSize(iconWidth * flipbookConfig.scale, iconHeight * flipbookConfig.scale)
     flipbookFrame.Texture = flipbookTexture
 
-    -- Create animation group
     local animGroup = flipbookFrame:CreateAnimationGroup()
     animGroup:SetLooping("REPEAT")
     animGroup:SetToFinalAlpha(true)
     flipbookFrame.Anim = animGroup
 
-    -- Create alpha animation to keep texture visible
+    -- Holds the texture at full alpha; the flipbook frames do the animating.
     local alphaAnim = animGroup:CreateAnimation("Alpha")
     alphaAnim:SetChildKey("Texture")
     alphaAnim:SetFromAlpha(1)
@@ -202,7 +223,6 @@ local function GetOrCreateFlipbookHighlight(icon)
     alphaAnim:SetDuration(0.001)
     alphaAnim:SetOrder(0)
 
-    -- Create flipbook animation
     local flipAnim = animGroup:CreateAnimation("FlipBook")
     flipAnim:SetChildKey("Texture")
     flipAnim:SetDuration(flipbookConfig.duration)
@@ -210,23 +230,22 @@ local function GetOrCreateFlipbookHighlight(icon)
     flipAnim:SetFlipBookRows(flipbookConfig.rows)
     flipAnim:SetFlipBookColumns(flipbookConfig.columns)
     flipAnim:SetFlipBookFrames(flipbookConfig.frames)
-    flipAnim:SetFlipBookFrameWidth(0)
-    flipAnim:SetFlipBookFrameHeight(0)
     flipbookFrame.FlipAnim = flipAnim
 
-    -- Initially hidden
+    ApplyFlipbookShape(flipbookFrame, icon, width, height)
+
     flipbookFrame:SetAlpha(0)
     flipbookFrame:Show()
 
-    icon.cmcFlipbookHighlight = flipbookFrame
+    Affected(icon).flipbookHighlight = flipbookFrame
     return flipbookFrame
 end
 
 local function HideHighlights(child)
-    if child.cmcFlipbookHighlight then
-        child.cmcFlipbookHighlight:SetAlpha(0)
-        if child.cmcFlipbookHighlight.Anim:IsPlaying() then
-            child.cmcFlipbookHighlight.Anim:Stop()
+    if Affected(child).flipbookHighlight then
+        Affected(child).flipbookHighlight:SetAlpha(0)
+        if Affected(child).flipbookHighlight.Anim:IsPlaying() then
+            Affected(child).flipbookHighlight.Anim:Stop()
         end
     end
 end
@@ -261,7 +280,8 @@ local function UpdateIconHighlight(child, viewerSettingName)
     local isSuggested = currentSuggestedSpellID
         and (iconSpellID == currentSuggestedSpellID or (overrideSpellID and overrideSpellID == currentSuggestedSpellID))
 
-    local flipbook = GetOrCreateFlipbookHighlight(child)
+    local width, height = ns.Sizes.GetViewerIconSize(viewerSettingName)
+    local flipbook = GetOrCreateFlipbookHighlight(child, width, height)
     if isSuggested then
         flipbook:SetAlpha(1)
         if not flipbook.Anim:IsPlaying() then
@@ -291,7 +311,7 @@ function Assistant:UpdateViewerHighlights(viewerName)
     local isEnabled = ns.db and ns.db.profile and ns.db.profile[enabledKey] or false
     ns.API:SetAffected(viewerFrame, "assistant", isEnabled)
 
-    local children = { viewerFrame:GetChildren() }
+    local children = viewerFrame:GetItemFrames()
     for _, child in ipairs(children) do
         if child.Icon then -- Only process icon-like children
             UpdateIconHighlight(child, settingName)
@@ -307,38 +327,28 @@ function Assistant:UpdateAllHighlights()
     end
 end
 
--- Pre-creates borders for all rotation spells (call when safe to access spell IDs)
+-- Pre-create flipbook highlights for all in-rotation icons.
 function Assistant:PrepareRotationBorders()
-    -- Update the rotation cache first
     UpdateRotationSpellsCache()
-
-    -- Only build icon cache if safe
-    -- if not ns.API:IsSomeAddOnRestrictionActive() then
     BuildAllIconSpellCaches()
-    -- else
-    --     pendingCacheRebuild = true
-    -- end
 
-    -- Pre-create borders/flipbooks for icons that are cached as in-rotation
     for viewerName, settingName in pairs(viewersSettingKey) do
         local viewerFrame = _G[viewerName]
         if viewerFrame then
             if ns.db and ns.db.profile then
                 local enabledKey = "cooldownManager_showHighlight_" .. settingName
                 if ns.db.profile[enabledKey] then
-                    local children = { viewerFrame:GetChildren() }
+                    local children = viewerFrame:GetItemFrames()
                     for _, child in ipairs(children) do
                         if child.Icon and ns.API:GetIsAffected(child, "inRotation") then
-                            -- Pre-create flipbook highlight
-                            GetOrCreateFlipbookHighlight(child)
+                            local width, height = ns.Sizes.GetViewerIconSize(settingName)
+                            GetOrCreateFlipbookHighlight(child, width, height)
                         end
                     end
                 end
             end
         end
     end
-
-    PrintDebug("Borders/flipbooks prepared for rotation spells")
 end
 
 local eventFrame = CreateFrame("Frame")
@@ -403,7 +413,7 @@ function Assistant:Shutdown()
         local viewerFrame = _G[viewerName]
         if viewerFrame then
             ns.API:UnsetAffected(viewerFrame, "assistant")
-            local children = { viewerFrame:GetChildren() }
+            local children = viewerFrame:GetItemFrames()
             for _, child in ipairs(children) do
                 HideHighlights(child)
             end
@@ -443,10 +453,8 @@ function Assistant:Enable()
                     end
 
                     PrintDebug("RefreshLayout called for viewer:", viewerName)
-                    -- if not ns.API:IsSomeAddOnRestrictionActive() then
                     BuildIconSpellCacheForViewer(viewerName)
                     Assistant:PrepareRotationBorders()
-                    -- end
                     Assistant:UpdateViewerHighlights(viewerName)
                 end)
             end
@@ -492,6 +500,3 @@ function Assistant:OnSettingChanged(viewerSettingName)
         self:UpdateAllHighlights()
     end
 end
-
--- 84561
--- C_CooldownViewer.GetCooldownViewerCooldownInfo(84561)

@@ -10,7 +10,6 @@ local ITEM_EQUIP_LAST = INVSLOT_LAST_EQUIPPED or 19
 local ITEM_STATE_HIDDEN = "hidden"
 
 local ITEM_STATE_TRACKER1 = "tracker1"
-local ITEM_STATE_TRACKER2 = "tracker2"
 
 local ENTRY_KIND_WILDCARD_SLOTS = "wildcardSlots"
 local WILDCARD_SLOT_TRINKET1 = "trinket1"
@@ -82,6 +81,15 @@ local WILDCARD_SLOT_INVENTORY_SLOTS = {
 
 local generalSpellBookCache = nil
 
+-- Whether an itemID is trackable (has an on-use spell or proc data) is static for
+-- a given item, so memoize it instead of calling C_Item.GetItemSpell on every scan.
+local trackableItemCache = {}
+
+-- ScanOwnedItems walks every bag + equipment slot and is called once per tracker
+-- per refresh. Ownership only changes on bag/equipment/spellbook changes, so cache
+-- the scan result and invalidate it from those events (see the event frame below).
+local ownedItemsCache = nil
+
 local function MakeEntry(kind, id)
     return {
         kind = kind,
@@ -145,7 +153,7 @@ local function GetSpellIDsFromGeneralSpellBook()
         return ids
     end
 
-    local skillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo(1, spellBank)
+    local skillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo(1)
     if not skillLineInfo then
         return ids
     end
@@ -190,7 +198,7 @@ function ItemsData:GetItemNameByID(itemID)
     if C_Item and C_Item.GetItemNameByID then
         return C_Item.GetItemNameByID(itemID)
     end
-    local name = GetItemInfo(itemID)
+    local name = C_Item.GetItemInfo(itemID)
     return name
 end
 
@@ -343,13 +351,24 @@ function ItemsData:SetEntryState(kind, id, state)
     end
 end
 
+-- Proc trinkets often have no on-use spell (their effect is an equip proc), so
+-- GetItemSpell can't see them. Treat anything with proc data as trackable too.
+local function IsProcDataItem(itemID)
+    local data = ns.TrackerAuraData
+    return itemID ~= nil and data ~= nil and data.procByItemID ~= nil and data.procByItemID[itemID] ~= nil
+end
+
 local function IsTrackableItem(itemID)
     if not itemID then
         return false
     end
-    local usable = C_Item.GetItemSpell(itemID)
-
-    return usable ~= nil
+    local cached = trackableItemCache[itemID]
+    if cached ~= nil then
+        return cached
+    end
+    local result = (C_Item.GetItemSpell(itemID) ~= nil) or IsProcDataItem(itemID)
+    trackableItemCache[itemID] = result
+    return result
 end
 
 local function IsTrackableWildcardSlot(slotID)
@@ -357,7 +376,7 @@ local function IsTrackableWildcardSlot(slotID)
     return itemID ~= nil and IsTrackableItem(itemID) and not IGNORED_WILDCARD_TRINKETS[itemID]
 end
 
-function ItemsData:ScanOwnedItems()
+local function DoScanOwnedItems()
     local owned = {
         items = {},
         spells = {},
@@ -370,7 +389,7 @@ function ItemsData:ScanOwnedItems()
             for slot = 1, slots do
                 local itemID = C_Container.GetContainerItemID(bag, slot)
                 if itemID then
-                    local classID = select(6, GetItemInfoInstant(itemID))
+                    local classID = select(6, C_Item.GetItemInfoInstant(itemID))
                     if classID == Enum.ItemClass.Consumable then
                         owned.items[itemID] = true
                     end
@@ -405,14 +424,52 @@ function ItemsData:ScanOwnedItems()
     return owned
 end
 
+-- Cached entry point. Consumers (EnsureTrackedItems, GetTrackerEntries,
+-- CleanupHiddenEntries) treat the result as read-only, so a shared table is safe.
+function ItemsData:ScanOwnedItems()
+    if ownedItemsCache then
+        return ownedItemsCache
+    end
+    ownedItemsCache = DoScanOwnedItems()
+    return ownedItemsCache
+end
+
+-- Drops the cached ownership scan; rebuilt lazily on the next ScanOwnedItems call.
+function ItemsData:InvalidateOwnedItemsCache()
+    ownedItemsCache = nil
+end
+
 function ItemsData:ScanOwnedItemsForMiscPanel()
-    local owned = self:ScanOwnedItems()
+    -- Build fresh: this path overwrites owned.spells, which would corrupt the
+    -- shared cached table returned by ScanOwnedItems.
+    local owned = DoScanOwnedItems()
     owned.spells = {}
     for spellID in pairs(GetSpellIDsFromGeneralSpellBook()) do
         owned.spells[spellID] = true
     end
     return owned
 end
+
+local ownedItemsEventFrame = CreateFrame("Frame")
+for _, event in ipairs({
+    "BAG_UPDATE_DELAYED",
+    "PLAYER_EQUIPMENT_CHANGED",
+    "ITEM_LOCKED",
+    "PLAYER_ENTERING_WORLD",
+    "PLAYER_SPECIALIZATION_CHANGED",
+    "ACTIVE_TALENT_GROUP_CHANGED",
+    "TRAIT_CONFIG_UPDATED",
+    "PLAYER_TALENT_UPDATE",
+    "SPELLS_CHANGED",
+}) do
+    ownedItemsEventFrame:RegisterEvent(event)
+end
+ownedItemsEventFrame:SetScript("OnEvent", function(_, event)
+    ownedItemsCache = nil
+    if event == "PLAYER_ENTERING_WORLD" then
+        wipe(trackableItemCache)
+    end
+end)
 
 function ItemsData:EnsureTrackedItems(owned)
     local ownedItems = owned and owned.items or {}
@@ -499,7 +556,30 @@ function ItemsData:GetItemIDsByState(state)
     return ids
 end
 
-function ItemsData:GetTracker1Entries(owned)
+-- Returns the item-state string for tracker `index` (1-based): "tracker1", "tracker2", ...
+function ItemsData:GetTrackerStateName(index)
+    return "tracker" .. index
+end
+
+-- Returns the numeric tracker index for a state string, or nil if it isn't a tracker state.
+function ItemsData:GetTrackerIndexFromState(state)
+    if type(state) ~= "string" then
+        return nil
+    end
+    local n = state:match("^tracker(%d+)$")
+    return n and tonumber(n) or nil
+end
+
+-- True when `state` names a tracker bucket (as opposed to "hidden" / nil).
+function ItemsData:IsTrackerState(state)
+    return self:GetTrackerIndexFromState(state) ~= nil
+end
+
+-- Returns the displayable entries assigned to tracker `index`, honouring `owned`
+-- filtering (unowned entries are skipped unless alwaysShow) and resolving wildcard
+-- slots to plain item entries so downstream handling is uniform.
+function ItemsData:GetTrackerEntries(index, owned)
+    local state = self:GetTrackerStateName(index)
     local entries = {}
     local db = DB.GetDB()
     local ownedItems = owned and owned.items or {}
@@ -508,7 +588,7 @@ function ItemsData:GetTracker1Entries(owned)
     local addedItemIDs = {} -- prevent duplicate entries when a wildcard item is also explicitly tracked
 
     for itemID, settings in pairs(db.itemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER1 and (ownedItems[itemID] or settings.alwaysShow) then
+        if settings.state == state and (ownedItems[itemID] or settings.alwaysShow) then
             local e = MakeEntry("item", itemID)
             addedItemIDs[itemID] = true
             table.insert(entries, e)
@@ -516,7 +596,7 @@ function ItemsData:GetTracker1Entries(owned)
     end
 
     for spellID, settings in pairs(db.spellItemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER1 and (ownedSpells[spellID] or settings.alwaysShow) then
+        if settings.state == state and (ownedSpells[spellID] or settings.alwaysShow) then
             local e = MakeEntry("spell", spellID)
             table.insert(entries, e)
         end
@@ -525,7 +605,11 @@ function ItemsData:GetTracker1Entries(owned)
     -- Wildcard slots are resolved to plain item entries so the tracker handles them
     -- identically to explicitly-tracked items (no special-casing needed downstream).
     for slotID, settings in pairs(db.wildcardSlotSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER1 and (ownedWildcardSlots[slotID] or settings.alwaysShow) and IsTrackableWildcardSlot(slotID) then
+        if
+            settings.state == state
+            and (ownedWildcardSlots[slotID] or settings.alwaysShow)
+            and IsTrackableWildcardSlot(slotID)
+        then
             local itemID = GetWildcardSlotItemID(slotID)
             if itemID and not addedItemIDs[itemID] then
                 local e = MakeEntry("item", itemID)
@@ -540,48 +624,31 @@ function ItemsData:GetTracker1Entries(owned)
     return entries
 end
 
-function ItemsData:GetTracker2Entries(owned)
-    local entries = {}
+-- True when no item / spell / wildcard slot is assigned to tracker `index`,
+-- regardless of ownership. Used to gate removal of the trailing tracker.
+function ItemsData:IsTrackerEmpty(index)
+    local state = self:GetTrackerStateName(index)
     local db = DB.GetDB()
-    local ownedItems = owned and owned.items or {}
-    local ownedSpells = owned and owned.spells or {}
-    local ownedWildcardSlots = owned and owned.wildcardSlots or {}
-    local addedItemIDs = {} -- prevent duplicate entries when a wildcard item is also explicitly tracked
-
-    for itemID, settings in pairs(db.itemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER2 and (ownedItems[itemID] or settings.alwaysShow) then
-            local e = MakeEntry("item", itemID)
-            addedItemIDs[itemID] = true
-            table.insert(entries, e)
+    for _, settings in pairs(db.itemSettings or {}) do
+        if settings.state == state then
+            return false
         end
     end
-
-    for spellID, settings in pairs(db.spellItemSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER2 and (ownedSpells[spellID] or settings.alwaysShow) then
-            local e = MakeEntry("spell", spellID)
-            table.insert(entries, e)
+    for _, settings in pairs(db.spellItemSettings or {}) do
+        if settings.state == state then
+            return false
         end
     end
-
-    for slotID, settings in pairs(db.wildcardSlotSettings or {}) do
-        if settings.state == ITEM_STATE_TRACKER2 and (ownedWildcardSlots[slotID] or settings.alwaysShow) and IsTrackableWildcardSlot(slotID) then
-            local itemID = GetWildcardSlotItemID(slotID)
-            if itemID and not addedItemIDs[itemID] then
-                local e = MakeEntry("item", itemID)
-                e.wildcardSlotID = slotID
-                table.insert(entries, e)
-            end
+    for _, settings in pairs(db.wildcardSlotSettings or {}) do
+        if settings.state == state then
+            return false
         end
     end
-
-    EnsureOrderForEntries(entries)
-    SortEntries(entries)
-    return entries
+    return true
 end
 
 ItemsData.ITEM_STATE_HIDDEN = ITEM_STATE_HIDDEN
 ItemsData.ITEM_STATE_TRACKER1 = ITEM_STATE_TRACKER1
-ItemsData.ITEM_STATE_TRACKER2 = ITEM_STATE_TRACKER2
 ItemsData.ENTRY_KIND_WILDCARD_SLOTS = ENTRY_KIND_WILDCARD_SLOTS
 ItemsData.WILDCARD_SLOT_TRINKET1 = WILDCARD_SLOT_TRINKET1
 ItemsData.WILDCARD_SLOT_TRINKET2 = WILDCARD_SLOT_TRINKET2

@@ -14,9 +14,13 @@ local viewers = {
     { viewerName = "BuffBarCooldownViewer" },
     { viewerName = "EssentialCooldownViewer" },
     { viewerName = "UtilityCooldownViewer" },
-    { viewerName = "CMCTracker1", settingsKey = "tracker1" },
-    { viewerName = "CMCTracker2", settingsKey = "tracker2" },
 }
+-- Append all possible custom trackers. Inactive/absent trackers resolve to nil
+-- frames and are skipped harmlessly; the visibility driver only affects alpha, so
+-- it never re-shows a deactivated (hidden) tracker.
+for i = 1, (ns.CONSTANTS.MAX_TRACKERS or 10) do
+    table.insert(viewers, { viewerName = "CMCTracker" .. i, settingsKey = "tracker" .. i })
+end
 
 -- Rules that map directly to macro conditionals supported by RegisterAttributeDriver.
 -- SHOW_IN_INSTANCE has no macro conditional equivalent and is handled via events.

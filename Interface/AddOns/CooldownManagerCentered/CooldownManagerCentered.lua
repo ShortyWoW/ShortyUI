@@ -101,6 +101,9 @@ function addon:RefreshConfig()
     if ns.CooldownStyle then
         ns.CooldownStyle:Initialize()
     end
+    if ns.MasqueModule then
+        ns.MasqueModule:Initialize()
+    end
 
     if ns.ButtonPress then
         ns.ButtonPress:Initialize()
@@ -233,6 +236,9 @@ function addon:OnEnable()
     end
     if ns.CooldownStyle then
         ns.CooldownStyle:Initialize()
+    end
+    if ns.MasqueModule then
+        ns.MasqueModule:Initialize()
     end
     if ns.ButtonPress then
         ns.ButtonPress:Initialize()

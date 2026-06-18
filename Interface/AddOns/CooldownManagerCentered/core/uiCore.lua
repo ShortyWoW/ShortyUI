@@ -4,7 +4,7 @@ local _, ns = ...
 local WilduUICore = {}
 ns.WilduUICore = WilduUICore
 
-local LEM = LibStub("LibEQOLEditMode-1.0")
+local LEM = LibStub("WildForkLibEQOLEditMode-1.0")
 
 local HIDDEN_POSITION = { point = "TOP", x = 0, y = 500 }
 local DEFAULT_SCALE = 1
@@ -304,11 +304,23 @@ function WilduUICore.RegisterFrameWithLEM(frame, configKey, additionalSettings, 
 
     local defaultTable = ns.DEFAULT_SETTINGS.profile.editMode[configKey] or {}
     defaultTable.enableOverlayToggle = true
+    -- Custom trackers don't expose "Reset to Default" / "Reset Position" buttons.
+    defaultTable.showReset = false
+    defaultTable.showSettingsReset = false
     LEM:AddFrame(frame, onPositionChangedCallback or WilduUICore.CreateOnPositionChanged(configKey), defaultTable)
 
+    -- Frame-level Scale/Strata live in a collapsible "General" section so the
+    -- panel groups the same way the cooldown viewers' Edit Mode settings do.
+    local scaleSetting =
+        WilduUICore.CreateScaleSetting(configKey, FRAME_DEFAULT_CONFIG.scale, frame, onPositionChangedCallback)
+    local strataSetting = WilduUICore.CreateStrataSetting(configKey, FRAME_DEFAULT_CONFIG.strata, frame)
+    scaleSetting.parentId = "general"
+    strataSetting.parentId = "general"
+
     local settings = {
-        WilduUICore.CreateScaleSetting(configKey, FRAME_DEFAULT_CONFIG.scale, frame, onPositionChangedCallback),
-        WilduUICore.CreateStrataSetting(configKey, FRAME_DEFAULT_CONFIG.strata, frame),
+        { kind = LEM.SettingType.Collapsible, id = "general", name = "General", defaultCollapsed = true },
+        scaleSetting,
+        strataSetting,
     }
 
     for _, setting in ipairs(additionalSettings) do

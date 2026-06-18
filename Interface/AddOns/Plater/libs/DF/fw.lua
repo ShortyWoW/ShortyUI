@@ -1,7 +1,7 @@
 -- SPDX-License-Identifier: LGPL-2.1-or-later
 -- Details Framework (DetailsFramework-1.0) -- see Libs/DF/LICENSE
 
-local dversion = 736
+local dversion = 743
 local major, minor = "DetailsFramework-1.0", dversion
 local DF, oldminor = LibStub:NewLibrary(major, minor)
 
@@ -623,7 +623,6 @@ local embedFunctions = {
 	"ColorPick",
 	"IconPick",
 	"CreateSimplePanel",
-	"CreateChartPanel",
 	"CreateImage",
 	"CreateScrollBar",
 	"CreateSwitch",
@@ -810,15 +809,24 @@ end
 ---@param subOffset number?
 ---@return any
 function DF.table.getfrompath(t, path, subOffset)
+	--Lookup uses explicit `== nil` checks rather than truthiness so that a leaf value of
+	--`false` is returned verbatim instead of being treated as "missing key" and coerced to nil.
+	--The previous `t[key] or t[tonumber(key)]` form discarded legitimate false values, which
+	--corrupted callers that snapshot a value here and replay it later (e.g. editor.lua's
+	--undo/redo snapshot capture for toggles — replaying nil through setfrompath deletes the
+	--key, making the option disappear from the menu on the next rebuild).
 	if (path:match("%.") or path:match("%[")) then
 		local value
 		local offset = 0
 
 		for key in path:gmatch("[%w_]+") do
-			value = t[key] or t[tonumber(key)]
+			value = t[key]
+			if (value == nil) then
+				value = t[tonumber(key)]
+			end
 
-			--check if the value is nil, if it is, the key does not exists in the table
-			if (not value) then
+			--check if the value is nil, if it is, the key does not exist in the table
+			if (value == nil) then
 				return
 			end
 
@@ -833,7 +841,11 @@ function DF.table.getfrompath(t, path, subOffset)
 
 		return value
 	else
-		return t[path] or t[tonumber(path)]
+		local value = t[path]
+		if (value == nil) then
+			value = t[tonumber(path)]
+		end
+		return value
 	end
 end
 
@@ -1765,7 +1777,7 @@ end
 ---@param textureInfo table
 ---@param bAddSpace any
 ---@param bAddAfterText any
----@return string
+---@return string, string
 function DF:AddTextureToText(text, textureInfo, bAddSpace, bAddAfterText)
 	local texture = textureInfo.texture
 	local textureWidth = textureInfo.width
@@ -1778,12 +1790,16 @@ function DF:AddTextureToText(text, textureInfo, bAddSpace, bAddAfterText)
 	top = top or 0
 	bottom = bottom or 1
 
+	local textureString = "|T" .. texture .. ":" .. textureHeight .. ":" .. textureWidth .. ":0:0:" .. imageWidth .. ":" .. imageHeight .. ":" .. (left * imageWidth) .. ":" .. (right * imageWidth) .. ":" .. (top * imageHeight) .. ":" .. (bottom * imageHeight) .. "|t"
+
 	if (bAddAfterText) then
-		local newString = text .. (bAddSpace and " " or "") .. "|T" .. texture .. ":" .. textureHeight .. ":" .. textureWidth .. ":0:0:" .. imageWidth .. ":" .. imageHeight .. ":" .. (left * imageWidth) .. ":" .. (right * imageWidth) .. ":" .. (top * imageHeight) .. ":" .. (bottom * imageHeight) .. "|t"
-		return newString
+		textureString = (bAddSpace and " " or "") .. textureString
+		local newString = text .. textureString
+		return newString, textureString
 	else
-		local newString = "|T" .. texture .. ":" .. textureHeight .. ":" .. textureWidth .. ":0:0:" .. imageWidth .. ":" .. imageHeight .. ":" .. (left * imageWidth) .. ":" .. (right * imageWidth) .. ":" .. (top * imageHeight) .. ":" .. (bottom * imageHeight) .. "|t" .. (bAddSpace and " " or "") .. text
-		return newString
+		textureString = textureString .. (bAddSpace and " " or "")
+		local newString = textureString .. text
+		return newString, textureString
 	end
 end
 
@@ -4316,7 +4332,7 @@ function DF:CreateGlowOverlay(parent, antsColor, glowColor)
 	end
 
 	local glowFrame
-	if (buildInfo >= 110107 or DF.IsTBCWow()) then --24-05-2025: in the 11.1.7 patch, the template used here does not exist anymore, replacement used
+	if (DF.IsMidnightWowAPI() or DF.IsTBCWow()) then --24-05-2025: in the 11.1.7 patch, the template used here does not exist anymore, replacement used
 		glowFrame = CreateFrame("frame", frameName, parent, "ActionButtonSpellAlertTemplate")
 	else
 		glowFrame = CreateFrame("frame", frameName, parent, "ActionBarButtonSpellActivationAlert")

@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/raid Are you on voice comms somewhere, I haven't seen a link go out.",
 "/rc",
 "/reload",
 "/tomtom",
 "/way 32.67 76.93 Flamebreach",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

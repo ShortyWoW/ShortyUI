@@ -1,11 +1,9 @@
 local _, ns = ...
+local Affected = ns.API.Affected
 
 local BuffBarIconMode = {}
 ns.BuffBarIconMode = BuffBarIconMode
 
-local unpack = unpack or table.unpack
-
-local LSM_font = LibStub and LibStub("LibSharedMedia-3.0", true)
 local BASE_SQUARE_MASK = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\Square"
 local DEFAULT_MASK_TEXTURE = "Interface\\AddOns\\CooldownManagerCentered\\Media\\Art\\CooldownManager"
 
@@ -103,26 +101,13 @@ local function ApplyFontStyling(frame)
     end
     local p = ns.db.profile
     local iconHost = GetBuffBarParts(frame)
-    local borderLevel = (frame.cmcBorder and frame.cmcBorder:GetFrameLevel())
+    local borderLevel = (Affected(frame).border and Affected(frame).border:GetFrameLevel())
         or ((iconHost and iconHost:GetFrameLevel() or frame:GetFrameLevel()) + 4)
 
-    -- local cooldownFS = frame.Bar.Duration
     local stackFS = frame.Icon.Applications
 
-    -- if frame.Bar then
-    --     frame.Bar:SetFrameLevel(borderLevel + 1)
-    -- end
-    -- if frame.Bar.Name then
-    --     frame.Bar.Name:Hide()
-    -- end
-
-    -- if cooldownFS then
-    --     cooldownFS:Hide()
-    -- end
-
-    -- Apply cooldown font to _CMC_Cooldown's countdown FontString
-    if frame._CMC_Cooldown and frame._CMC_Cooldown.GetCountdownFontString then
-        local cdFS = frame._CMC_Cooldown:GetCountdownFontString()
+    if frame.Cooldown and frame.Cooldown.GetCountdownFontString then
+        local cdFS = frame.Cooldown:GetCountdownFontString()
         if cdFS and p.cooldownManager_cooldownFontSizeBuffIcons_enabled then
             local size = p.cooldownManager_cooldownFontSizeBuffIcons
             if size == "NIL" then
@@ -139,9 +124,26 @@ local function ApplyFontStyling(frame)
                 cdFS:SetFont(GetBuffIconDefaultFontPath(fontName), size, ns.API:GetFontFlags(fontFlags))
             end
         end
+        -- Buff bars in icon mode share the Buff Icons countdown text offset, and
+        -- the same Buff Icons "Override Font" gate. Off (or 0/0) restores the
+        -- default centered position.
+        if cdFS then
+            local enabled = p.cooldownManager_cooldownFontSizeBuffIcons_enabled
+            local ox = enabled and (p.cooldownManager_cooldownTextBuffIcons_offsetX or 0) or 0
+            local oy = enabled and (p.cooldownManager_cooldownTextBuffIcons_offsetY or 0) or 0
+            if ox ~= 0 or oy ~= 0 then
+                cdFS:ClearAllPoints()
+                cdFS:SetPoint("CENTER", frame.Cooldown, "CENTER", ox, oy)
+                ns.API:SetAffected(frame, "cooldowntextpos")
+            elseif ns.API:GetIsAffected(frame, "cooldowntextpos") then
+                cdFS:ClearAllPoints()
+                cdFS:SetPoint("CENTER", frame.Cooldown, "CENTER", 0, 0)
+                ns.API:UnsetAffected(frame, "cooldowntextpos")
+            end
+        end
     end
 
-    local fp, fsz, ffl = unpack(ns.Stacks.defaultUtilityAndBuffStackFont)
+    local fp, fsz = unpack(ns.Stacks.defaultUtilityAndBuffStackFont, 1, 2)
     if stackFS and p.cooldownManager_stackAnchorBuffIcons_enabled then
         local size = p.cooldownManager_stackFontSizeBuffIcons
         if size == "NIL" or not size then
@@ -166,17 +168,20 @@ local function ApplyFontStyling(frame)
             local stackFontPath = ns.API:GetFontPath(fontName) or fp
             stackFS:SetFont(stackFontPath, size, flags)
         end
-        if not frame._cmcStackAnchor then
-            frame._cmcStackAnchor = CreateFrame("Frame", nil, frame)
+        if not frame.Applications then
+            frame.Applications = {}
         end
-        frame._cmcStackAnchor:SetAllPoints(frame)
-        frame._cmcStackAnchor:SetFrameLevel(borderLevel + 5)
+        if not frame.Applications.Applications then
+            frame.Applications.Applications = CreateFrame("Frame", nil, frame)
+        end
+        frame.Applications.Applications:SetAllPoints(frame)
+        frame.Applications.Applications:SetFrameLevel(borderLevel + 5)
 
-        stackFS:SetParent(frame._cmcStackAnchor)
+        stackFS:SetParent(frame.Applications.Applications)
 
         stackFS:SetJustifyV("MIDDLE")
         stackFS:ClearAllPoints()
-        stackFS:SetPoint(point, frame._cmcStackAnchor, point, offsetX, offsetY)
+        stackFS:SetPoint(point, frame.Applications.Applications, point, offsetX, offsetY)
         stackFS:SetDrawLayer("OVERLAY", 7)
         stackFS:SetSize(30, size)
         stackFS:SetJustifyH("CENTER")
@@ -187,19 +192,22 @@ local function ApplyFontStyling(frame)
         end
     elseif stackFS then
         stackFS:SetFontObject("NumberFontNormalSmall")
-        if not frame._cmcStackAnchor then
-            frame._cmcStackAnchor = CreateFrame("Frame", nil, frame)
+        if not frame.Applications then
+            frame.Applications = {}
         end
-        frame._cmcStackAnchor:SetAllPoints(frame)
-        frame._cmcStackAnchor:SetFrameLevel(borderLevel + 5)
+        if not frame.Applications.Applications then
+            frame.Applications.Applications = CreateFrame("Frame", nil, frame)
+        end
+        frame.Applications.Applications:SetAllPoints(frame)
+        frame.Applications.Applications:SetFrameLevel(borderLevel + 5)
 
-        stackFS:SetParent(frame._cmcStackAnchor)
+        stackFS:SetParent(frame.Applications.Applications)
         stackFS:SetJustifyH("RIGHT")
         stackFS:SetJustifyV("MIDDLE")
         stackFS:ClearAllPoints()
         stackFS:SetPoint(
             ns.CONSTANTS.FONT.DEFAULT_STACK_POINT,
-            frame._cmcStackAnchor,
+            frame.Applications.Applications,
             ns.CONSTANTS.FONT.DEFAULT_STACK_POINT,
             ns.CONSTANTS.FONT.DEFAULT_STACK_OFFSET_X,
             ns.CONSTANTS.FONT.DEFAULT_STACK_OFFSET_Y
@@ -229,23 +237,23 @@ local function ApplyIconStyling(frame, iconHost, iconTexture)
     end
 
     local bt = square and GetBorderThickness(frame) or 0
-    if not frame.cmcBorder then
-        frame.cmcBorder = CreateFrame("Frame", nil, frame, "BackdropTemplate")
-        frame.cmcBorder:SetFrameLevel(iconHost:GetFrameLevel() + 10)
+    if not Affected(frame).border then
+        Affected(frame).border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
+        Affected(frame).border:SetFrameLevel(iconHost:GetFrameLevel() + 10)
     end
-    frame.cmcBorder:ClearAllPoints()
-    frame.cmcBorder:SetAllPoints(iconHost)
+    Affected(frame).border:ClearAllPoints()
+    Affected(frame).border:SetAllPoints(iconHost)
     if square and bt > 0 then
-        frame.cmcBorder:SetBackdrop({ edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = bt })
-        frame.cmcBorder:SetBackdropBorderColor(0, 0, 0, 1)
-        frame.cmcBorder:Show()
+        Affected(frame).border:SetBackdrop({ edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = bt })
+        Affected(frame).border:SetBackdropBorderColor(0, 0, 0, 1)
+        Affected(frame).border:Show()
     else
-        frame.cmcBorder:Hide()
+        Affected(frame).border:Hide()
     end
 
     if iconHost and iconHost.GetRegions then
-        frame._cmcHiddenIconHostRegions = frame._cmcHiddenIconHostRegions or {}
-        frame._cmcReplacedMaskRegions = frame._cmcReplacedMaskRegions or {}
+        Affected(frame).hiddenIconHostRegions = Affected(frame).hiddenIconHostRegions or {}
+        Affected(frame).replacedMaskRegions = Affected(frame).replacedMaskRegions or {}
         for _, region in ipairs({ iconHost:GetRegions() }) do
             if region:IsObjectType("Texture") then
                 local tex = region.GetTexture and region:GetTexture()
@@ -256,8 +264,8 @@ local function ApplyIconStyling(frame, iconHost, iconTexture)
                     or atlas == "UI-HUD-CoolDownManager-IconOverlay"
                 if isMask then
                     if square then
-                        if not frame._cmcReplacedMaskRegions[region] then
-                            frame._cmcReplacedMaskRegions[region] = tex
+                        if not Affected(frame).replacedMaskRegions[region] then
+                            Affected(frame).replacedMaskRegions[region] = tex
                         end
                         region:SetTexture(BASE_SQUARE_MASK)
                     else
@@ -265,14 +273,14 @@ local function ApplyIconStyling(frame, iconHost, iconTexture)
                     end
                 elseif isOverlay then
                     if square then
-                        if not frame._cmcHiddenIconHostRegions[region] then
-                            frame._cmcHiddenIconHostRegions[region] = region:GetAlpha()
+                        if not Affected(frame).hiddenIconHostRegions[region] then
+                            Affected(frame).hiddenIconHostRegions[region] = region:GetAlpha()
                         end
                         region:SetAlpha(0)
                     else
-                        if frame._cmcHiddenIconHostRegions[region] then
-                            region:SetAlpha(frame._cmcHiddenIconHostRegions[region])
-                            frame._cmcHiddenIconHostRegions[region] = nil
+                        if Affected(frame).hiddenIconHostRegions[region] then
+                            region:SetAlpha(Affected(frame).hiddenIconHostRegions[region])
+                            Affected(frame).hiddenIconHostRegions[region] = nil
                         end
                         local _w, _h = frame:GetSize()
                         local _ratio = (_w and _h and _w > 0) and (_h / _w) or 1.0
@@ -287,7 +295,7 @@ local function ApplyIconStyling(frame, iconHost, iconTexture)
 end
 
 local function EnsureBackup(frame)
-    if not frame or frame._cmcBuffBarIconBackup then
+    if not frame or Affected(frame).buffBarIconBackup then
         return
     end
 
@@ -305,18 +313,18 @@ local function EnsureBackup(frame)
         end
     end
 
-    frame._cmcBuffBarIconBackup = {
+    Affected(frame).buffBarIconBackup = {
         hiddenState = hiddenState,
     }
 end
 
 local function UpdateCMCCooldown(frame)
-    if not frame._CMC_Cooldown then
+    if not frame.Cooldown then
         return
     end
 
     if frame.auraInstanceID then
-        local cdframe = frame._CMC_Cooldown
+        local cdframe = frame.Cooldown
         if cdframe then
             local durationObj = C_UnitAuras.GetAuraDuration("player", frame.auraInstanceID)
             if durationObj ~= nil then
@@ -330,13 +338,14 @@ local function EnsureCMCCooldown(frame)
     local iconHost = frame.Icon or frame.icon
     local isSquare = IsSquare()
 
-    if frame._CMC_Cooldown then
-        frame._CMC_Cooldown:ClearAllPoints()
-        frame._CMC_Cooldown:SetAllPoints(iconHost)
+    if frame.Cooldown then
+        frame.Cooldown:Show()
+        frame.Cooldown:ClearAllPoints()
+        frame.Cooldown:SetAllPoints(iconHost)
         if isSquare then
-            frame._CMC_Cooldown:SetSwipeTexture(BASE_SQUARE_MASK)
+            frame.Cooldown:SetSwipeTexture(BASE_SQUARE_MASK)
         else
-            frame._CMC_Cooldown:SetSwipeTexture(DEFAULT_MASK_TEXTURE)
+            frame.Cooldown:SetSwipeTexture(DEFAULT_MASK_TEXTURE)
         end
         return
     end
@@ -348,16 +357,16 @@ local function EnsureCMCCooldown(frame)
     cdframe:SetDrawBling(false)
     cdframe:SetReverse(true)
     if isSquare then
-        cdframe:SetSwipeTexture(BASE_SQUARE_MASK)
+        cdframe:SetSwipeTexture(BASE_SQUARE_MASK) ---@diagnostic disable-line: missing-parameter
     else
-        cdframe:SetSwipeTexture(DEFAULT_MASK_TEXTURE)
+        cdframe:SetSwipeTexture(DEFAULT_MASK_TEXTURE) ---@diagnostic disable-line: missing-parameter
     end
     cdframe:SetHideCountdownNumbers(false)
     cdframe:SetFrameLevel(baseLevel + 5)
     cdframe:ClearAllPoints()
     cdframe:SetAllPoints(iconHost)
 
-    frame._CMC_Cooldown = cdframe
+    frame.Cooldown = cdframe
     local function onCooldownUpdate(self)
         UpdateCMCCooldown(self)
     end
@@ -391,7 +400,7 @@ function BuffBarIconMode.Apply(frame)
 
     local targetWidth, targetHeight = GetTargetIconSize()
 
-    local backup = frame._cmcBuffBarIconBackup
+    local backup = Affected(frame).buffBarIconBackup
     if backup and backup.hiddenState then
         for region in pairs(backup.hiddenState) do
             if region and region.Hide then
@@ -417,13 +426,17 @@ function BuffBarIconMode.Apply(frame)
 end
 
 function BuffBarIconMode.Restore(frame)
-    local backup = frame and frame._cmcBuffBarIconBackup
+    local backup = frame and Affected(frame).buffBarIconBackup
+
+    if frame.Cooldown then
+        frame.Cooldown:Hide()
+    end
+
     if not backup then
         return
     end
 
     local settings = BuffBarCooldownViewer.settingMap
-    local opacity = settings[Enum.EditModeCooldownViewerSetting.Opacity]
     local barWidthScale = (50 + settings[Enum.EditModeCooldownViewerSetting.BarWidthScale].value) / 100
     local iconHost, iconTexture, bar = GetBuffBarParts(frame)
 
@@ -455,30 +468,49 @@ function BuffBarIconMode.Restore(frame)
         texTarget:SetTexCoord(0, 1, 0, 1)
     end
 
-    if frame._cmcBarIconMask and frame._cmcBarIconMaskTarget then
-        if frame._cmcBarIconMaskTarget.RemoveMaskTexture then
-            frame._cmcBarIconMaskTarget:RemoveMaskTexture(frame._cmcBarIconMask)
+    if Affected(frame).barIconMask and Affected(frame).barIconMaskTarget then
+        if Affected(frame).barIconMaskTarget.RemoveMaskTexture then
+            Affected(frame).barIconMaskTarget:RemoveMaskTexture(Affected(frame).barIconMask)
         end
-        frame._cmcBarIconMask = nil
-        frame._cmcBarIconMaskTarget = nil
+        Affected(frame).barIconMask = nil
+        Affected(frame).barIconMaskTarget = nil
     end
 
-    if frame.cmcBorder then
-        frame.cmcBorder:Hide()
+    if Affected(frame).border then
+        Affected(frame).border:Hide()
     end
 
-    if frame._cmcReplacedMaskRegions then
-        for region, originalTex in pairs(frame._cmcReplacedMaskRegions) do
+    if Affected(frame).replacedMaskRegions then
+        for region, originalTex in pairs(Affected(frame).replacedMaskRegions) do
             region:SetTexture(originalTex)
         end
-        frame._cmcReplacedMaskRegions = nil
+        Affected(frame).replacedMaskRegions = nil
     end
 
-    if frame._cmcHiddenIconHostRegions then
-        for region, alpha in pairs(frame._cmcHiddenIconHostRegions) do
+    if Affected(frame).hiddenIconHostRegions then
+        for region, alpha in pairs(Affected(frame).hiddenIconHostRegions) do
             region:SetAlpha(alpha)
         end
-        frame._cmcHiddenIconHostRegions = nil
+        Affected(frame).hiddenIconHostRegions = nil
+    end
+
+    if frame.Applications and frame.Applications.Applications and frame.Icon and frame.Icon.Applications then
+        local stackFS = frame.Icon.Applications
+
+        stackFS:SetFontObject("NumberFontNormalSmall")
+        stackFS:SetParent(frame.Icon)
+        stackFS:SetJustifyH("RIGHT")
+        stackFS:SetJustifyV("MIDDLE")
+        stackFS:ClearAllPoints()
+        stackFS:SetSize(30, 10)
+        stackFS:SetPoint(
+            ns.CONSTANTS.FONT.DEFAULT_STACK_POINT,
+            frame.Icon,
+            ns.CONSTANTS.FONT.DEFAULT_STACK_POINT,
+            -5,
+            5
+        )
+        frame.Applications = nil
     end
 end
 
@@ -489,10 +521,8 @@ function BuffBarIconMode.RefreshAll(barFrames)
     local enabled = BuffBarIconMode.IsEnabled()
     for _, frame in ipairs(barFrames) do
         if enabled then
-            if frame:IsShown() and frame:IsVisible() then
-                BuffBarIconMode.Apply(frame)
-            end
-        elseif frame._cmcBuffBarIconBackup then
+            BuffBarIconMode.Apply(frame)
+        elseif Affected(frame).buffBarIconBackup then
             BuffBarIconMode.Restore(frame)
         end
     end

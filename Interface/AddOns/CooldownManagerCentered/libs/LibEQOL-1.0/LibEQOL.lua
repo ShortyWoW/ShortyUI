@@ -4,11 +4,11 @@
 local LibStub = _G.LibStub
 assert(LibStub, "LibEQOL requires LibStub")
 
-local GLOBAL_NAME = "LibEQOL"
-local EditModeMajor = "LibEQOLEditMode-1.0"
-local NativeEditModeMajor = "LibEQOLNativeEditMode-1.0"
-local SettingsModeMajor = "LibEQOLSettingsMode-1.0"
-local DebugModeMajor = "LibEQOLDebugMode-1.0"
+local GLOBAL_NAME = "WildForkLibEQOL"
+local EditModeMajor = "WildForkLibEQOLEditMode-1.0"
+local NativeEditModeMajor = "WildForkLibEQOLNativeEditMode-1.0"
+local SettingsModeMajor = "WildForkLibEQOLSettingsMode-1.0"
+local DebugModeMajor = "WildForkLibEQOLDebugMode-1.0"
 
 local umbrella = _G[GLOBAL_NAME] or {}
 _G[GLOBAL_NAME] = umbrella

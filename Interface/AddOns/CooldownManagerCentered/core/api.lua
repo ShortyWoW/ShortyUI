@@ -154,10 +154,50 @@ function API:UnsetAffected(frame, key)
     end
 end
 
+-- Returns the frame's `_cmc_affected` state table, creating it on first use.
+-- All per-frame CMC state -- both the boolean "affected" markers above and the
+-- object references CMC stashes on a frame (border, cooldown, masks, glow, the
+-- tracker entry fields, etc.) -- lives in this single table, so a managed frame
+-- carries one CMC field instead of dozens. Nil-safe: returns a throwaway table
+-- when frame is nil so callers never index nil.
+function API.Affected(frame)
+    if not frame then
+        return {}
+    end
+    local state = frame._cmc_affected
+    if not state then
+        state = {}
+        frame._cmc_affected = state
+    end
+    return state
+end
+
+-- Returns frame:GetSize(), or nil when either dimension is unusable: zero (not laid
+-- out yet) or a protected "secret" value. WoW 11.x can hand back tainted sizes for
+-- reparented frames and arithmetic on those errors; issecretvalue itself may be
+-- absent on older clients, so guard its existence. Callers should skip geometry math
+-- and keep their last good size when this returns nil.
+function API:GetSafeSize(frame)
+    if not frame then
+        return nil
+    end
+    local w, h = frame:GetSize()
+    if issecretvalue and (issecretvalue(w) or issecretvalue(h)) then
+        return nil
+    end
+    if not w or not h or w <= 0 or h <= 0 then
+        return nil
+    end
+    return w, h
+end
+
 function API:RefreshCooldownManager()
     C_Timer.After(0.01, function()
         ns.StyledIcons:RefreshAll()
         ns.CooldownManager.Initialize()
+        if ns.CooldownStyle then
+            ns.CooldownStyle:RefreshHooks()
+        end
     end)
 end
 
@@ -318,6 +358,9 @@ local function AddSpellToTracking(spellID, state)
     local target = state or ns.TrackerItemsData.ITEM_STATE_TRACKER1
     ns.TrackerItemsData:SetEntryState("spell", baseSpellID, target)
 
+    if ns.TrackerItemViewer and ns.TrackerItemViewer.ReconcileTrackerCount then
+        ns.TrackerItemViewer:ReconcileTrackerCount()
+    end
     if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
         ns.TrackerAssignmentPanel:RefreshMiscPanel()
     end
@@ -341,6 +384,9 @@ local function AddItemToTracking(itemID, state)
     local target = state or ns.TrackerItemsData.ITEM_STATE_TRACKER1
     ns.TrackerItemsData:SetEntryState("item", itemID, target)
 
+    if ns.TrackerItemViewer and ns.TrackerItemViewer.ReconcileTrackerCount then
+        ns.TrackerItemViewer:ReconcileTrackerCount()
+    end
     if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
         ns.TrackerAssignmentPanel:RefreshMiscPanel()
     end

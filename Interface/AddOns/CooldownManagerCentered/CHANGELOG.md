@@ -1,6 +1,6 @@
 # Cooldown Manager Centered
 
-## [v2.8.3](https://github.com/lemieszek/CooldownManagerCentered/tree/v2.8.3) (2026-06-14)
-[Full Changelog](https://github.com/lemieszek/CooldownManagerCentered/compare/v2.8.2...v2.8.3) 
+## [v3.0.1](https://github.com/lemieszek/CooldownManagerCentered/tree/v3.0.1) (2026-06-17)
+[Full Changelog](https://github.com/lemieszek/CooldownManagerCentered/compare/v3.0.0...v3.0.1) 
 
-- v2.8.3 combat size fix  
+- v3.0.1  

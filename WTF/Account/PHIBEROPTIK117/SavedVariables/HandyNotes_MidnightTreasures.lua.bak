@@ -10,54 +10,24 @@ HandyNotes_MidnightTreasuresDB = {
 },
 },
 ["profileKeys"] = {
+["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
-["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
-["Bossbabyfan - Illidan"] = "Bossbabyfan - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
-["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Bossbabyfan - Illidan"] = "Bossbabyfan - Illidan",
+["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Shortybear - Illidan"] = "Shortybear - Illidan",
 ["Shortypal - Dalaran"] = "Shortypal - Dalaran",
 ["Shortcannon - Illidan"] = "Shortcannon - Illidan",
-["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
-["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
-["Shortytest - Illidan"] = "Shortytest - Illidan",
 ["Shortlight - Illidan"] = "Shortlight - Illidan",
+["Drewishlaser - Dalaran"] = "Drewishlaser - Dalaran",
+["Shortlite - Illidan"] = "Shortlite - Illidan",
+["Shortbowjob - Area 52"] = "Shortbowjob - Area 52",
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
 ["profiles"] = {
-["Shortbowjob - Illidan"] = {
-},
-["Drewis24EEA3 - Illidan"] = {
-},
-["Bossbabyfan - Illidan"] = {
-},
-["Callmeshorty - Illidan"] = {
-},
-["Shortlite - Illidan"] = {
-},
-["Shortybear - Illidan"] = {
-},
-["Shortypal - Dalaran"] = {
-},
-["Shortcannon - Illidan"] = {
-},
-["Shortbowjob - Area 52"] = {
-},
-["Drewishlaser - Dalaran"] = {
-},
-["Shortytest - Illidan"] = {
-},
-["Shortlight - Illidan"] = {
-},
-["Callmeshawte - Area 52"] = {
-},
-["Shortyshamm - Illidan"] = {
-},
-["Shortbeef - Vashj"] = {
-},
 ["Callmeshorty - Dalaran"] = {
 ["show_treasure"] = false,
 ["achievementsHidden"] = {
@@ -68,27 +38,57 @@ HandyNotes_MidnightTreasuresDB = {
 [62185] = true,
 [62125] = false,
 [61507] = true,
-[62104] = true,
-[62202] = false,
+[61576] = true,
+[61582] = true,
 [62130] = true,
 [61263] = false,
 [61264] = true,
 [62288] = true,
 [62289] = true,
-[62290] = true,
+[62104] = true,
 [62291] = true,
 [61455] = false,
-[61581] = true,
 [62201] = true,
-[61582] = true,
-[61576] = true,
+[61581] = true,
+[62202] = false,
+[62290] = true,
 },
-["show_npcs"] = false,
-["show_treasure_filter"] = "notable",
 ["groupsHidden"] = {
 ["professionknowledge"] = false,
 ["glyphs"] = true,
 },
+["show_treasure_filter"] = "notable",
+["show_npcs"] = false,
+},
+["Shortbowjob - Illidan"] = {
+},
+["Callmeshorty - Illidan"] = {
+},
+["Bossbabyfan - Illidan"] = {
+},
+["Shortytest - Illidan"] = {
+},
+["Shortybear - Illidan"] = {
+},
+["Shortypal - Dalaran"] = {
+},
+["Shortcannon - Illidan"] = {
+},
+["Shortlight - Illidan"] = {
+},
+["Drewishlaser - Dalaran"] = {
+},
+["Shortlite - Illidan"] = {
+},
+["Shortbowjob - Area 52"] = {
+},
+["Callmeshawte - Area 52"] = {
+},
+["Shortyshamm - Illidan"] = {
+},
+["Shortbeef - Vashj"] = {
+},
+["Drewis24EEA3 - Illidan"] = {
 },
 },
 }

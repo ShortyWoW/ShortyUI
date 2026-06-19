@@ -1,6 +1,5 @@
 local _, ns = ...
 
--- Initialize namespace and DB early
 ns.db = ns.db or {}
 ns.db.profile = ns.db.profile or {}
 local CooldownManager = {}
@@ -94,8 +93,6 @@ function LayoutEngine.CenteredColYOffsets(count, itemHeight, padding, directionM
 end
 
 function LayoutEngine.StartRowXOffsets(count, itemWidth, padding, directionModifier)
-    -- Why: Produce X offsets starting from the left edge.
-    -- When: Positioning icons aligned to start; supports reversed direction via modifier.
     if not count or count <= 0 then
         return {}
     end
@@ -108,8 +105,6 @@ function LayoutEngine.StartRowXOffsets(count, itemWidth, padding, directionModif
 end
 
 function LayoutEngine.EndRowXOffsets(count, itemWidth, padding, directionModifier)
-    -- Why: Produce X offsets starting from the right edge.
-    -- When: Positioning icons aligned to end; supports reversed direction via modifier.
     if not count or count <= 0 then
         return {}
     end
@@ -122,8 +117,6 @@ function LayoutEngine.EndRowXOffsets(count, itemWidth, padding, directionModifie
 end
 
 function LayoutEngine.StartColYOffsets(count, itemHeight, padding, directionModifier)
-    -- Why: Produce Y offsets starting from the top edge.
-    -- When: Positioning icons aligned to start; supports reversed direction via modifier.
     if not count or count <= 0 then
         return {}
     end
@@ -136,8 +129,6 @@ function LayoutEngine.StartColYOffsets(count, itemHeight, padding, directionModi
 end
 
 function LayoutEngine.EndColYOffsets(count, itemHeight, padding, directionModifier)
-    -- Why: Produce Y offsets starting from the bottom edge.
-    -- When: Positioning icons aligned to end; supports reversed direction via modifier.
     if not count or count <= 0 then
         return {}
     end
@@ -150,8 +141,6 @@ function LayoutEngine.EndColYOffsets(count, itemHeight, padding, directionModifi
 end
 
 function LayoutEngine.BuildRows(iconLimit, children)
-    -- Why: Group a flat list of icons into rows limited by `iconLimit`.
-    -- When: Before computing centered layout for Essential/Utility viewers.
     local rows = {}
     local limit = iconLimit or 0
     if limit <= 0 then
@@ -167,8 +156,6 @@ end
 
 -- ViewerAdapters: BuffIcon/BuffBar collection + hooks
 function ViewerAdapters.GetBuffIconFrames()
-    -- Why: Collect visible Buff Icon viewer children, hook change events, and apply stack visuals.
-    -- When: Before positioning buff icons and whenever aura events trigger layout updates.
     if not BuffIconCooldownViewer then
         return {}
     end
@@ -197,8 +184,6 @@ function ViewerAdapters.GetBuffIconFrames()
 end
 
 function ViewerAdapters.GetBuffBarFrames(includeInactive)
-    -- Why: Collect Buff Bar frames with resilience to API differences, optionally including inactive frames.
-    -- When: Before aligning bars vertically and whenever aura events trigger layout updates.
     if not BuffBarCooldownViewer then
         return {}
     end
@@ -242,9 +227,6 @@ function ViewerAdapters.GetBuffBarFrames(includeInactive)
 end
 
 function ViewerAdapters.UpdateBuffIcons()
-    -- Why: Position Buff Icon viewer children based on isHorizontal, iconDirection, and alignment.
-    -- When: On aura events, settings changes, or explicit refresh calls when the feature is enabled.
-
     if
         not ns.Runtime:IsReady(BuffIconCooldownViewer)
         or ns.db.profile.cooldownManager_alignBuffIcons_growFromDirection == "Disable"
@@ -322,8 +304,6 @@ function ViewerAdapters.UpdateBuffIcons()
 end
 
 function ViewerAdapters.UpdateBuffBars()
-    -- Why: Align Buff Bar frames from chosen growth direction when enabled and changes detected.
-    -- When: On aura events, settings changes, or explicit refresh calls when the feature is enabled.
     if not ns.Runtime:IsReady(BuffBarCooldownViewer) then
         return
     end
@@ -434,7 +414,6 @@ function ViewerAdapters.UpdateUtilityDimming()
     end
     local toDim = ns.db.profile.cooldownManager_utility_dimWhenNotOnCD
     if not toDim then
-        -- Restore alphas if dimming was previously applied
         if ns.API:GetIsAffected(viewer, "dimmed") then
             ns.API:UnsetAffected(viewer, "dimmed")
             local children = viewer:GetItemFrames()
@@ -507,8 +486,6 @@ function ViewerAdapters.RequestUtilityDimming()
 end
 
 function ViewerAdapters.CollectViewerChildren(viewer)
-    -- Why: Standardized filtered list of visible icon-like children sorted by layoutIndex.
-    -- When: Building rows/columns for Essential/Utility centered layouts.
     local viewerName = viewer:GetName()
 
     -- Direct insert by layoutIndex to avoid sorting

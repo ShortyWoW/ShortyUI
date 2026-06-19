@@ -108,6 +108,9 @@ function TrackerDB.InitializeDB()
     if db.showUnusable == nil then
         db.showUnusable = false
     end
+    if db.showPassiveTrinkets == nil then
+        db.showPassiveTrinkets = true
+    end
     if not ns.db.profile._tracker_filled_with_defaults then
         for i, spellID in pairs(TrackerDB.DefaultSpells) do
             if not db.spellItemSettings[spellID] then
@@ -262,6 +265,27 @@ end
 function TrackerDB.ToggleShowUnusable()
     local db = TrackerDB.GetDB()
     db.showUnusable = not TrackerDB.GetShowingUnusable()
+    if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
+        ns.TrackerAssignmentPanel:RefreshMiscPanel()
+    end
+end
+
+-- Passive (proc-only) trinkets have no on-use spell. Defaults to true; players who
+-- only want usable trinkets in the wildcard trinket slots can turn this off.
+function TrackerDB.GetShowingPassiveTrinkets()
+    local db = TrackerDB.GetDB()
+    return db.showPassiveTrinkets ~= false
+end
+
+function TrackerDB.ToggleShowPassiveTrinkets()
+    local db = TrackerDB.GetDB()
+    db.showPassiveTrinkets = not TrackerDB.GetShowingPassiveTrinkets()
+    if ns.TrackerItemsData and ns.TrackerItemsData.InvalidateOwnedItemsCache then
+        ns.TrackerItemsData:InvalidateOwnedItemsCache()
+    end
+    if ns.TrackerItemViewer and ns.TrackerItemViewer.RefreshItemViewerFrames then
+        ns.TrackerItemViewer:RefreshItemViewerFrames()
+    end
     if ns.TrackerAssignmentPanel and ns.TrackerAssignmentPanel.RefreshMiscPanel then
         ns.TrackerAssignmentPanel:RefreshMiscPanel()
     end

@@ -92,7 +92,6 @@ local function ApplySquareStyle(button, viewerSettingName)
         button.Icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
         button.Icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 
-        -- Calculate zoom-based texture coordinates
         local zoom = 0
         if ns.db and ns.db.profile then
             local zoomKey = "cooldownManager_squareIconsZoom_" .. viewerSettingName
@@ -134,7 +133,6 @@ local function ApplySquareStyle(button, viewerSettingName)
     end
     -- There should be one region left that isn't mapped
 
-    -- Create/update inset black border (overlays icon edges)
     if not Affected(button).border then
         Affected(button).border = CreateFrame("Frame", nil, button, "BackdropTemplate")
         Affected(button).border:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -237,7 +235,6 @@ local function ApplySizeWithoutStyle(button, viewerSettingName)
     end
 end
 
--- Process all children of a viewer
 local function ProcessViewer(viewer, viewerSettingName, applySquareStyle)
     if not viewer or not IsAnyStyledFeatureEnabled() then
         return

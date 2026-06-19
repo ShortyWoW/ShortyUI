@@ -1229,7 +1229,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         prefix = "CMC_",
         key = "cooldownManager_experimental_glow_animation_speed",
         name = "Animation Speed",
-        searchtags = { "Glow", "Animation", "Speed", "Frequency", "Auto Cast", "Pixel" },
+        searchtags = { "Glow", "Animation", "Speed", "Frequency", "Auto Cast", "Pixel", "Ants", "Proc" },
         default = 0,
         min = -1,
         max = 1,
@@ -1253,14 +1253,14 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.CooldownStyle:RefreshHooks()
             end
         end,
-        desc = 'Controls glow animation speed (frequency) for Auto Cast and Pixel Glow.\n0 is not "zero", it\'s Default speed.',
+        desc = 'Controls glow animation speed for Auto Cast, Pixel, Ants and Proc glows.\n0 is not "zero", it\'s Default speed.',
     })
     SettingsLib:CreateSlider(category, {
         parentSection = customProcSection,
         prefix = "CMC_",
         key = "cooldownManager_experimental_glow_animation_density",
         name = "Animation Density",
-        searchtags = { "Glow", "Animation", "Density", "Frequency", "Auto Cast", "Pixel" },
+        searchtags = { "Glow", "Animation", "Density", "Frequency", "Auto Cast", "Pixel", "Ants" },
         default = 0,
         min = 0,
         max = 16,
@@ -1284,7 +1284,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.CooldownStyle:RefreshHooks()
             end
         end,
-        desc = 'Controls glow animation density for Auto Cast and Pixel Glow.\n0 is not "zero", it\'s Default density.',
+        desc = 'Controls glow animation density: particle count for Auto Cast and Pixel Glow, or stacked layers (1-4) for Ants Glow.\n0 is not "zero", it\'s Default density.',
     })
 
     SettingsLib:CreateSlider(category, {
@@ -1396,7 +1396,7 @@ local function AddonSettings_BuildCooldown(category, layout)
     })
 
     local stackNumberSection = SettingsLib:CreateExpandableSection(category, {
-        name = "Ability |cffeeeeeeStacks|r Number Settings",
+        name = "Ability |cffeeeeeeCharges/Count|r Settings",
         expanded = false,
         colorizeTitle = true,
     })
@@ -1428,7 +1428,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.TrackerItemViewer:RefreshStyling()
             end
         end,
-        desc = "Select the font for ability stack numbers. Uses SharedMedia fonts if available.",
+        desc = "Select the font for ability charge/count numbers. Uses SharedMedia fonts if available.",
         generator = function(dropdown, rootDescription)
             dropdown.fontPool = {}
             if not Affected(dropdown).fontfaceDropdownOnMenuClosedHooked then
@@ -1525,7 +1525,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.TrackerItemViewer:RefreshStyling()
             end
         end,
-        desc = "Select font flags for ability stack numbers.",
+        desc = "Select font flags for ability charge/count numbers.",
     })
 
     local fontSizeValues = {
@@ -1602,7 +1602,7 @@ local function AddonSettings_BuildCooldown(category, layout)
 
     SettingsLib:CreateHeader(category, {
         parentSection = stackNumberSection,
-        name = "Stacks Number on Tracked Buff Icons",
+        name = "Charges/Count on Tracked Buff Icons",
     })
     SettingsLib:CreateCheckboxDropdown(category, {
         parentSection = stackNumberSection,
@@ -1629,7 +1629,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         dropdownValues = anchorPointValues,
         dropdownOrder = anchorPointOrder,
-        desc = "Enable and select anchor point for Buff Icons stack count position.",
+        desc = "Enable and select anchor point for Buff Icons charge/count position.",
     })
 
     CreateStackFontSizeDropdown(stackNumberSection, "cooldownManager_stackFontSizeBuffIcons", "Font Size", function()
@@ -1690,7 +1690,7 @@ local function AddonSettings_BuildCooldown(category, layout)
 
     SettingsLib:CreateHeader(category, {
         parentSection = stackNumberSection,
-        name = "Stacks Number on Essential Cooldowns Icons",
+        name = "Charges/Count on Essential Cooldowns Icons",
     })
     SettingsLib:CreateCheckboxDropdown(category, {
         parentSection = stackNumberSection,
@@ -1717,7 +1717,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         dropdownValues = anchorPointValues,
         dropdownOrder = anchorPointOrder,
-        desc = "Enable and select anchor point for Essential Cooldown stack count position.",
+        desc = "Enable and select anchor point for Essential Cooldown charge/count position.",
     })
 
     CreateStackFontSizeDropdown(stackNumberSection, "cooldownManager_stackFontSizeEssential", "Font Size", function()
@@ -1778,7 +1778,7 @@ local function AddonSettings_BuildCooldown(category, layout)
 
     SettingsLib:CreateHeader(category, {
         parentSection = stackNumberSection,
-        name = "Stacks Number on Utility Cooldowns Icons",
+        name = "Charges/Count on Utility Cooldowns Icons",
     })
     SettingsLib:CreateCheckboxDropdown(category, {
         parentSection = stackNumberSection,
@@ -1805,7 +1805,7 @@ local function AddonSettings_BuildCooldown(category, layout)
         end,
         dropdownValues = anchorPointValues,
         dropdownOrder = anchorPointOrder,
-        desc = "Enable and select anchor point for Utility cooldown stack count position.",
+        desc = "Enable and select anchor point for Utility cooldown charge/count position.",
     })
 
     CreateStackFontSizeDropdown(stackNumberSection, "cooldownManager_stackFontSizeUtility", "Font Size", function()
@@ -1866,7 +1866,7 @@ local function AddonSettings_BuildCooldown(category, layout)
 
     SettingsLib:CreateHeader(category, {
         parentSection = stackNumberSection,
-        name = "Stacks Number on Tracker",
+        name = "Charges/Count on Tracker",
     })
 
     local trackerAnchorPointValues = {
@@ -1896,8 +1896,8 @@ local function AddonSettings_BuildCooldown(category, layout)
         parentSection = stackNumberSection,
         prefix = "CMC_",
         key = "trinketRacialTracker_stackAnchor",
-        name = "Stack Anchor",
-        searchtags = { "Trinket", "Racial", "Tracker", "Stack", "Anchor", "Position", "Count" },
+        name = "Anchor",
+        searchtags = { "Trinket", "Racial", "Tracker", "Stack", "Anchor", "Position", "Count", "Charge" },
         default = "BOTTOMRIGHT",
         values = trackerAnchorPointValues,
         order = trackerAnchorPointOrder,
@@ -1910,15 +1910,15 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.TrackerItemViewer:RefreshStyling()
             end
         end,
-        desc = "Anchor point for stack/count number position on tracker icons.",
+        desc = "Anchor point for charge/count number position on tracker icons.",
     })
 
     SettingsLib:CreateSlider(category, {
         parentSection = stackNumberSection,
         prefix = "CMC_",
         key = "trinketRacialTracker_stackFontSize",
-        name = "Stack Font Size",
-        searchtags = { "Trinket", "Racial", "Tracker", "Stack", "Font", "Size", "Count" },
+        name = "Font Size",
+        searchtags = { "Trinket", "Racial", "Tracker", "Stack", "Font", "Size", "Count", "Charge" },
         default = 14,
         min = 8,
         max = 32,
@@ -1935,7 +1935,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.TrackerItemViewer:RefreshStyling()
             end
         end,
-        desc = "Font size for stack/count numbers on tracker icons.",
+        desc = "Font size for charge/count numbers on tracker icons.",
     })
 
     SettingsLib:CreateSlider(category, {
@@ -1960,7 +1960,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.TrackerItemViewer:RefreshStyling()
             end
         end,
-        desc = "Horizontal offset for stack/count number position.",
+        desc = "Horizontal offset for charge/count number position.",
     })
 
     SettingsLib:CreateSlider(category, {
@@ -1985,12 +1985,12 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.TrackerItemViewer:RefreshStyling()
             end
         end,
-        desc = "Vertical offset for stack/count number position.",
+        desc = "Vertical offset for charge/count number position.",
     })
 
     SettingsLib:CreateText(category, {
         parentSection = stackNumberSection,
-        name = "Note: Stack font name and flags are taken from the global Stack Font settings.",
+        name = "Note: Charge/Count font name and flags are taken from the global Charges/Count Font settings.",
     })
 
     local keybindsSection = SettingsLib:CreateExpandableSection(category, {

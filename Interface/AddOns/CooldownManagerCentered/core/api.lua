@@ -376,8 +376,10 @@ local function AddItemToTracking(itemID, state)
         return nil, "Cannot add item to tracking while in combat."
     end
 
-    local _spellName, spellId = C_Item.GetItemSpell(itemID)
-    if not spellId then
+    -- Passive proc trinkets have no on-use spell but are still trackable via proc
+    -- data, so allow anything ItemsData considers trackable. The passive-trinket
+    -- filter only gates wildcard slots, never items added by hand.
+    if not ns.TrackerItemsData:IsTrackableItem(itemID) then
         return nil, "Item is not usable."
     end
 

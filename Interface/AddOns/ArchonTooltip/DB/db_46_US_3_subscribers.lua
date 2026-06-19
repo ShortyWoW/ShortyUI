@@ -233,8 +233,8 @@ local function getChunkLookup(table, length)
 	end
 end
 
-local lookup = {'DeathKnight-Unholy',}
-local provider = {region='US',realm='Agamaggan',name='US',type='subscribers',zone=46,date='2026-06-17',data={Ri='Rixin:BAECLgAFFH8ZAAIBAAgJsBkiEQBTAghoDAAAAwAvAGkMAAAGAFkAawwAAAQASgBqDAAAAQA4AGwMAAABADoAbQwAAAIAGADqDAAABwBfAG4MAAABAEcAAQAICbAZIhEAUwIIaAwAAAMALwBpDAAABgBZAGsMAAAEAEoAagwAAAEAOABsDAAAAQA6AG0MAAACABgA6gwAAAcAXwBuDAAAAQBHAC4ABAp/PAACAQAJCTcmBAYASgMAAQAJCTcmBAYASgMAAAA=.Rixryu:BAEALgADCgkJFgABLgAFFAgJGQABALAZAA==.',},}
+local lookup = {'DeathKnight-Unholy','DeathKnight-Blood',}
+local provider = {region='US',realm='Agamaggan',name='US',type='subscribers',zone=46,date='2026-06-18',data={Ri='Rixin:BAECLgAFFH8eAAMBAAgJIhxEEQBTAghoDAAABABbAGkMAAAHAFkAawwAAAUASgBqDAAAAgA4AGwMAAABADoAbQwAAAIAGADqDAAACABfAG4MAAABAEcAAQAICSIcRBEAUwIIaAwAAAQAWwBpDAAABwBZAGsMAAAFAEoAagwAAAEAOABsDAAAAQA6AG0MAAACABgA6gwAAAgAXwBuDAAAAQBHAAIAAQkAAKADAAAAAWoMAAABACwALgAECn88AAIBAAkJNyYFBgBJAwABAAkJNyYFBgBJAwAAAA==.Rixryu:BAEALgADCgkJFgABLgAFFAgJHgABACIcAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

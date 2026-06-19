@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Unknown-Unknown','Shaman-Restoration',}
-local provider = {region='US',realm='Elune',name='US',type='subscribers',zone=46,date='2026-06-17',data={Gu='Gurfy:BAEALgAECgEJAwABLgAECgMJBgABAAAAAA==.',Sk='Skyblaze:BAEALgAECgkJCwAAAA==.',Th='Thicums:BAEALgAECgMJBgAAAA==.',Va='Valdanyr:BAEBLgAECn8sAAICAAgJPib6BABlAwhoDAAABwBiAGkMAAAGAGMAawwAAAYAYgBqDAAABABhAGwMAAAEAGIAbQwAAAYAYADqDAAABwBgAG4MAAAEAGIAAgAICT4m+gQAZQMIaAwAAAcAYgBpDAAABgBjAGsMAAAGAGIAagwAAAQAYQBsDAAABABiAG0MAAAGAGAA6gwAAAcAYABuDAAABABiAAAA.Valdzindelor:BAEALgAECgYJDgABLgAECggJLAACAD4mAA==.',},}
+local provider = {region='US',realm='Elune',name='US',type='subscribers',zone=46,date='2026-06-18',data={Gu='Gurfy:BAEALgAECgEJAwABLgAECgMJBgABAAAAAA==.',Sk='Skyblaze:BAEALgAECgkJCwAAAA==.',Th='Thicums:BAEALgAECgMJBgAAAA==.',Va='Valdanyr:BAEBLgAECn8sAAICAAgJPib7BABlAwhoDAAABwBiAGkMAAAGAGMAawwAAAYAYgBqDAAABABhAGwMAAAEAGIAbQwAAAYAYADqDAAABwBgAG4MAAAEAGIAAgAICT4m+wQAZQMIaAwAAAcAYgBpDAAABgBjAGsMAAAGAGIAagwAAAQAYQBsDAAABABiAG0MAAAGAGAA6gwAAAcAYABuDAAABABiAAAA.Valdzindelor:BAEALgAECgYJDgABLgAECggJLAACAD4mAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

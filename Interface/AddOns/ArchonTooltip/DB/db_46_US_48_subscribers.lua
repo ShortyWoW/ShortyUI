@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Paladin-Protection',}
-local provider = {region='US',realm='Caelestrasz',name='US',type='subscribers',zone=46,date='2026-06-17',data={Bo='Bonesadin:BAECLgAFFH8JAAIBAAIJdgvPEgBkAAJoDAAABgAoAGkMAAADABIAAQACCXYLzxIAZAACaAwAAAYAKABpDAAAAwASAC4ABAp/PwACAQAJCZ4X1wwA9wEAAQAJCZ4X1wwA9wEAAAA=.',},}
+local provider = {region='US',realm='Caelestrasz',name='US',type='subscribers',zone=46,date='2026-06-18',data={Bo='Bonesadin:BAECLgAFFH8JAAIBAAIJdgvYEgBkAAJoDAAABgAoAGkMAAADABIAAQACCXYL2BIAZAACaAwAAAYAKABpDAAAAwASAC4ABAp/PwACAQAJCZ4X2gwA+AEAAQAJCZ4X2gwA+AEAAAA=.',},}
 provider.parse = parse
 
 local rawData = provider.data

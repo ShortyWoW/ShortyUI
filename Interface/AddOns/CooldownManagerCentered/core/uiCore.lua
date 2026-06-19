@@ -86,23 +86,20 @@ end
 ---@param defaultConfig? table Default position/settings table (applied to profile first)
 ---@return table config The configuration table with all properties resolved
 function WilduUICore.LoadFrameConfig(configKey, defaultConfig)
-    -- Ensure editMode database structure exists
     defaultConfig = defaultConfig or {}
     if not ns.Addon.db.profile.editMode then
         ns.Addon.db.profile.editMode = {}
     end
 
-    -- Initialize config entry if missing
     if not ns.Addon.db.profile.editMode[configKey] then
         ns.Addon.db.profile.editMode[configKey] = {}
     end
 
     local storedConfig = ns.Addon.db.profile.editMode[configKey]
 
-    -- Build result with three-tier fallback: stored → defaultConfig → DEFAULT_CONFIG
+    -- Three-tier fallback: stored → defaultConfig → DEFAULT_CONFIG
     local result = {}
 
-    -- Get all unique keys from all sources
     local allKeys = {}
     for key in pairs(FRAME_DEFAULT_CONFIG) do
         allKeys[key] = true
@@ -114,12 +111,11 @@ function WilduUICore.LoadFrameConfig(configKey, defaultConfig)
         allKeys[key] = true
     end
 
-    -- Apply fallback chain for each property
     for key in pairs(allKeys) do
         result[key] = ns.Addon.db.profile.editMode[configKey][key] or defaultConfig[key] or FRAME_DEFAULT_CONFIG[key]
     end
 
-    -- Update stored config to ensure missing properties are persisted
+    -- Persist any properties missing from the stored config
     for key, value in pairs(result) do
         if ns.Addon.db.profile.editMode[configKey][key] == nil then
             ns.Addon.db.profile.editMode[configKey][key] = value
@@ -340,13 +336,11 @@ function WilduUICore.CreateTickerUpdate(frame, interval, updateFn, checkForIsSho
         return
     end
 
-    -- Cancel previous ticker if it exists
     if frame._wt_ticker and frame._wt_ticker.Cancel then
         frame._wt_ticker:Cancel()
         frame._wt_ticker = nil
     end
 
-    -- Create new repeating ticker
     frame._wt_ticker = C_Timer.NewTicker(interval, function()
         if not checkForIsShown or frame:IsShown() then
             updateFn(frame)

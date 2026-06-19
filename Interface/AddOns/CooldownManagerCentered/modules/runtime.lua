@@ -239,18 +239,14 @@ end
 --     end
 -- end)
 -- end
--- EventHandler.events["PLAYER_SPECIALIZATION_CHANGED"] = function(self, event, ...)
--- if not Runtime:IsAllReady() then
---     return
--- end
--- if ns.StyledIcons then
---     ns.StyledIcons:RefreshAll()
--- end
-
--- if ns.CooldownManager then
---     ns.CooldownManager.ForceRefreshAll()
--- end
--- end
+EventHandler.events["PLAYER_SPECIALIZATION_CHANGED"] = function(self, event, ...)
+    if not Runtime:IsAllReady() then
+        return
+    end
+    if ns.TrackerAssignmentPanel then
+        ns.TrackerAssignmentPanel:Refresh()
+    end
+end
 EventHandler.events["UPDATE_SHAPESHIFT_FORM"] = function(self, event, ...)
     if not Runtime:IsAllReady() then
         return

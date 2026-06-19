@@ -463,6 +463,17 @@ function TrackerInstance:GetShowGCD()
     return GetConfigValue(self.configKey, "showGCD", false)
 end
 
+function TrackerInstance:GetShowStacks()
+    -- Stacks/charge numbers are shown by default; only an explicit false hides them.
+    if ns.db and ns.db.profile and ns.db.profile.editMode and ns.db.profile.editMode[self.configKey] then
+        local v = ns.db.profile.editMode[self.configKey].showStacks
+        if v ~= nil then
+            return v and true or false
+        end
+    end
+    return true
+end
+
 function TrackerInstance:UpdateIconPosition(frame, visibleIndex)
     local iconSize = self:GetIconSize()
     local iconHeight = GetIconHeight(iconSize)
@@ -582,6 +593,7 @@ function TrackerInstance:DoRefreshEntries()
     local padding = self:GetIconPadding()
     local orientation = self:GetOrientation()
     local showGCD = self:GetShowGCD()
+    local showStacks = self:GetShowStacks()
     local count = #entries
 
     for i = 1, count do
@@ -592,6 +604,12 @@ function TrackerInstance:DoRefreshEntries()
         ivf.frame:SetSize(iconSize, iconHeight)
         ivf.frame.IconOverlay:SetSize(iconSize * 1.5, iconHeight * 1.5)
         ivf.frame.showGCD = showGCD
+        ivf.frame.showStacks = showStacks
+        -- Hiding the count fontstring persists across SetText, so the stack/charge
+        -- number stays hidden even as cooldown updates re-write its text.
+        if ivf.frame.count then
+            ivf.frame.count:SetShown(showStacks)
+        end
 
         ivf:UpdateEntry(entries[i])
         self:UpdateIconPosition(ivf.frame, i)
@@ -1076,18 +1094,46 @@ function TrackerInstance:Create()
         return ns.db.profile.cooldownManager_cooldownFontSizeTracker_enabled and true or false
     end
 
+    -- Stack numbers are shown by default (per tracker); the remaining stack
+    -- controls are hidden while the master checkbox is off.
+    local function stacksEnabled()
+        local cfg = ns.db.profile.editMode[configKey]
+        if cfg and cfg.showStacks ~= nil then
+            return cfg.showStacks and true or false
+        end
+        return true
+    end
+
     local stacksCooldownAndKeybindSettings = {
         {
             kind = LEM.SettingType.Collapsible,
             id = "stacks",
-            name = "Stack Number",
+            name = "Charges/Count",
             defaultCollapsed = true,
         },
         {
-            name = "Stack Anchor",
+            name = "Show Charges/Count",
+            parentId = "stacks",
+            kind = LEM.SettingType.Checkbox,
+            default = true,
+            get = function()
+                local cfg = ns.db.profile.editMode[configKey]
+                if cfg and cfg.showStacks ~= nil then
+                    return cfg.showStacks and true or false
+                end
+                return true
+            end,
+            set = function(layoutName, value)
+                ns.db.profile.editMode[configKey].showStacks = value and true or false
+                instance:RefreshEntries()
+            end,
+        },
+        {
+            name = "Anchor",
             parentId = "stacks",
             kind = LEM.SettingType.Dropdown,
             default = "BOTTOMRIGHT",
+            isShown = stacksEnabled,
             get = function()
                 return ns.db.profile.trinketRacialTracker_stackAnchor or "BOTTOMRIGHT"
             end,
@@ -1110,10 +1156,11 @@ function TrackerInstance:Create()
             },
         },
         {
-            name = "Stack Font Size",
+            name = "Font Size",
             parentId = "stacks",
             kind = LEM.SettingType.Slider,
             default = 14,
+            isShown = stacksEnabled,
             get = function()
                 return ns.db.profile.trinketRacialTracker_stackFontSize or 14
             end,
@@ -1131,10 +1178,11 @@ function TrackerInstance:Create()
             end,
         },
         {
-            name = "Stack X Offset",
+            name = "X Offset",
             parentId = "stacks",
             kind = LEM.SettingType.Slider,
             default = -1,
+            isShown = stacksEnabled,
             get = function()
                 return ns.db.profile.trinketRacialTracker_stackOffsetX or -1
             end,
@@ -1152,10 +1200,11 @@ function TrackerInstance:Create()
             end,
         },
         {
-            name = "Stack Y Offset",
+            name = "Y Offset",
             parentId = "stacks",
             kind = LEM.SettingType.Slider,
             default = 1,
+            isShown = stacksEnabled,
             get = function()
                 return ns.db.profile.trinketRacialTracker_stackOffsetY or 1
             end,

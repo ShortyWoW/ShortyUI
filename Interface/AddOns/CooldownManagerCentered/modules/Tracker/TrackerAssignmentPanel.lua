@@ -769,6 +769,19 @@ local function ShowItemContextMenu(button)
                 RefreshTrackerPanels()
             end)
         end
+        if kind == ENTRY_KIND_WILDCARD_SLOTS then
+            local passive = rootDescription:CreateCheckbox(
+                "Show Trackable Passive Trinkets",
+                DB.GetShowingPassiveTrinkets,
+                DB.ToggleShowPassiveTrinkets
+            )
+            passive:SetTooltip(function(tooltip)
+                GameTooltip_AddNormalLine(
+                    tooltip,
+                    "Track passive (proc) trinkets equipped in the wildcard trinket slots. Turn off to only track trinkets with an on-use effect."
+                )
+            end)
+        end
         rootDescription:CreateButton("Untrack", function()
             ItemsData:SetEntryState(kind, id, nil)
             RefreshTrackerPanels()
@@ -1426,10 +1439,9 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     Affected(spellsTab).trackerIsTabButton = true
     Affected(aurasTab).trackerIsTabButton = true
 
-    -- Create a dedicated search box for the TrackerAssignmentPanel, matching Blizzard's CooldownViewerSettings XML
     if not Affected(miscPanel).trackerSearchBox then
         local searchBox = CreateFrame("EditBox", nil, miscPanel, "SearchBoxTemplate")
-        searchBox:SetSize(195, 30)
+        searchBox:SetSize(290, 30)
         searchBox:SetPoint("TOPLEFT", miscPanel, "TOPLEFT", 72, -30)
         searchBox.Instructions:SetText("Enter search text")
         searchBox:SetScript("OnTextChanged", function(self)
@@ -1441,25 +1453,31 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
         Affected(miscPanel).trackerSearchBox = searchBox
     end
 
-    if not Affected(miscPanel).trackerShowUnusableCheckbox then
-        local cb = CreateFrame("CheckButton", nil, miscPanel, "UICheckButtonTemplate")
-        cb:SetPoint("LEFT", Affected(miscPanel).trackerSearchBox, "RIGHT", 8, 0)
-        cb:SetChecked(DB.GetShowingUnusable())
-        cb:SetScript("OnClick", function(self)
-            DB.ToggleShowUnusable()
-            self:SetChecked(DB.GetShowingUnusable())
+    if not Affected(miscPanel).trackerSettingsDropdown then
+        local dropdown = CreateFrame("DropdownButton", nil, miscPanel, "UIPanelIconDropdownButtonTemplate")
+        dropdown:SetPoint("LEFT", Affected(miscPanel).trackerSearchBox, "RIGHT", 5, 0)
+        dropdown:SetupMenu(function(_, rootDescription)
+            rootDescription:CreateCheckbox("Show Unusable", DB.GetShowingUnusable, DB.ToggleShowUnusable)
+
+            -- local passive = rootDescription:CreateCheckbox(
+            --     "Show Trackable Passive Trinkets",
+            --     DB.GetShowingPassiveTrinkets,
+            --     DB.ToggleShowPassiveTrinkets
+            -- )
+            -- passive:SetTooltip(function(tooltip)
+            --     GameTooltip_AddNormalLine(
+            --         tooltip,
+            --         "Track passive (proc) trinkets equipped in the trinket slots. Turn off to only track trinkets with an on-use effect."
+            --     )
+            -- end)
         end)
-        if cb.text then
-            cb.text:SetText("Show Unusable")
-        end
-        cb:Hide()
-        Affected(miscPanel).trackerShowUnusableCheckbox = cb
+        dropdown:Hide()
+        Affected(miscPanel).trackerSettingsDropdown = dropdown
     end
 
     if not Affected(miscPanel).trackerTrackTip then
         local trackTip = miscPanel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
         trackTip:SetPoint("BOTTOMLEFT", miscPanel, "BOTTOMLEFT", 10, 10)
-        -- |cff008945Cool|r|cff1e9a4e|r|cff3faa4fdown Ma|r|cff5fb64anag|r|cff7ac243er Ce|r|cff8ccd00ntered|r
         trackTip:SetText("|cfffff100Drag&Drop|r an item or spell")
         Affected(miscPanel).trackerTrackTip = trackTip
     end
@@ -1468,21 +1486,19 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
         if Affected(self).trackerSearchBox then
             Affected(self).trackerSearchBox:Show()
         end
-        if Affected(self).trackerShowUnusableCheckbox then
-            Affected(self).trackerShowUnusableCheckbox:SetChecked(DB.GetShowingUnusable())
-            Affected(self).trackerShowUnusableCheckbox:Show()
+        if Affected(self).trackerSettingsDropdown then
+            Affected(self).trackerSettingsDropdown:Show()
         end
     end)
     miscPanel:HookScript("OnHide", function(self)
         if Affected(self).trackerSearchBox then
             Affected(self).trackerSearchBox:Hide()
         end
-        if Affected(self).trackerShowUnusableCheckbox then
-            Affected(self).trackerShowUnusableCheckbox:Hide()
+        if Affected(self).trackerSettingsDropdown then
+            Affected(self).trackerSettingsDropdown:Hide()
         end
     end)
 
-    -- Do not parent the miscTab to settingsFrame! Doing so will add it to its .TabButtons list and will taint everything inside CooldownViewer as a result.
     local miscTab = CreateFrame("Button", "$parent.MiscTab", UIParent, "CooldownViewerSettingsTabTemplate")
 
     Affected(miscTab).trackerIsTabButton = true
@@ -1494,7 +1510,6 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     miscTab:SetChecked(false)
     miscTab:SetPoint("TOP", aurasTab, "BOTTOM", 0, -3)
 
-    -- Hide the tab when the settings window is closed
     settingsFrame:HookScript("OnHide", function()
         miscTab:Hide()
     end)
@@ -1530,4 +1545,13 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     end)
 
     miscTab:Show()
+end
+
+function TrackerAssignmentPanel:Refresh()
+    if _cmc_tracker_misc_panel and _cmc_tracker_misc_panel:IsShown() then
+        _cmc_tracker_misc_panel:Hide()
+        C_Timer.After(0.01, function()
+            _cmc_tracker_misc_panel:Show()
+        end)
+    end
 end

@@ -358,6 +358,7 @@ local function IsProcDataItem(itemID)
     return itemID ~= nil and data ~= nil and data.procByItemID ~= nil and data.procByItemID[itemID] ~= nil
 end
 
+-- returns true for items that have an on-use spell or proc data, false otherwise. Memoized true for performance.
 local function IsTrackableItem(itemID)
     if not itemID then
         return false
@@ -367,13 +368,21 @@ local function IsTrackableItem(itemID)
         return cached
     end
     local result = (C_Item.GetItemSpell(itemID) ~= nil) or IsProcDataItem(itemID)
-    trackableItemCache[itemID] = result
+    if result then
+        trackableItemCache[itemID] = result
+    end
     return result
 end
 
 local function IsTrackableWildcardSlot(slotID)
     local itemID = GetWildcardSlotItemID(slotID)
-    return itemID ~= nil and IsTrackableItem(itemID) and not IGNORED_WILDCARD_TRINKETS[itemID]
+    if itemID == nil or IGNORED_WILDCARD_TRINKETS[itemID] or not IsTrackableItem(itemID) then
+        return false
+    end
+    if not DB.GetShowingPassiveTrinkets() then
+        return false
+    end
+    return true
 end
 
 local function DoScanOwnedItems()

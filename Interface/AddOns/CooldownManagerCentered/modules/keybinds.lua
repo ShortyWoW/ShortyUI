@@ -1,5 +1,3 @@
--- Keybinds
-
 local _, ns = ...
 local Affected = ns.API.Affected
 
@@ -330,18 +328,15 @@ function Keybinds:FindKeyBindForSpell(spellID, spellToKeybind)
         return ""
     end
 
-    -- Direct match
     if spellToKeybind[spellID] then
         return spellToKeybind[spellID]
     end
 
-    -- Try override spell
     local overrideSpellID = C_Spell.GetOverrideSpell(spellID)
     if overrideSpellID and spellToKeybind[overrideSpellID] then
         return spellToKeybind[overrideSpellID]
     end
 
-    -- Try base spell
     local baseSpellID = C_Spell.GetBaseSpell(spellID)
     if baseSpellID and spellToKeybind[baseSpellID] then
         return spellToKeybind[baseSpellID]
@@ -576,8 +571,6 @@ function Keybinds:Enable()
     eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
     eventFrame:RegisterEvent("GAME_PAD_ACTIVE_CHANGED")
 
-    -- Hook into viewer layout refresh to update keybinds
-
     if not areHooksInitialized then
         areHooksInitialized = true
 
@@ -608,7 +601,6 @@ end
 
 function Keybinds:Initialize()
     self:OnSettingChanged()
-    -- Cleanup old DB cache if present
     if ns.db and ns.db.profile then
         ns.db.profile.keybindCache = nil
     end

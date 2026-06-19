@@ -76,6 +76,16 @@ local function GetConfiguredGlowDensity()
     return density
 end
 
+local function GetAntsGlowLayers()
+    local layers = math.floor(GetConfiguredGlowDensity())
+    if layers < 1 then
+        layers = 1
+    elseif layers > 4 then
+        layers = 4
+    end
+    return layers
+end
+
 local function GetAutoCastGlowScale()
     local scale = tonumber(ns.db.profile.cooldownManager_experimental_glow_autocast_scale) or 1
     scale = math.floor((scale * 10) + 0.5) / 10
@@ -100,6 +110,7 @@ end
 
 local SHAPED_GLOW_BLOOM = 0.2
 local SHAPED_GLOW_TEXCOORD = { 0.00781250, 0.50781250, 0.27734375, 0.52734375 }
+local SHAPED_GLOW_SCALE_DURATION = 0.5
 
 local function GetOrCreateShapedGlow(host)
     local glow = Affected(host).shapedGlow
@@ -119,20 +130,22 @@ local function GetOrCreateShapedGlow(host)
     local scale = anim:CreateAnimation("Scale")
     scale:SetOrigin("CENTER", 0, 0)
     scale:SetScaleTo(1.06, 1.06)
-    scale:SetDuration(0.5)
+    scale:SetDuration(SHAPED_GLOW_SCALE_DURATION)
     glow.Anim = anim
+    glow.ScaleAnim = scale
 
     glow:Hide()
     Affected(host).shapedGlow = glow
     return glow
 end
 
-local function StartShapedGlow(host, glowTexture, color)
+local function StartShapedGlow(host, glowTexture, color, speedFactor)
     local glow = GetOrCreateShapedGlow(host)
+    glow.ScaleAnim:SetDuration(SHAPED_GLOW_SCALE_DURATION * (speedFactor or 1))
 
-    local w, h = ns.Sizes.GetIconSize(host:GetParent())
+    local w, h = host._width, host._height
     if not w then
-        w, h = ns.API:GetSafeSize(host:GetParent())
+        w, h = ns.API:GetSafeSize(host)
     end
     local bx, by = (w and w * SHAPED_GLOW_BLOOM) or 0, (h and h * SHAPED_GLOW_BLOOM) or 0
     local tex = glow.Texture
@@ -144,7 +157,6 @@ local function StartShapedGlow(host, glowTexture, color)
     if color then
         tex:SetVertexColor(color[1], color[2], color[3], color[4] or 1)
     else
-        -- No custom color configured: keep the glow art's native tint.
         tex:SetVertexColor(1, 1, 1, 1)
     end
     glow:SetAlpha(1)
@@ -174,18 +186,21 @@ local function StopAllCustomGlows(frame)
     StopShapedGlow(frame)
 end
 
+local function GetGlowSpeedFactor()
+    return 2 ^ -GetConfiguredGlowFrequency()
+end
+
 local function CollectGlowParams(cdmFrame, defaultStyle)
     local masque = ns.MasqueModule
     return {
         style = ResolveGlowStyle(defaultStyle),
         color = GetConfiguredGlowColor(),
         frequency = GetConfiguredGlowFrequency(),
+        speedFactor = GetGlowSpeedFactor(),
         density = GetConfiguredGlowDensity(),
+        antsLayers = GetAntsGlowLayers(),
         autoCastScale = GetAutoCastGlowScale(),
         pixelSize = GetPixelGlowSize(),
-        -- Masque shape data (all nil without a non-square skin). `shape` is the cache
-        -- key; `vertices` traces perimeter glows; `acStyle` / `shapedTexture` supply
-        -- the shaped ants / proc art.
         shape = (cdmFrame and masque and masque:GetShape(cdmFrame)),
         vertices = masque and masque:GetShapeVertices(cdmFrame),
         acStyle = masque and masque:GetAssistedCombatStyle(cdmFrame),
@@ -226,7 +241,11 @@ local function StartConfiguredGlow(frame, params)
             params.vertices
         )
     elseif style == GLOW_STYLE_ANTS then
-        local opts = { color = color }
+        local opts = {
+            color = color,
+            duration = LCG.AntsGlowDefaults.duration * params.speedFactor,
+            count = params.antsLayers,
+        }
         local acStyle = params.acStyle
         if acStyle and acStyle.Texture then
             opts.texture = acStyle.Texture
@@ -237,9 +256,9 @@ local function StartConfiguredGlow(frame, params)
         LCG.AntsGlow_Start(frame, opts)
     else
         if params.shapedTexture then
-            StartShapedGlow(frame, params.shapedTexture, color)
+            StartShapedGlow(frame, params.shapedTexture, color, params.speedFactor)
         else
-            LCG.ProcGlow_Start(frame, { startAnim = false, color = color })
+            LCG.ProcGlow_Start(frame, { startAnim = false, color = color, duration = params.speedFactor })
         end
     end
     return style
@@ -252,15 +271,17 @@ local function BuildGlowSignature(params)
     if style == GLOW_STYLE_ANTS then
         if color then
             base = string.format(
-                "%s:%.3f:%.3f:%.3f:%.3f",
+                "%s:%.3f:%.3f:%.3f:%.3f:%.3f:%d",
                 style,
                 color[1] or 0,
                 color[2] or 0,
                 color[3] or 0,
-                color[4] or 1
+                color[4] or 1,
+                params.frequency,
+                params.antsLayers
             )
         else
-            base = style
+            base = string.format("%s:%.3f:%d", style, params.frequency, params.antsLayers)
         end
     elseif style == GLOW_STYLE_AUTOCAST or style == GLOW_STYLE_PIXEL then
         if color then
@@ -287,15 +308,12 @@ local function BuildGlowSignature(params)
             )
         end
     else
-        base = style
+        base = string.format("%s:%.3f", style, params.frequency)
     end
-    -- Include the Masque skin shape so a skin change invalidates the signature and
-    -- the glow rebuilds with the new shape (vertices / shaped texture) on its next
-    -- update instead of staying frozen in the old shape.
     return base .. "|" .. (params.shape or "")
 end
 
-local HealGlowOnResize -- forward decl; assigned below
+local HealGlowOnResize
 
 local function GetGlowHostSize(cdmFrame)
     local width, height = ns.Sizes.GetIconSize(cdmFrame)
@@ -309,27 +327,21 @@ local function GetGlowHost(cdmFrame)
     local host = Affected(cdmFrame).glowHost
     if not host then
         host = CreateFrame("Frame", nil, cdmFrame)
-
-        local width, height = GetGlowHostSize(cdmFrame)
-        host:SetSize(width, height)
-        Affected(cdmFrame).glowHost = host
         host:SetAllPoints(cdmFrame.Icon)
+        Affected(cdmFrame).glowHost = host
 
         host:HookScript("OnSizeChanged", function(self)
             C_Timer.After(0.1, function()
-                local width, height = GetGlowHostSize(cdmFrame)
-                host:SetSize(width, height)
-                host:SetAllPoints(cdmFrame.Icon)
+                self._width, self._height = GetGlowHostSize(cdmFrame)
                 HealGlowOnResize(self)
             end)
         end)
     end
-
+    host._width, host._height = GetGlowHostSize(cdmFrame)
     return host
 end
 
 local function GetButtonGlowFrame(host)
-    -- Our shaped proc glow (Masque skin shape) supports direct alpha control.
     if Affected(host).shapedGlow and Affected(host).shapedGlow:IsShown() then
         return Affected(host).shapedGlow
     end
@@ -349,11 +361,6 @@ local function GetButtonGlowFrame(host)
 
     return nil
 end
-
--- Persistent glow model: one LibCustomGlow frame per host, built for the current
--- style/colour/shape signature and kept looping. Cooldown/proc/aura state only
--- change its alpha; it's rebuilt only when the signature changes and released only
--- when the spell has no glow configured. Nothing transient = no flicker/freeze bugs.
 
 local function EnsureButtonGlow(cdmFrame)
     local host = GetGlowHost(cdmFrame)
@@ -386,22 +393,18 @@ HealGlowOnResize = function(host)
     end
 end
 
--- Show the glow at the given alpha, building it on demand. alpha 0 keeps the
--- frame + animation alive but invisible (alpha is the only visibility control).
 local function SetButtonGlowVisible(cdmFrame, alpha)
     if alpha == nil then
         alpha = 1
     end
     local glow = EnsureButtonGlow(cdmFrame)
     if glow then
-        glow:SetAlpha(alpha or 1)
+        glow:SetAlpha(alpha)
     end
     return glow
 end
 
--- Tear the glow fully down (no frame, no animation). Only for spells with no glow
--- configured at all - never for a transient hide (use alpha 0 for those).
-local function ReleaseButtonGlow(cdmFrame)
+local function ClearButtonGlow(cdmFrame)
     local host = Affected(cdmFrame).glowHost
     if not host then
         return
@@ -413,14 +416,6 @@ local function ReleaseButtonGlow(cdmFrame)
     StopAllCustomGlows(host)
 end
 
-local function ClearButtonGlow(cdmFrame)
-    ReleaseButtonGlow(cdmFrame)
-end
-
--- Whether the spell has a glow configured, and at what alpha. Returns
--- (wantsGlow, alpha): wantsGlow is a plain bool so we never branch on the (live,
--- possibly-secret) duration value - that's only ever handed to SetAlpha. alpha is
--- cooldown / charge / aura driven; proc forcing is layered on in the caller.
 local function ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
     if cooldownInfo == nil then
         return false
@@ -432,17 +427,15 @@ local function ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
 
         local spellCharges = C_Spell.GetSpellCharges(spellID)
         local hasCharges = spellCharges and spellCharges.maxCharges > 1
-        if hasCharges and CooldownStyle.GetGlowOnFullCharges(cooldownInfo.spellID) then
-            if hideForAura then
-                return true, 0
-            end
+        if hideForAura then
+            return true, 0
+        end
+        local glowOnFullCharges = CooldownStyle.GetGlowOnFullCharges(cooldownInfo.spellID)
+        if hasCharges and glowOnFullCharges then
             return true, C_Spell.GetSpellChargeDuration(spellID):EvaluateRemainingDuration(isZeroCurve)
         end
 
-        if CooldownStyle.GetGlowWhenReady(cooldownInfo.spellID) then
-            if hideForAura then
-                return true, 0
-            end
+        if CooldownStyle.GetGlowWhenReady(cooldownInfo.spellID) or glowOnFullCharges then
             local cooldown = C_Spell.GetSpellCooldown(spellID)
             if cooldown.isOnGCD then
                 return true, 1
@@ -458,9 +451,6 @@ local function ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
     return false
 end
 
--- Single decision point. Combine the configured (cooldown/aura) glow with any
--- active Blizzard proc and apply it as an alpha. The frame persists across all of
--- this; only a genuine "no glow here" state tears it down.
 local function UpdateButtonGlowState(cdmFrame)
     local cooldownInfo = cdmFrame:GetCooldownInfo()
     local wantsGlow, configuredAlpha = ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
@@ -473,7 +463,7 @@ local function UpdateButtonGlowState(cdmFrame)
     elseif wantsGlow then
         SetButtonGlowVisible(cdmFrame, configuredAlpha)
     else
-        ReleaseButtonGlow(cdmFrame)
+        ClearButtonGlow(cdmFrame)
     end
 end
 
@@ -1075,10 +1065,6 @@ local function HookActionButtonSpellAlertManager()
         return
     end
 
-    -- The proc overlay is just another trigger that wants the (persistent) glow
-    -- visible. It no longer builds/stops its own glow - it flips a flag and lets
-    -- UpdateButtonGlowState decide, so it shares the glow-when-ready frame with no
-    -- churn and never strands it on proc-end.
     hooksecurefunc(ActionButtonSpellAlertManager, "ShowAlert", function(_, frame)
         local activeGlowTarget = GetCooldownViewerChild(frame)
         if not activeGlowTarget then
@@ -1093,8 +1079,6 @@ local function HookActionButtonSpellAlertManager()
         local glowStyle = ns.db.profile.cooldownManager_experimental_glow_style
         local customStyle = glowStyle and glowStyle ~= "DEFAULT"
 
-        -- Suppress Blizzard's own proc overlay whenever procs are disabled for the
-        -- spell or we're replacing it with a custom style; otherwise let it show.
         if activeGlowTarget.SpellActivationAlert then
             activeGlowTarget.SpellActivationAlert:SetAlpha((disableProcs or customStyle) and 0 or 1)
         end
@@ -1119,10 +1103,6 @@ function CooldownStyle:RefreshHooks()
     InstallBarColorSettingsHook()
 end
 
--- Re-evaluate every CDM button's glow right now. The glow signature bakes in the
--- Masque shape, so this rebuilds the glow with the new shape immediately after a
--- skin change instead of waiting for the next cooldown event (matches how the
--- assistant highlight reshapes on MasqueModule:Refresh()).
 function CooldownStyle:RefreshAllGlows()
     for name in pairs(viewers) do
         local viewer = _G[name]

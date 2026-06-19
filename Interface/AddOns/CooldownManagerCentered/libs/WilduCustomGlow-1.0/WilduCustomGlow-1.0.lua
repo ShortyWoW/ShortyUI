@@ -3,10 +3,33 @@ This library contains work of Hendrick "nevcairiel" Leppkes
 https://www.wowace.com/projects/libbuttonglow-1-0
 ]]
 
--- luacheck: globals CreateFromMixins ObjectPoolMixin CreateTexturePool CreateFramePool
+--[[
+This is fork of LibCustomGlow 
+MIT License
+
+Copyright (c) 2022 Benjamin Staneck
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+]]
 
 local MAJOR_VERSION = "WilduCustomGlow-1.0" -- fork of LibCustomGlow-1.0
-local MINOR_VERSION = 25
+local MINOR_VERSION = 27
 if not LibStub then
     error(MAJOR_VERSION .. " requires LibStub.")
 end
@@ -125,6 +148,19 @@ end
 local GlowFramePool = CreateFramePool("Frame", GlowParent, nil, FramePoolResetter)
 lib.GlowFramePool = GlowFramePool
 
+local function ResolveHostSize(r)
+    local width, height = r._width, r._height
+    if width and height then
+        return width, height
+    end
+    width, height = r:GetSize()
+    if issecretvalue(width) then
+        return 0, 0
+    end
+    r._width, r._height = width, height
+    return width, height
+end
+
 local function addFrameAndTex(r, color, name, key, N, xOffset, yOffset, texture, texCoord, desaturated, frameLevel)
     key = key or ""
     frameLevel = frameLevel or 8
@@ -155,7 +191,6 @@ local function addFrameAndTex(r, color, name, key, N, xOffset, yOffset, texture,
                 f.textures[i]:SetBlendMode("ADD")
             end
         end
-        -- Handle both array format {r,g,b,a} and Color objects (for WoW 12.0 secret values)
         if type(color) == "table" and color.GetRGBA then
             f.textures[i]:SetVertexColor(color:GetRGBA())
         else
@@ -206,8 +241,8 @@ local pUpdate = function(self, elapsed)
         self.timer = self.timer % 1
     end
     local progress = self.timer
-    local width, height = self:GetSize()
-    if not issecretvalue(width) and (width ~= self.info.width or height ~= self.info.height) then
+    local width, height = self._width, self._height
+    if width and (width ~= self.info.width or height ~= self.info.height) then
         local perimeter = 2 * (width + height)
         if not (perimeter > 0) then
             return
@@ -239,7 +274,7 @@ local pUpdate = function(self, elapsed)
             [3] = (height * 2 + width - self.info.length / 2) / perimeter,
         }
     end
-    if not issecretvalue(width) and self:IsShown() then
+    if width and self:IsShown() then
         if not (self.masks[1]:IsShown()) then
             self.masks[1]:Show()
             self.masks[1]:SetPoint("TOPLEFT", self, "TOPLEFT", self.info.th, -self.info.th)
@@ -272,19 +307,14 @@ local pUpdate = function(self, elapsed)
     end
 end
 
--- Polygon variant of pUpdate: the pixels travel along an arbitrary closed path
--- (e.g. a hexagon) instead of the frame's rectangle. `self.info.vertices` is a
--- list of normalised {x, y} points (0..1, top-left origin) tracing the shape.
--- Each pixel is drawn as a short segment rotated to the local edge direction so
--- it follows the outline. Reads only frame sizes (safe, non-secret).
 local pUpdatePoly = function(self, elapsed)
     self.timer = self.timer + elapsed / self.info.period
     if self.timer > 1 or self.timer < -1 then
         self.timer = self.timer % 1
     end
     local progress = self.timer
-    local width, height = self:GetSize()
-    if not issecretvalue(width) and (width ~= self.info.width or height ~= self.info.height) then
+    local width, height = self._width, self._height
+    if width and (width ~= self.info.width or height ~= self.info.height) then
         if not (width > 0 and height > 0) then
             return
         end
@@ -300,9 +330,6 @@ local pUpdatePoly = function(self, elapsed)
             local ax, ay = a.x * width, a.y * height
             local dx, dy = (b.x - a.x) * width, (b.y - a.y) * height
             local len = math.sqrt(dx * dx + dy * dy)
-            -- dy is in screen space (y grows downward) but SetRotation wants a
-            -- standard counter-clockwise angle (y up), so negate dy. Otherwise
-            -- the dashes mirror outward on slanted edges instead of tracing them.
             edges[i] = { ax = ax, ay = ay, dx = dx, dy = dy, len = len, angle = math.atan2(-dy, dx) }
             total = total + len
         end
@@ -363,26 +390,16 @@ function lib.PixelGlow_Start(r, color, N, frequency, length, th, xOffset, yOffse
     else
         period = 4
     end
-    local width, height = r:GetSize()
-    if issecretvalue(width) then
-        width = r._width or 0
-        height = r._height or 0
-    else
-        r._width = width
-        r._height = height
-    end
+    local width, height = ResolveHostSize(r)
     if not length then
         if width then
             if vertices then
-                -- Short dashes that scale with the icon, traced along the polygon.
                 length = math.floor(min(width, height) * 0.2)
             else
                 length = math.floor((width + height) * (2 / N - 0.1))
                 length = min(length, min(width, height))
             end
         else
-            -- Size not laid out yet (or secret); use a minimal dash. The next
-            -- rebuild (once the icon has a real size) recomputes it.
             length = 4
         end
     end
@@ -393,10 +410,8 @@ function lib.PixelGlow_Start(r, color, N, frequency, length, th, xOffset, yOffse
 
     addFrameAndTex(r, color, "_PixelGlow", key, N, xOffset, yOffset, textureList.white, { 0, 1, 0, 1 }, nil, frameLevel)
     local f = r["_PixelGlow" .. key]
+    f._width, f._height = width, height
 
-    -- Polygon mode: pixels follow an arbitrary outline (e.g. hexagon) instead of
-    -- the frame rectangle. Uses explicit rotated segments, so the rectangle
-    -- border masks/bg aren't needed - tear them down if this frame had them.
     if vertices then
         if f.masks then
             if f.masks[1] then
@@ -422,7 +437,7 @@ function lib.PixelGlow_Start(r, color, N, frequency, length, th, xOffset, yOffse
         f.info.th = th
         f.info.length = length
         f.info.vertices = vertices
-        f.info.width = nil -- force edge recompute
+        f.info.width = nil
         pUpdatePoly(f, 0)
         f:SetScript("OnUpdate", pUpdatePoly)
         return
@@ -465,7 +480,6 @@ function lib.PixelGlow_Start(r, color, N, frequency, length, th, xOffset, yOffse
         end
     end
     for _, tex in pairs(f.textures) do
-        -- Clear any rotation left over from a previous polygon-mode run.
         tex:SetRotation(0)
         if tex:GetNumMaskTextures() < 1 then
             tex:AddMaskTexture(f.masks[1])
@@ -503,17 +517,21 @@ lib.stopList["Pixel Glow"] = lib.PixelGlow_Stop
 
 --Autocast Glow Functions--
 local function acUpdate(self, elapsed)
-    local width, height = self:GetSize()
-    if not issecretvalue(width) and (width ~= self.info.width or height ~= self.info.height) then
+    local width, height = self._width, self._height
+    if width and (width ~= self.info.width or height ~= self.info.height) then
         if width * height == 0 then
             return
-        end -- Avoid division by zero
+        end
         self.info.width = width
         self.info.height = height
         self.info.perimeter = 2 * (width + height)
         self.info.bottomlim = height * 2 + width
         self.info.rightlim = height + width
         self.info.space = self.info.perimeter / self.info.N
+    end
+
+    if not self.info.perimeter then
+        return
     end
 
     local texIndex = 0
@@ -538,13 +556,9 @@ local function acUpdate(self, elapsed)
     end
 end
 
--- Polygon variant of acUpdate: the sparkles travel along an arbitrary closed
--- path (e.g. a hexagon) instead of the frame rectangle. `self.info.vertices` is
--- a list of normalised {x, y} points (0..1, top-left origin). Sparkles are
--- radial, so no rotation is needed - only the position changes.
 local function acUpdatePoly(self, elapsed)
-    local width, height = self:GetSize()
-    if not issecretvalue(width) and (width ~= self.info.width or height ~= self.info.height) then
+    local width, height = self._width, self._height
+    if width and (width ~= self.info.width or height ~= self.info.height) then
         if width * height == 0 then
             return
         end
@@ -640,6 +654,7 @@ function lib.AutoCastGlow_Start(r, color, N, frequency, scale, xOffset, yOffset,
         frameLevel
     )
     local f = r["_AutoCastGlow" .. key]
+    f._width, f._height = ResolveHostSize(r)
     local sizes = { 7, 6, 5, 4 }
     for k, size in pairs(sizes) do
         for i = 1, N do
@@ -651,7 +666,7 @@ function lib.AutoCastGlow_Start(r, color, N, frequency, scale, xOffset, yOffset,
     f.info.N = N
     f.info.period = period
     f.info.vertices = vertices
-    f.info.width = nil -- force perimeter/edge recompute on the next update
+    f.info.width = nil
     if vertices then
         f:SetScript("OnUpdate", acUpdatePoly)
         acUpdatePoly(f, 0)
@@ -765,7 +780,7 @@ local function InitProcGlow(f)
 end
 
 local function SetupProcGlow(f, options)
-    f.key = "_ProcGlow" .. options.key -- for resetter
+    f.key = "_ProcGlow" .. options.key
     f:SetScript("OnHide", function(self)
         if self.ProcStartAnim:IsPlaying() then
             self.ProcStartAnim:Stop()
@@ -777,22 +792,9 @@ local function SetupProcGlow(f, options)
     f:SetScript("OnShow", function(self)
         if self.startAnim then
             if not self.ProcStartAnim:IsPlaying() and not self.ProcLoopAnim:IsPlaying() then
-                --[[
-to future me:
-i wish you'r ok, if you wonder where are this constants coming from, check:
-https://github.com/Gethe/wow-ui-source/blob/eb4459c679a1bd8919cad92934ea83c4f5e77e8b/Interface/FrameXML/ActionButton.lua#L816
-https://github.com/Gethe/wow-ui-source/blob/d8e8ebf572c3b28237cf83e8fc5c0583b5453a2b/Interface/FrameXML/ActionButtonTemplate.xml#L5-L14
-                ]]
-                local width, height = self:GetSize()
-                if issecretvalue(width) then
-                    width = self._width or 0
-                    height = self._height or 0
-                else
-                    self._width = width
-                    self._height = height
-                end
-                if not issecretvalue(width) and (width and width > 0) then
-                    self.ProcStart:SetSize((width / 42 * 150) / 1.4, (height / 42 * 150) / 1.4)
+                local width, height = self._width, self._height
+                if width and width > 0 then
+                    self.ProcStart:SetSize(width / 42 * 150, height / 42 * 150)
                 end
                 self.ProcStart:Show()
                 self.ProcLoop:Hide()
@@ -851,16 +853,10 @@ function lib.ProcGlow_Start(r, options)
     f:SetParent(r)
     f:SetFrameLevel(r:GetFrameLevel() + options.frameLevel)
 
-    local width, height = r:GetSize()
-    if issecretvalue(width) then
-        width = r._width or 0
-        height = r._height or 0
-    else
-        r._width = width
-        r._height = height
-    end
-    local xOffset = options.xOffset + (width and width * 0.2 or 0)
-    local yOffset = options.yOffset + (height and height * 0.2 or 0)
+    local width, height = ResolveHostSize(r)
+    f._width, f._height = width, height
+    local xOffset = options.xOffset + width * 0.2
+    local yOffset = options.yOffset + height * 0.2
     f:SetPoint("TOPLEFT", r, "TOPLEFT", -xOffset, yOffset)
     f:SetPoint("BOTTOMRIGHT", r, "BOTTOMRIGHT", xOffset, -yOffset)
 
@@ -898,65 +894,90 @@ end
 local AntsGlowPool = CreateFramePool("Frame", GlowParent, nil, AntsGlowResetter)
 lib.AntsGlowPool = AntsGlowPool
 
-local function InitAntsGlow(f)
-    f.Ants = f:CreateTexture(nil, "OVERLAY")
-    f.Ants:SetBlendMode("ADD")
-    f.Ants:SetAllPoints()
+local ANTS_MAX_TEXTURES = 4
 
+local function InitAntsGlow(f)
     f.AntsAnim = f:CreateAnimationGroup()
     f.AntsAnim:SetLooping("REPEAT")
     f.AntsAnim:SetToFinalAlpha(true)
 
-    -- Keep the texture fully visible across the loop (the FlipBook does the work).
-    local alpha = f.AntsAnim:CreateAnimation("Alpha")
-    alpha:SetChildKey("Ants")
-    alpha:SetFromAlpha(1)
-    alpha:SetToAlpha(1)
-    alpha:SetDuration(0.001)
-    alpha:SetOrder(0)
+    f.antsTextures = {}
+    f.antsFlips = {}
+    for i = 1, ANTS_MAX_TEXTURES do
+        local childKey = "Ants" .. (i == 1 and "" or i)
+        local tex = f:CreateTexture(nil, "OVERLAY")
+        -- tex:SetBlendMode("ADD")
+        tex:SetAllPoints()
+        f[childKey] = tex
+        f.antsTextures[i] = tex
 
-    local flip = f.AntsAnim:CreateAnimation("FlipBook")
-    flip:SetChildKey("Ants")
-    flip:SetOrder(0)
-    flip:SetFlipBookFrameWidth(0)
-    flip:SetFlipBookFrameHeight(0)
-    f.AntsAnim.flip = flip
+        local alpha = f.AntsAnim:CreateAnimation("Alpha")
+        alpha:SetChildKey(childKey)
+        alpha:SetFromAlpha(1)
+        alpha:SetToAlpha(1)
+        alpha:SetDuration(0.001)
+        alpha:SetOrder(0)
+
+        local flip = f.AntsAnim:CreateAnimation("FlipBook")
+        flip:SetChildKey(childKey)
+        flip:SetOrder(0)
+        flip:SetFlipBookFrameWidth(0)
+        flip:SetFlipBookFrameHeight(0)
+        f.antsFlips[i] = flip
+    end
+    f.Ants = f.antsTextures[1]
+    f.AntsAnim.flip = f.antsFlips[1]
 end
 
 local function SetupAntsGlow(f, options)
     f.key = "_AntsGlow" .. options.key
 
-    local flip = f.AntsAnim.flip
-
-    -- A `texture` (with texcoords + explicit flipbook frame size) lets a caller
-    -- supply a shaped ants sheet - e.g. Masque's per-shape AssistedCombatHighlight
-    -- ants - so the border traces the icon shape instead of staying square.
-    -- Otherwise use the (square) atlas and let the frame size auto-derive.
-    if options.texture then
-        f.Ants:SetTexture(options.texture)
-        if options.texCoords then
-            f.Ants:SetTexCoord(options.texCoords[1], options.texCoords[2], options.texCoords[3], options.texCoords[4])
-        end
-        flip:SetFlipBookFrameWidth(options.frameWidth or 0)
-        flip:SetFlipBookFrameHeight(options.frameHeight or 0)
-    else
-        f.Ants:SetTexCoord(0, 1, 0, 1)
-        f.Ants:SetAtlas(options.atlas)
-        flip:SetFlipBookFrameWidth(0)
-        flip:SetFlipBookFrameHeight(0)
+    local count = options.count or 1
+    if count < 1 then
+        count = 1
+    elseif count > ANTS_MAX_TEXTURES then
+        count = ANTS_MAX_TEXTURES
     end
 
-    flip:SetFlipBookRows(options.rows)
-    flip:SetFlipBookColumns(options.columns)
-    flip:SetFlipBookFrames(options.frames)
-    flip:SetDuration(options.duration)
+    for i = 1, ANTS_MAX_TEXTURES do
+        local tex = f.antsTextures[i]
+        local flip = f.antsFlips[i]
+        if i <= count then
+            if options.texture then
+                tex:SetTexture(options.texture)
+                if options.texCoords then
+                    tex:SetTexCoord(
+                        options.texCoords[1],
+                        options.texCoords[2],
+                        options.texCoords[3],
+                        options.texCoords[4]
+                    )
+                end
+                flip:SetFlipBookFrameWidth(options.frameWidth or 0)
+                flip:SetFlipBookFrameHeight(options.frameHeight or 0)
+            else
+                tex:SetTexCoord(0, 1, 0, 1)
+                tex:SetAtlas(options.atlas)
+                flip:SetFlipBookFrameWidth(0)
+                flip:SetFlipBookFrameHeight(0)
+            end
 
-    if not options.color then
-        f.Ants:SetDesaturated(nil)
-        f.Ants:SetVertexColor(1, 1, 1, 1)
-    else
-        f.Ants:SetDesaturated(1)
-        f.Ants:SetVertexColor(options.color[1], options.color[2], options.color[3], options.color[4])
+            flip:SetFlipBookRows(options.rows)
+            flip:SetFlipBookColumns(options.columns)
+            flip:SetFlipBookFrames(options.frames)
+            flip:SetDuration(options.duration)
+
+            if not options.color or (count > 1 and i == 1) then
+                tex:SetDesaturated(1)
+                tex:SetVertexColor(1, 1, 1, 1)
+            else
+                tex:SetDesaturated(1)
+                tex:SetVertexColor(options.color[1], options.color[2], options.color[3], options.color[4])
+            end
+            tex:Show()
+        else
+            tex:Hide()
+        end
     end
 
     f:SetScript("OnHide", function(self)
@@ -982,10 +1003,9 @@ local AntsGlowDefaults = {
     scale = 1.4,
     xOffset = 0,
     yOffset = 0,
+    count = 1,
     key = "",
 }
--- Exported so consumers can read the geometry defaults (scale / frameLevel)
--- instead of hand-mirroring them and drifting out of sync.
 lib.AntsGlowDefaults = AntsGlowDefaults
 
 function lib.AntsGlow_Start(r, options)
@@ -1008,14 +1028,7 @@ function lib.AntsGlow_Start(r, options)
     f:SetParent(r)
     f:SetFrameLevel(r:GetFrameLevel() + options.frameLevel)
 
-    local width, height = r:GetSize()
-    if issecretvalue(width) then
-        width = r._width or 0
-        height = r._height or 0
-    else
-        r._width = width
-        r._height = height
-    end
+    local width, height = ResolveHostSize(r)
 
     f:SetSize(width * options.scale, height * options.scale)
 
@@ -1024,11 +1037,6 @@ function lib.AntsGlow_Start(r, options)
 
     SetupAntsGlow(f, options)
     f:Show()
-    -- The loop is normally kicked off by the OnShow handler, but a freshly-pooled
-    -- frame is created already-shown (the pool only hides frames on release), so
-    -- f:Show() above is a no-op that never fires OnShow. Start it explicitly here
-    -- so the very first ants glow animates instead of sitting on frame 0 until it
-    -- gets released and re-shown. The IsPlaying guard keeps this idempotent.
     if not f.AntsAnim:IsPlaying() then
         f.AntsAnim:Play()
     end

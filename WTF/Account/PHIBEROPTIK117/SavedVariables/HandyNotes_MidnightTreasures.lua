@@ -10,8 +10,8 @@ HandyNotes_MidnightTreasuresDB = {
 },
 },
 ["profileKeys"] = {
+["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortbowjob - Illidan"] = "Shortbowjob - Illidan",
-["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 ["Bossbabyfan - Illidan"] = "Bossbabyfan - Illidan",
 ["Callmeshorty - Illidan"] = "Callmeshorty - Illidan",
 ["Shortlite - Illidan"] = "Shortlite - Illidan",
@@ -25,39 +25,9 @@ HandyNotes_MidnightTreasuresDB = {
 ["Callmeshawte - Area 52"] = "Callmeshawte - Area 52",
 ["Shortyshamm - Illidan"] = "Shortyshamm - Illidan",
 ["Shortbeef - Vashj"] = "Shortbeef - Vashj",
-["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
+["Drewis24EEA3 - Illidan"] = "Drewis24EEA3 - Illidan",
 },
 ["profiles"] = {
-["Shortbowjob - Illidan"] = {
-},
-["Drewis24EEA3 - Illidan"] = {
-},
-["Bossbabyfan - Illidan"] = {
-},
-["Callmeshorty - Illidan"] = {
-},
-["Shortlite - Illidan"] = {
-},
-["Shortybear - Illidan"] = {
-},
-["Shortypal - Dalaran"] = {
-},
-["Shortcannon - Illidan"] = {
-},
-["Shortbowjob - Area 52"] = {
-},
-["Drewishlaser - Dalaran"] = {
-},
-["Shortytest - Illidan"] = {
-},
-["Shortlight - Illidan"] = {
-},
-["Callmeshawte - Area 52"] = {
-},
-["Shortyshamm - Illidan"] = {
-},
-["Shortbeef - Vashj"] = {
-},
 ["Callmeshorty - Dalaran"] = {
 ["show_treasure"] = false,
 ["achievementsHidden"] = {
@@ -89,6 +59,36 @@ HandyNotes_MidnightTreasuresDB = {
 ["professionknowledge"] = false,
 ["glyphs"] = true,
 },
+},
+["Shortbowjob - Illidan"] = {
+},
+["Bossbabyfan - Illidan"] = {
+},
+["Callmeshorty - Illidan"] = {
+},
+["Shortlite - Illidan"] = {
+},
+["Shortybear - Illidan"] = {
+},
+["Shortypal - Dalaran"] = {
+},
+["Shortcannon - Illidan"] = {
+},
+["Shortbowjob - Area 52"] = {
+},
+["Drewishlaser - Dalaran"] = {
+},
+["Shortytest - Illidan"] = {
+},
+["Shortlight - Illidan"] = {
+},
+["Callmeshawte - Area 52"] = {
+},
+["Shortyshamm - Illidan"] = {
+},
+["Shortbeef - Vashj"] = {
+},
+["Drewis24EEA3 - Illidan"] = {
 },
 },
 }

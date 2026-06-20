@@ -5,6 +5,7 @@ ElvCharacterDB = {
 "/ec",
 "/cw Qorupal-Illidan yo",
 "/g Good evening party people.",
+"/g Hello team.",
 },
 ["ChatHistoryLog"] = {
 {

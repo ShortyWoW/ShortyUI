@@ -1,11 +1,6 @@
 
 EncounterDetailsDB = {
 ["chartData"] = {
-[4451] = {
-["Raid Damage Done"] = {
-["__time"] = 1781928038,
-},
-},
 [4455] = {
 ["Raid Damage Done"] = {
 ["__time"] = 1781928038,
@@ -22,16 +17,6 @@ EncounterDetailsDB = {
 },
 },
 [4467] = {
-["Raid Damage Done"] = {
-["__time"] = 1781928038,
-},
-},
-[4316] = {
-["Raid Damage Done"] = {
-["__time"] = 1781917626,
-},
-},
-[4452] = {
 ["Raid Damage Done"] = {
 ["__time"] = 1781928038,
 },
@@ -56,16 +41,6 @@ EncounterDetailsDB = {
 ["__time"] = 1781928038,
 },
 },
-[4317] = {
-["Raid Damage Done"] = {
-["__time"] = 1781918247,
-},
-},
-[4453] = {
-["Raid Damage Done"] = {
-["__time"] = 1781928038,
-},
-},
 [4457] = {
 ["Raid Damage Done"] = {
 ["__time"] = 1781928038,
@@ -81,26 +56,6 @@ EncounterDetailsDB = {
 ["__time"] = 1781928038,
 },
 },
-[4314] = {
-["Raid Damage Done"] = {
-["__time"] = 1781917626,
-},
-},
-[4318] = {
-["Raid Damage Done"] = {
-["__time"] = 1781918695,
-},
-},
-[4454] = {
-["Raid Damage Done"] = {
-["__time"] = 1781928038,
-},
-},
-[4334] = {
-["Raid Damage Done"] = {
-["__time"] = 1781921501,
-},
-},
 [4462] = {
 ["Raid Damage Done"] = {
 ["__time"] = 1781928038,
@@ -111,17 +66,12 @@ EncounterDetailsDB = {
 ["__time"] = 1781928038,
 },
 },
-[4319] = {
-["Raid Damage Done"] = {
-["__time"] = 1781919686,
-},
-},
-[4469] = {
+[4458] = {
 ["Raid Damage Done"] = {
 ["__time"] = 1781928038,
 },
 },
-[4458] = {
+[4469] = {
 ["Raid Damage Done"] = {
 ["__time"] = 1781928038,
 },

@@ -15,13 +15,13 @@ KeystoneLootCharDB = {
 ["rank"] = 1,
 },
 ["specId"] = 264,
-["slotIds"] = {
-},
-["classId"] = 7,
-["slotId"] = 0,
 ["raid"] = {
 ["difficulty"] = "normal",
 ["rank"] = 1,
+},
+["classId"] = 7,
+["slotId"] = 0,
+["slotIds"] = {
 },
 },
 }

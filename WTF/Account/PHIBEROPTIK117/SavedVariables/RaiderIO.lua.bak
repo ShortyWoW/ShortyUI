@@ -55,9 +55,20 @@ RaiderIO_Config = {
 ["mplusHeadlineMode"] = 0,
 ["showClientGuildBest"] = true,
 }
-RaiderIO_LastCharacter = "us-Bossbabyfan-illidan"
+RaiderIO_LastCharacter = "us-Callmeshawte-area-52"
 RaiderIO_MissingCharacters = {
-["us-Bossbabyfan-illidan"] = true,
+["us-Daepi-area-52"] = true,
+["us-Galttpally-area-52"] = true,
+["us-Yoruxo-area-52"] = true,
+["us-Pushingpal-area-52"] = true,
+["us-Lolynn-azralon"] = true,
+["us-Partyboyx-area-52"] = true,
+["us-Butterdmuffn-area-52"] = true,
+["us-Ikonox-area-52"] = true,
+["us-Mutuka-area-52"] = true,
+["us-Quincysc-area-52"] = true,
+["us-Callmeshawte-area-52"] = true,
+["us-Duquesne-area-52"] = true,
 }
 RaiderIO_MissingServers = {
 }

@@ -55,13 +55,15 @@ RaiderIO_Config = {
 ["enableCombatLogTracking"] = false,
 ["showClientGuildBest"] = true,
 }
-RaiderIO_LastCharacter = "us-Callmeshorty-illidan"
+RaiderIO_LastCharacter = "us-Callmeshawte-area-52"
 RaiderIO_MissingCharacters = {
-["us-Shanalira-illidan"] = true,
-["us-Skïttles-bonechewer"] = true,
-["us-Huras-dragonmaw"] = true,
-["us-Ookindooker-destromath"] = true,
-["us-Adekeai-korialstrasz"] = true,
+["us-Denalio-area-52"] = true,
+["us-Hardndeep-area-52"] = true,
+["us-Thugcovid-area-52"] = true,
+["us-Bartelo-area-52"] = true,
+["us-Sambazzarn-area-52"] = true,
+["us-Callmeshawte-area-52"] = true,
+["us-Lbb-area-52"] = true,
 }
 RaiderIO_MissingServers = {
 }

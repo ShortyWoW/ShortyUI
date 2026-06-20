@@ -34,7 +34,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -44,8 +45,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 1773.833333333333,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -712,8 +712,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -723,7 +722,8 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 1248.1875,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
+["damage_from"] = {
+},
 ["friendlyfire"] = {
 },
 ["nome"] = "Ugalee",
@@ -1104,8 +1104,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -1115,7 +1114,8 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 13851.6875,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
+["damage_from"] = {
+},
 ["friendlyfire"] = {
 },
 ["nome"] = "Sämmay",
@@ -1496,8 +1496,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -1507,7 +1506,8 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 1293.145833333333,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
+["damage_from"] = {
+},
 ["friendlyfire"] = {
 },
 ["nome"] = "Garukanu-DarkIron",
@@ -1940,7 +1940,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -1950,8 +1951,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 1273.791666666667,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -2087,7 +2087,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.008368,
 ["total_without_pet"] = 0.008368,
 ["total"] = 93928,
@@ -2107,8 +2107,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.008368,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -2204,7 +2204,7 @@ _detalhes_database = {
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
-[774] = {
+[1244341] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -2216,9 +2216,9 @@ _detalhes_database = {
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 13441,
+["total"] = 75,
 ["c_max"] = 0,
-["id"] = 774,
+["id"] = 1244341,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -2250,7 +2250,7 @@ _detalhes_database = {
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
-[48438] = {
+[774] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -2262,9 +2262,9 @@ _detalhes_database = {
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 16811,
+["total"] = 13441,
 ["c_max"] = 0,
-["id"] = 48438,
+["id"] = 774,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -2411,7 +2411,7 @@ _detalhes_database = {
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
-[1244341] = {
+[48438] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -2423,9 +2423,9 @@ _detalhes_database = {
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 75,
+["total"] = 16811,
 ["c_max"] = 0,
-["id"] = 1244341,
+["id"] = 48438,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -2455,7 +2455,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.002307,
 ["total_without_pet"] = 0.002307,
 ["total"] = 85144,
@@ -2475,8 +2475,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.002307,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -2547,7 +2547,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["heal_enemy_amt"] = 0,
+["aID"] = "3676-0EE65349",
 ["totalover"] = 0.003801,
 ["total_without_pet"] = 0.003801,
 ["total"] = 55906,
@@ -2567,8 +2567,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.003801,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["aID"] = "3676-0EE65349",
 ["classe"] = "WARRIOR",
+["heal_enemy_amt"] = 0,
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -2754,7 +2754,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.007584,
 ["total_without_pet"] = 0.007584,
 ["total"] = 7274,
@@ -2807,12 +2807,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.007584,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -2821,7 +2821,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.00272,
 ["total_without_pet"] = 0.00272,
 ["total"] = 503,
@@ -2897,12 +2897,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.00272,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -3059,7 +3059,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.003825,
 ["avoidable_damage_taken"] = 0.003825,
 ["last_dps_realtime"] = 0,
@@ -3076,8 +3076,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -3087,8 +3086,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 2166.956521739131,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -3468,7 +3468,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -3478,8 +3479,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 3213.826086956522,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -3972,7 +3972,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.006651,
 ["avoidable_damage_taken"] = 0.006651,
 ["last_dps_realtime"] = 0,
@@ -3989,8 +3989,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -4000,8 +3999,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 6653.739130434783,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -4213,6 +4213,32 @@ _detalhes_database = {
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
+[214396] = {
+["c_amt"] = 0,
+["b_amt"] = 0,
+["g_amt"] = 0,
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["g_dmg"] = 0,
+["counter"] = 1,
+["total"] = 2852,
+["c_max"] = 0,
+["id"] = 214396,
+["r_dmg"] = 0,
+["extra"] = {
+},
+["a_dmg"] = 0,
+["a_amt"] = 0,
+["c_min"] = 0,
+["successful_casted"] = 0,
+["c_total"] = 0,
+["n_amt"] = 0,
+["b_dmg"] = 0,
+["r_amt"] = 0,
+},
 [6343] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
@@ -4227,32 +4253,6 @@ _detalhes_database = {
 ["total"] = 38753,
 ["c_max"] = 0,
 ["id"] = 6343,
-["r_dmg"] = 0,
-["extra"] = {
-},
-["a_dmg"] = 0,
-["a_amt"] = 0,
-["c_min"] = 0,
-["successful_casted"] = 0,
-["c_total"] = 0,
-["n_amt"] = 0,
-["b_dmg"] = 0,
-["r_amt"] = 0,
-},
-[5308] = {
-["c_amt"] = 0,
-["b_amt"] = 0,
-["g_amt"] = 0,
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["g_dmg"] = 0,
-["counter"] = 1,
-["total"] = 22289,
-["c_max"] = 0,
-["id"] = 5308,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -4291,7 +4291,7 @@ _detalhes_database = {
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
-[214396] = {
+[5308] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
 ["g_amt"] = 0,
@@ -4302,9 +4302,9 @@ _detalhes_database = {
 ["n_min"] = 0,
 ["g_dmg"] = 0,
 ["counter"] = 1,
-["total"] = 2852,
+["total"] = 22289,
 ["c_max"] = 0,
-["id"] = 214396,
+["id"] = 5308,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -4381,7 +4381,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -4391,8 +4392,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 2496.173913043479,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -4554,7 +4554,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.006236,
 ["total_without_pet"] = 0.006236,
 ["total"] = 77277,
@@ -4574,8 +4574,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.006236,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -4646,7 +4646,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.005855,
 ["total_without_pet"] = 0.005855,
 ["total"] = 12590,
@@ -4699,12 +4699,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.005855,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -4713,7 +4713,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0EE65349",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.008266,
 ["total_without_pet"] = 0.008266,
 ["total"] = 10018,
@@ -4858,12 +4858,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "WARRIOR",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.008266,
 ["delay"] = 0,
-["classe"] = "WARRIOR",
+["aID"] = "3676-0EE65349",
 },
 {
 ["flag_original"] = 1298,
@@ -4872,7 +4872,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.007965,
 ["total_without_pet"] = 0.007965,
 ["total"] = 9580,
@@ -4886,13 +4886,13 @@ _detalhes_database = {
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.007965,
 ["healing_taken"] = 0.007965,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -5125,7 +5125,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -5135,8 +5136,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 7012.492537313433,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -5785,7 +5785,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.005355,
 ["avoidable_damage_taken"] = 0.005355,
 ["last_dps_realtime"] = 0,
@@ -5802,8 +5802,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -5813,8 +5812,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 10203.53731343284,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -6254,7 +6254,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.008135,
 ["avoidable_damage_taken"] = 0.008135,
 ["last_dps_realtime"] = 0,
@@ -6271,8 +6271,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -6282,8 +6281,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 2480.119402985074,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -6697,7 +6697,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.008213,
 ["avoidable_damage_taken"] = 0.008213,
 ["last_dps_realtime"] = 0,
@@ -6714,8 +6714,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -6725,8 +6724,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 4279.716417910448,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -7132,7 +7132,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -7142,8 +7143,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 5227.626865671642,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -7305,7 +7305,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.002021,
 ["total_without_pet"] = 0.002021,
 ["total"] = 583791,
@@ -7325,8 +7325,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.002021,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -7696,7 +7696,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.004398,
 ["total_without_pet"] = 0.004398,
 ["total"] = 168736,
@@ -7716,8 +7716,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.004398,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -7994,7 +7994,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.005553,
 ["total_without_pet"] = 0.005553,
 ["total"] = 14141,
@@ -8093,12 +8093,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.005553,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 {
 ["flag_original"] = 1298,
@@ -8107,7 +8107,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.004894,
 ["total_without_pet"] = 0.004894,
 ["total"] = 13867,
@@ -8160,12 +8160,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.004894,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 },
 },
@@ -8370,7 +8370,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.008064,
 ["avoidable_damage_taken"] = 0.008064,
 ["last_dps_realtime"] = 0,
@@ -8387,8 +8387,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -8398,8 +8397,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 10991.76923076923,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -8787,7 +8787,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.005907,
 ["avoidable_damage_taken"] = 0.005907,
 ["last_dps_realtime"] = 0,
@@ -8804,8 +8804,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -8815,8 +8814,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 14264.15384615385,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -9144,7 +9144,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -9154,8 +9155,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 14854.38461538462,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -9317,7 +9317,7 @@ _detalhes_database = {
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
-[105174] = {
+[264178] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
 ["g_amt"] = 0,
@@ -9328,9 +9328,9 @@ _detalhes_database = {
 ["n_min"] = 0,
 ["g_dmg"] = 0,
 ["counter"] = 1,
-["total"] = 13535,
+["total"] = 19695,
 ["c_max"] = 0,
-["id"] = 105174,
+["id"] = 264178,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -9421,6 +9421,32 @@ _detalhes_database = {
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
+[105174] = {
+["c_amt"] = 0,
+["b_amt"] = 0,
+["g_amt"] = 0,
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["g_dmg"] = 0,
+["counter"] = 1,
+["total"] = 13535,
+["c_max"] = 0,
+["id"] = 105174,
+["r_dmg"] = 0,
+["extra"] = {
+},
+["a_dmg"] = 0,
+["a_amt"] = 0,
+["c_min"] = 0,
+["successful_casted"] = 0,
+["c_total"] = 0,
+["n_amt"] = 0,
+["b_dmg"] = 0,
+["r_amt"] = 0,
+},
 [1269800] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
@@ -9435,32 +9461,6 @@ _detalhes_database = {
 ["total"] = 25776,
 ["c_max"] = 0,
 ["id"] = 1269800,
-["r_dmg"] = 0,
-["extra"] = {
-},
-["a_dmg"] = 0,
-["a_amt"] = 0,
-["c_min"] = 0,
-["successful_casted"] = 0,
-["c_total"] = 0,
-["n_amt"] = 0,
-["b_dmg"] = 0,
-["r_amt"] = 0,
-},
-[264178] = {
-["c_amt"] = 0,
-["b_amt"] = 0,
-["g_amt"] = 0,
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["g_dmg"] = 0,
-["counter"] = 1,
-["total"] = 19695,
-["c_max"] = 0,
-["id"] = 264178,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -9562,7 +9562,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -9572,8 +9573,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 11536.15384615385,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -9702,7 +9702,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.005856,
 ["avoidable_damage_taken"] = 0.005856,
 ["last_dps_realtime"] = 0,
@@ -9719,8 +9719,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -9730,8 +9729,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 9244.846153846154,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -9892,7 +9892,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.002088,
 ["total_without_pet"] = 0.002088,
 ["total"] = 64409,
@@ -9912,8 +9912,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.002088,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -10144,7 +10144,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.002129,
 ["total_without_pet"] = 0.002129,
 ["total"] = 6362,
@@ -10158,17 +10158,17 @@ _detalhes_database = {
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.002129,
 ["healing_taken"] = 0.002129,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
-[439530] = {
+[81269] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -10180,9 +10180,9 @@ _detalhes_database = {
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 4400,
+["total"] = 207,
 ["c_max"] = 0,
-["id"] = 439530,
+["id"] = 81269,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -10214,6 +10214,29 @@ _detalhes_database = {
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
+[439530] = {
+["c_amt"] = 0,
+["totalabsorb"] = 0,
+["targets_overheal"] = {
+},
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["counter"] = 1,
+["overheal"] = 0,
+["total"] = 4400,
+["c_max"] = 0,
+["id"] = 439530,
+["targets_absorbs"] = {
+},
+["c_min"] = 0,
+["c_total"] = 0,
+["totaldenied"] = 0,
+["n_amt"] = 0,
+["absorbed"] = 0,
+},
 [440121] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
@@ -10229,29 +10252,6 @@ _detalhes_database = {
 ["total"] = 606,
 ["c_max"] = 0,
 ["id"] = 440121,
-["targets_absorbs"] = {
-},
-["c_min"] = 0,
-["c_total"] = 0,
-["totaldenied"] = 0,
-["n_amt"] = 0,
-["absorbed"] = 0,
-},
-[81269] = {
-["c_amt"] = 0,
-["totalabsorb"] = 0,
-["targets_overheal"] = {
-},
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["counter"] = 1,
-["overheal"] = 0,
-["total"] = 207,
-["c_max"] = 0,
-["id"] = 81269,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -10281,7 +10281,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.008249,
 ["total_without_pet"] = 0.008249,
 ["total"] = 562,
@@ -10334,12 +10334,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.008249,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -10348,7 +10348,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.004178,
 ["total_without_pet"] = 0.004178,
 ["total"] = 458,
@@ -10424,12 +10424,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.004178,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -10582,7 +10582,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 ["total_without_pet"] = 0.008829,
 ["avoidable_damage_taken"] = 0.008829,
 ["last_dps_realtime"] = 0,
@@ -10599,8 +10599,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -10609,8 +10608,9 @@ _detalhes_database = {
 ["raid_targets"] = {
 },
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["aID"] = "3676-087FBE5E",
+["damage_from"] = {
+},
+["classe"] = "HUNTER",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -10938,7 +10938,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -10948,8 +10949,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 1536.105263157895,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -11364,7 +11364,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.008156,
 ["avoidable_damage_taken"] = 0.008156,
 ["last_dps_realtime"] = 0,
@@ -11381,8 +11381,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -11392,8 +11391,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 5437.052631578948,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -11755,7 +11755,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["total_without_pet"] = 0.00362,
 ["avoidable_damage_taken"] = 0.00362,
 ["last_dps_realtime"] = 0,
@@ -11773,7 +11773,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -11782,9 +11783,8 @@ _detalhes_database = {
 ["raid_targets"] = {
 },
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
-["classe"] = "DRUID",
+["specIcon"] = 136041,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -11886,7 +11886,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.003634,
 ["avoidable_damage_taken"] = 0.003634,
 ["last_dps_realtime"] = 0,
@@ -11903,8 +11903,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -11914,8 +11913,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 7073.157894736843,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -12050,7 +12050,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.001423,
 ["total_without_pet"] = 0.001423,
 ["total"] = 61161,
@@ -12064,13 +12064,13 @@ _detalhes_database = {
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.001423,
 ["healing_taken"] = 0.001423,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -12302,7 +12302,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.002197,
 ["total_without_pet"] = 0.002197,
 ["total"] = 29186,
@@ -12322,8 +12322,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.002197,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -12394,7 +12394,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0EE65349",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.003913,
 ["total_without_pet"] = 0.003913,
 ["total"] = 3406,
@@ -12516,12 +12516,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "WARRIOR",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.003913,
 ["delay"] = 0,
-["classe"] = "WARRIOR",
+["aID"] = "3676-0EE65349",
 },
 {
 ["flag_original"] = 1298,
@@ -12530,7 +12530,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.001328,
 ["total_without_pet"] = 0.001328,
 ["total"] = 380,
@@ -12606,12 +12606,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.001328,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -12764,7 +12764,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.008966,
 ["avoidable_damage_taken"] = 0.008966,
 ["last_dps_realtime"] = 0,
@@ -12781,8 +12781,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -12792,8 +12791,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 9897.898550724638,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -13225,7 +13225,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -13235,8 +13236,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 10694.33333333333,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -13807,7 +13807,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.004089,
 ["avoidable_damage_taken"] = 0.004089,
 ["last_dps_realtime"] = 0,
@@ -13824,8 +13824,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -13835,8 +13834,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 10364.11594202899,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -14074,6 +14074,32 @@ _detalhes_database = {
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
+[57755] = {
+["c_amt"] = 0,
+["b_amt"] = 0,
+["g_amt"] = 0,
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["g_dmg"] = 0,
+["counter"] = 1,
+["total"] = 2169,
+["c_max"] = 0,
+["id"] = 57755,
+["r_dmg"] = 0,
+["extra"] = {
+},
+["a_dmg"] = 0,
+["a_amt"] = 0,
+["c_min"] = 0,
+["successful_casted"] = 0,
+["c_total"] = 0,
+["n_amt"] = 0,
+["b_dmg"] = 0,
+["r_amt"] = 0,
+},
 [6343] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
@@ -14114,32 +14140,6 @@ _detalhes_database = {
 ["total"] = 23258,
 ["c_max"] = 0,
 ["id"] = 214396,
-["r_dmg"] = 0,
-["extra"] = {
-},
-["a_dmg"] = 0,
-["a_amt"] = 0,
-["c_min"] = 0,
-["successful_casted"] = 0,
-["c_total"] = 0,
-["n_amt"] = 0,
-["b_dmg"] = 0,
-["r_amt"] = 0,
-},
-[57755] = {
-["c_amt"] = 0,
-["b_amt"] = 0,
-["g_amt"] = 0,
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["g_dmg"] = 0,
-["counter"] = 1,
-["total"] = 2169,
-["c_max"] = 0,
-["id"] = 57755,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -14224,7 +14224,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.006307,
 ["avoidable_damage_taken"] = 0.006307,
 ["last_dps_realtime"] = 0,
@@ -14241,8 +14241,7 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -14252,8 +14251,9 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 5929.913043478261,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -14659,7 +14659,8 @@ _detalhes_database = {
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -14669,8 +14670,7 @@ _detalhes_database = {
 },
 ["damage_taken_ps"] = 8414.942028985508,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -14858,7 +14858,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.005789,
 ["total_without_pet"] = 0.005789,
 ["total"] = 949355,
@@ -14878,8 +14878,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.005789,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -15295,7 +15295,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.005106,
 ["total_without_pet"] = 0.005106,
 ["total"] = 231621,
@@ -15315,8 +15315,8 @@ _detalhes_database = {
 ["healing_taken"] = 0.005106,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -15410,7 +15410,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.007009,
 ["total_without_pet"] = 0.007009,
 ["total"] = 59592,
@@ -15486,12 +15486,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.007009,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -15683,7 +15683,7 @@ _detalhes_database = {
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.00754,
 ["total_without_pet"] = 0.00754,
 ["total"] = 8959,
@@ -15782,12 +15782,12 @@ _detalhes_database = {
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.00754,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -16140,7 +16140,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.007833,
 ["avoidable_damage_taken"] = 0.007833,
 ["last_dps_realtime"] = 0,
@@ -16157,8 +16157,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -16168,8 +16167,9 @@ false,
 },
 ["damage_taken_ps"] = 13031.14285714286,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -16479,7 +16479,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.004901,
 ["avoidable_damage_taken"] = 0.004901,
 ["last_dps_realtime"] = 0,
@@ -16496,8 +16496,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -16507,8 +16506,9 @@ false,
 },
 ["damage_taken_ps"] = 21029.78571428571,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -16818,7 +16818,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.008799,
 ["avoidable_damage_taken"] = 0.008799,
 ["last_dps_realtime"] = 0,
@@ -16835,8 +16835,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -16846,8 +16845,9 @@ false,
 },
 ["damage_taken_ps"] = 9087.357142857143,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -17123,7 +17123,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -17133,8 +17134,7 @@ false,
 },
 ["damage_taken_ps"] = 9896.714285714286,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -17177,7 +17177,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -17187,8 +17188,7 @@ false,
 },
 ["damage_taken_ps"] = 9300.357142857143,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -17220,7 +17220,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.007481,
 ["total_without_pet"] = 0.007481,
 ["total"] = 52024,
@@ -17234,13 +17234,13 @@ false,
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.007481,
 ["healing_taken"] = 0.007481,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -17403,7 +17403,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.00231,
 ["total_without_pet"] = 0.00231,
 ["total"] = 29457,
@@ -17479,12 +17479,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.00231,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -17493,7 +17493,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.007412,
 ["total_without_pet"] = 0.007412,
 ["total"] = 15780,
@@ -17513,8 +17513,8 @@ false,
 ["healing_taken"] = 0.007412,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -17562,7 +17562,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0EE65349",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.004367,
 ["total_without_pet"] = 0.004367,
 ["total"] = 5630,
@@ -17707,12 +17707,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "WARRIOR",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.004367,
 ["delay"] = 0,
-["classe"] = "WARRIOR",
+["aID"] = "3676-0EE65349",
 },
 {
 ["flag_original"] = 1298,
@@ -17721,7 +17721,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.003915,
 ["total_without_pet"] = 0.003915,
 ["total"] = 2286,
@@ -17820,12 +17820,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.003915,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -17996,7 +17996,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -18006,8 +18007,7 @@ false,
 },
 ["damage_taken_ps"] = 25305.38095238095,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -18396,7 +18396,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.005027,
 ["avoidable_damage_taken"] = 0.005027,
 ["last_dps_realtime"] = 0,
@@ -18413,8 +18413,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -18424,8 +18423,9 @@ false,
 },
 ["damage_taken_ps"] = 2489.190476190476,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -18735,7 +18735,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.002631,
 ["avoidable_damage_taken"] = 0.002631,
 ["last_dps_realtime"] = 0,
@@ -18752,8 +18752,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -18763,8 +18762,9 @@ false,
 },
 ["damage_taken_ps"] = 4315.523809523809,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -18950,6 +18950,32 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
+[214396] = {
+["c_amt"] = 0,
+["b_amt"] = 0,
+["g_amt"] = 0,
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["g_dmg"] = 0,
+["counter"] = 1,
+["total"] = 8554,
+["c_max"] = 0,
+["id"] = 214396,
+["r_dmg"] = 0,
+["extra"] = {
+},
+["a_dmg"] = 0,
+["a_amt"] = 0,
+["c_min"] = 0,
+["successful_casted"] = 0,
+["c_total"] = 0,
+["n_amt"] = 0,
+["b_dmg"] = 0,
+["r_amt"] = 0,
+},
 [6343] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
@@ -18964,32 +18990,6 @@ false,
 ["total"] = 24063,
 ["c_max"] = 0,
 ["id"] = 6343,
-["r_dmg"] = 0,
-["extra"] = {
-},
-["a_dmg"] = 0,
-["a_amt"] = 0,
-["c_min"] = 0,
-["successful_casted"] = 0,
-["c_total"] = 0,
-["n_amt"] = 0,
-["b_dmg"] = 0,
-["r_amt"] = 0,
-},
-[5308] = {
-["c_amt"] = 0,
-["b_amt"] = 0,
-["g_amt"] = 0,
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["g_dmg"] = 0,
-["counter"] = 1,
-["total"] = 23372,
-["c_max"] = 0,
-["id"] = 5308,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -19028,7 +19028,7 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
-[214396] = {
+[5308] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
 ["g_amt"] = 0,
@@ -19039,9 +19039,9 @@ false,
 ["n_min"] = 0,
 ["g_dmg"] = 0,
 ["counter"] = 1,
-["total"] = 8554,
+["total"] = 23372,
 ["c_max"] = 0,
-["id"] = 214396,
+["id"] = 5308,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -19118,7 +19118,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -19128,8 +19129,7 @@ false,
 },
 ["damage_taken_ps"] = 2636.095238095238,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -19258,7 +19258,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.005241,
 ["avoidable_damage_taken"] = 0.005241,
 ["last_dps_realtime"] = 0,
@@ -19275,8 +19275,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -19286,8 +19285,9 @@ false,
 },
 ["damage_taken_ps"] = 1940.047619047619,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -19578,7 +19578,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.008719,
 ["total_without_pet"] = 0.008719,
 ["total"] = 198275,
@@ -19598,8 +19598,8 @@ false,
 ["healing_taken"] = 0.008719,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -19899,7 +19899,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.004335,
 ["total_without_pet"] = 0.004335,
 ["total"] = 27532,
@@ -19913,13 +19913,13 @@ false,
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.004335,
 ["healing_taken"] = 0.004335,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -20197,7 +20197,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.005777,
 ["total_without_pet"] = 0.005777,
 ["total"] = 9425,
@@ -20250,12 +20250,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.005777,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -20264,7 +20264,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.0076,
 ["total_without_pet"] = 0.0076,
 ["total"] = 263,
@@ -20363,12 +20363,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.0076,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -20673,7 +20673,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.006008,
 ["avoidable_damage_taken"] = 0.006008,
 ["last_dps_realtime"] = 0,
@@ -20690,8 +20690,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -20701,8 +20700,9 @@ false,
 },
 ["damage_taken_ps"] = 30752.57894736842,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -20862,7 +20862,7 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
-[107570] = {
+[435222] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
 ["g_amt"] = 0,
@@ -20873,9 +20873,9 @@ false,
 ["n_min"] = 0,
 ["g_dmg"] = 0,
 ["counter"] = 1,
-["total"] = 1758,
+["total"] = 338276,
 ["c_max"] = 0,
-["id"] = 107570,
+["id"] = 435222,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -20914,7 +20914,7 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
-[199658] = {
+[107570] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
 ["g_amt"] = 0,
@@ -20925,9 +20925,9 @@ false,
 ["n_min"] = 0,
 ["g_dmg"] = 0,
 ["counter"] = 1,
-["total"] = 108755,
+["total"] = 1758,
 ["c_max"] = 0,
-["id"] = 199658,
+["id"] = 107570,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -21070,7 +21070,7 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
-[435222] = {
+[199658] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
 ["g_amt"] = 0,
@@ -21081,9 +21081,9 @@ false,
 ["n_min"] = 0,
 ["g_dmg"] = 0,
 ["counter"] = 1,
-["total"] = 338276,
+["total"] = 108755,
 ["c_max"] = 0,
-["id"] = 435222,
+["id"] = 199658,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -21142,7 +21142,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.005814,
 ["avoidable_damage_taken"] = 0.005814,
 ["last_dps_realtime"] = 0,
@@ -21159,8 +21159,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -21170,8 +21169,9 @@ false,
 },
 ["damage_taken_ps"] = 7538.063157894737,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -21559,7 +21559,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.008507,
 ["avoidable_damage_taken"] = 0.008507,
 ["last_dps_realtime"] = 0,
@@ -21576,8 +21576,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -21587,8 +21586,9 @@ false,
 },
 ["damage_taken_ps"] = 9909.957894736843,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -21994,7 +21994,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -22004,8 +22005,7 @@ false,
 },
 ["damage_taken_ps"] = 8448.315789473685,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -22282,7 +22282,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -22292,8 +22293,7 @@ false,
 },
 ["damage_taken_ps"] = 14629.13684210526,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -22403,7 +22403,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.003114,
 ["total_without_pet"] = 0.003114,
 ["total"] = 397306,
@@ -22423,8 +22423,8 @@ false,
 ["healing_taken"] = 0.003114,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -23046,7 +23046,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.00765,
 ["total_without_pet"] = 0.00765,
 ["total"] = 270623,
@@ -23066,8 +23066,8 @@ false,
 ["healing_taken"] = 0.00765,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -23161,7 +23161,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.007307,
 ["total_without_pet"] = 0.007307,
 ["total"] = 68803,
@@ -23306,12 +23306,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.007307,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 {
 ["flag_original"] = 1298,
@@ -23320,7 +23320,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.001054,
 ["total_without_pet"] = 0.001054,
 ["total"] = 51091,
@@ -23373,12 +23373,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.001054,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 },
 },
@@ -24156,7 +24156,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.00395,
 ["avoidable_damage_taken"] = 0.00395,
 ["last_dps_realtime"] = 0,
@@ -24173,8 +24173,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -24184,8 +24183,9 @@ false,
 },
 ["damage_taken_ps"] = 632.2352941176471,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -24573,7 +24573,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.003301,
 ["avoidable_damage_taken"] = 0.003301,
 ["last_dps_realtime"] = 0,
@@ -24590,8 +24590,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -24601,8 +24600,9 @@ false,
 },
 ["damage_taken_ps"] = 4684.029411764706,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -24814,6 +24814,32 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
+[214396] = {
+["c_amt"] = 0,
+["b_amt"] = 0,
+["g_amt"] = 0,
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["g_dmg"] = 0,
+["counter"] = 1,
+["total"] = 6702,
+["c_max"] = 0,
+["id"] = 214396,
+["r_dmg"] = 0,
+["extra"] = {
+},
+["a_dmg"] = 0,
+["a_amt"] = 0,
+["c_min"] = 0,
+["successful_casted"] = 0,
+["c_total"] = 0,
+["n_amt"] = 0,
+["b_dmg"] = 0,
+["r_amt"] = 0,
+},
 [6343] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
@@ -24854,32 +24880,6 @@ false,
 ["total"] = 23866,
 ["c_max"] = 0,
 ["id"] = 5308,
-["r_dmg"] = 0,
-["extra"] = {
-},
-["a_dmg"] = 0,
-["a_amt"] = 0,
-["c_min"] = 0,
-["successful_casted"] = 0,
-["c_total"] = 0,
-["n_amt"] = 0,
-["b_dmg"] = 0,
-["r_amt"] = 0,
-},
-[214396] = {
-["c_amt"] = 0,
-["b_amt"] = 0,
-["g_amt"] = 0,
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["g_dmg"] = 0,
-["counter"] = 1,
-["total"] = 6702,
-["c_max"] = 0,
-["id"] = 214396,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -25008,7 +25008,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -25018,8 +25019,7 @@ false,
 },
 ["damage_taken_ps"] = 2715.764705882353,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -25434,7 +25434,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.008942,
 ["avoidable_damage_taken"] = 0.008942,
 ["last_dps_realtime"] = 0,
@@ -25451,8 +25451,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -25462,8 +25461,9 @@ false,
 },
 ["damage_taken_ps"] = 431.9705882352941,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -25791,7 +25791,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -25801,8 +25802,7 @@ false,
 },
 ["damage_taken_ps"] = 2769,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -25938,7 +25938,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.00518,
 ["total_without_pet"] = 0.00518,
 ["total"] = 155907,
@@ -25952,13 +25952,13 @@ false,
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.00518,
 ["healing_taken"] = 0.00518,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -26236,7 +26236,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.007463,
 ["total_without_pet"] = 0.007463,
 ["total"] = 79234,
@@ -26256,8 +26256,8 @@ false,
 ["healing_taken"] = 0.007463,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -26351,7 +26351,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.005006,
 ["total_without_pet"] = 0.005006,
 ["total"] = 9752,
@@ -26450,12 +26450,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.005006,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 {
 ["flag_original"] = 1298,
@@ -26624,7 +26624,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.007812,
 ["total_without_pet"] = 0.007812,
 ["total"] = 6377,
@@ -26677,12 +26677,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.007812,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 },
 },
@@ -26896,7 +26896,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -26906,8 +26907,7 @@ false,
 },
 ["damage_taken_ps"] = 16325.95833333333,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -27530,7 +27530,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.00363,
 ["avoidable_damage_taken"] = 0.00363,
 ["last_dps_realtime"] = 0,
@@ -27547,8 +27547,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -27558,8 +27557,9 @@ false,
 },
 ["damage_taken_ps"] = 9997.895833333334,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -28025,7 +28025,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.001633,
 ["avoidable_damage_taken"] = 0.001633,
 ["last_dps_realtime"] = 0,
@@ -28042,8 +28042,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -28053,8 +28052,9 @@ false,
 },
 ["damage_taken_ps"] = 8342.822916666666,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -28468,7 +28468,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.004991,
 ["avoidable_damage_taken"] = 0.004991,
 ["last_dps_realtime"] = 0,
@@ -28485,8 +28485,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -28496,8 +28495,9 @@ false,
 },
 ["damage_taken_ps"] = 9683.645833333334,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -28929,7 +28929,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -28939,8 +28940,7 @@ false,
 },
 ["damage_taken_ps"] = 12923.73958333333,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -29102,7 +29102,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.008708,
 ["total_without_pet"] = 0.008708,
 ["total"] = 1797076,
@@ -29122,8 +29122,8 @@ false,
 ["healing_taken"] = 0.008708,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -29539,7 +29539,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.007229,
 ["total_without_pet"] = 0.007229,
 ["total"] = 366179,
@@ -29559,8 +29559,8 @@ false,
 ["healing_taken"] = 0.007229,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -29677,7 +29677,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.002512,
 ["total_without_pet"] = 0.002512,
 ["total"] = 98806,
@@ -29822,12 +29822,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.002512,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 {
 ["flag_original"] = 1298,
@@ -30065,7 +30065,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.007907,
 ["total_without_pet"] = 0.007907,
 ["total"] = 62129,
@@ -30141,12 +30141,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.007907,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 },
 },
@@ -30342,7 +30342,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.001528,
 ["avoidable_damage_taken"] = 0.001528,
 ["last_dps_realtime"] = 0,
@@ -30359,8 +30359,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -30370,8 +30369,9 @@ false,
 },
 ["damage_taken_ps"] = 28396.725,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -30609,6 +30609,32 @@ false,
 ["b_dmg"] = 0,
 ["r_amt"] = 0,
 },
+[57755] = {
+["c_amt"] = 0,
+["b_amt"] = 0,
+["g_amt"] = 0,
+["n_max"] = 0,
+["targets"] = {
+},
+["n_total"] = 0,
+["n_min"] = 0,
+["g_dmg"] = 0,
+["counter"] = 1,
+["total"] = 1075,
+["c_max"] = 0,
+["id"] = 57755,
+["r_dmg"] = 0,
+["extra"] = {
+},
+["a_dmg"] = 0,
+["a_amt"] = 0,
+["c_min"] = 0,
+["successful_casted"] = 0,
+["c_total"] = 0,
+["n_amt"] = 0,
+["b_dmg"] = 0,
+["r_amt"] = 0,
+},
 [6343] = {
 ["c_amt"] = 0,
 ["b_amt"] = 0,
@@ -30649,32 +30675,6 @@ false,
 ["total"] = 27580,
 ["c_max"] = 0,
 ["id"] = 214396,
-["r_dmg"] = 0,
-["extra"] = {
-},
-["a_dmg"] = 0,
-["a_amt"] = 0,
-["c_min"] = 0,
-["successful_casted"] = 0,
-["c_total"] = 0,
-["n_amt"] = 0,
-["b_dmg"] = 0,
-["r_amt"] = 0,
-},
-[57755] = {
-["c_amt"] = 0,
-["b_amt"] = 0,
-["g_amt"] = 0,
-["n_max"] = 0,
-["targets"] = {
-},
-["n_total"] = 0,
-["n_min"] = 0,
-["g_dmg"] = 0,
-["counter"] = 1,
-["total"] = 1075,
-["c_max"] = 0,
-["id"] = 57755,
 ["r_dmg"] = 0,
 ["extra"] = {
 },
@@ -30759,7 +30759,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.003844,
 ["avoidable_damage_taken"] = 0.003844,
 ["last_dps_realtime"] = 0,
@@ -30776,8 +30776,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -30787,8 +30786,9 @@ false,
 },
 ["damage_taken_ps"] = 6615.775,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -31168,7 +31168,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -31178,8 +31179,7 @@ false,
 },
 ["damage_taken_ps"] = 9789.2125,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -31646,7 +31646,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.007335,
 ["avoidable_damage_taken"] = 0.007335,
 ["last_dps_realtime"] = 0,
@@ -31663,8 +31663,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -31674,8 +31673,9 @@ false,
 },
 ["damage_taken_ps"] = 7691.1375,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -32055,7 +32055,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -32065,8 +32066,7 @@ false,
 },
 ["damage_taken_ps"] = 7422.15,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -32254,7 +32254,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.004582,
 ["total_without_pet"] = 0.004582,
 ["total"] = 441880,
@@ -32274,8 +32274,8 @@ false,
 ["healing_taken"] = 0.004582,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -32805,7 +32805,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.00144,
 ["total_without_pet"] = 0.00144,
 ["total"] = 97404,
@@ -32825,8 +32825,8 @@ false,
 ["healing_taken"] = 0.00144,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -32920,7 +32920,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.002009,
 ["total_without_pet"] = 0.002009,
 ["total"] = 60534,
@@ -32996,12 +32996,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.002009,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -33010,7 +33010,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.008886,
 ["total_without_pet"] = 0.008886,
 ["total"] = 12883,
@@ -33132,12 +33132,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.008886,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -34040,7 +34040,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.003252,
 ["avoidable_damage_taken"] = 0.003252,
 ["last_dps_realtime"] = 0,
@@ -34057,8 +34057,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -34068,8 +34067,9 @@ false,
 },
 ["damage_taken_ps"] = 13705,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -34223,7 +34223,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 ["total_without_pet"] = 0.003507,
 ["avoidable_damage_taken"] = 0.003507,
 ["last_dps_realtime"] = 0,
@@ -34240,8 +34240,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -34250,8 +34249,9 @@ false,
 ["raid_targets"] = {
 },
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["aID"] = "3676-087FBE5E",
+["damage_from"] = {
+},
+["classe"] = "HUNTER",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -34308,7 +34308,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.001653,
 ["total_without_pet"] = 0.001653,
 ["total"] = 622,
@@ -34322,13 +34322,13 @@ false,
 ["specIcon"] = 136041,
 ["targets"] = {
 },
-["classe"] = "DRUID",
+["heal_enemy_amt"] = 0,
 ["totalover_without_pet"] = 0.001653,
 ["healing_taken"] = 0.001653,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
 ["tipo"] = 2,
-["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -34399,7 +34399,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0EE65349",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.002046,
 ["total_without_pet"] = 0.002046,
 ["total"] = 599,
@@ -34452,12 +34452,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "WARRIOR",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.002046,
 ["delay"] = 0,
-["classe"] = "WARRIOR",
+["aID"] = "3676-0EE65349",
 },
 },
 },
@@ -34605,7 +34605,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.003364,
 ["avoidable_damage_taken"] = 0.003364,
 ["last_dps_realtime"] = 0,
@@ -34622,8 +34622,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -34633,8 +34632,9 @@ false,
 },
 ["damage_taken_ps"] = 3587.896551724138,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -35022,7 +35022,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.004624,
 ["avoidable_damage_taken"] = 0.004624,
 ["last_dps_realtime"] = 0,
@@ -35039,8 +35039,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -35050,8 +35049,9 @@ false,
 },
 ["damage_taken_ps"] = 12929.13793103448,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -35439,7 +35439,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.003902,
 ["avoidable_damage_taken"] = 0.003902,
 ["last_dps_realtime"] = 0,
@@ -35456,8 +35456,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -35467,8 +35466,9 @@ false,
 },
 ["damage_taken_ps"] = 9785.137931034482,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -35848,7 +35848,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -35858,8 +35859,7 @@ false,
 },
 ["damage_taken_ps"] = 16022.13793103448,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -36032,7 +36032,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -36042,8 +36043,7 @@ false,
 },
 ["damage_taken_ps"] = 12479,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -36101,7 +36101,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.001011,
 ["total_without_pet"] = 0.001011,
 ["total"] = 584076,
@@ -36121,8 +36121,8 @@ false,
 ["healing_taken"] = 0.001011,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -36515,7 +36515,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.006928,
 ["total_without_pet"] = 0.006928,
 ["total"] = 111137,
@@ -36535,8 +36535,8 @@ false,
 ["healing_taken"] = 0.006928,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -36630,7 +36630,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.002905,
 ["total_without_pet"] = 0.002905,
 ["total"] = 64867,
@@ -36775,12 +36775,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.002905,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 {
 ["flag_original"] = 1298,
@@ -36789,7 +36789,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.003088,
 ["total_without_pet"] = 0.003088,
 ["total"] = 20624,
@@ -36842,12 +36842,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.003088,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -37226,7 +37226,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-0EE65349",
+["classe"] = "WARRIOR",
 ["total_without_pet"] = 0.005348,
 ["avoidable_damage_taken"] = 0.005348,
 ["last_dps_realtime"] = 0,
@@ -37243,8 +37243,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 132341,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -37254,8 +37253,9 @@ false,
 },
 ["damage_taken_ps"] = 9365,
 ["end_time"] = 1780885342,
-["specIcon"] = 132341,
-["classe"] = "WARRIOR",
+["damage_from"] = {
+},
+["aID"] = "3676-0EE65349",
 ["nome"] = "Sämmay",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -37695,7 +37695,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "3676-087FBE5E",
+["classe"] = "HUNTER",
 ["total_without_pet"] = 0.007332,
 ["avoidable_damage_taken"] = 0.007332,
 ["last_dps_realtime"] = 0,
@@ -37712,8 +37712,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 461112,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -37723,8 +37722,9 @@ false,
 },
 ["damage_taken_ps"] = 3045.676923076923,
 ["end_time"] = 1780885342,
-["specIcon"] = 461112,
-["classe"] = "HUNTER",
+["damage_from"] = {
+},
+["aID"] = "3676-087FBE5E",
 ["nome"] = "Ugalee",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -38130,7 +38130,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136172,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -38140,8 +38141,7 @@ false,
 },
 ["damage_taken_ps"] = 5761.446153846154,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136172,
 ["friendlyfire"] = {
 },
 ["nome"] = "Callmeshawte",
@@ -38504,7 +38504,7 @@ false,
 ["pets"] = {
 },
 ["role"] = "DAMAGER",
-["aID"] = "157-0B91B543",
+["classe"] = "PALADIN",
 ["total_without_pet"] = 0.005677,
 ["avoidable_damage_taken"] = 0.005677,
 ["last_dps_realtime"] = 0,
@@ -38521,8 +38521,7 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["damage_from"] = {
-},
+["specIcon"] = 135873,
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -38532,8 +38531,9 @@ false,
 },
 ["damage_taken_ps"] = 5014.692307692308,
 ["end_time"] = 1780885342,
-["specIcon"] = 135873,
-["classe"] = "PALADIN",
+["damage_from"] = {
+},
+["aID"] = "157-0B91B543",
 ["nome"] = "Garukanu-DarkIron",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -38913,7 +38913,8 @@ false,
 ["mrating"] = 0,
 ["avoidable_damage"] = {
 },
-["specIcon"] = 136041,
+["damage_from"] = {
+},
 ["targets"] = {
 },
 ["damage_from_players"] = {
@@ -38923,8 +38924,7 @@ false,
 },
 ["damage_taken_ps"] = 2938.015384615384,
 ["end_time"] = 1780885342,
-["damage_from"] = {
-},
+["specIcon"] = 136041,
 ["friendlyfire"] = {
 },
 ["nome"] = "Ruikino-WyrmrestAccord",
@@ -39034,7 +39034,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "1171-0AF5D9C5",
+["classe"] = "DRUID",
 ["totalover"] = 0.004948,
 ["total_without_pet"] = 0.004948,
 ["total"] = 331193,
@@ -39054,8 +39054,8 @@ false,
 ["healing_taken"] = 0.004948,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "DRUID",
 ["heal_enemy_amt"] = 0,
+["aID"] = "1171-0AF5D9C5",
 ["nome"] = "Ruikino-WyrmrestAccord",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -39128,7 +39128,7 @@ false,
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
-[48438] = {
+[1244341] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -39140,9 +39140,9 @@ false,
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 73814,
+["total"] = 233,
 ["c_max"] = 0,
-["id"] = 48438,
+["id"] = 1244341,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -39220,7 +39220,7 @@ false,
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
-[774] = {
+[48438] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -39232,9 +39232,9 @@ false,
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 21864,
+["total"] = 73814,
 ["c_max"] = 0,
-["id"] = 774,
+["id"] = 48438,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -39381,7 +39381,7 @@ false,
 ["n_amt"] = 0,
 ["absorbed"] = 0,
 },
-[1244341] = {
+[774] = {
 ["c_amt"] = 0,
 ["totalabsorb"] = 0,
 ["targets_overheal"] = {
@@ -39393,9 +39393,9 @@ false,
 ["n_min"] = 0,
 ["counter"] = 1,
 ["overheal"] = 0,
-["total"] = 233,
+["total"] = 21864,
 ["c_max"] = 0,
-["id"] = 1244341,
+["id"] = 774,
 ["targets_absorbs"] = {
 },
 ["c_min"] = 0,
@@ -39425,7 +39425,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-0ECBAD65",
+["classe"] = "WARLOCK",
 ["totalover"] = 0.003713,
 ["total_without_pet"] = 0.003713,
 ["total"] = 184404,
@@ -39445,8 +39445,8 @@ false,
 ["healing_taken"] = 0.003713,
 ["healpotion"] = 0,
 ["end_time"] = 1780885342,
-["classe"] = "WARLOCK",
 ["heal_enemy_amt"] = 0,
+["aID"] = "3676-0ECBAD65",
 ["nome"] = "Callmeshawte",
 ["spells"] = {
 ["_ActorTable"] = {
@@ -39540,7 +39540,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "3676-087FBE5E",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.004625,
 ["total_without_pet"] = 0.004625,
 ["total"] = 67694,
@@ -39593,12 +39593,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "HUNTER",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.004625,
 ["delay"] = 0,
-["classe"] = "HUNTER",
+["aID"] = "3676-087FBE5E",
 },
 {
 ["flag_original"] = 1298,
@@ -39813,7 +39813,7 @@ false,
 ["pets"] = {
 },
 ["iniciar_hps"] = false,
-["aID"] = "157-0B91B543",
+["heal_enemy_amt"] = 0,
 ["totalover"] = 0.00765,
 ["total_without_pet"] = 0.00765,
 ["total"] = 32612,
@@ -39935,12 +39935,12 @@ false,
 },
 ["grupo"] = true,
 ["start_time"] = 1780885342,
-["heal_enemy_amt"] = 0,
+["classe"] = "PALADIN",
 ["custom"] = 0,
 ["last_event"] = 0,
 ["totaldenied"] = 0.00765,
 ["delay"] = 0,
-["classe"] = "PALADIN",
+["aID"] = "157-0B91B543",
 },
 },
 },
@@ -40162,8 +40162,9 @@ false,
 ["show_options"] = false,
 ["ignored_cooldowns"] = {
 },
-["height"] = 18,
 ["framme_locked"] = false,
+["cooldowns"] = {
+},
 ["own_frame"] = {
 ["defensive-raid"] = false,
 ["ofensive"] = false,
@@ -40171,8 +40172,7 @@ false,
 ["utility"] = false,
 ["defensive-personal"] = false,
 },
-["cooldowns"] = {
-},
+["height"] = 18,
 ["show_conditions"] = {
 ["only_inside_instance"] = true,
 ["only_in_group"] = true,
@@ -40190,7 +40190,7 @@ false,
 ["utility"] = false,
 },
 },
-["combat_counter"] = 768,
+["combat_counter"] = 770,
 ["damage_meter_sessions"] = {
 },
 ["force_font_outline"] = "",
@@ -40198,9 +40198,12 @@ false,
 },
 ["arena_data_compressed"] = {
 },
-["arena_data_index_selected"] = 1,
-["cached_roles"] = {
+["damage_meter_session_info"] = {
 },
+["character_data"] = {
+["logons"] = 76,
+},
+["arena_data_index_selected"] = 1,
 ["local_instances_config"] = {
 {
 ["modo"] = 2,
@@ -40272,121 +40275,13 @@ false,
 },
 },
 },
-["mythic_dungeon_currentsaved"] = {
-["players"] = {
-"Player-60-0E5CDFEA",
-"Player-60-0FE47444",
-"Player-61-0FE4EEEB",
-"Player-86-0A0EC856",
-},
-["dungeon_name"] = "Pit of Saron",
-["started"] = false,
-["segment_id"] = 1,
-["ej_id"] = 0,
-["started_at"] = 1776388132.7,
-["run_id"] = 2,
-["level"] = 3,
-["dungeon_zone_id"] = 658,
-["previous_boss_killed_at"] = 1776388123,
-},
-["player_stats"] = {
+["on_death_menu"] = false,
+["cached_roles"] = {
 },
 ["cached_talents"] = {
+["Player-3676-0AD12BC3"] = "CoPAkXBWxkyfx9CbGaHonEAhLxYWmZmxMMzMMLzMz0MLGzMmxAAAAAmZmZmZmZYGjBAjZmZGAAgxsNwAEsMMBwCAYGAAmBYwA",
+["Player-3676-0ECBAD65"] = "CoQAMrNP5kak+EBqLfUa3dMm+yMMzoZzMz2MzYWGAAAAAAgxyyMmZGWMMMz2s0CNjFjZGLz2MzMmBAmZMGzMDmZGzYmZDAAYmZmxMG2mxAGA",
 },
-["last_instance_id"] = 1571,
-["data_harvest_for_charsts"] = {
-["players"] = {
-{
-["name"] = "Damage of Each Individual Player",
-["playerOnly"] = true,
-["playerKey"] = "total",
-["combatObjectContainer"] = 1,
-},
-},
-["totals"] = {
-{
-["combatObjectSubTableKey"] = 1,
-["name"] = "Damage of All Player Combined",
-["combatObjectSubTableName"] = "totals",
-},
-},
-},
-["announce_interrupts"] = {
-["enabled"] = false,
-["whisper"] = "",
-["channel"] = "SAY",
-["custom"] = "",
-["next"] = "",
-},
-["announce_prepots"] = {
-["enabled"] = false,
-["channel"] = "SELF",
-["reverse"] = false,
-},
-["active_profile"] = "Luckyone 4.15",
-["last_realversion"] = 172,
-["damage_meter_session_info"] = {
-},
-["benchmark_db"] = {
-["frame"] = {
-},
-},
-["announce_damagerecord"] = {
-["enabled"] = true,
-["channel"] = "SELF",
-},
-["SoloTablesSaved"] = {
-["Mode"] = 1,
-},
-["combat_log"] = {
-["inverse_deathlog_overalldata"] = false,
-["track_hunter_frenzy"] = false,
-["merge_gemstones_1007"] = false,
-["merge_critical_heals"] = false,
-["inverse_deathlog_raid"] = false,
-["calc_evoker_damage"] = true,
-["evoker_show_realtimedps"] = false,
-["inverse_deathlog_mplus"] = false,
-},
-["announce_firsthit"] = {
-["enabled"] = true,
-["channel"] = "SELF",
-},
-["mythic_plus_log"] = {
-"16/04/26 21:43:33|Activity Time: 0",
-"16/04/26 21:43:33|GetChallengeCompletionInfo() Found, Time: 2029",
-"16/04/26 21:43:33|MergeSegmentsOnEnd started | creating the overall segment at the end of the run.",
-"16/04/26 21:43:33|MythicDungeonFinished() | merge_boss_trash = true",
-"16/04/26 21:43:31|===== Mythic+ Finished =====",
-"16/04/26 21:08:43|OnChallengeModeStart()",
-"16/04/26 21:08:43|COMBAT_MYTHICDUNGEON_START | settings: make_overall_boss_only = false | merge_boss_trash = true | delay_to_show_graphic = 1 | mythicrun_time_type = 1 | reverse_death_log = false | autoclose_time = 90 | show_damage_graphic = true | boss_dedicated_segment = true |  | level: 3 | zone: Pit of Saron | zoneId: 658",
-"16/04/26 21:08:43|CHALLENGE_MODE_START timer ended, starting the dungeon.",
-"16/04/26 21:08:33|Event: CHALLENGE_MODE_START, starting 10 seconds timer | Level: 3",
-"16/04/26 20:55:29|Activity Time: 1827.757",
-"16/04/26 20:55:29|GetChallengeCompletionInfo() Found, Time: 1933",
-"16/04/26 20:55:29|MergeSegmentsOnEnd started | creating the overall segment at the end of the run.",
-"16/04/26 20:55:29|MythicDungeonFinished() | merge_boss_trash = true",
-"16/04/26 20:55:27|===== Mythic+ Finished =====",
-"16/04/26 20:55:27|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | L'ura Seat of the Triumvirate",
-"16/04/26 20:51:24|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Viceroy Nezhar Seat of the Triumvirate",
-"16/04/26 20:42:36|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Saprish Seat of the Triumvirate",
-"16/04/26 20:39:04|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Saprish Seat of the Triumvirate",
-"16/04/26 20:35:38|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Saprish Seat of the Triumvirate",
-"16/04/26 20:25:54|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Zuraal the Ascended Seat of the Triumvirate",
-"16/04/26 20:21:55|OnChallengeModeStart()",
-"16/04/26 20:21:55|COMBAT_MYTHICDUNGEON_START | settings: make_overall_boss_only = false | merge_boss_trash = true | delay_to_show_graphic = 1 | mythicrun_time_type = 1 | reverse_death_log = false | autoclose_time = 90 | show_damage_graphic = true | boss_dedicated_segment = true |  | level: 2 | zone: Seat of the Triumvirate | zoneId: 1753",
-"16/04/26 20:21:55|CHALLENGE_MODE_START timer ended, starting the dungeon.",
-"16/04/26 20:21:45|Event: CHALLENGE_MODE_START, starting 10 seconds timer | Level: 2",
-},
-["on_death_menu"] = false,
-["last_day"] = "16",
-["coach"] = {
-["enabled"] = false,
-["welcome_panel_pos"] = {
-},
-["last_coach_name"] = false,
-},
-["last_encounter"] = "Midnight Falls",
 ["nick_tag_cache"] = {
 ["last_version"] = 16,
 ["Brunex"] = {
@@ -40460,43 +40355,142 @@ false,
 12,
 },
 },
-["last_instance_time"] = 1780884141,
-["last_version"] = "12.0.7 15101",
-["combat_id"] = 45,
-["savedStyles"] = {
+["last_instance_id"] = 1571,
+["data_harvest_for_charsts"] = {
+["players"] = {
+{
+["name"] = "Damage of Each Individual Player",
+["playerOnly"] = true,
+["playerKey"] = "total",
+["combatObjectContainer"] = 1,
+},
+},
+["totals"] = {
+{
+["combatObjectSubTableKey"] = 1,
+["name"] = "Damage of All Player Combined",
+["combatObjectSubTableName"] = "totals",
+},
+},
+},
+["announce_interrupts"] = {
+["enabled"] = false,
+["whisper"] = "",
+["channel"] = "SAY",
+["custom"] = "",
+["next"] = "",
+},
+["announce_prepots"] = {
+["enabled"] = false,
+["channel"] = "SELF",
+["reverse"] = false,
+},
+["active_profile"] = "Luckyone 4.15",
+["mythic_dungeon_currentsaved"] = {
+["players"] = {
+"Player-60-0E5CDFEA",
+"Player-60-0FE47444",
+"Player-61-0FE4EEEB",
+"Player-86-0A0EC856",
+},
+["dungeon_name"] = "Pit of Saron",
+["started"] = false,
+["segment_id"] = 1,
+["ej_id"] = 0,
+["started_at"] = 1776388132.7,
+["run_id"] = 2,
+["level"] = 3,
+["dungeon_zone_id"] = 658,
+["previous_boss_killed_at"] = 1776388123,
+},
+["player_stats"] = {
 },
 ["ignore_nicktag"] = false,
-["character_data"] = {
-["logons"] = 74,
+["announce_damagerecord"] = {
+["enabled"] = true,
+["channel"] = "SELF",
 },
-["announce_deaths"] = {
+["arena_data_headers"] = {
+},
+["combat_log"] = {
+["inverse_deathlog_overalldata"] = false,
+["track_hunter_frenzy"] = false,
+["merge_gemstones_1007"] = false,
+["merge_critical_heals"] = false,
+["inverse_deathlog_raid"] = false,
+["calc_evoker_damage"] = true,
+["evoker_show_realtimedps"] = false,
+["inverse_deathlog_mplus"] = false,
+},
+["announce_firsthit"] = {
+["enabled"] = true,
+["channel"] = "SELF",
+},
+["mythic_plus_log"] = {
+"16/04/26 21:43:33|Activity Time: 0",
+"16/04/26 21:43:33|GetChallengeCompletionInfo() Found, Time: 2029",
+"16/04/26 21:43:33|MergeSegmentsOnEnd started | creating the overall segment at the end of the run.",
+"16/04/26 21:43:33|MythicDungeonFinished() | merge_boss_trash = true",
+"16/04/26 21:43:31|===== Mythic+ Finished =====",
+"16/04/26 21:08:43|OnChallengeModeStart()",
+"16/04/26 21:08:43|COMBAT_MYTHICDUNGEON_START | settings: make_overall_boss_only = false | merge_boss_trash = true | delay_to_show_graphic = 1 | mythicrun_time_type = 1 | reverse_death_log = false | autoclose_time = 90 | show_damage_graphic = true | boss_dedicated_segment = true |  | level: 3 | zone: Pit of Saron | zoneId: 658",
+"16/04/26 21:08:43|CHALLENGE_MODE_START timer ended, starting the dungeon.",
+"16/04/26 21:08:33|Event: CHALLENGE_MODE_START, starting 10 seconds timer | Level: 3",
+"16/04/26 20:55:29|Activity Time: 1827.757",
+"16/04/26 20:55:29|GetChallengeCompletionInfo() Found, Time: 1933",
+"16/04/26 20:55:29|MergeSegmentsOnEnd started | creating the overall segment at the end of the run.",
+"16/04/26 20:55:29|MythicDungeonFinished() | merge_boss_trash = true",
+"16/04/26 20:55:27|===== Mythic+ Finished =====",
+"16/04/26 20:55:27|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | L'ura Seat of the Triumvirate",
+"16/04/26 20:51:24|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Viceroy Nezhar Seat of the Triumvirate",
+"16/04/26 20:42:36|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Saprish Seat of the Triumvirate",
+"16/04/26 20:39:04|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Saprish Seat of the Triumvirate",
+"16/04/26 20:35:38|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Saprish Seat of the Triumvirate",
+"16/04/26 20:25:54|COMBAT_PLAYER_LEAVE | wiped on boss | key level: | 2 | Zuraal the Ascended Seat of the Triumvirate",
+"16/04/26 20:21:55|OnChallengeModeStart()",
+"16/04/26 20:21:55|COMBAT_MYTHICDUNGEON_START | settings: make_overall_boss_only = false | merge_boss_trash = true | delay_to_show_graphic = 1 | mythicrun_time_type = 1 | reverse_death_log = false | autoclose_time = 90 | show_damage_graphic = true | boss_dedicated_segment = true |  | level: 2 | zone: Seat of the Triumvirate | zoneId: 1753",
+"16/04/26 20:21:55|CHALLENGE_MODE_START timer ended, starting the dungeon.",
+"16/04/26 20:21:45|Event: CHALLENGE_MODE_START, starting 10 seconds timer | Level: 2",
+},
+["data_harvested_for_charts"] = {
+},
+["coach"] = {
 ["enabled"] = false,
-["last_hits"] = 1,
-["only_first"] = 5,
-["where"] = 1,
+["welcome_panel_pos"] = {
+},
+["last_coach_name"] = false,
+},
+["last_encounter"] = "Midnight Falls",
+["last_day"] = "20",
+["apocalypse_hashes"] = {
+},
+["last_version"] = "12.0.7 15236",
+["last_instance_time"] = 1780884141,
+["combat_id"] = 45,
+["savedStyles"] = {
 },
 ["plugin_database"] = {
 ["DETAILS_PLUGIN_TINY_THREAT"] = {
 ["enabled"] = true,
 ["only_my_group"] = false,
 ["animate"] = false,
-["disable_gouge"] = false,
+["updatespeed"] = 1,
 ["hide_pull_bar"] = false,
-["author"] = "Terciob",
+["useclasscolors"] = false,
 ["playercolor"] = {
 1,
 1,
 1,
 },
 ["usefocus"] = false,
-["updatespeed"] = 1,
+["disable_gouge"] = false,
 ["playSound"] = false,
 ["showamount"] = false,
 ["useplayercolor"] = false,
 ["absolute_mode"] = false,
 ["show_party_pets"] = false,
 ["playSoundFile"] = "Details Threat Warning Volume 3",
-["useclasscolors"] = false,
+["author"] = "Terciob",
 },
 ["DETAILS_PLUGIN_COMPARETWO_WINDOW"] = {
 ["enabled"] = true,
@@ -40528,6 +40522,20 @@ false,
 0.832845,
 },
 },
+["DETAILS_PLUGIN_ENCOUNTER_DETAILS"] = {
+["enabled"] = true,
+["encounter_timers_bw"] = {
+},
+["max_emote_segments"] = 3,
+["last_section_selected"] = "main",
+["author"] = "Terciob",
+["window_scale"] = 1,
+["encounter_timers_dbm"] = {
+},
+["show_icon"] = 5,
+["opened"] = 0,
+["hide_on_combat"] = false,
+},
 ["DETAILS_PLUGIN_RAIDCHECK"] = {
 ["enabled"] = true,
 ["food_tier1"] = true,
@@ -40549,7 +40557,10 @@ false,
 0.5,
 },
 ["scale"] = 1,
-["arrow_anchor_y"] = 0,
+["main_frame_size"] = {
+299.9999694824219,
+500.0000610351563,
+},
 ["minimap"] = {
 ["minimapPos"] = 160,
 ["radius"] = 160,
@@ -40570,22 +40581,6 @@ false,
 ["square_amount"] = 5,
 ["enabled"] = false,
 ["arrow_size"] = 10,
-["y"] = 1.52587890625e-05,
-["row_spacement"] = 21,
-["main_frame_color"] = {
-0,
-0,
-0,
-0.2,
-},
-["row_color"] = {
-0.1,
-0.1,
-0.1,
-0.4,
-},
-["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
-["use_spark"] = true,
 ["per_second"] = {
 ["enabled"] = false,
 ["point"] = "CENTER",
@@ -40597,21 +40592,46 @@ false,
 ["update_speed"] = 0.05,
 ["attribute_type"] = 1,
 },
+["row_spacement"] = 21,
+["main_frame_color"] = {
+0,
+0,
+0,
+0.2,
+},
+["author"] = "Terciob",
+["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
+["y"] = 1.52587890625e-05,
+["font_size"] = 10,
 ["x"] = -0.000244140625,
 ["font_face"] = "Friz Quadrata TT",
 ["square_size"] = 32,
-["font_size"] = 10,
-["author"] = "Terciob",
+["use_spark"] = true,
+["row_color"] = {
+0.1,
+0.1,
+0.1,
+0.4,
+},
 ["main_frame_locked"] = false,
-["main_frame_size"] = {
-299.9999694824219,
-500.0000610351563,
+["arrow_anchor_y"] = 0,
 },
 },
+["SoloTablesSaved"] = {
+["Mode"] = 1,
 },
-["arena_data_headers"] = {
+["announce_deaths"] = {
+["enabled"] = false,
+["last_hits"] = 1,
+["only_first"] = 5,
+["where"] = 1,
 },
-["data_harvested_for_charts"] = {
+["last_realversion"] = 172,
+["apocalypes_info"] = {
+},
+["benchmark_db"] = {
+["frame"] = {
+},
 },
 ["announce_cooldowns"] = {
 ["enabled"] = false,
@@ -40626,6 +40646,7 @@ false,
 },
 ["auto_combatlog"] = false,
 ["cached_specs"] = {
+["Player-3676-0AD12BC3"] = 250,
 ["Player-3676-0ECBAD65"] = 266,
 },
 }

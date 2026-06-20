@@ -2,9 +2,9 @@
 NewSettingsSeen = {
 ["chatBubblesRaid"] = true,
 ["raidFramesDispelIndicatorType"] = true,
-["raidFramesDispelIndicatorOverlay"] = true,
+["assistedCombatReduceHighlights"] = true,
 ["raidFramesDisplayClassColor"] = true,
 ["raidFramesCenterBigDefensive"] = true,
 ["raidFramesDisplayLargerRoleSpecificDebuffs"] = true,
-["assistedCombatReduceHighlights"] = true,
+["raidFramesDispelIndicatorOverlay"] = true,
 }

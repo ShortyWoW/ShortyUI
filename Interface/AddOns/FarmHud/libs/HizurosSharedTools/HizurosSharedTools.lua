@@ -1,5 +1,5 @@
 
-local MAJOR, MINOR = "HizurosSharedTools", tonumber((gsub("r63","r",""))) or 9999;
+local MAJOR, MINOR = "HizurosSharedTools", tonumber((gsub("r64","r",""))) or 9999;
 ---@class HizurosSharedTools
 local lib = LibStub:NewLibrary(MAJOR, MINOR);
 if not lib then return end
@@ -174,6 +174,7 @@ end
 --== shared credits page ==--
 do -- 013088, 0070E0
 	local donation_platforms = {PP="|cff375388Pay|cff5a9de0Pal|r",PA="Patreon",GH="Github"};
+	local AFK,AS,BSB,BE,CI,FH,FLI,GRN,GMIE,GAT,HT,HFP,LFR,QR,SC,TRI = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
 	local myAddOns = {
 		"AFK_fullscreen","AuctionSellers","BestSellButton","Broker_Everything","CommunityInfo",
 		"FarmHud","FollowerLocationInfo","GarrisonRandomNPCs","GatherMate2_ImportExport","GuildApplicantTracker",
@@ -182,27 +183,27 @@ do -- 013088, 0070E0
 	};
 
 	local github_pr_s = "For pull request on github."
-	local github_pr_p = "For %d pull requests on github."
+	local github_pr_p = "For pull requests on github."
 	local supporter = { -- {<color>,<name>}, <localizations>, <donations>, <otherSupportTypes>, <special text>,
 		-- special mentions
-		{"battlenet","liquidbase",false,"/", "deathknight","Merith", false,"(Author of DuffedUI)"},false,false,false,{"For idea and first code to add quest level to quest tracker :)",11},
-		{"battlenet","pas06",false,"/", "curseforge","Bullseiify"   },{"deDE",4,6,10,7,16},false,false,{"For idea to the keystroke replace function",11},
-		{"github","TegraGG (Github)"},false,false,false,{github_pr_s,16},
-		{"github","bruteostrich (Github)"},false,false,false,{github_pr_s,6},
-		{"github","fuba82 (Github)"}, false,false,false,{"For idea to use hooksecurefunc on mixin table.",13},
-		{"github","flaicher (Github)"},false,false,false,{github_pr_s,3},
-		{"github","BelegCufea (Github)"},false,false,false,{github_pr_p:format(2),3},
-		{"github","kanegasi (Github)"},false,false,false,{github_pr_s,3},
-		{"github","Brixus3 (Github)"},false,false,false,{github_pr_p:format(2),3},
-		{"github","4C51 (Github)"},false,false,false,{github_pr_s,3},
-		{"github","agentschmitt (Github)"},false,false,false,{github_pr_s,3},
-		{"github","lowlee (Github)"},false,false,false,{github_pr_s,3},
-		{"github","Sockdolager (Github)"},false,false,false,{github_pr_s,6},
-		{"github","MrStrugglez (Github)"},false,false,false,{github_pr_s,6},
-		{"github","tucomel (Github)"},false,false,false,{github_pr_s,6},
- 		{"github","QartemisT (Github)"},false,false,false,{github_pr_s,13},
-		{"github","lkshrk (Github)"},false,false,false,{github_pr_p:format(2),16},
-		{"github","malfurion (Github)"},false,false,false,{github_pr_p:format(2),1},
+		{"battlenet","liquidbase",false,"/", "deathknight","Merith", false,"(Author of DuffedUI)"},false,false,false,{"For idea and first code to add quest level to quest tracker :)",HT},
+		{"battlenet","pas06",false,"/", "curseforge","Bullseiify"},{"deDE",BE,FH,FLI,GAT,TRI},false,false,{"For idea to the keystroke replace function",HT},
+		{"github","TegraGG (Github)"},false,false,false,{github_pr_s,TRI},
+		{"github","bruteostrich (Github)"},false,false,false,{github_pr_s,FH},
+		{"github","fuba82 (Github)"}, false,false,false,{"For idea to use hooksecurefunc on mixin table.",LFR},
+		{"github","flaicher (Github)"},false,false,false,{github_pr_s,BE},
+		{"github","BelegCufea (Github)"},false,false,false,{github_pr_p,BE},
+		{"github","kanegasi (Github)"},false,false,false,{github_pr_s,BE},
+		{"github","Brixus3 (Github)"},false,false,false,{github_pr_p,BE},
+		{"github","4C51 (Github)"},false,false,false,{github_pr_s,BE},
+		{"github","agentschmitt (Github)"},false,false,false,{github_pr_s,BE},
+		{"github","lowlee (Github)"},false,false,false,{github_pr_s,BE},
+		{"github","Sockdolager (Github)"},false,false,false,{github_pr_s,FH},
+		{"github","MrStrugglez (Github)"},false,false,false,{github_pr_s,FH},
+		{"github","tucomel (Github)"},false,false,false,{github_pr_s,FH},
+ 		{"github","QartemisT (Github)"},false,false,false,{github_pr_s,LFR},
+		{"github","lkshrk (Github)"},false,false,false,{github_pr_p,TRI},
+		{"github","malfurion (Github)"},false,false,false,{github_pr_p,AFK},
 
 		-- donations
 		{"paypal","Nanci"}, false, {"PP",true}, false, false,
@@ -210,48 +211,62 @@ do -- 013088, 0070E0
 		{"paypal","Chris"}, false, {"PP",true}, false,false,
 
 		-- localizations
-		{"curseforge","Nelfym"},		{"frFR",1},false,false,false,
-		{"curseforge","pczombie09"},	{"koKR",1},false,false,false,
-		{"curseforge","KARMA_Zz"},		{"ruRU",1},false,false,false,
-		{"curseforge","BNS333"},		{"zhTW",1},false,false,false,
-		{"curseforge","Crisll"},		{"esES",1},false,false,false,
+		{"curseforge","Nelfym"},		{"frFR",AFK},false,false,false,
+		{"curseforge","pczombie09"},	{"koKR",AFK},false,false,false,
+		{"curseforge","KARMA_Zz"},		{"ruRU",AFK},false,false,false,
+		{"curseforge","BNS333"},		{"zhTW",AFK},false,false,false,
+		{"curseforge","Crisll"},		{"esES",AFK},false,false,false,
 
-		{"curseforge","ZamestoTV"},		{"ruRU",2,5,9,13,15},false,false,false,
-		{"curseforge","Der_Adrinator"}, {"deDE",4},false,false,false,
-		{"curseforge","Nierhain"},		{"deDE",4},false,false,false,
-		{"curseforge","Araldwenn"},		{"frFR",4},false,false,false,
-		{"curseforge","Braincell1980"},	{"frFR",4,13},false,false,false,
-		{"curseforge","netaras"},		{"koKR",4,6},false,false,false,
-		{"curseforge","적셔줄게"},		{"koKR",4},false,false,false,
-		{"curseforge","cikichen"},		{"zhCN",4,"zhTW",4},false,false,false,
-		{"curseforge","sanxy00"},		{"zhCN",4},false,false,false,
-		{"curseforge","雪夜霜刀"},		{"zhCN",4},false,false,false,
-		{"curseforge","半熟魷魚"},		{"zhTW",4},false,false,false,
-		{"curseforge","spridar"},		{"zhTW",4},false,false,false,
+		{"curseforge","ZamestoTV"},		{"ruRU",AS,BSB,BE,CI,GMIE,LFR,SC},false,false,false,
+		{"curseforge","Der_Adrinator"}, {"deDE",BE},false,false,false,
+		{"curseforge","Nierhain"},		{"deDE",BE},false,false,false,
+		{"curseforge","Araldwenn"},		{"frFR",BE},false,false,false,
+		{"curseforge","Braincell1980"},	{"frFR",BE,LFR},false,false,false,
+		{"curseforge","netaras"},		{"koKR",BE,FH},false,false,false,
+		{"curseforge","적셔줄게"},		{"koKR",BE},false,false,false,
+		{"curseforge","cikichen"},		{"zhCN",BE,"zhTW",BE},false,false,false,
+		{"curseforge","sanxy00"},		{"zhCN",BE},false,false,false,
+		{"curseforge","雪夜霜刀"},		{"zhCN",BE},false,false,false,
+		{"curseforge","半熟魷魚"},		{"zhTW",BE},false,false,false,
+		{"curseforge","spridar"},		{"zhTW",BE},false,false,false,
 
-		{"curseforge","Lightuky"},		{"frFR",5},false,false,false,
-		{"curseforge","TomasRipley"},	{"ruRU",5},false,false,false,
+		{"curseforge","Lightuky"},		{"frFR",CI},false,false,false,
+		{"curseforge","TomasRipley"},	{"ruRU",CI},false,false,false,
 
-		{"curseforge","Dathwada"},		{"deDE",6},false,false,false,
-		{"curseforge","supahmexman"},	{"esES",6},false,false,false,
-		{"curseforge","justregular16"},	{"esMX",6},false,false,false,
-		{"curseforge","Zickwik"},		{"frFR",6},false,false,false,
-		{"curseforge","oxscott"},		{"itIT",6},false,false,false,
-		{"curseforge","g0ldenev1l"},	{"zhCN",6},false,false,false,
-		{"curseforge","gjfleo"},		{"zhCN",6},false,false,false,
-		{"curseforge","kuaishan"},		{"zhCN",6},false,false,false,
-		{"curseforge","mccma"},			{"zhTW",6},false,false,false,
+		{"curseforge","Dathwada"},		{"deDE",FH},false,false,false,
+		{"curseforge","supahmexman"},	{"esES",FH},false,false,false,
+		{"curseforge","justregular16"},	{"esMX",FH},false,false,false,
+		{"curseforge","Zickwik"},		{"frFR",FH},false,false,false,
+		{"curseforge","oxscott"},		{"itIT",FH},false,false,false,
+		{"curseforge","g0ldenev1l"},	{"zhCN",FH},false,false,false,
+		{"curseforge","gjfleo"},		{"zhCN",FH},false,false,false,
+		{"curseforge","kuaishan"},		{"zhCN",BE,FH},false,false,false,
+		{"curseforge","mccma"},			{"zhTW",FH},false,false,false,
 
-		{"curseforge","Tumbleweed_DSA"},{"deDE",7},false,false,false,
-		{"curseforge","Felli64"},		{"deDE",7},false,false,false,
-		{"curseforge","Dabeuliou"},		{"frFR",7},false,false,false,
-		{"curseforge","unrealcrom96"},	{"koKR",7},false,false,false,
-		{"curseforge","Canettieri"},	{"ptBR",7},false,false,false,
-		{"curseforge","dropdb"},		{"ruRU",7},false,false,false,
-		{"curseforge","Igara86"},		{"ruRU",7},false,false,false,
-		{"curseforge","Ananhaid"},		{"zhCN",7},false,false,false,
+		{"curseforge","Tumbleweed_DSA"},{"deDE",FLI},false,false,false,
+		{"curseforge","Felli64"},		{"deDE",FLI},false,false,false,
+		{"curseforge","Dabeuliou"},		{"frFR",FLI},false,false,false,
+		{"curseforge","unrealcrom96"},	{"koKR",FLI},false,false,false,
+		{"curseforge","Canettieri"},	{"ptBR",FLI},false,false,false,
+		{"curseforge","dropdb"},		{"ruRU",FLI},false,false,false,
+		{"curseforge","Igara86"},		{"ruRU",FLI},false,false,false,
+		{"curseforge","Ananhaid"},		{"zhCN",FLI},false,false,false,
 
-		{"curseforge","Hollicsh"},		{"ruRU",16},false,false,false,
+		{"curseforge","Hollicsh"},		{"ruRU",TRI},false,false,false,
+
+		{"curseforge","polochonappleseed"},{"frFR",LFR},false,false,false,
+		{"curseforge","Grifo92"},		{"itIT",CI,LFR},false,false,false,
+		{"curseforge","Canettieri"},	{"ptBR",FLI},false,false,false,
+		{"curseforge","Zurent"},		{"esES",FH},false,false,false,
+		{"curseforge","justregular16"},	{"esMX",FH},false,false,false,
+		{"curseforge","netaras"},		{"koKR",FH},false,false,false,
+		{"curseforge","g0ldenev1l"},	{"zhCN",FH},false,false,false,
+		{"curseforge","gjfleo"},		{"zhCN",FH},false,false,false,
+		{"curseforge","LvWind"},		{"zhCN",FH},false,false,false,
+		{"curseforge","Subly"},			{"frFR",BE},false,false,false,
+		{"curseforge","FunnyBunnyNikita"},{"ruRU",BE},false,false,false,
+		{"curseforge","雪夜霜刀"},		{"zhCN",BE},false,false,false,
+
 	}
 
 	--local foreignAddOns = {}
@@ -685,7 +700,7 @@ do
 	end
 end
 
---== Blizzards new "Secure Value" System is big bullshit      ==--
+--== Blizzards new "Secure Value" System is big bullshit!!!!! ==--
 --== Restricts access on more than only combat relevant data. ==--
 do
 
@@ -730,6 +745,9 @@ do
 		local result
 		if issecretvalue(...) or canaccessvalue(...)==false then
 			return false;
+		end
+		if type(funcName)~="string" then
+			funcName = "generalTesting"
 		end
 		if functions[funcName] then
 			result = {pcall(functions[funcName],...)};

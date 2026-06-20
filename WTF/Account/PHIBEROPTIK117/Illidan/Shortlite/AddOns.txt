@@ -106,3 +106,4 @@ ElvUI_RatioMinimapAuras: disabled
 PatchWerk: disabled
 !PatchWerk: disabled
 kExtraBossFrames: disabled
+BigWigs_Sporefall: enabled

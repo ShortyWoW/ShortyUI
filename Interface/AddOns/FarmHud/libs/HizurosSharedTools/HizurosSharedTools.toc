@@ -1,9 +1,9 @@
-## Interface: 120005, 50504, 38001, 20505, 11508
+## Interface: 120007, 50504, 38001, 20505, 11508
 ## Title: HizurosSharedTools
 ## Notes: My little shared tools library for my addons
 ## Author: Hizuro
 ## IconTexture: 986485
-## Version: r63
+## Version: r64
 
 ## Category-enUS: Libraries
 ## Category-deDE: Bibliotheken

@@ -104,3 +104,4 @@ PatchWerk: disabled
 kExtraBossFrames: disabled
 Blizzard_CombatText: enabled
 Dystinct_EarthenSkyriding: enabled
+BigWigs_Sporefall: enabled

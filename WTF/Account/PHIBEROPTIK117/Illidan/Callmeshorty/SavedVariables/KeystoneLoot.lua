@@ -8,6 +8,7 @@ KeystoneLootCharDB = {
 },
 ["voidcoreChecked"] = true,
 ["voidcore"] = {
+[268290] = true,
 },
 ["filters"] = {
 ["dungeon"] = {

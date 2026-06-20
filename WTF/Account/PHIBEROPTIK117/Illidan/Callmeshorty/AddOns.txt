@@ -119,3 +119,4 @@ Syndicator: enabled
 TomTom: enabled
 LuraTilyHelper: disabled
 Dystinct_EarthenSkyriding: enabled
+BigWigs_Sporefall: enabled

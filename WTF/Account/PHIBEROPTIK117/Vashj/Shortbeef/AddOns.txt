@@ -113,3 +113,4 @@ PatchWerk: disabled
 !PatchWerk: disabled
 BigWigs_MidnightWorld: enabled
 Dystinct_EarthenSkyriding: enabled
+BigWigs_Sporefall: enabled

@@ -131,6 +131,7 @@ end
 ---@param shouldHide boolean Whether to hide (move off-screen) the frame
 function WilduUICore.ApplyFramePosition(frame, configKey, shouldHide)
     local config = ns.Addon.db.profile.editMode[configKey]
+
     if shouldHide then
         frame:SetClampedToScreen(false)
     else
@@ -144,7 +145,9 @@ function WilduUICore.ApplyFramePosition(frame, configKey, shouldHide)
     else
         frame:SetPoint(config.point or "CENTER", UIParent, config.point or "CENTER", config.x or 0, config.y or 0)
     end
-
+    if not config then
+        return
+    end
     if config.scale ~= nil then
         frame:SetScale(config.scale)
     end

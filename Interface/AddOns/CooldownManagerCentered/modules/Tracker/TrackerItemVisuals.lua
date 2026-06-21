@@ -5,6 +5,7 @@ local ItemsData = ns.TrackerItemsData
 
 local ItemVisuals = ns.TrackerItemVisuals or {}
 ns.TrackerItemVisuals = ItemVisuals
+local GCD_SPELL_ID = 61304
 
 local FALLBACK_ICON = 134400
 local ITEM_COOLDOWN_TRIGGER_THRESHOLD = 0.1
@@ -18,6 +19,12 @@ local lastItemCooldownRemainingByEntry = {}
 local desaturationCurve = C_CurveUtil.CreateCurve()
 desaturationCurve:AddPoint(0, 0)
 desaturationCurve:AddPoint(0.001, 1)
+
+-- 1 at zero remaining (ready), 0 otherwise. Lets us turn a secret remaining-duration
+-- into a glow alpha without comparing it.
+local readyCurve = C_CurveUtil.CreateCurve()
+readyCurve:AddPoint(0, 1)
+readyCurve:AddPoint(0.001, 0)
 
 local function BuildEntryKey(kind, id)
     if not kind or id == nil then
@@ -108,13 +115,6 @@ function ItemVisuals:GetEntryIcon(kind, id)
     return C_Item.GetItemIconByID(id) or FALLBACK_ICON
 end
 
-function ItemVisuals:ApplyItemIcon(frame, itemID)
-    if not frame or not frame.Icon then
-        return
-    end
-    frame.Icon:SetTexture(C_Item.GetItemIconByID(itemID) or FALLBACK_ICON)
-end
-
 function ItemVisuals:ApplyEntryIcon(frame, kind, id)
     if not frame or not frame.Icon then
         return
@@ -134,6 +134,7 @@ function ItemVisuals:SetEmptySlot(frame)
     if frame.Cooldown then
         CooldownFrame_Clear(frame.Cooldown)
     end
+    ns.CooldownStyle:HideFrameGlow(frame)
 end
 
 function ItemVisuals:ClearCooldown(frame, desaturation)
@@ -147,6 +148,7 @@ function ItemVisuals:ClearCooldown(frame, desaturation)
     if desaturation ~= nil and frame.Icon then
         frame.Icon:SetDesaturation(desaturation)
     end
+    ns.CooldownStyle:HideFrameGlow(frame)
 end
 
 function ItemVisuals:GetCustomActiveDuration(kind, id)
@@ -302,13 +304,15 @@ function ItemVisuals:TryApplyLiveAura(frame, kind, id)
     return true
 end
 
+-- Returns hasReadyState, readyAlpha, hasCharges, chargeAlpha. The alphas are secret
+-- duration values, so they're only ever fed to SetAlpha, never compared.
 function ItemVisuals:UpdateSpellCooldown(frame, spellID)
     if not frame or not frame.Cooldown then
-        return false
+        return
     end
 
     if self:TryApplyLiveAura(frame, "spell", spellID) then
-        return true
+        return false
     end
 
     local overrideSpellID = C_Spell.GetOverrideSpell(spellID) or spellID
@@ -320,7 +324,7 @@ function ItemVisuals:UpdateSpellCooldown(frame, spellID)
         frame.count:SetText("")
         frame.Icon:SetDesaturation(0)
         ApplyCustomActiveOverlay(frame, startTime, duration)
-        return true
+        return false
     end
 
     frame.Cooldown:SetSwipeColor(unpack(GetCooldownSwipeColor(), 1, 4))
@@ -333,36 +337,45 @@ function ItemVisuals:UpdateSpellCooldown(frame, spellID)
         frame.count:SetText("")
     end
 
-    local desaturation = 0
     local spellCooldownInfo = C_Spell.GetSpellCooldown(overrideSpellID)
     local isOnGCD = spellCooldownInfo and spellCooldownInfo.isOnGCD
 
     local cooldownDuration = C_Spell.GetSpellCooldownDuration(overrideSpellID)
+    local chargeDuration
     if hasCharges then
-        local chargeDuration = C_Spell.GetSpellChargeDuration(overrideSpellID)
+        chargeDuration = C_Spell.GetSpellChargeDuration(overrideSpellID)
         frame.Cooldown:SetCooldownFromDurationObject(chargeDuration)
+    elseif frame.showGCD or not isOnGCD then
+        frame.Cooldown:SetCooldownFromDurationObject(cooldownDuration)
+        frame.Cooldown:SetDrawSwipe(true)
     else
-        if frame.showGCD or not isOnGCD then
-            frame.Cooldown:SetCooldownFromDurationObject(cooldownDuration)
-            frame.Cooldown:SetDrawSwipe(true)
-        end
-    end
-    if not isOnGCD then
-        desaturation = cooldownDuration:EvaluateRemainingDuration(desaturationCurve)
+        frame.Cooldown:Clear()
     end
 
-    frame.Icon:SetDesaturation(desaturation)
+    local readyAlpha
+    if isOnGCD then
+        frame.Icon:SetDesaturation(0)
+        readyAlpha = 1
+    else
+        frame.Icon:SetDesaturation(cooldownDuration:EvaluateRemainingDuration(desaturationCurve))
+        readyAlpha = cooldownDuration:EvaluateRemainingDuration(readyCurve)
+    end
 
-    return true
+    local chargeAlpha
+    if hasCharges then
+        chargeAlpha = chargeDuration:EvaluateRemainingDuration(readyCurve)
+    end
+
+    return true, readyAlpha, hasCharges, chargeAlpha
 end
 
 function ItemVisuals:UpdateItemCooldown(frame, itemID)
     if not frame or not frame.Cooldown then
-        return false
+        return
     end
 
     if self:TryApplyLiveAura(frame, "item", itemID) then
-        return true
+        return false
     end
 
     local staticInfo = GetItemStaticInfo(itemID)
@@ -410,23 +423,33 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
         local startTime = entryKey and activeStartByEntry[entryKey] or nil
         frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
         ApplyCustomActiveOverlay(frame, startTime, customDuration)
-        return true
+        return false
     end
 
     frame.Cooldown:SetSwipeColor(unpack(GetCooldownSwipeColor(), 1, 4))
 
     local isOnGCD = spellID and C_Spell.GetSpellCooldown(spellID).isOnGCD
-    if isCDEnabled and (not isOnGCD or frame.showGCD or cooldownRemaining > 2) then
+    -- The GCD isn't a real cooldown, so the item still counts as ready under it.
+
+    local gcd = C_Spell.GetSpellCooldown(GCD_SPELL_ID)
+    local gcdRemaining = 0
+    if gcd.startTime > 0 then
+        gcdRemaining = gcd.startTime + gcd.duration - GetTimePreciseSec() + 0.01 -- just for.. you know, delay?
+    end
+    local isReady = not forceDesaturated and (cooldownRemaining <= gcdRemaining)
+
+    local isWithingGCDRange
+    if isCDEnabled and (not isOnGCD or frame.showGCD or cooldownRemaining > gcdRemaining) then
         frame.Cooldown:SetCooldown(startTime, duration)
         frame.Cooldown:SetDrawSwipe(true)
         -- Desaturate only while the long cooldown is clearly active; clear when ≤2s or expired
-        if cooldownRemaining <= 0 then
+        if cooldownRemaining <= gcdRemaining then
             frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
         elseif forceDesaturated or cooldownRemaining > 2 then
             frame.Icon:SetDesaturation(1)
         end
 
-        return true
+        return true, isReady and 1 or 0, false, nil
     end
     if not isCDEnabled and cooldownRemaining > 0 and cooldownRemaining <= 0.1 then
         -- healthstone?
@@ -437,10 +460,27 @@ function ItemVisuals:UpdateItemCooldown(frame, itemID)
         frame.Icon:SetDesaturation(forceDesaturated and 1 or 0)
     end
 
-    return true
+    return true, isReady and 1 or 0, false, nil
+end
+
+function ItemVisuals:ApplyEntryGlow(frame, kind, id, hasReadyState, readyAlpha, hasCharges, chargeAlpha)
+    local glow, alpha = false, nil
+    if hasCharges and DB.GetGlowFlag(kind, id, "glowOnFullCharges") then
+        glow, alpha = true, chargeAlpha
+    elseif hasReadyState and DB.GetGlowFlag(kind, id, "glowWhenReady") then
+        glow, alpha = true, readyAlpha
+    end
+
+    if glow then
+        ns.CooldownStyle:ShowFrameGlow(frame, alpha)
+    else
+        ns.CooldownStyle:HideFrameGlow(frame)
+    end
 end
 
 function ItemVisuals:UpdateEntryCooldown(frame, kind, id)
+    local hasReadyState, readyAlpha, hasCharges, chargeAlpha
+
     if kind == "wildcardSlots" and ItemsData and ItemsData.GetWildcardSlotItemID then
         local itemID = ItemsData:GetWildcardSlotItemID(id)
         if not itemID then
@@ -454,18 +494,19 @@ function ItemVisuals:UpdateEntryCooldown(frame, kind, id)
             if frame.Icon then
                 frame.Icon:SetDesaturation(0)
             end
-            return true
+        else
+            hasReadyState, readyAlpha, hasCharges, chargeAlpha = self:UpdateItemCooldown(frame, itemID)
         end
-        return self:UpdateItemCooldown(frame, itemID)
-    end
-    if kind == "spell" then
-        return self:UpdateSpellCooldown(frame, id)
+    elseif kind == "spell" then
+        hasReadyState, readyAlpha, hasCharges, chargeAlpha = self:UpdateSpellCooldown(frame, id)
+    else
+        local entryKey = BuildEntryKey(kind, id)
+        if entryKey and kind ~= "item" then
+            lastItemCooldownRemainingByEntry[entryKey] = nil
+        end
+        hasReadyState, readyAlpha, hasCharges, chargeAlpha = self:UpdateItemCooldown(frame, id)
     end
 
-    local entryKey = BuildEntryKey(kind, id)
-    if entryKey and kind ~= "item" then
-        lastItemCooldownRemainingByEntry[entryKey] = nil
-    end
-
-    return self:UpdateItemCooldown(frame, id)
+    self:ApplyEntryGlow(frame, kind, id, hasReadyState, readyAlpha, hasCharges, chargeAlpha)
+    return true
 end

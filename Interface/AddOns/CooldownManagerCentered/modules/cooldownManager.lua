@@ -482,7 +482,7 @@ function ViewerAdapters.RequestUtilityDimming()
         return
     end
     utilityDimmingPending = true
-    C_Timer.After(0, RunUtilityDimming)
+    C_Timer.After(0.05, RunUtilityDimming)
 end
 
 function ViewerAdapters.CollectViewerChildren(viewer)
@@ -600,9 +600,11 @@ function ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
     local targetHeight = (top - bottom)
 
     if math.abs(currentWidth - targetWidth) >= 1 or math.abs(currentHeight - targetHeight) >= 1 then
-        viewer:SetWidth(targetWidth)
-        viewer:SetHeight(targetHeight)
-        viewer:SetSize(targetWidth, targetHeight)
+        if not InCombatLockdown() then
+            viewer:SetWidth(targetWidth)
+            viewer:SetHeight(targetHeight)
+            viewer:SetSize(targetWidth, targetHeight)
+        end
     end
 end
 
@@ -741,8 +743,12 @@ function CooldownManager.ForceRefreshAll()
     CooldownManager.ForceRefresh({ icons = true, bars = true, essential = true, utility = true })
 end
 
-function CooldownManager.UpdateUtilityDimming()
-    ViewerAdapters.RequestUtilityDimming()
+function CooldownManager.UpdateUtilityDimming(force)
+    if force then
+        ViewerAdapters.UpdateUtilityDimming()
+        return
+    end
+    ViewerAdapters.RequestUtilityDimming(force)
 end
 
 function CooldownManager.RestoreUtilityAlpha()

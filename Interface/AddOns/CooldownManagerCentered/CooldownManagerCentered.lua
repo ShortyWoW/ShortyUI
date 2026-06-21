@@ -68,6 +68,9 @@ SlashCmdList["CMC_COMMAND"] = function(msg)
 end
 
 function addon:RefreshConfig()
+    if ns.BuffBarIconMode then
+        ns.BuffBarIconMode.ClearGuards()
+    end
     if ns.StyledIcons then
         ns.StyledIcons:Initialize()
     end

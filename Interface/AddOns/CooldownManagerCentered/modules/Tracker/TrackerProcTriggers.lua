@@ -14,6 +14,14 @@ ns.TrackerAuraData = ns.TrackerAuraData or {}
 local Data = ns.TrackerAuraData
 
 Data.procByItemID = {
+    [268292] = {
+        effectSpellID = 1284696,
+        triggerSpellID = 1284698,
+        duration = 12,
+        mode = "simple",
+        name = "Sporelord's Mycelium",
+        itemName = "Sporelord's Mycelial Insignia",
+    },
     [249341] = {
         effectSpellID = 1258535,
         stackTriggerSpellID = 1258535,

@@ -20,15 +20,18 @@ end
 
 local viewerTypes = { "EssentialCooldownViewer", "UtilityCooldownViewer" }
 
--- GetViewerIconBySpellId runs on every action-button press. The old version
--- scanned every viewer icon and allocated a lookup collection per viewer plus a
+-- GetIconsBySpellId runs on every action-button press. The old version scanned
+-- every viewer icon and allocated a lookup collection per viewer plus a
 -- C_CooldownViewer info table per icon - a heavy allocation source under spam.
 -- Instead, index every icon under all of the spell IDs it can be matched by
 -- (cooldown spellID/override, base spell, current spell) once, and reuse that map
--- until the viewers change. A press then resolves with a few hash lookups and no
--- allocation. Matching is preserved: two spells matched before iff their
+-- until the viewers/trackers change. A press then resolves with a few hash lookups
+-- and no allocation. Matching is preserved: two spells matched before iff their
 -- {self, override, base} sets intersected, which equals "some queried key is a
 -- map key" when each icon is indexed under its whole set.
+--
+-- Each key maps to a LIST of icons: the same spell can live in a viewer and any
+-- number of trackers at once, and one press must light every copy.
 local iconMap = {}
 local iconMapDirty = true
 
@@ -36,29 +39,54 @@ local function InvalidateIconMap()
     iconMapDirty = true
 end
 
+local function AddToIconMap(id, icon)
+    if type(id) ~= "number" then
+        return
+    end
+    local list = iconMap[id]
+    if not list then
+        list = {}
+        iconMap[id] = list
+    end
+    for _, existing in ipairs(list) do
+        if existing == icon then
+            return
+        end
+    end
+    list[#list + 1] = icon
+end
+
 local function IndexIcon(icon)
     if not (icon.Icon and icon.cooldownID) then
         return
     end
     local cdSpellID, cdOverride = GetSpellIDFromCooldownId(icon.cooldownID)
-    if type(cdSpellID) == "number" then
-        iconMap[cdSpellID] = icon
-    end
-    if type(cdOverride) == "number" then
-        iconMap[cdOverride] = icon
-    end
+    AddToIconMap(cdSpellID, icon)
+    AddToIconMap(cdOverride, icon)
     if icon.GetBaseSpellID then
         local id = icon:GetBaseSpellID()
         if id and not issecretvalue(id) then
-            iconMap[id] = icon
+            AddToIconMap(id, icon)
         end
     end
     if icon.GetSpellID then
         local id = icon:GetSpellID()
         if id and not issecretvalue(id) then
-            iconMap[id] = icon
+            AddToIconMap(id, icon)
         end
     end
+end
+
+-- Tracker frames carry their resolved on-use spell in frame.spellID (set by the
+-- tracker when it lays out the entry); index it under its base/override forms too.
+local function IndexTrackerFrame(frame)
+    local spellID = frame.spellID
+    if not frame.Icon or not spellID or issecretvalue(spellID) then
+        return
+    end
+    AddToIconMap(spellID, frame)
+    AddToIconMap(C_Spell.GetBaseSpell(spellID), frame)
+    AddToIconMap(C_Spell.GetOverrideSpell(spellID), frame)
 end
 
 local function RebuildIconMap()
@@ -71,10 +99,15 @@ local function RebuildIconMap()
             end
         end
     end
+    if ns.TrackerItemViewer and ns.TrackerItemViewer.GetActiveItemFrames then
+        for _, frame in ipairs(ns.TrackerItemViewer:GetActiveItemFrames()) do
+            IndexTrackerFrame(frame)
+        end
+    end
     iconMapDirty = false
 end
 
-local function GetViewerIconBySpellId(spellID)
+local function GetIconsBySpellId(spellID)
     if not spellID then
         return nil
     end
@@ -82,9 +115,9 @@ local function GetViewerIconBySpellId(spellID)
         RebuildIconMap()
     end
 
-    local icon = iconMap[spellID]
-    if icon then
-        return icon
+    local icons = iconMap[spellID]
+    if icons then
+        return icons
     end
     -- Mirror the pressed spell's {override, base} so an icon indexed under a
     -- related form of the same spell still matches.
@@ -104,7 +137,14 @@ end
 -- the events cover talent/spec/form changes that re-map override spells.
 local iconMapEventFrame = CreateFrame("Frame")
 local iconMapHooksInstalled = false
+local trackerHookInstalled = false
 local function InstallIconMapHooks()
+    -- Tracker entries change (reorder, count, spec, equip) all funnel through
+    -- RefreshItemViewerFrames, so one hook there keeps the map fresh for trackers.
+    if not trackerHookInstalled and ns.TrackerItemViewer and ns.TrackerItemViewer.RefreshItemViewerFrames then
+        hooksecurefunc(ns.TrackerItemViewer, "RefreshItemViewerFrames", InvalidateIconMap)
+        trackerHookInstalled = true
+    end
     if iconMapHooksInstalled then
         return
     end
@@ -139,9 +179,15 @@ local function GetSpellIdFromMacroName(macroName)
     end
 
     local macroSpellID = GetMacroSpell(macroName)
-
     if macroSpellID then
         return macroSpellID
+    end
+
+    -- /use-an-item macros: resolve the item's on-use spell so it matches the icon
+    -- indexed under that spell (item trackers, equipped trinkets, ...).
+    local macroItem = GetMacroItem(macroName)
+    if macroItem then
+        return select(2, C_Item.GetItemSpell(macroItem))
     end
 end
 
@@ -156,6 +202,9 @@ local function GetSpellIdFromButton(btn)
         return id, true
     elseif actionType == "spell" then
         return id
+    elseif actionType == "item" then
+        -- Items are indexed under their on-use spell, so resolve and match on that.
+        return select(2, C_Item.GetItemSpell(id))
     elseif actionType == "macro" then
         local macroName = GetActionText(btn.action)
         return GetSpellIdFromMacroName(macroName), true
@@ -184,6 +233,10 @@ local function CreateOrGetTextureFrame(icon)
     -- by reusing the mask Masque applied to the icon texture. Used by both the
     -- Flat and atlas ("Blizz") textures so each follows the skin shape.
     local masqueMask = masqueActive and ns.MasqueModule:GetIconMask(icon) or nil
+    -- Tracker item frames aren't viewer icons: their parent is a CMCTrackerN anchor
+    -- (not in viewerSettingMap) and they carry their own shape mask (frame.mask),
+    -- so the highlight clips to the tracker's icon shape.
+    local trackerMask = (not masqueActive) and icon.mask or nil
 
     local tex = frame:CreateTexture(nil, "OVERLAY")
     tex:SetAllPoints(frame)
@@ -193,6 +246,8 @@ local function CreateOrGetTextureFrame(icon)
         tex:SetColorTexture(0.8, 0.8, 0.8, 0.3)
         if masqueMask then
             tex:AddMaskTexture(masqueMask)
+        elseif trackerMask then
+            tex:AddMaskTexture(trackerMask)
         elseif not masqueActive then
             local settingKey = viewerSettingMap[parent:GetName()]
             if not ns.db.profile[settingKey] then
@@ -208,6 +263,8 @@ local function CreateOrGetTextureFrame(icon)
         tex:SetAtlas("UI-HUD-ActionBar-IconFrame-Down", not masqueActive)
         if masqueMask then
             tex:AddMaskTexture(masqueMask)
+        elseif trackerMask then
+            tex:AddMaskTexture(trackerMask)
         end
     end
     frame.texture = tex
@@ -229,6 +286,27 @@ local function DisableHighlight(icon)
 end
 
 local toHide = {}
+
+-- A spell can resolve to several icons (viewer + trackers); these light/clear and
+-- queue every match from one press.
+local function EnableHighlights(icons)
+    for _, icon in ipairs(icons) do
+        EnableHighlight(icon)
+    end
+end
+
+local function DisableHighlights(icons)
+    for _, icon in ipairs(icons) do
+        DisableHighlight(icon)
+    end
+end
+
+local function QueueHide(icons)
+    for _, icon in ipairs(icons) do
+        table.insert(toHide, icon)
+    end
+end
+
 local isCleaningUp = false
 local function cleanupToHide()
     if isCleaningUp then
@@ -260,14 +338,13 @@ local function ButtonPressed(button, mouseButton)
         return
     end
 
-    local icon = GetViewerIconBySpellId(spellID)
-    if not icon then
+    local icons = GetIconsBySpellId(spellID)
+    if not icons then
         isProcessingButtonPress = false
         return
     end
-    table.insert(toHide, icon)
-
-    EnableHighlight(icon)
+    QueueHide(icons)
+    EnableHighlights(icons)
     isProcessingButtonPress = false
 end
 
@@ -396,11 +473,11 @@ local function SetupGlobalHooks()
         end
         local btn = _G["ActionButton" .. id]
         local spellID, isFromMacro = GetSpellIdFromButton(btn)
-        local icon = GetViewerIconBySpellId(spellID)
-        if icon then
-            EnableHighlight(icon)
+        local icons = GetIconsBySpellId(spellID)
+        if icons then
+            EnableHighlights(icons)
             if isFromMacro then
-                table.insert(toHide, icon)
+                QueueHide(icons)
             end
         end
     end)
@@ -411,9 +488,9 @@ local function SetupGlobalHooks()
         end
         local btn = _G["ActionButton" .. id]
         local spellID = GetSpellIdFromButton(btn)
-        local icon = GetViewerIconBySpellId(spellID)
-        if icon then
-            DisableHighlight(icon)
+        local icons = GetIconsBySpellId(spellID)
+        if icons then
+            DisableHighlights(icons)
         end
         cleanupToHide()
     end)
@@ -424,12 +501,12 @@ local function SetupGlobalHooks()
         end
         local btn = _G[bar .. "Button" .. id]
         local spellID, isFromMacro = GetSpellIdFromButton(btn)
-        local icon = GetViewerIconBySpellId(spellID)
-        if icon then
-            EnableHighlight(icon)
-        end
-        if isFromMacro then
-            table.insert(toHide, icon)
+        local icons = GetIconsBySpellId(spellID)
+        if icons then
+            EnableHighlights(icons)
+            if isFromMacro then
+                QueueHide(icons)
+            end
         end
     end)
 
@@ -439,9 +516,9 @@ local function SetupGlobalHooks()
         end
         local btn = _G[bar .. "Button" .. id]
         local spellID = GetSpellIdFromButton(btn)
-        local icon = GetViewerIconBySpellId(spellID)
-        if icon then
-            DisableHighlight(icon)
+        local icons = GetIconsBySpellId(spellID)
+        if icons then
+            DisableHighlights(icons)
         end
         cleanupToHide()
     end)
@@ -467,30 +544,33 @@ function ButtonPress:Reinitialize()
     self:Initialize()
 end
 
-function ButtonPress:Disable()
-    cleanupToHide()
+-- Every highlightable frame: viewer icons plus active tracker item frames.
+local function ForEachHighlightTarget(callback)
     for _, viewerName in ipairs(viewerTypes) do
         local viewerFrame = _G[viewerName]
         if viewerFrame then
-            local children = viewerFrame:GetItemFrames()
-            for _, icon in ipairs(children) do
-                DisableHighlight(icon)
+            for _, icon in ipairs(viewerFrame:GetItemFrames()) do
+                callback(icon)
             end
+        end
+    end
+    if ns.TrackerItemViewer and ns.TrackerItemViewer.GetActiveItemFrames then
+        for _, frame in ipairs(ns.TrackerItemViewer:GetActiveItemFrames()) do
+            callback(frame)
         end
     end
 end
 
+function ButtonPress:Disable()
+    cleanupToHide()
+    ForEachHighlightTarget(DisableHighlight)
+end
+
 function ButtonPress:RefreshTextures()
-    for _, viewerName in ipairs(viewerTypes) do
-        local viewerFrame = _G[viewerName]
-        if viewerFrame then
-            local children = viewerFrame:GetItemFrames()
-            for _, icon in ipairs(children) do
-                if icon.HighlightTexture then
-                    icon.HighlightTexture:Hide()
-                    icon.HighlightTexture = nil
-                end
-            end
+    ForEachHighlightTarget(function(icon)
+        if icon.HighlightTexture then
+            icon.HighlightTexture:Hide()
+            icon.HighlightTexture = nil
         end
-    end
+    end)
 end

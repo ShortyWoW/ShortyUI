@@ -316,6 +316,11 @@ end
 local HealGlowOnResize
 
 local function GetGlowHostSize(cdmFrame)
+    -- Trackers stamp their icon size; viewers resolve through Sizes.
+    local stamped = Affected(cdmFrame).glowIconSizeW
+    if stamped then
+        return stamped, Affected(cdmFrame).glowIconSizeH or stamped
+    end
     local width, height = ns.Sizes.GetIconSize(cdmFrame)
     if not width then
         width, height = cdmFrame:GetSize()
@@ -414,6 +419,15 @@ local function ClearButtonGlow(cdmFrame)
     end
     Affected(host).glowSignature = nil
     StopAllCustomGlows(host)
+end
+
+-- Public glow controls for frames outside the cooldown viewers (trackers).
+function CooldownStyle:ShowFrameGlow(frame, alpha)
+    return SetButtonGlowVisible(frame, alpha)
+end
+
+function CooldownStyle:HideFrameGlow(frame)
+    ClearButtonGlow(frame)
 end
 
 local function ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)

@@ -2860,8 +2860,7 @@ local function AddonSettings_BuildCooldown(category, layout)
                 ns.CooldownManager.RestoreUtilityAlpha()
             end
         end,
-        desc = "Dim Utility Cooldown icons when they are not on cooldown.\n|cffff0000Higher CPU usage|r",
-
+        desc = "Dim Utility Cooldown icons when they are not on cooldown.",
         sliderKey = "cooldownManager_utility_dimOpacity",
         sliderName = "Dim Opacity",
         sliderMin = 0,

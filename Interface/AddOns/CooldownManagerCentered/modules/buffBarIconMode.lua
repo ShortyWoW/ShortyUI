@@ -241,14 +241,22 @@ local function ApplyIconStyling(frame, iconHost, iconTexture)
         Affected(frame).border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
         Affected(frame).border:SetFrameLevel(iconHost:GetFrameLevel() + 10)
     end
-    Affected(frame).border:ClearAllPoints()
-    Affected(frame).border:SetAllPoints(iconHost)
     if square and bt > 0 then
+        Affected(frame).border:ClearAllPoints()
+        Affected(frame).border:SetAllPoints(iconHost)
         Affected(frame).border:SetBackdrop({ edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = bt })
         Affected(frame).border:SetBackdropBorderColor(0, 0, 0, 1)
         Affected(frame).border:Show()
     else
         Affected(frame).border:Hide()
+    end
+
+    if frame.DebuffBorder then
+        if square then
+            frame.DebuffBorder:SetAlpha(0)
+        else
+            frame.DebuffBorder:SetAlpha(1)
+        end
     end
 
     if iconHost and iconHost.GetRegions then
@@ -420,13 +428,17 @@ function BuffBarIconMode.Apply(frame)
     iconHost:SetSize(targetWidth, targetHeight)
     iconHost:ClearAllPoints()
     iconHost:SetPoint("CENTER", frame, "CENTER", 0, 0)
-
+    if Affected(frame).stylingApplied then
+        return
+    end
+    ns.API:SetAffected(frame, "stylingApplied")
     ApplyIconStyling(frame, iconHost, iconTexture)
     ApplyFontStyling(frame)
 end
 
 function BuffBarIconMode.Restore(frame)
     local backup = frame and Affected(frame).buffBarIconBackup
+    ns.API:UnsetAffected(frame, "stylingApplied")
 
     if frame.Cooldown then
         frame.Cooldown:Hide()
@@ -525,5 +537,13 @@ function BuffBarIconMode.RefreshAll(barFrames)
         elseif Affected(frame).buffBarIconBackup then
             BuffBarIconMode.Restore(frame)
         end
+    end
+end
+
+function BuffBarIconMode.ClearGuards()
+    local frames = BuffBarCooldownViewer:GetItemFrames()
+
+    for _, frame in ipairs(frames) do
+        ns.API:UnsetAffected(frame, "stylingApplied")
     end
 end

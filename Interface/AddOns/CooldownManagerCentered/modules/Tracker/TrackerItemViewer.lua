@@ -20,15 +20,14 @@ local DEFAULT_MASK_TEXTURE = "Interface\\AddOns\\CooldownManagerCentered\\Media\
 -- system) is turned off, so a disabled tracker never reacts to game events or
 -- re-shows itself — letting us toggle the feature live without a reload.
 local TRACKER_EVENTS = {
-    "PLAYER_EQUIPMENT_CHANGED",
+    "PLAYER_ENTERING_WORLD",
     "SPELL_UPDATE_COOLDOWN",
     "SPELL_UPDATE_CHARGES",
-    "ITEM_LOCKED",
+    "PLAYER_EQUIPMENT_CHANGED",
     "BAG_UPDATE_DELAYED",
-    "BAG_UPDATE_COOLDOWN",
-    "PLAYER_ENTERING_WORLD",
     "TRAIT_CONFIG_UPDATED",
     "PLAYER_SPECIALIZATION_CHANGED",
+    "SPELL_UPDATE_ICON",
 }
 
 local ORIENTATION_ANCHORS = {
@@ -290,6 +289,15 @@ local function ApplyStackFontToFrame(frame)
     end
 end
 
+local GLOW_SIZE_BLOOM = 4
+
+local function SizeItemFrame(frame, iconSize, iconHeight)
+    frame:SetSize(iconSize, iconHeight)
+    frame.IconOverlay:SetSize(iconSize * 1.5, iconHeight * 1.5)
+    Affected(frame).glowIconSizeW = iconSize + GLOW_SIZE_BLOOM
+    Affected(frame).glowIconSizeH = iconHeight + GLOW_SIZE_BLOOM
+end
+
 local ItemViewerFrame = {}
 ItemViewerFrame.__index = ItemViewerFrame
 
@@ -373,6 +381,7 @@ function ItemViewerFrame:UpdateEntry(entry)
     if not entry then
         Affected(frame).trackerEntryKind = nil
         Affected(frame).trackerEntryId = nil
+        ns.CooldownStyle:HideFrameGlow(frame)
         frame:Hide()
         return
     end
@@ -493,6 +502,18 @@ function TrackerInstance:UpdateIconPosition(frame, visibleIndex)
     frame:SetPoint(anchorPoint, self.anchor, anchorPoint, anchorData.offsetX * offset, anchorData.offsetY * offset)
 end
 
+function TrackerInstance:UpdateCooldown(spellId, baseSpellId) -- todo ItemID in 12.1.0
+    if not ns.db.profile.tracker_enabled then
+        return
+    end
+
+    for _, ivf in ipairs(self.iconFrames) do
+        if self.trackedSpellIds and (self.trackedSpellIds[spellId] or self.trackedSpellIds[baseSpellId]) then
+            ivf:UpdateCooldown()
+        end
+    end
+end
+
 function TrackerInstance:UpdateCooldowns()
     if not ns.db.profile.tracker_enabled then
         return
@@ -596,13 +617,13 @@ function TrackerInstance:DoRefreshEntries()
     local showStacks = self:GetShowStacks()
     local count = #entries
 
+    local trackedSpellIds = {}
     for i = 1, count do
         if not self.iconFrames[i] then
             self.iconFrames[i] = ItemViewerFrame:New(self.anchor)
         end
         local ivf = self.iconFrames[i]
-        ivf.frame:SetSize(iconSize, iconHeight)
-        ivf.frame.IconOverlay:SetSize(iconSize * 1.5, iconHeight * 1.5)
+        SizeItemFrame(ivf.frame, iconSize, iconHeight)
         ivf.frame.showGCD = showGCD
         ivf.frame.showStacks = showStacks
         -- Hiding the count fontstring persists across SetText, so the stack/charge
@@ -612,8 +633,13 @@ function TrackerInstance:DoRefreshEntries()
         end
 
         ivf:UpdateEntry(entries[i])
+
+        if ivf.frame.spellID then
+            trackedSpellIds[ivf.frame.spellID] = true
+        end
         self:UpdateIconPosition(ivf.frame, i)
     end
+    self.trackedSpellIds = trackedSpellIds
 
     for i = count + 1, #self.iconFrames do
         self.iconFrames[i]:UpdateEntry(nil)
@@ -651,8 +677,7 @@ function TrackerInstance:UpdateIconLayout()
     local iconSize = self:GetIconSize()
     local iconHeight = GetIconHeight(iconSize)
     for _, ivf in ipairs(self.iconFrames) do
-        ivf.frame:SetSize(iconSize, iconHeight)
-        ivf.frame.IconOverlay:SetSize(iconSize * 1.5, iconHeight * 1.5)
+        SizeItemFrame(ivf.frame, iconSize, iconHeight)
     end
     self:RefreshEntries()
 end
@@ -707,41 +732,45 @@ function TrackerInstance:Create()
 
     self:RegisterTrackerEvents()
 
-    self.anchor:SetScript("OnEvent", function(_, event, arg1)
-        if event == "SPELL_UPDATE_COOLDOWN" or event == "SPELL_UPDATE_CHARGES" or event == "BAG_UPDATE_COOLDOWN" then
-            self:UpdateCooldowns()
-            C_Timer.After(UPDATE_THROTTLE_DELAY + 0.01, function()
+    self.anchor:SetScript("OnEvent", function(_, event, arg1, arg2)
+        if event == "PLAYER_ENTERING_WORLD" then
+            self:RefreshEntries()
+            C_Timer.After(3, function()
+                self:RefreshEntries()
+            end)
+        elseif event == "SPELL_UPDATE_COOLDOWN" then
+            if
+                ns.db.profile.editMode
+                and ns.db.profile.editMode[self.configKey]
+                and ns.db.profile.editMode[self.configKey].showGCD
+            then
                 self:UpdateCooldowns()
-            end)
-        elseif event == "PLAYER_ENTERING_WORLD" then
-            self:RefreshEntries()
-            C_Timer.After(5, function()
-                self:RefreshEntries()
-            end)
-        elseif event == "ITEM_LOCKED" then
-            self:RefreshEntries()
-            C_Timer.After(0.5, function()
-                self:RefreshEntries()
-            end)
+            elseif arg1 or arg2 then
+                self:UpdateCooldown(arg1, arg2)
+            else
+                self:UpdateCooldowns()
+            end
+        elseif event == "SPELL_UPDATE_CHARGES" then
+            self:UpdateCooldowns()
+        elseif event == "PLAYER_EQUIPMENT_CHANGED" then
+            if arg1 == 13 or arg1 == 14 then
+                C_Timer.After(0.3, function()
+                    self:RefreshEntries()
+                end)
+            end
         elseif event == "BAG_UPDATE_DELAYED" then
             C_Timer.After(0.05, function()
                 self:RefreshEntries()
             end)
-        elseif
-            event == "TRAIT_CONFIG_UPDATED"
-            or event == "PLAYER_SPECIALIZATION_CHANGED"
-            or event == "PLAYER_TALENT_UPDATE"
-            or event == "ACTIVE_TALENT_GROUP_CHANGED"
-        then
+        elseif event == "TRAIT_CONFIG_UPDATED" or event == "PLAYER_SPECIALIZATION_CHANGED" then
             if ItemsData and ItemsData.InvalidateSpellBookCache then
                 ItemsData:InvalidateSpellBookCache()
             end
-            self:RefreshEntries()
             C_Timer.After(0.1, function()
                 self:RefreshEntries()
             end)
-        else
-            self:RefreshEntries()
+        elseif event == "SPELL_UPDATE_ICON" then
+            self:UpdateCooldown(arg1)
         end
     end)
 
@@ -1602,6 +1631,18 @@ function ItemViewer:RefreshItemViewerFrames()
     for _, tracker in ipairs(trackers) do
         tracker:RefreshEntries()
     end
+end
+
+function ItemViewer:GetActiveItemFrames()
+    local frames = {}
+    for _, tracker in ipairs(trackers) do
+        for _, ivf in ipairs(tracker.iconFrames) do
+            if ivf.frame:IsShown() then
+                frames[#frames + 1] = ivf.frame
+            end
+        end
+    end
+    return frames
 end
 
 function ItemViewer:RefreshStyling()

@@ -374,12 +374,16 @@ local function IsTrackableItem(itemID)
     return result
 end
 
+local function IsPassiveTrinket(itemID)
+    return itemID ~= nil and C_Item.GetItemSpell(itemID) == nil
+end
+
 local function IsTrackableWildcardSlot(slotID)
     local itemID = GetWildcardSlotItemID(slotID)
     if itemID == nil or IGNORED_WILDCARD_TRINKETS[itemID] or not IsTrackableItem(itemID) then
         return false
     end
-    if not DB.GetShowingPassiveTrinkets() then
+    if not DB.GetShowingPassiveTrinkets() and IsPassiveTrinket(itemID) then
         return false
     end
     return true

@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"yes",
 "maybe, what's in it for me",
 "/ginvite Randalana-Mal'Ganis",
 "sheeit sold",
 "/g |cnIQ3:|Hitem:202046::::::::90:581::14::1:28:2734:::::|h[Lucky Tortollan Charm]|h|r",
+"/simc",
 },
 ["ChatHistoryLog"] = {
 {

@@ -21,6 +21,8 @@ local reorderMarker = nil
 local reorderCursor = nil
 local reorderCursorFollow = false
 
+local spellIconEventFrame = nil
+
 -- Asked before enabling the custom tracker from the Cooldown Settings tab. Enables
 -- live (no reload); the `data` argument is a continuation run on confirm so the
 -- tracker tab only opens once the user actually says yes.
@@ -69,6 +71,42 @@ local function ResolveCustomActiveTarget(kind, id)
     end
 
     return nil, nil
+end
+
+local function IsConsumableEntry(kind, id)
+    if kind ~= "item" then
+        return false
+    end
+    return select(6, C_Item.GetItemInfoInstant(id)) == Enum.ItemClass.Consumable
+end
+
+-- Proc/passive trinkets (no on-use spell) have no ready state.
+local function EntryHasReadyState(kind, id)
+    local AuraDurations = ns.TrackerAuraDurations
+    if AuraDurations and AuraDurations.HasProc and AuraDurations:HasProc(kind, id) then
+        return false
+    end
+    if kind == "spell" then
+        return true
+    end
+    return select(2, C_Item.GetItemSpell(id)) ~= nil
+end
+
+local function EntryHasCharges(kind, id)
+    local spellID
+    if kind == "spell" then
+        spellID = id
+    else
+        local resolvedKind, resolvedID = ResolveCustomActiveTarget(kind, id)
+        if resolvedKind == "item" and resolvedID then
+            spellID = select(2, C_Item.GetItemSpell(resolvedID))
+        end
+    end
+    if not spellID then
+        return false
+    end
+    local charges = C_Spell.GetSpellCharges(spellID)
+    return charges and charges.maxCharges > 1 or false
 end
 
 local function FormatCustomActiveValue(value)
@@ -762,12 +800,33 @@ local function ShowItemContextMenu(button)
             end
         end
         if ItemsData:IsTrackerState(currentState) then
-            rootDescription:CreateCheckbox("Always Show", function()
-                return DB.GetAlwaysShow(kind, id)
-            end, function()
-                DB.SetAlwaysShow(kind, id, not DB.GetAlwaysShow(kind, id))
-                RefreshTrackerPanels()
-            end)
+            if IsConsumableEntry(kind, id) then
+                rootDescription:CreateCheckbox("Always Show", function()
+                    return DB.GetAlwaysShow(kind, id)
+                end, function()
+                    DB.SetAlwaysShow(kind, id, not DB.GetAlwaysShow(kind, id))
+                    RefreshTrackerPanels()
+                end)
+            end
+
+            -- Wildcard slots resolve to the equipped item, matching the live tracker.
+            local glowKind, glowID = ResolveCustomActiveTarget(kind, id)
+            if glowKind and glowID then
+                local function GlowCheckbox(label, field)
+                    rootDescription:CreateCheckbox(label, function()
+                        return DB.GetGlowFlag(glowKind, glowID, field)
+                    end, function()
+                        DB.ToggleGlowFlag(glowKind, glowID, field)
+                        RefreshTrackerPanels()
+                    end)
+                end
+                if EntryHasReadyState(glowKind, glowID) then
+                    GlowCheckbox("Glow when ready", "glowWhenReady")
+                end
+                if EntryHasCharges(glowKind, glowID) then
+                    GlowCheckbox("Glow when full charges", "glowOnFullCharges")
+                end
+            end
         end
         if kind == ENTRY_KIND_WILDCARD_SLOTS then
             local passive = rootDescription:CreateCheckbox(
@@ -1245,8 +1304,10 @@ function TrackerAssignmentPanel:RefreshMiscPanel(settingsFrame)
         return
     end
 
-    if miscPanel.SetPortraitToSpecIcon then
-        miscPanel:SetPortraitToSpecIcon()
+    if miscPanel.SetPortraitTextureRaw then
+        miscPanel:SetPortraitTextureRaw(
+            "Interface\\Addons\\CooldownManagerCentered\\Media\\CooldownManagerCenteredIcon"
+        )
     end
 
     local showUnusable = DB.GetShowingUnusable()
@@ -1354,6 +1415,41 @@ function TrackerAssignmentPanel:RefreshMiscPanel(settingsFrame)
             TrackerAssignmentPanel:RefreshMiscPanel(settingsFrame)
         end)
     end
+end
+
+-- Mirrors Blizzard's CooldownViewerSettingsCategoryMixin:RefreshSpellIcons. When
+-- SPELL_UPDATE_ICON fires (procs / override spells / talent swaps in combat)
+function TrackerAssignmentPanel:RefreshIcons()
+    local frame = _G["CooldownViewerSettings"]
+    if not frame then
+        return
+    end
+    local miscPanel = Affected(frame).trackerMiscPanel
+    if not miscPanel or not miscPanel:IsShown() then
+        return
+    end
+
+    local function refreshCategory(category)
+        if not category or not category.itemPool then
+            return
+        end
+        for button in category.itemPool:EnumerateActive() do
+            if button.Icon and not Affected(button).trackerEmpty then
+                local kind, id = GetEntryKindAndID(button)
+                if kind and id then
+                    button.Icon:SetTexture(ItemVisuals:GetEntryIcon(kind, id))
+                end
+            end
+        end
+    end
+
+    local trackerCategories = Affected(miscPanel).trackerCategories
+    if trackerCategories then
+        for _, category in ipairs(trackerCategories) do
+            refreshCategory(category)
+        end
+    end
+    refreshCategory(Affected(miscPanel).hiddenCategory)
 end
 
 local function ShowMiscPanel(settingsFrame)
@@ -1489,6 +1585,14 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
         if Affected(self).trackerSettingsDropdown then
             Affected(self).trackerSettingsDropdown:Show()
         end
+
+        if not spellIconEventFrame then
+            spellIconEventFrame = CreateFrame("Frame")
+            spellIconEventFrame:SetScript("OnEvent", function()
+                TrackerAssignmentPanel:RefreshIcons()
+            end)
+        end
+        spellIconEventFrame:RegisterEvent("SPELL_UPDATE_ICON")
     end)
     miscPanel:HookScript("OnHide", function(self)
         if Affected(self).trackerSearchBox then
@@ -1496,6 +1600,9 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
         end
         if Affected(self).trackerSettingsDropdown then
             Affected(self).trackerSettingsDropdown:Hide()
+        end
+        if spellIconEventFrame then
+            spellIconEventFrame:UnregisterEvent("SPELL_UPDATE_ICON")
         end
     end)
 
@@ -1545,13 +1652,4 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     end)
 
     miscTab:Show()
-end
-
-function TrackerAssignmentPanel:Refresh()
-    if _cmc_tracker_misc_panel and _cmc_tracker_misc_panel:IsShown() then
-        _cmc_tracker_misc_panel:Hide()
-        C_Timer.After(0.01, function()
-            _cmc_tracker_misc_panel:Show()
-        end)
-    end
 end

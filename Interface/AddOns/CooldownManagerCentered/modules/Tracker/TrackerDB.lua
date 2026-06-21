@@ -19,26 +19,8 @@ local function NormalizeCustomActiveDuration(value)
 end
 
 TrackerDB.DefaultItems = {
-    241304, -- Silvermoon Healing Potion
-    241308, -- Light's Potential
-
     5512, -- Healthstone
     224464, -- Demonic Healthstone
-
-    -- Invigorating Healing Potion
-    244839,
-    244838,
-    244835,
-
-    -- Tempered Potion
-    212265, -- Tempered Potion (R3)
-    212264, -- Tempered Potion (R2)
-    212263, -- Tempered Potion (R1)
-
-    -- Fleeting Tempered Potion
-    212971,
-    212970,
-    212969,
 }
 
 TrackerDB.DefaultSpells = {
@@ -366,6 +348,45 @@ function TrackerDB.SetUseRealAura(kind, id, value)
 
     settings.useRealAura = value and true or nil
     return true
+end
+
+local function GetEntrySettings(kind, id)
+    if kind == "spell" then
+        return TrackerDB.GetSpellItemSettings(id)
+    elseif kind == "item" then
+        return TrackerDB.GetItemSettings(id)
+    end
+    return TrackerDB.GetWildcardSlotSettings(id)
+end
+
+local function EnsureEntrySettings(kind, id)
+    if kind == "spell" then
+        return TrackerDB.EnsureSpellItemSettings(id)
+    elseif kind == "item" then
+        return TrackerDB.EnsureItemSettings(id)
+    end
+    return TrackerDB.EnsureWildcardSlotSettings(id)
+end
+
+-- Per-entry glow flags: "glowWhenReady", "glowOnFullCharges".
+function TrackerDB.GetGlowFlag(kind, id, field)
+    local settings = GetEntrySettings(kind, id)
+    return settings and settings[field] == true or false
+end
+
+function TrackerDB.SetGlowFlag(kind, id, field, value)
+    if not value then
+        local settings = GetEntrySettings(kind, id)
+        if settings then
+            settings[field] = nil
+        end
+        return
+    end
+    EnsureEntrySettings(kind, id)[field] = true
+end
+
+function TrackerDB.ToggleGlowFlag(kind, id, field)
+    TrackerDB.SetGlowFlag(kind, id, field, not TrackerDB.GetGlowFlag(kind, id, field))
 end
 
 function TrackerDB.GetAlwaysShow(kind, id)

@@ -114,6 +114,9 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnShow", function(arg1, s
         if ns.CooldownManager then
             ns.CooldownManager.ForceRefreshAll()
         end
+        if ns.CooldownManager then
+            ns.CooldownManager.UpdateUtilityDimming(true)
+        end
     end)
 end)
 EventRegistry:RegisterCallback("CooldownViewerSettings.OnHide", function()
@@ -135,6 +138,9 @@ EventRegistry:RegisterCallback("CooldownViewerSettings.OnHide", function()
 
         if ns.CooldownManager then
             ns.CooldownManager.ForceRefreshAll()
+        end
+        if ns.CooldownManager then
+            ns.CooldownManager.UpdateUtilityDimming(true)
         end
     end)
 end)
@@ -162,6 +168,9 @@ EventRegistry:RegisterCallback("EditMode.Enter", function()
 
         if ns.CooldownManager then
             ns.CooldownManager.ForceRefreshAll()
+        end
+        if ns.CooldownManager then
+            ns.CooldownManager.UpdateUtilityDimming(true)
         end
 
         if ns.CooldownStyle then
@@ -193,6 +202,9 @@ EventRegistry:RegisterCallback("EditMode.Exit", function()
 
         if ns.CooldownManager then
             ns.CooldownManager.ForceRefreshAll()
+        end
+        if ns.CooldownManager then
+            ns.CooldownManager.UpdateUtilityDimming(true)
         end
     end)
 end)
@@ -239,14 +251,7 @@ end
 --     end
 -- end)
 -- end
-EventHandler.events["PLAYER_SPECIALIZATION_CHANGED"] = function(self, event, ...)
-    if not Runtime:IsAllReady() then
-        return
-    end
-    if ns.TrackerAssignmentPanel then
-        ns.TrackerAssignmentPanel:Refresh()
-    end
-end
+
 EventHandler.events["UPDATE_SHAPESHIFT_FORM"] = function(self, event, ...)
     if not Runtime:IsAllReady() then
         return
@@ -282,15 +287,15 @@ EventHandler.events["SPELL_UPDATE_COOLDOWN"] = function(self, event, spellId)
         ns.CooldownManager.UpdateUtilityDimming()
     end
 end
-C_Timer.NewTicker(1, function()
-    if not Runtime:IsAllReady() then
-        return
-    end
+-- C_Timer.NewTicker(1, function()
+--     if not Runtime:IsAllReady() then
+--         return
+--     end
 
-    if ns.CooldownManager then
-        ns.CooldownManager.UpdateUtilityDimming()
-    end
-end)
+--     if ns.CooldownManager then
+--         ns.CooldownManager.UpdateUtilityDimming()
+--     end
+-- end)
 
 EventHandler.events["CLIENT_SCENE_OPENED"] = function(self, event, ...)
     local sceneType = ...
@@ -318,9 +323,6 @@ hooksecurefunc(BuffIconCooldownViewer, "RefreshLayout", function()
     if ns.CooldownFont then
         ns.CooldownFont:RefreshViewer("BuffIconCooldownViewer")
     end
-    if ns.Swipe then
-        ns.Swipe:RefreshViewer("BuffIconCooldownViewer")
-    end
 
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefresh({ icons = true })
@@ -344,13 +346,9 @@ hooksecurefunc(EssentialCooldownViewer, "RefreshLayout", function()
     if ns.CooldownFont then
         ns.CooldownFont:RefreshViewer("EssentialCooldownViewer")
     end
-    if ns.Swipe then
-        ns.Swipe:RefreshViewer("EssentialCooldownViewer")
-    end
     if ns.RangeCheck then
         ns.RangeCheck:RefreshViewer("EssentialCooldownViewer")
     end
-
     if ns.CooldownManager then
         ns.CooldownManager.ForceRefresh({ essential = true })
     end
@@ -364,9 +362,6 @@ hooksecurefunc(UtilityCooldownViewer, "RefreshLayout", function()
     end
     if ns.CooldownFont then
         ns.CooldownFont:RefreshViewer("UtilityCooldownViewer")
-    end
-    if ns.Swipe then
-        ns.Swipe:RefreshViewer("UtilityCooldownViewer")
     end
     if ns.RangeCheck then
         ns.RangeCheck:RefreshViewer("UtilityCooldownViewer")

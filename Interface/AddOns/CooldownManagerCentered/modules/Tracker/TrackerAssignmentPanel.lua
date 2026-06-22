@@ -1531,9 +1531,14 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     Affected(miscPanel).trackerScrollFrame = scrollFrame
     local spellsTab = settingsFrame.SpellsTab
     local aurasTab = settingsFrame.AurasTab
+    -- 12.1.0
+    local groupBuffsTab = settingsFrame.GroupBuffsTab
 
     Affected(spellsTab).trackerIsTabButton = true
     Affected(aurasTab).trackerIsTabButton = true
+    if groupBuffsTab then
+        Affected(groupBuffsTab).trackerIsTabButton = true
+    end
 
     if not Affected(miscPanel).trackerSearchBox then
         local searchBox = CreateFrame("EditBox", nil, miscPanel, "SearchBoxTemplate")
@@ -1615,7 +1620,11 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     miscTab.activeAtlas = "GreenCross"
     miscTab.inactiveAtlas = "GreenCross"
     miscTab:SetChecked(false)
-    miscTab:SetPoint("TOP", aurasTab, "BOTTOM", 0, -3)
+    if groupBuffsTab then
+        miscTab:SetPoint("TOP", groupBuffsTab, "BOTTOM", 0, -3)
+    else
+        miscTab:SetPoint("TOP", aurasTab, "BOTTOM", 0, -3)
+    end
 
     settingsFrame:HookScript("OnHide", function()
         miscTab:Hide()
@@ -1630,6 +1639,9 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
         end
         spellsTab:SetChecked(false)
         aurasTab:SetChecked(false)
+        if groupBuffsTab then
+            groupBuffsTab:SetChecked(false)
+        end
         miscTab:SetChecked(true)
         ShowMiscPanel(settingsFrame)
     end
@@ -1647,7 +1659,11 @@ function TrackerAssignmentPanel:EnsureMiscSettingsTab(settingsFrame)
     hooksecurefunc(settingsFrame, "SetDisplayMode", function(self, mode)
         spellsTab:SetChecked(mode == "spells")
         aurasTab:SetChecked(mode == "auras")
+        if groupBuffsTab then
+            groupBuffsTab:SetChecked(mode == "groupBuffs")
+        end
         miscTab:SetChecked(mode == "tracker")
+
         TrackerAssignmentPanel:HideMiscPanel(self)
     end)
 

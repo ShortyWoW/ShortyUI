@@ -599,12 +599,14 @@ function ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
     local targetWidth = (right - left)
     local targetHeight = (top - bottom)
 
-    if math.abs(currentWidth - targetWidth) >= 1 or math.abs(currentHeight - targetHeight) >= 1 then
-        if not InCombatLockdown() then
-            viewer:SetWidth(targetWidth)
-            viewer:SetHeight(targetHeight)
-            viewer:SetSize(targetWidth, targetHeight)
-        end
+    if
+        math.floor(math.abs(currentWidth - targetWidth)) >= 2
+        or math.floor(math.abs(currentHeight - targetHeight)) >= 2
+    then
+        viewer:SetWidth(targetWidth)
+        viewer:SetHeight(targetHeight)
+        viewer:SetSize(targetWidth, targetHeight)
+        return true
     end
 end
 
@@ -645,6 +647,9 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
             end
         end
         ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
+        C_Timer.After(0, function()
+            ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
+        end)
         return
     end
     if #children == 0 then
@@ -719,6 +724,9 @@ function ViewerAdapters.UpdateCDViewer(viewer, fromDirection)
     end
     ns.API:SetAffected(viewer, "aligned")
     ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
+    C_Timer.After(0, function()
+        ViewerAdapters.UpdateViewerSizeIfChanged(viewer)
+    end)
 end
 
 function CooldownManager.ForceRefresh(parts)

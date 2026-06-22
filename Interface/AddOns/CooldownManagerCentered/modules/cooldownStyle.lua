@@ -26,6 +26,33 @@ local isZeroCurve = C_CurveUtil.CreateCurve()
 isZeroCurve:AddPoint(0, 1)
 isZeroCurve:AddPoint(0.001, 0)
 
+local function GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
+    if not cooldownInfo then
+        return nil
+    end
+    if cooldownInfo.overrideTooltipSpellID then
+        return cooldownInfo.overrideTooltipSpellID
+    end
+    if cooldownInfo.overrideSpellID then
+        return cooldownInfo.overrideSpellID
+    end
+
+    if cooldownInfo.spellID then
+        return cooldownInfo.spellID
+    end
+    return nil
+end
+
+local function GetBaseSpellIDFromCooldownInfo(cooldownInfo)
+    if not cooldownInfo then
+        return nil
+    end
+    if cooldownInfo.spellID then
+        return cooldownInfo.spellID
+    end
+    return nil
+end
+
 local function ResolveGlowStyle(defaultStyle)
     local style = ns.db.profile.cooldownManager_experimental_glow_style or GLOW_STYLE_DEFAULT
 
@@ -437,19 +464,20 @@ local function ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
 
     if cooldownInfo.category == 0 or cooldownInfo.category == 1 then
         local hideForAura = ns.db.profile.cooldownManager_hide_glow_on_active_aura and cdmFrame.wasSetFromAura
-        local spellID = cooldownInfo.overrideSpellID or cooldownInfo.spellID
+        local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
+        local baseSpellID = GetBaseSpellIDFromCooldownInfo(cooldownInfo)
 
         local spellCharges = C_Spell.GetSpellCharges(spellID)
         local hasCharges = spellCharges and spellCharges.maxCharges > 1
         if hideForAura then
             return true, 0
         end
-        local glowOnFullCharges = CooldownStyle.GetGlowOnFullCharges(cooldownInfo.spellID)
+        local glowOnFullCharges = CooldownStyle.GetGlowOnFullCharges(baseSpellID)
         if hasCharges and glowOnFullCharges then
             return true, C_Spell.GetSpellChargeDuration(spellID):EvaluateRemainingDuration(isZeroCurve)
         end
 
-        if CooldownStyle.GetGlowWhenReady(cooldownInfo.spellID) or glowOnFullCharges then
+        if CooldownStyle.GetGlowWhenReady(baseSpellID) or glowOnFullCharges then
             local cooldown = C_Spell.GetSpellCooldown(spellID)
             if cooldown.isOnGCD then
                 return true, 1
@@ -458,8 +486,11 @@ local function ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
         end
     end
 
-    if cooldownInfo.category == 2 and CooldownStyle.GetAlwaysGlow(cooldownInfo.spellID) then
-        return true, 1
+    if cooldownInfo.category == 2 then
+        local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
+        if CooldownStyle.GetAlwaysGlow(spellID) then
+            return true, 1
+        end
     end
 
     return false
@@ -469,7 +500,7 @@ local function UpdateButtonGlowState(cdmFrame)
     local cooldownInfo = cdmFrame:GetCooldownInfo()
     local wantsGlow, configuredAlpha = ComputeConfiguredGlowAlpha(cdmFrame, cooldownInfo)
 
-    local spellID = cooldownInfo and (cooldownInfo.overrideSpellID or cooldownInfo.spellID)
+    local spellID = GetBaseSpellIDFromCooldownInfo(cooldownInfo)
     local procForcing = Affected(cdmFrame).procActive and spellID and not CooldownStyle.GetDisableProcsGlow(spellID)
 
     if procForcing then
@@ -493,7 +524,8 @@ local function BuildStyleContext(cdmFrame)
         return nil
     end
 
-    local spellID = cooldownInfo.overrideSpellID or cooldownInfo.spellID
+    local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
+    local baseSpellID = GetBaseSpellIDFromCooldownInfo(cooldownInfo)
     if not spellID then
         return nil
     end
@@ -501,11 +533,11 @@ local function BuildStyleContext(cdmFrame)
     local cooldown = C_Spell.GetSpellCooldown(spellID)
     local spellCharges = C_Spell.GetSpellCharges(spellID)
     local fromAura = cdmFrame.wasSetFromAura
-    local showAuras = CooldownStyle.GetShowAuras(cooldownInfo.spellID)
+    local showAuras = CooldownStyle.GetShowAuras(baseSpellID)
 
     local ctx = styleContext
     ctx.spellID = spellID
-    ctx.baseSpellId = cooldownInfo.spellID
+    ctx.baseSpellID = baseSpellID
     ctx.cooldown = cooldown
     ctx.hasCharges = spellCharges and spellCharges.maxCharges > 1
     ctx.isActualCooldown = cooldown.isActive and not cooldown.isOnGCD
@@ -518,7 +550,7 @@ end
 local function ApplyCooldownDisplay(cdmFrame, ctx)
     local cd = cdmFrame.Cooldown
 
-    if CooldownStyle.GetAlwaysShowCooldownEdge(ctx.baseSpellId) then
+    if CooldownStyle.GetAlwaysShowCooldownEdge(ctx.baseSpellID) then
         cd:SetDrawEdge(true)
     end
 
@@ -532,7 +564,7 @@ local function ApplyCooldownDisplay(cdmFrame, ctx)
             )
         end
         cd:SetDrawSwipe(true)
-        if CooldownStyle.GetReverseAuraSwipe(ctx.baseSpellId) then
+        if CooldownStyle.GetReverseAuraSwipe(ctx.baseSpellID) then
             cd:SetReverse(true)
         else
             cd:SetReverse(false)
@@ -577,7 +609,7 @@ local function ApplyCooldownDisplay(cdmFrame, ctx)
     if ctx.auraHidden then
         if ctx.hasCharges then
             cd:SetDrawSwipe(ctx.isActualCooldown)
-            cd:SetDrawEdge(not ctx.isActualCooldown or CooldownStyle.GetAlwaysShowCooldownEdge(ctx.baseSpellId))
+            cd:SetDrawEdge(not ctx.isActualCooldown or CooldownStyle.GetAlwaysShowCooldownEdge(ctx.baseSpellID))
         else
             cd:SetDrawSwipe(true)
         end
@@ -599,7 +631,7 @@ local function ApplyIconDisplay(cdmFrame, ctx)
         return
     end
 
-    if CooldownStyle.GetNeverDesaturate(ctx.baseSpellId) then
+    if CooldownStyle.GetNeverDesaturate(ctx.baseSpellID) then
         icon:SetDesaturation(0)
     elseif ctx.auraHidden and ctx.isActualCooldown then
         icon:SetDesaturation(1)
@@ -710,10 +742,10 @@ local function HookBuffIconFrame(cdmFrame)
     end
     if cdmFrame.GetCooldownInfo then
         local cooldownInfo = cdmFrame:GetCooldownInfo()
-        if cooldownInfo and cooldownInfo.spellID then
-            local baseSpellId = cooldownInfo.spellID
+        if cooldownInfo then
+            local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
             if cooldownInfo.category == 2 then
-                if CooldownStyle.GetAlwaysGlow(baseSpellId) then
+                if CooldownStyle.GetAlwaysGlow(spellID) then
                     SetButtonGlowVisible(cdmFrame)
                 else
                     ClearButtonGlow(cdmFrame)
@@ -735,10 +767,10 @@ local function HookBuffIconFrame(cdmFrame)
             return
         end
 
-        local baseSpellId = cooldownInfo.spellID
-        cdmFrame.Cooldown:SetDrawEdge(CooldownStyle.GetAlwaysShowCooldownEdge(baseSpellId))
+        local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
+        cdmFrame.Cooldown:SetDrawEdge(CooldownStyle.GetAlwaysShowCooldownEdge(spellID))
         if cooldownInfo.category == 2 then
-            if CooldownStyle.GetAlwaysGlow(baseSpellId) then
+            if CooldownStyle.GetAlwaysGlow(spellID) then
                 SetButtonGlowVisible(cdmFrame)
             else
                 ClearButtonGlow(cdmFrame)
@@ -747,12 +779,6 @@ local function HookBuffIconFrame(cdmFrame)
     end)
 end
 
--- Buff bar fill color. The override persists once applied, but we reapply on
--- RefreshData since bar item frames are recycled. We snapshot each bar's native
--- color on first touch so clearing the override restores it exactly.
-
--- Per-spell buff-bar fill color: settings.barColor is nil (leave Blizzard's color)
--- or a { r, g, b } custom fill chosen with the color picker.
 local function ResolveBarColor(spellID)
     local settings = CooldownStyle.GetSpellSettings(spellID)
     local value = settings and settings.barColor
@@ -762,9 +788,6 @@ local function ResolveBarColor(spellID)
     return nil
 end
 
--- Snapshot a bar's native fill color once so the "Default" mode restores it
--- exactly. The live viewer bar is a StatusBar (SetStatusBarColor, like
--- ActionBarsEnhanced); the settings-panel preview exposes a FillTexture.
 local function SnapshotBarColor(bar)
     if Affected(bar).barColorBackup == nil then
         local r, g, b, a
@@ -786,8 +809,6 @@ local function SetBarFillColor(bar, r, g, b)
     end
 end
 
--- Apply the resolved override (or the snapshotted native color for "Default") to
--- a single bar. Shared by the live viewer and the settings-panel preview bars.
 local function ApplyBarColorToBar(bar, spellID)
     local backup = SnapshotBarColor(bar)
     local r, g, b = ResolveBarColor(spellID)
@@ -803,7 +824,10 @@ local function ApplyBarColor(cdmFrame)
         return
     end
     local cooldownInfo = cdmFrame:GetCooldownInfo()
-    local spellID = cooldownInfo and cooldownInfo.spellID
+    if not cooldownInfo then
+        return
+    end
+    local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
     if not spellID then
         return
     end
@@ -835,54 +859,7 @@ local function RefreshBuffBarColors()
     end
 end
 
--- ============================================================================
--- Buff-bar color picker (Blizzard Cooldown Manager settings panel)
---
--- Mirrors how ActionBarsEnhanced recolors tracked-buff bars: every bar row in
--- Blizzard's Cooldown Manager settings gets a color swatch. Left-click opens the
--- real ColorPickerFrame (with a "Class" shortcut) and recolors the preview bar
--- live as you drag; right-click clears the override back to Blizzard's color. The
--- choice is stored per spell, so it drives the live viewer bars too (ApplyBarColor).
--- ============================================================================
-
 local settingsSwatchPool
-
--- Resolve a settings bar item's spell. Prefer the cooldownInfo.spellID so we key
--- on the same value the live ApplyBarColor uses (GetCooldownInfo().spellID) --
--- keying on a base spell would desync the preview from the live bar for spells
--- whose tracked spell differs from their base. Probe defensively across patches
--- and never error the panel.
-local function GetSettingsBarItemSpellID(item)
-    local info = item.cooldownInfo or item.info
-    if not info and item.GetCooldownInfo then
-        local ok, ci = pcall(item.GetCooldownInfo, item)
-        if ok then
-            info = ci
-        end
-    end
-    if not info and C_CooldownViewer and C_CooldownViewer.GetCooldownViewerCooldownInfo then
-        local cooldownID = item.cooldownID
-        if not cooldownID and item.GetCooldownID then
-            local ok, id = pcall(item.GetCooldownID, item)
-            if ok then
-                cooldownID = id
-            end
-        end
-        if cooldownID then
-            info = C_CooldownViewer.GetCooldownViewerCooldownInfo(cooldownID)
-        end
-    end
-    if info and info.spellID then
-        return info.spellID
-    end
-    if item.GetBaseSpellID then
-        local ok, id = pcall(item.GetBaseSpellID, item)
-        if ok and id then
-            return id
-        end
-    end
-    return item.spellID
-end
 
 -- Color a swatch should show: the active override, or the snapshotted native
 -- fill while in "Default" mode so the swatch still reflects the live bar.
@@ -968,14 +945,6 @@ local function ConfigureBarColorSwatch(item, spellID, bar)
     swatch:Show()
 end
 
-local function ReleaseBarColorSwatch(item)
-    local swatch = Affected(item).barColorSwatch
-    if swatch then
-        settingsSwatchPool:Release(swatch)
-        Affected(item).barColorSwatch = nil
-    end
-end
-
 local function RefreshBarColorSwatches(category)
     if not category or not category.itemPool then
         return
@@ -984,13 +953,14 @@ local function RefreshBarColorSwatches(category)
         settingsSwatchPool = CreateFramePool("Button", UIParent, "ColorSwatchTemplate")
     end
     for item in category.itemPool:EnumerateActive() do
-        local bar = item.Bar or item.bar
-        local spellID = bar and GetSettingsBarItemSpellID(item)
-        if spellID then
-            ApplyBarColorToBar(bar, spellID)
-            ConfigureBarColorSwatch(item, spellID, bar)
-        else
-            ReleaseBarColorSwatch(item)
+        local bar = item.Bar
+        if item.GetCooldownInfo and bar then
+            local cooldownInfo = item:GetCooldownInfo()
+            local spellID = GetMostOverrideSpellIDFromCooldownInfo(cooldownInfo)
+            if spellID then
+                ApplyBarColorToBar(bar, spellID)
+                ConfigureBarColorSwatch(item, spellID, bar)
+            end
         end
     end
 end
@@ -1084,12 +1054,12 @@ local function HookActionButtonSpellAlertManager()
         if not activeGlowTarget then
             return
         end
-        local spellId = frame.cooldownInfo and frame.cooldownInfo.spellID
-        if not spellId then
+        local spellID = frame.cooldownInfo and frame.cooldownInfo.spellID
+        if not spellID then
             return
         end
 
-        local disableProcs = CooldownStyle.GetDisableProcsGlow(spellId)
+        local disableProcs = CooldownStyle.GetDisableProcsGlow(spellID)
         local glowStyle = ns.db.profile.cooldownManager_experimental_glow_style
         local customStyle = glowStyle and glowStyle ~= "DEFAULT"
 
@@ -1161,15 +1131,25 @@ function CooldownStyle:Initialize()
     --     return "bar"
     -- end
 
-    Menu.ModifyMenu("MENU_COOLDOWN_SETTINGS_ITEM", function(owner, rootDescription, contextData)
+    Menu.ModifyMenu("MENU_COOLDOWN_SETTINGS_ITEM", function(owner, rootDescription, _contextData)
         local cdInfo = owner:GetCooldownInfo()
         local category = cdInfo.category
-        local spellID = owner:GetBaseSpellID()
+        -- on first tab we operate on the base spell, on the second tab we operate on the most specific override spell (which may be the same as the base, but may NOT)
+        local baseSpellID = owner:GetBaseSpellID()
+        local spellID = GetMostOverrideSpellIDFromCooldownInfo(cdInfo)
 
         rootDescription:CreateDivider()
         rootDescription:CreateTitle(MENU_TITLE)
 
-        if category ~= 3 then
+        if category == 0 or category == 1 or category == -1 then
+            rootDescription:CreateCheckbox("Always Show Cooldown Edge", function()
+                return CooldownStyle.GetAlwaysShowCooldownEdge(baseSpellID)
+            end, function()
+                CooldownStyle.ToggleAlwaysShowCooldownEdge(baseSpellID)
+                RefreshChildFramesHook()
+            end)
+        end
+        if category == -2 or category == 2 then
             rootDescription:CreateCheckbox("Always Show Cooldown Edge", function()
                 return CooldownStyle.GetAlwaysShowCooldownEdge(spellID)
             end, function()
@@ -1178,23 +1158,31 @@ function CooldownStyle:Initialize()
             end)
         end
 
-        -- category: -2 HiddenAura, -1 HiddenSpell, 0 Essential, 1 Utility,
-        -- 2 TrackedBuff, 3 TrackedBar.
+        --[[ category: 
+        
+        -1 HiddenSpell,
+        0 Essential,
+        1 Utility,
+
+        -2 HiddenAura, 
+        2 TrackedBuff, 
+        3 TrackedBar.
+        ]]
         if cdInfo.hasAura or cdInfo.selfAura then
             if category == 0 or category == 1 or category == -1 then
                 rootDescription:CreateCheckbox("Hide Aura", function()
-                    return not CooldownStyle.GetShowAuras(spellID)
+                    return not CooldownStyle.GetShowAuras(baseSpellID)
                 end, function()
-                    CooldownStyle.ToggleShowAuras(spellID)
+                    CooldownStyle.ToggleShowAuras(baseSpellID)
                     RefreshChildFramesHook()
                 end)
             end
 
             if category == 0 or category == 1 or category == -1 then
                 rootDescription:CreateCheckbox("Reverse Aura Swipe", function()
-                    return CooldownStyle.GetReverseAuraSwipe(spellID)
+                    return CooldownStyle.GetReverseAuraSwipe(baseSpellID)
                 end, function()
-                    CooldownStyle.ToggleReverseAuraSwipe(spellID)
+                    CooldownStyle.ToggleReverseAuraSwipe(baseSpellID)
                     RefreshChildFramesHook()
                 end)
             end
@@ -1202,31 +1190,31 @@ function CooldownStyle:Initialize()
 
         if category == 0 or category == 1 or category == -1 then
             rootDescription:CreateCheckbox("Disable Proc Glow", function()
-                return CooldownStyle.GetDisableProcsGlow(spellID)
+                return CooldownStyle.GetDisableProcsGlow(baseSpellID)
             end, function()
-                CooldownStyle.ToggleDisableProcsGlow(spellID)
+                CooldownStyle.ToggleDisableProcsGlow(baseSpellID)
                 -- RefreshChildFramesHook()
             end)
 
             rootDescription:CreateCheckbox("Glow when ready", function()
-                return CooldownStyle.GetGlowWhenReady(spellID)
+                return CooldownStyle.GetGlowWhenReady(baseSpellID)
             end, function()
-                CooldownStyle.ToggleGlowWhenReady(spellID)
+                CooldownStyle.ToggleGlowWhenReady(baseSpellID)
                 RefreshChildFramesHook()
             end)
             if cdInfo.charges then
                 rootDescription:CreateCheckbox("Glow when full charges", function()
-                    return CooldownStyle.GetGlowOnFullCharges(spellID)
+                    return CooldownStyle.GetGlowOnFullCharges(baseSpellID)
                 end, function()
-                    CooldownStyle.ToggleGlowOnFullCharges(spellID)
+                    CooldownStyle.ToggleGlowOnFullCharges(baseSpellID)
                     RefreshChildFramesHook()
                 end)
             end
 
             rootDescription:CreateCheckbox("Never Desaturate", function()
-                return CooldownStyle.GetNeverDesaturate(spellID)
+                return CooldownStyle.GetNeverDesaturate(baseSpellID)
             end, function()
-                CooldownStyle.ToggleNeverDesaturate(spellID)
+                CooldownStyle.ToggleNeverDesaturate(baseSpellID)
                 RefreshChildFramesHook()
             end)
         end
@@ -1242,7 +1230,11 @@ function CooldownStyle:Initialize()
 
         rootDescription:CreateButton("Reset to Defaults", function()
             local db = CooldownStyle.GetDB()
-            db.spellSettings[spellID] = nil
+            if category == 0 or category == 1 or category == -1 then
+                db.spellSettings[baseSpellID] = nil
+            else
+                db.spellSettings[spellID] = nil
+            end
             RefreshChildFramesHook()
         end)
     end)

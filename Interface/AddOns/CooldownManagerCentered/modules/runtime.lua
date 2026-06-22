@@ -54,22 +54,24 @@ function Runtime:ShowAll()
     if C_CVar.GetCVar("cooldownViewerEnabled") ~= "1" then
         return
     end
-    for _, viewer in pairs(viewers) do
-        if viewer then
-            local visibleSetting = viewer.visibleSetting
-            local forceShow = false
-            if visibleSetting == Enum.CooldownViewerVisibleSetting.Always then
-                forceShow = true
-            elseif visibleSetting == Enum.CooldownViewerVisibleSetting.InCombat then
-                forceShow = InCombatLockdown()
-            elseif visibleSetting == Enum.CooldownViewerVisibleSetting.Hidden then
-                -- Don't show
-            end
-            if not viewer:IsShown() and forceShow then
-                ShowUIPanel(viewer)
+    C_Timer.After(0.2, function()
+        for _, viewer in pairs(viewers) do
+            if viewer then
+                local visibleSetting = viewer.visibleSetting
+                local forceShow = false
+                if visibleSetting == Enum.CooldownViewerVisibleSetting.Always then
+                    forceShow = true
+                elseif visibleSetting == Enum.CooldownViewerVisibleSetting.InCombat then
+                    forceShow = InCombatLockdown()
+                elseif visibleSetting == Enum.CooldownViewerVisibleSetting.Hidden then
+                    -- Don't show
+                end
+                if not viewer:IsShown() and forceShow then
+                    ShowUIPanel(viewer)
+                end
             end
         end
-    end
+    end)
 end
 
 EventRegistry:RegisterCallback("CooldownViewerSettings.OnDataChanged", function()

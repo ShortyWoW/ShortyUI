@@ -472,6 +472,14 @@ function TrackerInstance:GetShowGCD()
     return GetConfigValue(self.configKey, "showGCD", false)
 end
 
+function TrackerInstance:GetRangeIndicator()
+    return GetConfigValue(self.configKey, "rangeIndicator", false)
+end
+
+function TrackerInstance:GetRequireResource()
+    return GetConfigValue(self.configKey, "requireResource", false)
+end
+
 function TrackerInstance:GetShowStacks()
     -- Stacks/charge numbers are shown by default; only an explicit false hides them.
     if ns.db and ns.db.profile and ns.db.profile.editMode and ns.db.profile.editMode[self.configKey] then
@@ -615,6 +623,8 @@ function TrackerInstance:DoRefreshEntries()
     local orientation = self:GetOrientation()
     local showGCD = self:GetShowGCD()
     local showStacks = self:GetShowStacks()
+    local rangeIndicator = self:GetRangeIndicator()
+    local requireResource = self:GetRequireResource()
     local count = #entries
 
     local trackedSpellIds = {}
@@ -626,6 +636,8 @@ function TrackerInstance:DoRefreshEntries()
         SizeItemFrame(ivf.frame, iconSize, iconHeight)
         ivf.frame.showGCD = showGCD
         ivf.frame.showStacks = showStacks
+        ivf.frame.rangeIndicator = rangeIndicator
+        ivf.frame.requireResource = requireResource
         -- Hiding the count fontstring persists across SetText, so the stack/charge
         -- number stays hidden even as cooldown updates re-write its text.
         if ivf.frame.count then
@@ -661,6 +673,8 @@ function TrackerInstance:DoRefreshEntries()
     -- mode) are shown.
     self.anchor:SetShown(self.active and (count > 0 or Affected(self.anchor).trackerForceShow))
     ns.Keybinds:UpdateAllKeybinds()
+
+    ItemViewer:RebuildUsabilityWanted()
 end
 
 function TrackerInstance:RefreshStyling()
@@ -963,6 +977,32 @@ function TrackerInstance:Create()
             end,
             set = function(layoutName, value)
                 ns.db.profile.editMode[configKey].showGCD = value
+                instance:RefreshEntries()
+            end,
+        },
+        {
+            name = "Range Check",
+            parentId = "layout",
+            kind = LEM.SettingType.Checkbox,
+            default = false,
+            get = function()
+                return ns.db.profile.editMode[configKey].rangeIndicator or false
+            end,
+            set = function(layoutName, value)
+                ns.db.profile.editMode[configKey].rangeIndicator = value
+                instance:RefreshEntries()
+            end,
+        },
+        {
+            name = "Usable (Resource) Check",
+            parentId = "layout",
+            kind = LEM.SettingType.Checkbox,
+            default = false,
+            get = function()
+                return ns.db.profile.editMode[configKey].requireResource or false
+            end,
+            set = function(layoutName, value)
+                ns.db.profile.editMode[configKey].requireResource = value
                 instance:RefreshEntries()
             end,
         },
@@ -1546,6 +1586,9 @@ function TrackerInstance:SetActive(active)
     else
         self:UnregisterTrackerEvents()
         self.anchor:Hide()
+        -- Drop this tracker's spells from the range/resource union now that it's
+        -- inactive, instead of waiting for another tracker to refresh.
+        ItemViewer:RebuildUsabilityWanted()
     end
 end
 
@@ -1633,6 +1676,44 @@ function ItemViewer:RefreshItemViewerFrames()
     end
 end
 
+-- Scratch sets reused across rebuilds; UpdateWanted reads but never retains them,
+-- so we avoid allocating two tables on every (combat-frequent) refresh.
+local usabilityRangeScratch = {}
+local usabilityPowerScratch = {}
+
+function ItemViewer:RebuildUsabilityWanted()
+    local rangeSet, powerSet = usabilityRangeScratch, usabilityPowerScratch
+    wipe(rangeSet)
+    wipe(powerSet)
+    for _, tracker in ipairs(trackers) do
+        if tracker.active and tracker.trackedSpellIds then
+            local wantRange = tracker:GetRangeIndicator()
+            local wantPower = tracker:GetRequireResource()
+            if wantRange or wantPower then
+                for spellID in pairs(tracker.trackedSpellIds) do
+                    if wantRange then
+                        rangeSet[spellID] = true
+                    end
+                    if wantPower then
+                        powerSet[spellID] = true
+                    end
+                end
+            end
+        end
+    end
+    ns.TrackerUsability:UpdateWanted(rangeSet, powerSet)
+end
+
+function ItemViewer:RefreshUsabilityTints()
+    for _, tracker in ipairs(trackers) do
+        for _, ivf in ipairs(tracker.iconFrames) do
+            if ivf.frame:IsShown() then
+                ItemVisuals:ApplyUsabilityTint(ivf.frame)
+            end
+        end
+    end
+end
+
 function ItemViewer:GetActiveItemFrames()
     local frames = {}
     for _, tracker in ipairs(trackers) do
@@ -1698,6 +1779,7 @@ function ItemViewer:HideAll()
     for _, tracker in ipairs(trackers) do
         tracker:SetActive(false)
     end
+    ns.TrackerUsability:UpdateWanted({}, {})
 end
 
 function ItemViewer:ShowAll()

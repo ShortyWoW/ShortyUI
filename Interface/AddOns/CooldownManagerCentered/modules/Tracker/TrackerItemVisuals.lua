@@ -33,6 +33,27 @@ local function BuildEntryKey(kind, id)
     return kind .. ":" .. tostring(id)
 end
 
+local RANGE_TINT = { 1, 0.1, 0.1 }
+local MANA_TINT = { 0.5, 0.5, 1 }
+
+function ItemVisuals:ApplyUsabilityTint(frame)
+    local Usability = ns.TrackerUsability
+    local spellID = frame.spellID
+    local tint
+    if spellID then
+        if frame.rangeIndicator and Usability:IsOutOfRange(spellID) then
+            tint = RANGE_TINT
+        elseif frame.requireResource and Usability:IsResourceInsufficient(spellID) then
+            tint = MANA_TINT
+        end
+    end
+    if tint then
+        frame.Icon:SetVertexColor(tint[1], tint[2], tint[3])
+    else
+        frame.Icon:SetVertexColor(1, 1, 1)
+    end
+end
+
 local itemStaticInfo = {}
 local function GetItemStaticInfo(itemID)
     local info = itemStaticInfo[itemID]
@@ -508,5 +529,6 @@ function ItemVisuals:UpdateEntryCooldown(frame, kind, id)
     end
 
     self:ApplyEntryGlow(frame, kind, id, hasReadyState, readyAlpha, hasCharges, chargeAlpha)
+    self:ApplyUsabilityTint(frame)
     return true
 end

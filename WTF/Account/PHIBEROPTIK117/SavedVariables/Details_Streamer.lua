@@ -1,22 +1,22 @@
 
 Details_StreamerDB = {
 ["characters"] = {
-["Shortbowjob - Illidan"] = "Callmeshorty - Dalaran",
+["Callmeshorty - Illidan"] = "Callmeshorty - Dalaran",
 ["Callmeshorty - Dalaran"] = "Callmeshorty - Dalaran",
 ["Callmeshortÿ - Moon Guard"] = "Callmeshorty - Dalaran",
-["Callmeshorty - Illidan"] = "Callmeshorty - Dalaran",
+["Bossbabyfan - Illidan"] = "Callmeshorty - Dalaran",
 ["Shortlite - Illidan"] = "Callmeshorty - Dalaran",
 ["Shortybear - Illidan"] = "Callmeshorty - Dalaran",
 ["Shortypal - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortcannon - Illidan"] = "Callmeshorty - Dalaran",
-["Shortbowjob - Area 52"] = "Callmeshorty - Dalaran",
+["Shortlight - Illidan"] = "Callmeshorty - Dalaran",
 ["Drewishlaser - Dalaran"] = "Callmeshorty - Dalaran",
 ["Shortytest - Illidan"] = "Callmeshorty - Dalaran",
-["Shortlight - Illidan"] = "Callmeshorty - Dalaran",
+["Shortbowjob - Area 52"] = "Callmeshorty - Dalaran",
 ["Callmeshawte - Area 52"] = "Callmeshorty - Dalaran",
 ["Shortyshamm - Illidan"] = "Callmeshorty - Dalaran",
 ["Shortbeef - Vashj"] = "Callmeshorty - Dalaran",
-["Bossbabyfan - Illidan"] = "Callmeshorty - Dalaran",
+["Shortbowjob - Illidan"] = "Callmeshorty - Dalaran",
 },
 ["profiles"] = {
 ["Callmeshorty - Dalaran"] = {
@@ -29,10 +29,7 @@ Details_StreamerDB = {
 0.5,
 },
 ["scale"] = 1,
-["main_frame_size"] = {
-299.9999694824219,
-500.0000610351563,
-},
+["arrow_anchor_y"] = 0,
 ["minimap"] = {
 ["minimapPos"] = 160,
 ["radius"] = 160,
@@ -53,7 +50,7 @@ Details_StreamerDB = {
 ["square_amount"] = 5,
 ["enabled"] = false,
 ["arrow_size"] = 10,
-["use_spark"] = true,
+["font_size"] = 10,
 ["row_spacement"] = 21,
 ["main_frame_color"] = {
 0,
@@ -61,13 +58,13 @@ Details_StreamerDB = {
 0,
 0.2,
 },
-["author"] = "Terciob",
+["row_color"] = {
+0.1,
+0.1,
+0.1,
+0.4,
+},
 ["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
-["font_size"] = 10,
-["y"] = 1.52587890625e-05,
-["x"] = -0.000244140625,
-["font_face"] = "Friz Quadrata TT",
-["square_size"] = 32,
 ["per_second"] = {
 ["enabled"] = false,
 ["point"] = "CENTER",
@@ -79,14 +76,17 @@ Details_StreamerDB = {
 ["update_speed"] = 0.05,
 ["attribute_type"] = 1,
 },
-["row_color"] = {
-0.1,
-0.1,
-0.1,
-0.4,
-},
+["use_spark"] = true,
+["x"] = -0.000244140625,
+["font_face"] = "Friz Quadrata TT",
+["square_size"] = 32,
+["y"] = 1.52587890625e-05,
+["author"] = "Terciob",
 ["main_frame_locked"] = false,
-["arrow_anchor_y"] = 0,
+["main_frame_size"] = {
+299.9999694824219,
+500.0000610351563,
+},
 },
 },
 }

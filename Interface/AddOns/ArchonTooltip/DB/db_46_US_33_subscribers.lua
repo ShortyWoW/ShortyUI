@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Hunter-Marksmanship','Hunter-Survival','Hunter-BeastMastery',}
-local provider = {region='US',realm='Blackrock',name='US',type='subscribers',zone=46,date='2026-06-19',data={Go='Goldblut:BAEALgAECgcJCgABLgAFFAcJHQABAH0ZAA==.',Ro='Rocketsauce:BAEALgAECgMJBAABLgAFFAUJGAACABYmAA==.',To='Toopac:BAECLgAFFH8YAAICAAUJFiY/BQC7AQVoDAAABwBeAGkMAAAGAGIAawwAAAMAYQBqDAAAAgBjAOoMAAAGAGMAAgAFCRYmPwUAuwEFaAwAAAcAXgBpDAAABgBiAGsMAAADAGEAagwAAAIAYwDqDAAABgBjAC4ABAp/MAAEAgAICXUimAUAzQIAAgAICXUimAUAzQIAAQADCeganB4AugAAAwABCb0j5wYBVwAAAAA=.',Za='Zanthu:BAEALgAFFAEJAQABLgAFFAUJGAACABYmAA==.',},}
+local provider = {region='US',realm='Blackrock',name='US',type='subscribers',zone=46,date='2026-06-23',data={Go='Goldblut:BAEALgAECgcJCgABLgAFFAgJHgABAKoXAA==.',Ro='Rocketsauce:BAEALgAECgMJBAABLgAFFAUJGAACABYmAA==.',To='Toopac:BAECLgAFFH8YAAICAAUJFiZABQC7AQVoDAAABwBeAGkMAAAGAGIAawwAAAMAYQBqDAAAAgBjAOoMAAAGAGMAAgAFCRYmQAUAuwEFaAwAAAcAXgBpDAAABgBiAGsMAAADAGEAagwAAAIAYwDqDAAABgBjAC4ABAp/MAAEAgAICXUimAUAzQIAAgAICXUimAUAzQIAAQADCeganR4AugAAAwABCb0j6wYBVwAAAAA=.',Za='Zanthu:BAEALgAFFAEJAQABLgAFFAUJGAACABYmAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

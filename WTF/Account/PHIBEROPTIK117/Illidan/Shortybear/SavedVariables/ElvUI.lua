@@ -2,11 +2,11 @@
 ElvCharacterDB = {
 ["ConvertKeybindings"] = true,
 ["ChatEditHistory"] = {
-"/g i have failed you papa",
-"/g I'm actually heading to bed, ty tho",
+"/dance",
+"/run print(C_QuestLog.IsQuestFlaggedCompleted(9339))",
 "/reload",
-"/lunar",
-"/ec",
+"/mff",
+"/way Durotar 52.0 47.0",
 },
 ["ChatHistoryLog"] = {
 {

@@ -14,6 +14,7 @@ local DEFAULT_GLOW_WHEN_READY = false
 local DEFAULT_GLOW_ON_FULL_CHARGES = false
 local DEFAULT_ALWAYS_GLOW = false
 local DEFAULT_NEVER_DESATURATE = false
+local DEFAULT_BAR_COLOR = { 1, 0.5, 0.25 }
 
 local LCG = LibStub("WilduCustomGlow-1.0")
 local GLOW_STYLE_DEFAULT = "DEFAULT"
@@ -562,6 +563,14 @@ local function ApplyCooldownDisplay(cdmFrame, ctx)
                 ns.db.profile.cooldownManager_customActiveColor_b or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
                 ns.db.profile.cooldownManager_customActiveColor_a or ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
             )
+            -- Setting active swipe color to default may be unnecessary since the cooldown viewer's swipe color should already be at the default
+            -- else
+            --     cd:SetSwipeColor(
+            --         ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.r,
+            --         ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.g,
+            --         ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.b,
+            --         ns.CONSTANTS.DEFAULT_ACTIVE_SWIPE_COLOR.a
+            --     )
         end
         cd:SetDrawSwipe(true)
         if CooldownStyle.GetReverseAuraSwipe(ctx.baseSpellID) then
@@ -580,6 +589,14 @@ local function ApplyCooldownDisplay(cdmFrame, ctx)
             ns.db.profile.cooldownManager_customCDSwipeColor_g or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
             ns.db.profile.cooldownManager_customCDSwipeColor_b or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
             ns.db.profile.cooldownManager_customCDSwipeColor_a or ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
+        )
+    else
+        -- Don't remove it.. if the option is disabled we should still set it to the default in case it was changed by the active swipe color and therefore should be overridden
+        cd:SetSwipeColor(
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.r,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.g,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.b,
+            ns.CONSTANTS.DEFAULT_COOLDOWN_SWIPE_COLOR.a
         )
     end
 
@@ -788,19 +805,6 @@ local function ResolveBarColor(spellID)
     return nil
 end
 
-local function SnapshotBarColor(bar)
-    if Affected(bar).barColorBackup == nil then
-        local r, g, b, a
-        if bar.GetStatusBarColor then
-            r, g, b, a = bar:GetStatusBarColor()
-        elseif bar.FillTexture then
-            r, g, b, a = bar.FillTexture:GetVertexColor()
-        end
-        Affected(bar).barColorBackup = { r or 1, g or 0.5, b or 0.25, a or 1 }
-    end
-    return Affected(bar).barColorBackup
-end
-
 local function SetBarFillColor(bar, r, g, b)
     if bar.SetStatusBarColor then
         bar:SetStatusBarColor(r, g, b)
@@ -810,10 +814,9 @@ local function SetBarFillColor(bar, r, g, b)
 end
 
 local function ApplyBarColorToBar(bar, spellID)
-    local backup = SnapshotBarColor(bar)
     local r, g, b = ResolveBarColor(spellID)
     if not r then
-        r, g, b = backup[1], backup[2], backup[3]
+        r, g, b = DEFAULT_BAR_COLOR[1], DEFAULT_BAR_COLOR[2], DEFAULT_BAR_COLOR[3]
     end
     SetBarFillColor(bar, r, g, b)
 end
@@ -861,18 +864,14 @@ end
 
 local settingsSwatchPool
 
--- Color a swatch should show: the active override, or the snapshotted native
--- fill while in "Default" mode so the swatch still reflects the live bar.
+-- Color a swatch should show: the active override, or the fixed default fill
+-- while in "Default" mode.
 local function GetBarSwatchColor(bar, spellID)
     local r, g, b = ResolveBarColor(spellID)
     if r then
         return r, g, b
     end
-    local backup = bar and Affected(bar).barColorBackup
-    if backup then
-        return backup[1], backup[2], backup[3]
-    end
-    return 1, 1, 1
+    return DEFAULT_BAR_COLOR[1], DEFAULT_BAR_COLOR[2], DEFAULT_BAR_COLOR[3]
 end
 
 local function OpenBarColorPicker(spellID, swatch, bar)

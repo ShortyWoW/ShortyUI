@@ -5,6 +5,8 @@ KagrokLauncherDB = {
 ["hide_stack"] = true,
 ["left_click_addon"] = "",
 ["tooltip_addon"] = "",
+["sublisted_addons"] = {
+},
 ["priority_overrides"] = {
 },
 ["hidden_addons"] = {

@@ -24,6 +24,9 @@ LoggerHeadDB = {
 },
 ["profiles"] = {
 ["Default"] = {
+["sink"] = {
+["sink20OutputSink"] = "Chat",
+},
 ["log"] = {
 ["party"] = {
 ["Azjol-Nerub"] = {
@@ -243,6 +246,7 @@ true,
 },
 ["Onyxia's Lair"] = {
 [4] = false,
+[3] = false,
 },
 ["The Dreamrift"] = {
 [14] = true,

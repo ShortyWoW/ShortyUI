@@ -24,6 +24,9 @@ LoggerHeadDB = {
 },
 ["profiles"] = {
 ["Default"] = {
+["sink"] = {
+["sink20OutputSink"] = "Chat",
+},
 ["log"] = {
 ["party"] = {
 ["Azjol-Nerub"] = {

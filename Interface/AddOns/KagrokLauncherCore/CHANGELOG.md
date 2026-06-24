@@ -1,5 +1,12 @@
 # Kagrok Launcher Core Changelog
 
+## 1.1.0
+- Changed addon settings integration so Kagrok addon pages stay top-level in the AddOns list by default, with an option in the shared hub to sublist individual addons under `Kagrok's Addons` when preferred.
+- Added reload-required messaging for settings placement changes so users know when a `/reload` is needed before the AddOns list updates.
+- Made addon titles in the shared settings hub behave like settings links, including underline styling and hover tooltips that jump directly to the selected addon's settings page.
+- Added tooltips for the drag handle and launcher override controls to explain shared minimap ordering and default-launcher behavior.
+- Refined the shared settings layout with better row alignment, wrapped description text, and other list readability polish while keeping the current shared minimap implementation.
+
 ## 1.0.3
 - Added drag-and-drop reordering to the shared `Registered Addons` list with a six-dot grip handle on each row.
 - Made the shared launcher list update live while dragging so rows slide into place before drop.

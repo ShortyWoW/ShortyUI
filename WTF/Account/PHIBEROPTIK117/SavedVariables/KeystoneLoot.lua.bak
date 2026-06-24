@@ -14,8 +14,8 @@ KeystoneLootDB = {
 },
 ["hideOtherItems"] = false,
 ["keystoneTooltip"] = true,
-["multiSlotFilter"] = false,
 ["wideMode"] = false,
+["multiSlotFilter"] = false,
 ["highlighting"] = {
 ["versatility"] = true,
 ["crit"] = true,

@@ -17,7 +17,7 @@ KeystoneLootDB = {
 ["keystoneTooltip"] = true,
 ["hiddenCharacters"] = {
 },
-["multiSlotFilter"] = false,
+["wideMode"] = false,
 ["highlighting"] = {
 ["mastery"] = true,
 ["comboMode"] = false,
@@ -31,7 +31,7 @@ KeystoneLootDB = {
 ["dropAlert"] = true,
 ["dungeons"] = true,
 },
-["wideMode"] = false,
+["multiSlotFilter"] = false,
 },
 ["favorites"] = {
 ["Illidan-Shortlight-2"] = {

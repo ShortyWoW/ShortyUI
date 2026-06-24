@@ -1,6 +1,10 @@
 # LoggerHead
 
-## [12.0.1](https://github.com/dratr/loggerhead/tree/12.0.1) (2026-03-20)
-[Full Changelog](https://github.com/dratr/loggerhead/compare/12.0.0...12.0.1) [Previous Releases](https://github.com/dratr/loggerhead/releases)
+## [12.0.7](https://github.com/dratr/loggerhead/tree/12.0.7) (2026-06-22)
+[Full Changelog](https://github.com/dratr/loggerhead/compare/12.0.1...12.0.7) [Previous Releases](https://github.com/dratr/loggerhead/releases)
 
-- Fix opening of options screen  
+- Update toc for 12.0.7  
+- Merge pull request #17 from choss/master  
+    Adding mythic flex as loggable difficulty  
+- Disable LibSink outputs that are incompatible with Midnight/12.0  
+- Adding Mythic Flex as loggable difficulty  

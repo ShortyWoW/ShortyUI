@@ -1,0 +1,21 @@
+
+Taraezor_MFF = {
+["iconSeries7"] = 28,
+["engineVer"] = 2.08,
+["IconScale"] = 5,
+["Achievements"] = true,
+["addOnVer"] = 4.03,
+["Daily Quests"] = true,
+["ShowAzeroth"] = true,
+["Seasonal Quests"] = true,
+["IconAlpha"] = 1,
+["iconSeries4"] = 22,
+["iconSeries1"] = 16,
+["iconSeries2"] = 18,
+["iconSeries5"] = 24,
+["ShowPins"] = true,
+["ShowCoordinates"] = true,
+["iconSeries3"] = 20,
+["ShowContinents"] = true,
+["iconSeries6"] = 26,
+}

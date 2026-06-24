@@ -24,8 +24,8 @@ CursorRingDB = {
 ["g"] = 1,
 ["r"] = 1,
 },
-["helpMessageShownOnce"] = true,
 ["ringThickness"] = 50,
+["helpMessageShownOnce"] = true,
 ["colorMode"] = "class",
 ["offsetY"] = 0,
 ["useClassColor"] = true,
@@ -52,8 +52,6 @@ CursorRingCharDB = {
 ["trailGlowEnabled"] = true,
 ["gcdEnabled"] = true,
 ["trailParticleSize"] = 12,
-["trailRibbonEnabled"] = false,
-["trailStyle"] = "sprites",
 ["trailRibbonCustomColor"] = {
 ["r"] = 1,
 ["g"] = 1,
@@ -64,7 +62,9 @@ CursorRingCharDB = {
 ["g"] = 1,
 ["b"] = 1,
 },
-["gcdDimMultiplier"] = 0.35,
+["trailRibbonEnabled"] = false,
+["trailStyle"] = "sprites",
+["trailParticleSpread"] = 18,
 ["castRingColor"] = {
 ["r"] = 0.2,
 ["g"] = 0.8,
@@ -72,7 +72,7 @@ CursorRingCharDB = {
 },
 ["trailHeadScale"] = 120,
 ["castRingThickness"] = 25,
-["trailLength"] = 320,
+["trailSampleRate"] = 36,
 ["trailColorMode"] = "ring",
 ["trailSegments"] = 8,
 ["castRingEnabled"] = false,
@@ -81,8 +81,8 @@ CursorRingCharDB = {
 ["g"] = 1,
 ["b"] = 1,
 },
-["trailSampleRate"] = 36,
-["trailParticleSpread"] = 18,
+["trailLength"] = 320,
+["gcdDimMultiplier"] = 0.35,
 ["trailCustomColor"] = {
 ["r"] = 1,
 ["g"] = 1,
@@ -96,6 +96,8 @@ KagrokLauncherDB = {
 ["hide_stack"] = true,
 ["left_click_addon"] = "",
 ["tooltip_addon"] = "",
+["sublisted_addons"] = {
+},
 ["priority_overrides"] = {
 },
 ["hidden_addons"] = {

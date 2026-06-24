@@ -4,7 +4,7 @@ KeystonePolarisDB = {
 ["profileKeys"] = {
 ["Drewis24EEA3 - Illidan"] = "Default",
 ["Callmeshorty - Dalaran"] = "Default",
-["Bossbabyfan - Illidan"] = "Default",
+["Callmeshorty - Illidan"] = "Default",
 ["Shortbowjob - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
@@ -16,7 +16,7 @@ KeystonePolarisDB = {
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Callmeshorty - Illidan"] = "Default",
+["Bossbabyfan - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {

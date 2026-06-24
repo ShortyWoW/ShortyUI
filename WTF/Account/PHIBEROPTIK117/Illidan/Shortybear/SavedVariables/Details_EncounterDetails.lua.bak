@@ -1,9 +1,17 @@
 
 EncounterDetailsDB = {
 ["chartData"] = {
+[856] = {
+["Raid Damage Done"] = {
+["__time"] = 1782090089,
+},
+},
 },
 ["encounter_spells"] = {
 },
 ["emotes"] = {
+{
+["boss"] = "Onyxia",
+},
 },
 }

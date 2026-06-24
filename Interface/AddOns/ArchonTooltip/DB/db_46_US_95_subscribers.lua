@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Blood','Druid-Guardian','Monk-Brewmaster','Monk-Windwalker',}
-local provider = {region='US',realm='Fenris',name='US',type='subscribers',zone=46,date='2026-06-19',data={Ad='Addie:BAEBLgAFFH8GAAIBAAIJ4hZ2DgCDAAJqDAAABQAqAOoMAAABADoAAQACCeIWdg4AgwACagwAAAUAKgDqDAAAAQA6AAEuAAUUCQk9AAIAgCYA.',['Cí']='Círce:BAEALgADCgEJAQABLgAFFAQJEgADABAfAA==.',Di='Divinefistin:BAECLgAFFH8SAAIDAAQJEB/sFgBrAQRoDAAABgBMAGkMAAAFAFIAawwAAAEAPwDqDAAABgBfAAMABAkQH+wWAGsBBGgMAAAGAEwAaQwAAAUAUgBrDAAAAQA/AOoMAAAGAF8ALgAECn84AAMDAAkJwiItDQBkAgADAAkJyx0tDQBkAgAEAAcJWCK+EQA1AgAAAA==.Divinepain:BAEALgAECgMJAwABLgAFFAQJEgADABAfAA==.',},}
+local provider = {region='US',realm='Fenris',name='US',type='subscribers',zone=46,date='2026-06-23',data={Ad='Addie:BAEBLgAFFH8GAAIBAAIJ4hZ2DgCDAAJqDAAABQAqAOoMAAABADoAAQACCeIWdg4AgwACagwAAAUAKgDqDAAAAQA6AAEuAAUUCQk9AAIAgCYA.',['Cí']='Círce:BAEALgAECgMJAwABLgAFFAQJEgADABAfAA==.',Di='Divinefistin:BAECLgAFFH8SAAIDAAQJEB/fFgBrAQRoDAAABgBMAGkMAAAFAFIAawwAAAEAPwDqDAAABgBfAAMABAkQH98WAGsBBGgMAAAGAEwAaQwAAAUAUgBrDAAAAQA/AOoMAAAGAF8ALgAECn84AAMDAAkJwiItDQBkAgADAAkJyx0tDQBkAgAEAAcJWCK+EQA1AgAAAA==.Divinepain:BAEALgAECgMJAwABLgAFFAQJEgADABAfAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

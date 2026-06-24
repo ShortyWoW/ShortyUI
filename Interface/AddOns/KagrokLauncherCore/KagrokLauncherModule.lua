@@ -1,6 +1,6 @@
 local addon_name, ns = ...
 local L = ns.L or {}
-local MODULE_VERSION = 5
+local MODULE_VERSION = 6
 
 local function T(key)
   local value = L[key]
@@ -91,6 +91,7 @@ local function ensure_db()
   db.settings = db.settings or {}
   db.settings.priority_overrides = db.settings.priority_overrides or {}
   db.settings.hidden_addons = db.settings.hidden_addons or {}
+  db.settings.sublisted_addons = db.settings.sublisted_addons or {}
   db.settings.launcher_override_addon = trim_text(db.settings.launcher_override_addon)
   db.settings.left_click_addon = trim_text(db.settings.left_click_addon)
   db.settings.tooltip_addon = trim_text(db.settings.tooltip_addon)
@@ -118,6 +119,16 @@ local function ensure_db()
   db.angle = db.minimap.minimapPos
   db.settings.hide_stack = db.minimap.hide == true
   return db
+end
+
+local function can_register_canvas_settings()
+  return Settings
+    and type(Settings.RegisterCanvasLayoutCategory) == "function"
+    and type(Settings.RegisterAddOnCategory) == "function"
+end
+
+local function can_register_settings_subcategories()
+  return can_register_canvas_settings() and type(Settings.RegisterCanvasLayoutSubcategory) == "function"
 end
 
 local function get_addon_metadata(addon_key, field)
@@ -211,6 +222,15 @@ local function get_launcher_override_id()
     return override_id
   end
   return trim_text(settings.tooltip_addon)
+end
+
+local function get_sublisted_addons()
+  local db = ensure_db()
+  local settings = db.settings or {}
+  if type(settings.sublisted_addons) ~= "table" then
+    settings.sublisted_addons = {}
+  end
+  return settings.sublisted_addons
 end
 
 local function sort_entries(a, b)
@@ -392,6 +412,44 @@ function shared:GetSettingsEntry(addon_id)
   end
   self.settings_registry = self.settings_registry or {}
   return self.settings_registry[key]
+end
+
+function shared:IsSettingsSublisted(addon_id)
+  local key = trim_text(addon_id)
+  if key == "" then
+    return false
+  end
+  return get_sublisted_addons()[key] == true
+end
+
+function shared:SetSettingsSublisted(addon_id, sublisted)
+  local key = trim_text(addon_id)
+  if key == "" then
+    return false
+  end
+
+  local sublisted_addons = get_sublisted_addons()
+  if sublisted then
+    sublisted_addons[key] = true
+  else
+    sublisted_addons[key] = nil
+  end
+  return true
+end
+
+function shared:GetSettingsPlacementBuckets(entries)
+  local top_level_entries = {}
+  local sublisted_entries = {}
+
+  for _, entry in ipairs(entries or self:GetSettingsEntries(false)) do
+    if self:IsSettingsSublisted(entry.id) then
+      table_insert(sublisted_entries, entry)
+    else
+      table_insert(top_level_entries, entry)
+    end
+  end
+
+  return top_level_entries, sublisted_entries
 end
 
 local function sequence_equals(a, b)
@@ -1451,14 +1509,23 @@ function shared:AcquireSettingsHubRow(panel, index)
   row.grabHandle:SetPoint("LEFT", row, "LEFT", SETTINGS_GRAB_X, 0)
   row.grabHandle:SetSize(SETTINGS_GRAB_WIDTH, 26)
   row.grabHandle:RegisterForClicks("LeftButtonDown", "LeftButtonUp")
-  row.grabHandle:SetScript("OnEnter", function()
+  row.grabHandle:SetScript("OnEnter", function(button)
     set_row_grab_handle_state(row, true)
+    if GameTooltip then
+      GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
+      GameTooltip:SetText(T("Reorder addons"), 1, 1, 1)
+      GameTooltip:AddLine(T("Rearranging addons here also changes their order in the shared minimap button."), 0.84, 0.88, 0.94, true)
+      GameTooltip:Show()
+    end
   end)
   row.grabHandle:SetScript("OnLeave", function()
     if row.is_dragging then
       return
     end
     set_row_grab_handle_state(row, false)
+    if GameTooltip then
+      GameTooltip:Hide()
+    end
   end)
   row.grabHandle:SetScript("OnMouseDown", function(_, mouse_button)
     if mouse_button == "LeftButton" and row.entry_id then
@@ -1484,16 +1551,16 @@ function shared:AcquireSettingsHubRow(panel, index)
 
   row.icon = row:CreateTexture(nil, "ARTWORK")
   row.icon:SetSize(26, 26)
-  row.icon:SetPoint("LEFT", row, "LEFT", SETTINGS_ICON_X, 0)
+  row.icon:SetPoint("TOPLEFT", row, "TOPLEFT", SETTINGS_ICON_X, -10)
 
   row.order = row:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-  row.order:SetPoint("LEFT", row.icon, "RIGHT", 10, 0)
+  row.order:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 10, 0)
   row.order:SetWidth(20)
   row.order:SetJustifyH("LEFT")
   row.order:SetTextColor(0.95, 0.82, 0.18)
 
   row.titleButton = CreateFrame("Button", nil, row)
-  row.titleButton:SetPoint("TOPLEFT", row.order, "TOPRIGHT", 6, -4)
+  row.titleButton:SetPoint("TOPLEFT", row.order, "TOPRIGHT", 6, 0)
   row.titleButton:SetHeight(18)
   row.titleButton:RegisterForClicks("LeftButtonUp")
   row.titleButton:SetScript("OnEnter", function(button)
@@ -1528,13 +1595,54 @@ function shared:AcquireSettingsHubRow(panel, index)
   row.meta:SetSpacing(1)
 
   row.priority = row:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-  row.priority:SetPoint("RIGHT", row, "RIGHT", -140, 0)
+  row.priority:SetPoint("RIGHT", row, "RIGHT", -144, -10)
+  row.priority:SetWidth(132)
   row.priority:SetJustifyH("RIGHT")
   row.priority:SetTextColor(0.82, 0.82, 0.82)
 
   row.action = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
   row.action:SetSize(118, 22)
-  row.action:SetPoint("RIGHT", row, "RIGHT", -14, 0)
+  row.action:SetPoint("TOPRIGHT", row, "TOPRIGHT", -14, -8)
+  row.action:SetScript("OnEnter", function(button)
+    if not GameTooltip then
+      return
+    end
+    GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
+    GameTooltip:SetText(button.tooltip_title or T("Launcher override"), 1, 1, 1)
+    if button.tooltip_text and button.tooltip_text ~= "" then
+      GameTooltip:AddLine(button.tooltip_text, 0.84, 0.88, 0.94, true)
+    end
+    GameTooltip:Show()
+  end)
+  row.action:SetScript("OnLeave", function()
+    if GameTooltip then
+      GameTooltip:Hide()
+    end
+  end)
+
+  row.settingsAction = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+  row.settingsAction:SetSize(118, 22)
+  row.settingsAction:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", -14, 8)
+  if type(row.settingsAction.SetMotionScriptsWhileDisabled) == "function" then
+    row.settingsAction:SetMotionScriptsWhileDisabled(true)
+  end
+  row.settingsAction:SetScript("OnEnter", function(button)
+    if not GameTooltip then
+      return
+    end
+    GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
+    GameTooltip:SetText(button.tooltip_title or T("Settings placement*"), 1, 1, 1)
+    if button.tooltip_text and button.tooltip_text ~= "" then
+      GameTooltip:AddLine(button.tooltip_text, 0.84, 0.88, 0.94, true)
+    end
+    GameTooltip:AddLine(T("* Requires a reload."), 1.0, 0.82, 0.18, true)
+    GameTooltip:Show()
+  end)
+  row.settingsAction:SetScript("OnLeave", function()
+    if GameTooltip then
+      GameTooltip:Hide()
+    end
+  end)
 
   panel.list_rows[index] = row
   return row
@@ -1853,7 +1961,7 @@ function shared:EnsureSettingsHubPanel()
   desc:SetWidth(760)
   desc:SetJustifyH("LEFT")
   desc:SetSpacing(2)
-  desc:SetText(T("Shared launcher settings for Kagrok addons. Subcategories below are listed in launcher priority order."))
+  desc:SetText(T("Shared launcher settings for Kagrok's addons\naddons stay top-level by default, use the list below to optionally sublist them under this entry.*"))
 
   local scroll = CreateFrame("ScrollFrame", nil, panel, "UIPanelScrollFrameTemplate")
   scroll:SetPoint("TOPLEFT", desc, "BOTTOMLEFT", -4, -8)
@@ -1928,20 +2036,29 @@ function shared:EnsureSettingsHubPanel()
   list_note:SetWidth(full_width - (list_section.pad * 2))
   list_note:SetJustifyH("LEFT")
   list_note:SetSpacing(2)
-  list_note:SetText(T("Each addon keeps its own settings page below this parent. This list shows the shared launcher order."))
-  list_section.rows_start_y = list_section.innerY - ((list_note:GetStringHeight() or 18) + 12)
+  list_note:SetText(T("Each addon keeps its own settings page at the top level by default. Use the row action to move a page under Kagrok Launcher Core.*"))
+  list_section.innerY = list_section.innerY - ((list_note:GetStringHeight() or 18) + 10)
+
+  local list_reload_note = list_section:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+  list_reload_note:SetPoint("TOPLEFT", list_section, "TOPLEFT", list_section.pad, list_section.innerY)
+  list_reload_note:SetWidth(full_width - (list_section.pad * 2))
+  list_reload_note:SetJustifyH("LEFT")
+  list_reload_note:SetSpacing(2)
+  list_reload_note:SetText(T("* Requires a reload."))
+  list_section.rows_start_y = list_section.innerY - ((list_reload_note:GetStringHeight() or 18) + 12)
   list_section.innerY = list_section.rows_start_y
 
   panel.RefreshContents = function(frame, entries)
     local settings_rows = entries or self:GetSettingsEntries(false)
     local launcher_rows = self:GetEntries(false)
+    local top_level_settings, sublisted_settings = self:GetSettingsPlacementBuckets(settings_rows)
     local override_entry = self:GetLauncherOverrideEntry(launcher_rows)
-    local settings_target = (#settings_rows > 1) and T("Kagrok's Addons") or ((settings_rows[1] and settings_rows[1].name) or T("this addon"))
     local override_name = override_entry and (override_entry.name or override_entry.id) or T("Shared icon")
+    local can_sublist_settings = can_register_settings_subcategories()
     if frame.ShowStackCheck then
       frame.ShowStackCheck:SetChecked(not self:IsStackHidden())
     end
-    summary_text:SetText(string.format(T("Registered settings pages: %d\nOpen settings destination: %s\nMinimap stack: %s\nLauncher override: %s"), #settings_rows, settings_target, self:IsStackHidden() and T("Hidden") or T("Shown"), override_name))
+    summary_text:SetText(string.format(T("Registered settings pages: %d\nTop-level pages: %d\nSublisted pages: %d\nMinimap stack: %s\nLauncher override: %s"), #settings_rows, #top_level_settings, #sublisted_settings, self:IsStackHidden() and T("Hidden") or T("Shown"), override_name))
 
     local row_width = full_width - 24
     frame.listSection.row_width = row_width
@@ -1951,13 +2068,12 @@ function shared:EnsureSettingsHubPanel()
     for index, entry in ipairs(launcher_rows) do
       local row = self:AcquireSettingsHubRow(frame.listSection, index)
       row:SetWidth(row_width)
-      local text_width = math.max(180, row_width - 280)
+      local text_width = math.max(180, row_width - 282)
       row.titleButton:SetWidth(text_width)
       row.meta:SetWidth(text_width)
       row.entry_id = entry.id
       row.icon:SetTexture(trim_text(entry.icon) ~= "" and entry.icon or DEFAULT_BUTTON_ICON)
       row.title:SetText(entry.name or entry.id or T("Unknown Addon"))
-      row.meta:SetText(string.format(T("Settings page: %s\nMinimap entry: %s"), entry.name or entry.id or T("Unknown Addon"), self:IsAddonHidden(entry.id) and T("Hidden") or T("Shown")))
       row.titleButton.can_open = self:GetSettingsEntry(entry.id) ~= nil
       row.titleButton.tooltip_name = entry.name or entry.id or T("Unknown Addon")
       row.titleButton:EnableMouse(row.titleButton.can_open)
@@ -1967,13 +2083,17 @@ function shared:EnsureSettingsHubPanel()
         end
       end)
       set_row_title_link_state(row, false)
+      row.meta:SetText(string.format(T("Settings location: %s\nMinimap entry: %s"), self:IsSettingsSublisted(entry.id) and T("Under Kagrok Launcher Core") or T("Top level"), self:IsAddonHidden(entry.id) and T("Hidden") or T("Shown")))
       if self:IsLauncherOverride(entry.id) then
         row.priority:SetText(T("Launcher override"))
         row.action:SetText(T("Clear override"))
+        row.action.tooltip_text = T("Clear this override and restore Kagrok Launcher Core as the default shared minimap button.")
       else
         row.priority:SetText(string.format(T("Priority %d"), get_effective_priority(entry)))
         row.action:SetText(T("Use as launcher"))
+        row.action.tooltip_text = T("Using this will set the addon icon and information to show as the default for the shared addon minimap button instead of the launcher.")
       end
+      row.action.tooltip_title = T("Launcher override")
       row.action:SetScript("OnClick", function()
         if self:IsLauncherOverride(entry.id) then
           self:SetLauncherOverride(nil)
@@ -1982,6 +2102,29 @@ function shared:EnsureSettingsHubPanel()
         end
       end)
       row.action:Show()
+      local can_move_settings = row.titleButton.can_open and can_sublist_settings
+      row.settingsAction:SetEnabled(can_move_settings)
+      row.settingsAction.tooltip_title = T("Settings placement*")
+      if self:IsSettingsSublisted(entry.id) then
+        row.settingsAction:SetText(T("Top level*"))
+        row.settingsAction.tooltip_text = T("Move this addon's settings back to the top level of the AddOns list.")
+      else
+        row.settingsAction:SetText(T("Sublist*"))
+        row.settingsAction.tooltip_text = T("Move this addon's settings under Kagrok Launcher Core in the AddOns list.")
+      end
+      if not row.titleButton.can_open then
+        row.settingsAction.tooltip_text = T("This addon does not expose a settings page through Kagrok Launcher Core.")
+      elseif not can_sublist_settings then
+        row.settingsAction.tooltip_text = T("This game client does not support moving addon settings into subcategories.")
+      end
+      row.settingsAction:SetScript("OnClick", function()
+        if not can_move_settings then
+          return
+        end
+        self:SetSettingsSublisted(entry.id, not self:IsSettingsSublisted(entry.id))
+        frame:RefreshContents(self:GetSettingsEntries(false))
+      end)
+      row.settingsAction:Show()
       row:Show()
       frame.listSection.entry_map[entry.id] = entry
       frame.listSection.rows_by_id[entry.id] = row
@@ -2015,44 +2158,47 @@ function shared:FinalizeSettingsPages()
     return false
   end
 
-  local supports_canvas_categories = Settings
-    and type(Settings.RegisterCanvasLayoutCategory) == "function"
-    and type(Settings.RegisterAddOnCategory) == "function"
-  local supports_subcategories = supports_canvas_categories and type(Settings.RegisterCanvasLayoutSubcategory) == "function"
+  local supports_canvas_categories = can_register_canvas_settings()
+  local supports_subcategories = can_register_settings_subcategories()
 
   if supports_canvas_categories then
-    if #entries == 1 or not supports_subcategories then
-      for _, entry in ipairs(entries) do
-        local panel = safe_call(entry.get_panel, entry, self)
-        if panel then
-          local category = Settings.RegisterCanvasLayoutCategory(panel, entry.name)
-          Settings.RegisterAddOnCategory(category)
-          entry.category = category
-          entry.category_name = entry.name
-          if type(entry.on_registered) == "function" then
-            safe_call(entry.on_registered, category, nil)
-          end
+    local hub_panel = self:EnsureSettingsHubPanel()
+    local hub_category = Settings.RegisterCanvasLayoutCategory(hub_panel, hub_panel.name)
+    Settings.RegisterAddOnCategory(hub_category)
+    self.settings_hub_category = hub_category
+    hub_panel:RefreshContents(entries)
+
+    local top_level_entries, sublisted_entries
+    if supports_subcategories then
+      top_level_entries, sublisted_entries = self:GetSettingsPlacementBuckets(entries)
+    else
+      top_level_entries, sublisted_entries = entries, {}
+    end
+
+    for _, entry in ipairs(top_level_entries) do
+      local panel = safe_call(entry.get_panel, entry, self)
+      if panel then
+        local category = Settings.RegisterCanvasLayoutCategory(panel, entry.name)
+        Settings.RegisterAddOnCategory(category)
+        entry.category = category
+        entry.category_name = entry.name
+        if type(entry.on_registered) == "function" then
+          safe_call(entry.on_registered, category, nil)
         end
       end
-    else
-      local hub_panel = self:EnsureSettingsHubPanel()
-      local hub_category = Settings.RegisterCanvasLayoutCategory(hub_panel, hub_panel.name)
-      Settings.RegisterAddOnCategory(hub_category)
-      self.settings_hub_category = hub_category
-      hub_panel:RefreshContents(entries)
+    end
 
-      for index, entry in ipairs(entries) do
-        local panel = safe_call(entry.get_panel, entry, self)
-        if panel then
-          local subcategory = Settings.RegisterCanvasLayoutSubcategory(hub_category, panel, entry.name)
-          if subcategory and subcategory.SetOrder then
-            subcategory:SetOrder(index)
-          end
-          entry.category = subcategory
-          entry.category_name = entry.name
-          if type(entry.on_registered) == "function" then
-            safe_call(entry.on_registered, subcategory, hub_category)
-          end
+    for index, entry in ipairs(sublisted_entries) do
+      local panel = safe_call(entry.get_panel, entry, self)
+      if panel then
+        local subcategory = Settings.RegisterCanvasLayoutSubcategory(hub_category, panel, entry.name)
+        if subcategory and subcategory.SetOrder then
+          subcategory:SetOrder(index)
+        end
+        entry.category = subcategory
+        entry.category_name = entry.name
+        if type(entry.on_registered) == "function" then
+          safe_call(entry.on_registered, subcategory, hub_category)
         end
       end
     end

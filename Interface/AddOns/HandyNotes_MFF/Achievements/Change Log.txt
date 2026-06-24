@@ -1,0 +1,10 @@
+== v1.01 - 23rd June 2026
+* ns.PassAchievementChecks now returns true if the player had
+  selected to NOT remove on completion
+
+== v1.00 - 21st June 2026
+* Based upon an experiemental version of my Hallows End AddOn.
+* Immitates the Quests and Pets modules in how it works.
+* At this stage it is "per account" achievements so Classic
+  versions of an AddOn will lose "per character" functionality
+  if this module is used.

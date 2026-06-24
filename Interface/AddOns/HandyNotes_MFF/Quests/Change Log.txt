@@ -1,0 +1,27 @@
+== v1.03 - 21st June 2026
+* Removed unnecessary translation "Collected" as it belongs
+  in the Pets module anyway
+* Spacing line placement between quest (type) status and tips
+  had logic altered
+* ns.PassQuestChecks has been rewritten to correct logic
+
+== v1.02 - 17th June 2026
+* Redesigned the "flip" flag to "showIfCompleted"
+* Added "silent" flag
+* ns.StringSubstitutions() now used for quest names too
+* Completion Red and Green colours now defined in Common_Quests
+
+== v1.01 - 10th June 2026
+* The rump Pet routine(s) removed into their own expanded modules
+* Coding logic bug fixed in ns.PassQuestChecks
+
+== v1.00 - 7th June 2026
+* Born out of a need to change all of my AddOns due to the
+  Patch 12.0.0+ radical API changes, including the Minimap
+  AddOn Compartment engine changes and my having to accept
+  that reliably reporting achievements on a per character
+  basis has not been possible for over a year now.
+* This release has not been tested in the vicinity of the
+  redesigned Silvermoon City.
+* This release has not yet been tested with my now
+  outdated seasonal events AddOns.

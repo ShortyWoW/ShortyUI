@@ -1,3 +1,4 @@
 
 NewSettingsSeen = {
+["assistedCombatReduceHighlights"] = true,
 }

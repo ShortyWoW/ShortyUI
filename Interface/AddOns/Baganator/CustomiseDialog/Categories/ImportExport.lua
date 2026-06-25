@@ -48,7 +48,7 @@ function addonTable.CustomiseDialog.SingleCategoryExport(name)
     hideIn = #hideIn > 0 and hideIn or nil,
   })
 
-  return C_EncodingUtil.SerializeJSON(export)
+  return "BGR!1!" .. C_EncodingUtil.EncodeBase64(C_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(export)))
 end
 
 function addonTable.CustomiseDialog.CategoriesExport()
@@ -108,7 +108,7 @@ function addonTable.CustomiseDialog.CategoriesExport()
     end
   end
 
-  return C_EncodingUtil.SerializeJSON(export)
+  return "BGR!1!" .. C_EncodingUtil.EncodeBase64(C_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(export)))
 end
 
 local function ImportCategories(import)

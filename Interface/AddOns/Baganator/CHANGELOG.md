@@ -1,6 +1,8 @@
 # Baganator
 
-## [807](https://github.com/TheMouseNest/Baganator/tree/807) (2026-06-16)
-[Full Changelog](https://github.com/TheMouseNest/Baganator/compare/806...807) 
+## [808](https://github.com/TheMouseNest/Baganator/tree/808) (2026-06-20)
+[Full Changelog](https://github.com/TheMouseNest/Baganator/compare/807...808) 
 
-- Update toc for 12.0.7  
+- Update Baganator import format  
+- Fixes for PTR  
+- Fix guild banks with no tabs not showing gold amounts  

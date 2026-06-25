@@ -1,5 +1,11 @@
 ------------------------------------------------------------------------
-r387 | funkehdude | 2026-05-17 23:36:48 +0000 (Sun, 17 May 2026) | 1 line
+r390 | funkehdude | 2026-06-24 17:33:56 +0000 (Wed, 24 Jun 2026) | 1 line
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+Check debugstack and debuglocals for secrets
+------------------------------------------------------------------------
+r389 | funkehdude | 2026-06-24 17:01:21 +0000 (Wed, 24 Jun 2026) | 1 line
 Changed paths:
    M /trunk/!BugGrabber.toc
 

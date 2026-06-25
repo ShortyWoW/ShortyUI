@@ -14,13 +14,13 @@ LoggerHeadDB = {
 ["Callmeshorty - Illidan"] = "Default",
 ["Shortybear - Illidan"] = "Default",
 ["Drewishlazer - Dalaran"] = "Default",
-["Shortbowjob - Illidan"] = "Default",
+["Shortlight - Illidan"] = "Default",
 ["Shortlite - Illidan"] = "Default",
 ["Shortytest - Illidan"] = "Default",
 ["Callmeshawte - Area 52"] = "Default",
 ["Shortyshamm - Illidan"] = "Default",
 ["Shortbeef - Vashj"] = "Default",
-["Shortlight - Illidan"] = "Default",
+["Shortbowjob - Illidan"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -111,17 +111,20 @@ true,
 [23] = true,
 [8] = true,
 },
-["Algeth'ar Academy"] = {
-[23] = true,
-[8] = true,
+["Mogu'shan Palace"] = {
+[24] = false,
 },
 ["Gate of the Setting Sun"] = {
 [24] = false,
 },
-["Upper Blackrock Spire"] = {
-},
-["Utgarde Pinnacle"] = {
+["Lower Blackrock Spire"] = {
 false,
+},
+["Magisters' Terrace"] = {
+true,
+true,
+[23] = true,
+[8] = true,
 },
 ["The Blinding Vale"] = {
 true,
@@ -144,14 +147,14 @@ true,
 ["Blackrock Caverns"] = {
 [24] = false,
 },
-["Scholomance"] = {
-[24] = false,
+["The Nexus"] = {
+false,
 },
 ["Darkflame Cleft"] = {
 true,
 },
-["The Nexus"] = {
-false,
+["Scholomance"] = {
+[24] = false,
 },
 ["Halls of Stone"] = {
 false,
@@ -159,20 +162,17 @@ false,
 ["Zul'Farrak"] = {
 false,
 },
-["Magisters' Terrace"] = {
-true,
-true,
-[23] = true,
-[8] = true,
-},
-["Lower Blackrock Spire"] = {
+["Utgarde Pinnacle"] = {
 false,
+},
+["Upper Blackrock Spire"] = {
 },
 ["Blackrock Depths"] = {
 false,
 },
-["Mogu'shan Palace"] = {
-[24] = false,
+["Algeth'ar Academy"] = {
+[23] = true,
+[8] = true,
 },
 ["Murder Row"] = {
 true,
@@ -202,10 +202,10 @@ true,
 ["The Darkway"] = {
 [208] = false,
 },
-["The Gulf of Memory"] = {
+["The Shadow Enclave"] = {
 [208] = true,
 },
-["The Shadow Enclave"] = {
+["The Gulf of Memory"] = {
 [208] = true,
 },
 ["Atal'Aman"] = {
@@ -254,15 +254,15 @@ true,
 [15] = true,
 [17] = false,
 },
-["Tempest Keep"] = {
-[4] = false,
+["Firelands"] = {
+[24] = true,
+[15] = false,
 },
 ["Molten Core"] = {
 [9] = false,
 },
-["Firelands"] = {
-[24] = true,
-[15] = false,
+["Tempest Keep"] = {
+[4] = false,
 },
 },
 },

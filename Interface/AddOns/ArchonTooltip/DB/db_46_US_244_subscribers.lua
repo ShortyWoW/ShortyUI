@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'DeathKnight-Frost','Hunter-BeastMastery','Paladin-Retribution',}
-local provider = {region='US',realm='Zangarmarsh',name='US',type='subscribers',zone=46,date='2026-06-23',data={As='Aspir:BAEALgAECgYJBgABLgAFFAcJGAABABwWAA==.',Em='Emila:BAEBLgAECn8gAAICAAYJPyIdBABqAQZoDAAABgBdAGkMAAAGAFQAawwAAAYAWgBqDAAABgBjAGwMAAADAF8A6gwAAAUASwACAAYJPyIdBABqAQZoDAAABgBdAGkMAAAGAFQAawwAAAYAWgBqDAAABgBjAGwMAAADAF8A6gwAAAUASwABLgAECggJKQACANMgAA==.',So='Solidgen:BAEALgAECgEJAgABLgAFFAYJGQADACsRAA==.',},}
+local provider = {region='US',realm='Zangarmarsh',name='US',type='subscribers',zone=46,date='2026-06-24',data={As='Aspir:BAEALgAECgYJBgABLgAFFAcJGAABABwWAA==.',Em='Emila:BAEBLgAECn8gAAICAAYJPyLWBABnAQZoDAAABgBdAGkMAAAGAFQAawwAAAYAWgBqDAAABgBjAGwMAAADAF8A6gwAAAUASwACAAYJPyLWBABnAQZoDAAABgBdAGkMAAAGAFQAawwAAAYAWgBqDAAABgBjAGwMAAADAF8A6gwAAAUASwABLgAECggJKQACANMgAA==.',So='Solidgen:BAEALgAECgEJAgABLgAFFAYJGQADACsRAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

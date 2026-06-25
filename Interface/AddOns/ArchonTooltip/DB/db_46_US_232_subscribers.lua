@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Mage-Frost','Unknown-Unknown',}
-local provider = {region='US',realm='Uther',name='US',type='subscribers',zone=46,date='2026-06-23',data={Fo='Foxling:BAEALgAECgUJCwAAAA==.',Ga='Galvanize:BAECLgAFFH8YAAIBAAUJNwwWDwAPAQVoDAAABwAoAGkMAAAFABwAawwAAAQAEQBqDAAAAQAVAOoMAAAHACYAAQAFCTcMFg8ADwEFaAwAAAcAKABpDAAABQAcAGsMAAAEABEAagwAAAEAFQDqDAAABwAmAC4ABAp/QwACAQAJCcYbiikAdAIAAQAJCcYbiikAdAIAAAA=.',Go='Gorlokk:BAEALgADCgkJDAABLgADCgYJBgACAAAAAA==.',Ha='Haziel:BAEALgADCgYJBgAAAA==.',Ma='Mattdeamon:BAEALgADCgUJBwABLgAFFAUJGAABADcMAA==.',Re='Reeses:BAEALgAECgkJEwABLgADCgYJBgACAAAAAA==.',Ta='Taproot:BAEALgADCgEJAQABLgAFFAUJGAABADcMAA==.',},}
+local provider = {region='US',realm='Uther',name='US',type='subscribers',zone=46,date='2026-06-24',data={Fo='Foxling:BAEALgAECgUJCwAAAA==.',Ga='Galvanize:BAECLgAFFH8ZAAIBAAUJNwysEQAPAQVoDAAABwAoAGkMAAAFABwAawwAAAQAEQBqDAAAAQAVAOoMAAAIACYAAQAFCTcMrBEADwEFaAwAAAcAKABpDAAABQAcAGsMAAAEABEAagwAAAEAFQDqDAAACAAmAC4ABAp/QwACAQAJCcYbiCkAdAIAAQAJCcYbiCkAdAIAAAA=.',Go='Gorlokk:BAEALgADCgkJDAABLgADCgYJBgACAAAAAA==.',Ha='Haziel:BAEALgADCgYJBgAAAA==.',Ma='Mattdeamon:BAEALgADCgUJBwABLgAFFAUJGQABADcMAA==.',Re='Reeses:BAEALgAECgkJEwABLgADCgYJBgACAAAAAA==.',Ta='Taproot:BAEALgADCgEJAQABLgAFFAUJGQABADcMAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

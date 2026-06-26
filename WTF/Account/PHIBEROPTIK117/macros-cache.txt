@@ -12,7 +12,7 @@ VER 3 000000000000007E "Guild" "413580"
 END
 VER 3 000000000000007F "kneel" "134400"
 #showtooltip
-/Kneel
+/use [@player] Juggling Torch
 END
 VER 3 000000000000005D "Lust" "134400"
 #showtooltip

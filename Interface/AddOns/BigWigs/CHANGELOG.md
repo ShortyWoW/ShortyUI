@@ -1,12 +1,13 @@
 # BigWigs
 
-## [v417.3](https://github.com/BigWigsMods/BigWigs/tree/v417.3) (2026-06-20)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v417.2...v417.3) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v417.5](https://github.com/BigWigsMods/BigWigs/tree/v417.5) (2026-06-26)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v417.4...v417.5) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- Update koKR (#2634)  
-- Update deDE (#2633)  
-- Update zhCN (#2632)  
+- Bump version  
+- Remove LibChatAnims  
+- TheVoidspire/VaelgorAndEzzorak: Only show debug info when both bosses are alive  
 - Bump toc  
-- Plugins/PrivateAuras: Fix error on WoW 12.1  
-- MarchOnQuelDanas/MidnightFalls: Block "Dusk Crystal" showing up in the wipe health check  
-- Allow boss modules to define specific units that will never show in the wipe health check  
+- Update esES (#2639)  
+- Update zhCN (#2640)  
+- Remove locale print  
+- Options: Fix Mythic Flex showing as Unknown in boss stats  

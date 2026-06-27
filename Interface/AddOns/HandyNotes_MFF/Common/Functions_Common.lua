@@ -3,7 +3,7 @@
 
                                           Functions_Common
 
-                                       v2.11 - 23rd June 2026
+                                       v2.13 - 25th June 2026
                                 Copyright (C) Taraezor / Chris Birch
                                          All Rights Reserved
 
@@ -593,7 +593,7 @@ function ns.pluginHandler:OnEnter( mapFile, coord )
 	if ns.QuestTooltipLines then ns.QuestTooltipLines( pin, mapFile ) end
 	if ns.AddOnSpecificTooltipLines then ns.AddOnSpecificTooltipLines( pin, mapFile ) end
 
-	ns.GuideTip( pin )		
+	ns.GuideTip( pin )
 
 	if ns.noZidormiCheck == false then -- set in Data_XXX
 		if ( pin.noZidormi == nil ) and ( CorrectMapPhase( ( pin.zidormiOldPhase or true ), mapFile ) == false ) then

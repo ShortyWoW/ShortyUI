@@ -21,7 +21,7 @@
 local _, ns = ...
 
 -- Localisations
-local GetTitleForQuestID= C_QuestLog.GetTitleForQuestID
+local GetTitleForQuestID= ( ns.version < 60000 ) and C_QuestLog.GetQuestInfo or C_QuestLog.GetTitleForQuestID
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
 local ipairs = _G.ipairs

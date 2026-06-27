@@ -994,7 +994,7 @@ function TrackerInstance:Create()
             end,
         },
         {
-            name = "Usable (Resource) Check",
+            name = "Usable Check",
             parentId = "layout",
             kind = LEM.SettingType.Checkbox,
             default = false,

@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Druid-Guardian','DeathKnight-Unholy',}
-local provider = {region='US',realm='AltarofStorms',name='US',type='subscribers',zone=46,date='2026-06-25',data={Ch='Cheeseylock:BAEALgADCgUJBwABLgAECggJJAABAGwRAA==.',Ki='Kippo:BAEALgAECgIJAwABLgAFFAcJFQACALYRAA==.',},}
+local provider = {region='US',realm='AltarofStorms',name='US',type='subscribers',zone=46,date='2026-06-26',data={Ch='Cheeseylock:BAEALgADCgUJBwABLgAECgkJJQABABERAA==.',Ki='Kippo:BAEALgAECgIJAwABLgAFFAcJFQACALYRAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

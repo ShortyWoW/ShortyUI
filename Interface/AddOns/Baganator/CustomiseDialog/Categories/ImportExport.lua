@@ -51,7 +51,7 @@ function addonTable.CustomiseDialog.SingleCategoryExport(name)
   return "BGR!1!" .. C_EncodingUtil.EncodeBase64(C_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(export)))
 end
 
-function addonTable.CustomiseDialog.CategoriesExport()
+function addonTable.CustomiseDialog.CategoriesExportTable()
   local export = {
     version = 3,
     addon = "Baganator",
@@ -107,6 +107,12 @@ function addonTable.CustomiseDialog.CategoriesExport()
       table.insert(export.hidden, source)
     end
   end
+
+  return export
+end
+
+function addonTable.CustomiseDialog.CategoriesExport()
+  local export = addonTable.CustomiseDialog.CategoriesExportTable()
 
   return "BGR!1!" .. C_EncodingUtil.EncodeBase64(C_EncodingUtil.CompressString(C_EncodingUtil.SerializeCBOR(export)))
 end

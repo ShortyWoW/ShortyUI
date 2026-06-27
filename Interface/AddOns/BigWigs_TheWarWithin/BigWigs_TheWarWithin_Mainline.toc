@@ -1,4 +1,4 @@
-## Interface: 120001, 120005, 120007
+## Interface: 120100, 120005, 120007
 
 ## Title: BigWigs [|cffeda55fThe War Within|r]
 ## Title-zhCN: BigWigs [|cffeda55f地心之战|r]
@@ -25,7 +25,7 @@
 
 ## LoadOnDemand: 1
 ## Dependencies: BigWigs
-## Version: v12.0.3
+## Version: v12.0.4
 ## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_legacy.tga
 
 ## X-Category: Raid
@@ -36,7 +36,7 @@
 ## X-BigWigs-LoadOn-InstanceId: 2657, 2769, 2810
 ## X-BigWigs-ExtraMenu: -2274
 ## X-BigWigs-LoadOn-WorldBoss: -2214, 220999, -2215, 221224, -2213, 221067, -2248, 221084, -2346, 231821, -2371, 238319
-## X-BigWigs-Minimum: 412
+## X-BigWigs-Minimum: 417
 
 NerubarPalace\Ulgrax.lua
 NerubarPalace\TheBloodboundHorror.lua

@@ -1,8 +1,6 @@
 # Baganator
 
-## [808](https://github.com/TheMouseNest/Baganator/tree/808) (2026-06-20)
-[Full Changelog](https://github.com/TheMouseNest/Baganator/compare/807...808) 
+## [809](https://github.com/TheMouseNest/Baganator/tree/809) (2026-06-25)
+[Full Changelog](https://github.com/TheMouseNest/Baganator/compare/808...809) 
 
-- Update Baganator import format  
-- Fixes for PTR  
-- Fix guild banks with no tabs not showing gold amounts  
+- Fixes for first import on first open  

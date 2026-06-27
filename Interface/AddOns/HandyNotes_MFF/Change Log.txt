@@ -1,3 +1,41 @@
+== v4.07 - 27th June 2026
+* Added Torch Tossing etc for Alliance. Horde already.
+* Translations for the Stealing flames of the cities added.
+* The classic quest texture options have been hidden for
+  retail as the options panel engine (mine) now supports
+  game versioning.
+* A few pins in Northrend were tweaked, couple of neighbouring
+  zones were added. Not much needed to be done there.
+* Striking Back in Stranglethorn Vale had the wrong quest ID
+
+== v4.06 - 25th June 2026
+* Data error preventing a few Classic MoP options from appearing
+* Non-Retail TOC files restored. This mucking around was due to my
+  panic to force players to use a really old version for MoP due
+  to a problem with a few options.
+
+== v4.05 - 25th June 2026
+* Removed debug print()
+* Removed non-retail TOC files
+
+== v4.04 - 25th June 2026
+* Unusual / Striking Back fully added
+  (there were already a couple of turn-in pins)
+  and now has its own texture too. All boss locations
+  have been added, along with the turn in locations.
+* Thieving is now complete. All locations. Plus now
+  has its own texture for all pins.
+* Eastern Kingdoms neighbour pins for every zone added.
+* Different default texture for "Honor" quests
+* Players 80+ had extra pins in Hillsbrad, namely Voidstorm
+  and Harandar. Presumably both Midnight zones are actually
+  located here on an unphased World Map. Suppressed.
+* Alliance Telaar pin was marked as Horde.
+* Shattrath now has pins (thieving and strike dailies)
+* Few placements tweaks here and there as I fly around.
+  100ths of a map point kinda OCD / perfectionism lol
+* Added The Tale of the Frost Lord hand in location.
+ 
 == v4.03 - 24th June 2026
 * Tanaris Horde visibility fixed.
 * Better (probably not perfect, not sure) handling of the Zidormi

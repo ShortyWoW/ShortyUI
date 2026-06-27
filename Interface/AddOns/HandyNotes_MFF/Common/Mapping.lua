@@ -139,6 +139,7 @@ ns.map.theCapeStrangle = 210
 ns.map.theGrizzledDen = 29
 ns.map.TheHinter = ( ns.version < 50000 ) and 1425 or 26
 ns.map.tirisfal = ( ns.version < 50000 ) and 1420 or 18
+ns.map.tirisfalBlight = 2070
 ns.map.tolBarad = 244
 ns.map.tolBaradPeninsular = 245
 ns.map.twilight = 241

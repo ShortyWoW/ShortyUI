@@ -1,5 +1,5 @@
 ## Interface: 120007
-## Version: 4.03
+## Version: 4.07
 ## Author: Taraezor
 ## IconTexture: Interface\Icons\Inv_summerfest_firespirit
 ## Title: |cFFFFA500Midsummer Fire Festival

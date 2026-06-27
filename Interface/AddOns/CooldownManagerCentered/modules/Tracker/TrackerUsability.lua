@@ -12,12 +12,13 @@ ns.TrackerUsability = Usability
 local EnableSpellRangeCheck = C_Spell.EnableSpellRangeCheck
 local IsSpellUsable = C_Spell.IsSpellUsable
 
-local POWER_REFRESH_DELAY = 0.1
+local POWER_REFRESH_DELAY = 0.05
 
 local rangeActive = {}
 local powerWanted = {}
 local outOfRange = {}
 local resourceInsufficient = {}
+local notUsable = {}
 
 local eventFrame
 local rangeRegistered = false
@@ -36,13 +37,26 @@ function Usability:IsResourceInsufficient(spellID)
     return resourceInsufficient[spellID] == true
 end
 
+-- Unusable for a reason other than power (the "else" branch of Blizzard's usable
+-- tint): no target, on cooldown-locked state, etc. Resolved on SPELL_UPDATE_USABLE.
+function Usability:IsNotUsable(spellID)
+    return notUsable[spellID] == true
+end
+
+-- Splits C_Spell.IsSpellUsable's (isUsable, notEnoughPower) into the two distinct
+-- "unusable" tints: insufficient power (blue) vs. otherwise-unusable (grey).
 local function EvaluatePowerStates()
     local changed = false
     for spellID in pairs(powerWanted) do
         local isUsable, notEnoughPower = IsSpellUsable(spellID)
-        local bad = not isUsable and notEnoughPower == true
-        if (resourceInsufficient[spellID] == true) ~= bad then
-            resourceInsufficient[spellID] = bad or nil
+        local insufficient = not isUsable and notEnoughPower == true
+        local unusable = not isUsable and not insufficient
+        if (resourceInsufficient[spellID] == true) ~= insufficient then
+            resourceInsufficient[spellID] = insufficient or nil
+            changed = true
+        end
+        if (notUsable[spellID] == true) ~= unusable then
+            notUsable[spellID] = unusable or nil
             changed = true
         end
     end
@@ -73,6 +87,10 @@ local function EnsureEventFrame()
             local bad = (checksRange and inRange == false) or false
             if (outOfRange[spellID] == true) ~= bad then
                 outOfRange[spellID] = bad or nil
+                RequestTintRefresh()
+            end
+        elseif event == "SPELL_UPDATE_USABLE" then
+            if EvaluatePowerStates() then
                 RequestTintRefresh()
             end
         else
@@ -136,6 +154,7 @@ function Usability:UpdateWanted(rangeSet, powerSet)
         if not powerSet[spellID] then
             powerWanted[spellID] = nil
             resourceInsufficient[spellID] = nil
+            notUsable[spellID] = nil
         end
     end
     local hasPower = false

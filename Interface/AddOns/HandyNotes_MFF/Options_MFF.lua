@@ -37,6 +37,7 @@ function ns.InterfaceOptionsAddOnSpecific()
 	ns.optionsSeries[ 5 ] = extraChoices
 	ns.optionsSeries[ 6 ] = extraChoices
 	ns.optionsSeries[ 7 ] = extraChoices
+	ns.optionsSeries[ 8 ] = extraChoices
 
 	ns.SetupAddOnSpecificOptions()
 	Settings.RegisterAddOnCategory( ns.optionsTextures )

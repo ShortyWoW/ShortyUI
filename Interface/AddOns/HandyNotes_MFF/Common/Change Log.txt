@@ -1,3 +1,7 @@
+== v2.13 - 25th June 2026
+* Added versioning to series for hiding from visibility on the
+  textures options panel
+
 == v2.12 - 23rd June 2026
 * Zidormi phase testing in Darkshore is unreliable due to Blizzard
   forgetting (sometimes) to give the player a Time Walking buff

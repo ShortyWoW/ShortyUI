@@ -35,7 +35,11 @@ end
 
 local RANGE_TINT = { 1, 0.1, 0.1 }
 local MANA_TINT = { 0.5, 0.5, 1 }
+local UNUSABLE_TINT = { 0.4, 0.4, 0.4 }
 
+-- Mirrors Blizzard's action-button usable tinting: usable -> white, not enough
+-- power -> blue, otherwise unusable -> grey. Range (when enabled) wins over the
+-- resource states so an out-of-range cast still reads as red.
 function ItemVisuals:ApplyUsabilityTint(frame)
     local Usability = ns.TrackerUsability
     local spellID = frame.spellID
@@ -43,8 +47,12 @@ function ItemVisuals:ApplyUsabilityTint(frame)
     if spellID then
         if frame.rangeIndicator and Usability:IsOutOfRange(spellID) then
             tint = RANGE_TINT
-        elseif frame.requireResource and Usability:IsResourceInsufficient(spellID) then
-            tint = MANA_TINT
+        elseif frame.requireResource then
+            if Usability:IsResourceInsufficient(spellID) then
+                tint = MANA_TINT
+            elseif Usability:IsNotUsable(spellID) then
+                tint = UNUSABLE_TINT
+            end
         end
     end
     if tint then

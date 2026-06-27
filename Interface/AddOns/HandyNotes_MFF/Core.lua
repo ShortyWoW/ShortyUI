@@ -3,7 +3,7 @@
 
                                        Midsummer Fire Festival
 
-                                       v4.02 - 23rd June 2026
+                                       v4.07 - 27th June 2026
                                 Copyright (C) Taraezor / Chris Birch
                                          All Rights Reserved
 

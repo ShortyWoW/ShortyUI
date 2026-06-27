@@ -91,31 +91,33 @@ end
 
 function ns.SetupAddOnSpecificOptions()
 	for i = 1, #ns.optionsSeriesDefaults do -- Setup in Data_xxx. Must exist even if {}. i = series
-		do
-			local name = ( ( ns.series[ i ].colour == nil ) and ns.colour.highlight
-														or ns.StringSubstitutions( ns.series[ i ].colour ) )
-							..( ( ns.series[ i ].title == nil ) and
-								( ( #ns.optionsSeriesDefaults == 1 ) and ns.L[ "Pin Texture" ] or ns.L[ "Miscellany" ] )
-														or ns.series[ i ].title )
-			local variableKey = "iconSeries" ..i
-			local variable = ns.db .."_" ..variableKey
-			local defaultValue = ( ns.optionsSeriesDefaults[ i ] <= ( ns.texturesBaseTotal + 1 ) ) and
-							( ns.optionsSeriesDefaults[ i ] + 1 ) or
-							( ns.optionsSeriesDefaults[ i ] - ns.seriesMapping[ i ] + ns.texturesBaseTotal + 2 )
-			local tooltip = ns.colour.plaintext ..ns.StringSubstitutions( ns.L[ "SelectionTexture" ] )
-			local function GetOptions()
-				local container = Settings.CreateControlTextContainer()
-				for j = 1, #optionsStandard do
-					container:Add( j, optionsStandard[ j ] )
+		if ( ns.series[ i ].version == nil ) or ( ns.version >= ns.series[ i ].version ) then
+			if ( ns.series[ i ].versionUnder == nil ) or ( ns.version < ns.series[ i ].versionUnder ) then
+				local name = ( ( ns.series[ i ].colour == nil ) and ns.colour.highlight
+															or ns.StringSubstitutions( ns.series[ i ].colour ) )
+								..( ( ns.series[ i ].title == nil ) and
+									( ( #ns.optionsSeriesDefaults == 1 ) and ns.L[ "Pin Texture" ] or ns.L[ "Miscellany" ] )
+															or ns.series[ i ].title )
+				local variableKey = "iconSeries" ..i
+				local variable = ns.db .."_" ..variableKey
+				local defaultValue = ( ns.optionsSeriesDefaults[ i ] <= ( ns.texturesBaseTotal + 1 ) ) and
+								( ns.optionsSeriesDefaults[ i ] + 1 ) or
+								( ns.optionsSeriesDefaults[ i ] - ns.seriesMapping[ i ] + ns.texturesBaseTotal + 2 )
+				local tooltip = ns.colour.plaintext ..ns.StringSubstitutions( ns.L[ "SelectionTexture" ] )
+				local function GetOptions()
+					local container = Settings.CreateControlTextContainer()
+					for j = 1, #optionsStandard do
+						container:Add( j, optionsStandard[ j ] )
+					end
+					for j = 1, #ns.optionsSeries[ i ] do -- Added to in Options_xxx if at all
+						container:Add( #optionsStandard + j, ns.optionsSeries[ i ][ j ] )
+					end
+					return container:GetData()
 				end
-				for j = 1, #ns.optionsSeries[ i ] do -- Added to in Options_xxx if at all
-					container:Add( #optionsStandard + j, ns.optionsSeries[ i ][ j ] )
-				end
-				return container:GetData()
-			end
-			local setting = Settings.RegisterAddOnSetting( ns.optionsTextures, variable, variableKey, _G[ ns.db ],
-							type( defaultValue ), name, defaultValue )
-			Settings.CreateDropdown( ns.optionsTextures, setting, GetOptions, tooltip )
+				local setting = Settings.RegisterAddOnSetting( ns.optionsTextures, variable, variableKey, _G[ ns.db ],
+								type( defaultValue ), name, defaultValue )
+				Settings.CreateDropdown( ns.optionsTextures, setting, GetOptions, tooltip )
+			end		
 		end		
 	end
 end

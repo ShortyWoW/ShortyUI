@@ -1,0 +1,22 @@
+
+PremadeGroupsFilterSettings = {
+["signupOnEnter"] = true,
+["rioRatingColors"] = true,
+["classNamesInTooltip"] = true,
+["oneClickSignUp"] = true,
+["coloredGroupTexts"] = true,
+["missingRoles"] = false,
+["signUpDeclined"] = false,
+["groupAge"] = false,
+["ratingInfo"] = true,
+["dialogMovable"] = false,
+["cancelOldestApp"] = true,
+["leaderCrown"] = false,
+["skipSignUpDialog"] = true,
+["version"] = 3,
+["classBar"] = false,
+["persistSignUpNote"] = true,
+["classCircle"] = false,
+["compactListEntries"] = false,
+["specIcon"] = false,
+}

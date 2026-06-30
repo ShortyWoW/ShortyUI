@@ -234,7 +234,7 @@ local function getChunkLookup(table, length)
 end
 
 local lookup = {'Unknown-Unknown','DemonHunter-Vengeance','Monk-Mistweaver','DeathKnight-Unholy',}
-local provider = {region='US',realm="Drak'thul",name='US',type='subscribers',zone=46,date='2026-06-28',data={Au='Augment:BAEALgADCgMJAwABLgAECgcJEwABAAAAAA==.',Br='Bragdand:BAEALgAECgcJEwAAAA==.',He='Heolt:BAEALgADCgYJBwABLgAECgcJEwABAAAAAA==.',Mo='Mordacity:BAEBLgAECn9HAAICAAkJJQkwAQBAAQloDAAACgAnAGkMAAAKACIAawwAAAoAGgBqDAAACQAlAGwMAAAJABcAbQwAAAQAEQDqDAAACwAXAG4MAAAGAAcAbwwAAAIADgACAAkJJQkwAQBAAQloDAAACgAnAGkMAAAKACIAawwAAAoAGgBqDAAACQAlAGwMAAAJABcAbQwAAAQAEQDqDAAACwAXAG4MAAAGAAcAbwwAAAIADgAAAA==.',Pa='Palimorea:BAEALgAECgQJBAABLgAECgcJEwABAAAAAA==.',Ro='Ross:BAEALgADCgEJAQABLgAFFAcJFQADAB0mAA==.',St='Strixmonk:BAEALgAFFAIJAwABLgAFFAYJGgAEAC4eAA==.',},}
+local provider = {region='US',realm="Drak'thul",name='US',type='subscribers',zone=46,date='2026-06-29',data={Au='Augment:BAEALgADCgMJAwABLgAECgcJEwABAAAAAA==.',Br='Bragdand:BAEALgAECgcJEwAAAA==.',He='Heolt:BAEALgADCgYJBwABLgAECgcJEwABAAAAAA==.',Mo='Mordacity:BAEBLgAECn9HAAICAAkJJQlKAQA8AQloDAAACgAnAGkMAAAKACIAawwAAAoAGgBqDAAACQAlAGwMAAAJABcAbQwAAAQAEQDqDAAACwAXAG4MAAAGAAcAbwwAAAIADgACAAkJJQlKAQA8AQloDAAACgAnAGkMAAAKACIAawwAAAoAGgBqDAAACQAlAGwMAAAJABcAbQwAAAQAEQDqDAAACwAXAG4MAAAGAAcAbwwAAAIADgAAAA==.',Pa='Palimorea:BAEALgAECgQJBAABLgAECgcJEwABAAAAAA==.',Ro='Ross:BAEALgADCgEJAQABLgAFFAcJFQADAB0mAA==.',St='Strixmonk:BAEALgAFFAIJAwABLgAFFAYJGgAEAC4eAA==.',},}
 provider.parse = parse
 
 local rawData = provider.data

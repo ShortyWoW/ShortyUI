@@ -1,6 +1,7 @@
 
 Blizzard_Console_SavedVars = {
 ["version"] = 3,
+["height"] = 299.9999694824219,
 ["messageHistory"] = {
 {
 "Multithreaded rendering enabled.",
@@ -1758,10 +1759,21 @@ Blizzard_Console_SavedVars = {
 "Weather changed to 0, intensity 0.000000\n",
 0,
 },
+{
+"-------------------------------------------------- Previous Session --------------------------------------------------",
+0,
 },
-["height"] = 299.9999694824219,
-["fontHeight"] = 14,
+{
+"LimitedLuaResources: Reset Timer",
+0,
+},
+{
+"LimitedLuaResources: Reset All",
+0,
+},
+},
 ["isShown"] = false,
+["fontHeight"] = 14,
 ["commandHistory"] = {
 },
 }
